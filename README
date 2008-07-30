@@ -1,0 +1,60 @@
+PHPwnage News, Forum, and Calendar
+by Kevin Lange <klange@ogunderground.com>
+(Released under the GNU General Public License, version 3)
+
+Welcome to PHPwnage, a light, powerful, customizable, and open source forum, blog, and calendar for PHP! Please take the time to read INSTALL for instructions on installing PHPwnage. PHPwnage started out as a personal project for my own website (oasis-games.com) and was later expanded to add more features common in other forums. It is easy to install and use (as well as customize!), and you are free to make any modifications you wish under the GPL.
+
+This is release version 1.8 (UNRELEASED, 2008). It is the first official GPL release and contains tons of new improvements over 1.7 and other previous versions.
+
+CHANGELOG:
+1.8 - 
+ + Moved all static text to a single file (lang/enUS.php)
+ + Moved all redirects and "Go Back" messages to a separate method, now with theming
+ + Made polls systematic, they can no have as many options as you want (separated,with,commas)
+ + Fixed some bugs left over from 1.7.1
+ + Made some improvements to the installer
+ + New Crystal theme
+ + Fixed RSS feeds with Firefox
+ NOT DONE
+ + Added moderator tools: merge, split, bulk-delete (topics, posts)
+ + New Image Gallery, integrated into forums
+ + Moved some static HTML elements into includes.php to ease future theming adjustments
+
+1.7.1 - Mar 25 2008
+ + Replaced old icons for IM protocols, emoticons, and other interface elements with Tango icons for a much improved look.
+ + Added page support to board view. Default is 10 threads per page. This is experimental and will be expanded in 1.8.
+ + Removed set width and height from admin icon table to support Tango icons at 48x48.
+ + Limited number of IPs shown in IP ban list to 20 with a link to show all (O-G.com has thousands of banned IPs)
+ + Post count for each board has been added to the main forum page
+ + Installer has been greatly improved.
+
+1.7 - Dec 5 2007
+ + Custom ranks
+ + Post count displayed under name and in profile
+ + News posts are no longer at a fixed height
+ + Comments on news posts can be viewed and added from within the article itself
+ + New quick reply bar contains formatting buttons
+ + PwnBuddy is complete
+ + Calendar has been reintegrated properly (still need to delete a few things and change links, though)
+ + New Calendar block - it's dynamic!
+ + Tons of administrative udpates
+ + Security fixes
+ + Custom smilies
+ + Sidebar is no longer displayed at all when disabled (doesn't use javascript to hide) 
+ + Added support for Pandemic (the OG IM client)
+
+1.6b - June 6 2007
+ + Add a forum post for each news article
+ + New Calendar module
+ + Moderation tools have been improved
+ + Various other additions
+
+1.6 - May 6 2007
+ + Censor added
+ + New bbCode
+ + Categories
+ + Stickies
+ + User levels (admin, moderator)
+ + Completely reworked Admin CP
+
+(Updates prior to 1.6 were not tracked)

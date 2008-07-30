@@ -1,0 +1,211 @@
+/*
+	This file is part of PHPwnage (Crystal Theme)
+
+	Copyright 2008 Kevin Lange <klange@ogunderground.com>
+
+	PHPwnage is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Generald Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	PHPwnage is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+.borderless_table {border-width: 0px; border-spacing: 0px; border-style: none none none none; border-collapse: collapse; margin: 0px 0px 0px 0px;} /* basic table, used for panels and subheader bars, etc. */
+.sub_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a sub header */
+.pan_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a panel */
+.pan_title_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
+
+.block_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a panel */
+.block_title_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
+
+.head_left	{height:110px; width:500px;} /* left header */
+.head_mid	{height:110px;} /* middle, tiling header */
+.head_right	{height:110px; width:10px; } /* right header */
+
+.sub_left {background-image: url(crystal/sub_left.png); height:27px; width:11px;} /* sub header */
+.sub_mid {background-image: url(crystal/sub_mid.png); height:27px; vertical-align: top; padding: 4px 0px 0px 0px;}
+.sub_right {background-image: url(crystal/sub_right.png); height:27px; width:17px;}
+
+.but_left {background-image: url(crystal/sub_left.png); height:27px; width:11px;} /* button */
+.but_mid {background-image: url(crystal/sub_mid.png); height:27px;}
+.but_right {background-image: url(crystal/sub_right.png); height:27px; width:17px;}
+
+.pan_ul {background-image: url(crystal/block_up_left.png); height:29px; width:10px;} /* Upper Left */
+.pan_um {background-image: url(crystal/block_up_mid.png) ; height:29px; } /* Top middle */
+.pan_ur {background-image: url(crystal/block_up_right.png); height:29px; width:12px;} /* Upper right */
+
+.pan_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
+.pan_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;} /* body */
+.pan_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
+
+.pan_bl {background-image: url(crystal/block_down_left.png); height:14px; width:10px;} /* bottom left */
+.pan_bm {background-image: url(crystal/block_down_mid.png); height:14px;} /* bottom middle  */
+.pan_br {background-image: url(crystal/block_down_right.png); height:14px; width:12px;} /* bottom right */
+
+/* Block */
+.block_ul {background-image: url(crystal/block_up_left.png); height:29px; width:10px;} /* Upper Left */
+.block_um {background-image: url(crystal/block_up_mid.png) ; height:29px; } /* Top middle */
+.block_ur {background-image: url(crystal/block_up_right.png); height:29px; width:12px;} /* Upper right */
+
+.block_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
+.block_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;} /* body */
+.block_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
+
+.block_bl {background-image: url(crystal/block_down_left.png); height:14px; width:10px;} /* bottom left */
+.block_bm {background-image: url(crystal/block_down_mid.png); height:14px;} /* bottom middle  */
+.block_br {background-image: url(crystal/block_down_right.png); height:14px; width:12px;} /* bottom right */
+
+
+
+.panel_news {height:100%; width:100%; display:block; border: 0px;} /* Front Page News item, the scrolling div */
+/*
+	Forum
+*/
+/* Base Forum Table */
+.forum_base {border-width: 1px 1px 1px 1px; border-color:#333333; border-style: solid solid solid solid; border-collapse: collapse;}
+/* Cells in the base forum table */
+.forum_base td {
+	border-width: 1px 1px 1px 1px;
+	padding: 1px 1px 1px 1px;
+	border-style: solid solid solid solid;
+	border-color:#333333;
+}
+/* The set of buttons to edit a post, quote it, view the ip, etc. */
+.mod_set td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+}
+/* Said button  */
+.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none; border-collapse: stretch;}
+/* cell thing, keeps everything in line */
+.forum_button td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+}
+
+.quote {background-image: url(aero/quote.png); background-repeat: no-repeat; border: 1px dashed black; padding: 5px;} /* post quote */
+.forum_button_text {font-family: "Verdana"; font-size: 10px; color: #000000;} /* button text */
+.forum_button_text :link {color: #000000; text-decoration: none;}
+.forum_button_text :visited {color: #000000; text-decoration: none;}
+.forum_button_text :hover {color: #CCCCCC; text-decoration: none;}
+.forum_base_text {font-family: "Verdana"; font-size: 12px;} /* panel text in the forum */
+.forum_user {font-family: "Verdana"; font-size: 12px; font-weight: bold} /* user name in post */
+.forum_body {font-family: "Verdana"; font-size: 10px; color: #000000;} /* post body (did I even use this?) */
+.forum_time {font-family: "Verdana"; font-size: 10px;} /* time code */
+.forum_quote {font-family: "Verdana"; font-size: 10px;} /* quoted text  */
+.mod_name {color: #73d216;}
+.adm_name {color: #f57900;}
+
+.glow_admin {background-image: url(crystal/adm_back.png); background-repeat: no-repeat; }
+.glow_mod{background-image: url(crystal/mod_back.png); background-repeat: no-repeat; }
+/*
+	PwnBuddy Enhancements
+*/
+.tab_head_off a {
+text-decoration : none;
+border : 1px solid #000;
+background-image: url(crystal/block_body.png);
+color: #729fcf;
+float : left;
+margin-right : 4px;
+line-height: 13px;
+padding-left: 2px;
+padding-right: 2px;
+font-size: 10px;
+}
+.tab_head_off a:hover {
+background-color: #79a7b4;
+}
+.tab_head_on a {
+text-decoration : none;
+border : 1px solid #000;
+background-color: #729fcf;
+color: #c9d7e4;
+border-bottom: 1px solid #729fcf;
+margin-right : 4px;
+float : left;
+font-size: 10px;
+line-height: 13px;
+padding-left: 2px;
+padding-right: 2px;
+}
+.tab_head_on {
+font-family: sans-serif, Tahoma;
+display : inline;
+list-style: none;
+margin: 0;
+}
+.tab_head_off {
+font-family: sans-serif, Tahoma;
+display : inline;
+list-style: none;
+margin: 0;
+}
+.tab_contents {
+clear : both;
+background-color: #729fcf;
+border: 1px #000 solid;
+border-top: 0;
+font-family: sans-serif, Tahoma;
+font-size: 12px;
+}
+.menu {
+border-bottom: 1px #000 solid;
+margin: 0;
+padding-left: 2px;
+padding-bottom: 14px;
+}
+/*
+	Basic pieces, very important.
+*/
+/* These better be self explanatory... */
+th {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+textarea {
+ background-color: #EEEEEC;
+ color: #204a87;
+ border: 1px solid #FFFFFF;
+}
+input {
+ background-color: #EEEEEC;
+ color: #204a87;
+ border: 1px solid #FFFFFF;
+}
+select {
+ background-color: #EEEEEC;
+ color: #204a87;
+ border: 1px solid #FFFFFF;
+}
+.odd_cell {
+ background-color: #729fcf;
+}
+body font {color: #000000;}
+:link {color: #204a87; text-decoration: none;}
+:visited {color: #204a87; text-decoration: none;}
+a:hover {color: #75507b; text-decoration: underline; }
+
+a:link img, a:visited img { border-style: none }
+
+
