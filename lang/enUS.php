@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (English Translation Database)
 
-	Copyright 2008 Kevin Lange <klange@ogunderground.com>
+	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Generald Public License as published by
