@@ -26,7 +26,7 @@ print <<<END
     <td class="sub_mid">
     <p align="center"><font class="sub_body_text">
 END;
-print $site_info['copyright'] . " <a href=\"rss.php\"><img align=absmiddle border=\"0\" src=\"smiles/rss20.png\"></a><a href=\"psp.php\"><img align=absmiddle border=\"0\" src=\"smiles/mobile.png\"></a><a href=\"http://oasis-games.com/\"><img align=absmiddle border=\"0\" src=\"smiles/pwn.png\"></a><a href=\"http://php.net\"><img align=absmiddle border=\"0\" src=\"smiles/php5.png\"></a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
+print $site_info['copyright'] . " <a href=\"rss.php\"><img align=absmiddle border=\"0\" src=\"smiles/rss20.png\"></a><a href=\"psp.php\"><img align=absmiddle border=\"0\" src=\"smiles/mobile.png\"></a><a href=\"https://launchpad.net/phpwnage\"><img align=absmiddle border=\"0\" src=\"smiles/pwn.png\"></a><a href=\"http://php.net\"><img align=absmiddle border=\"0\" src=\"smiles/php5.png\"></a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
 print <<<END
     <td class="sub_right"></td>
   </tr>
