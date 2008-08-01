@@ -28,190 +28,186 @@ $CONFIG_MAIL = false; // Should we send an email? This is buggy.
 require 'includes.php';
 
 function check_read($id,$userid) {
-$temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
-$topic = mysql_fetch_array($temp_res);
-$read_list = $topic['readby'];
-$split_list = explode(",",$read_list);
-if (in_array($userid, $split_list)) {
-$is_read = true;
-} else {
-$is_read = false;
-}
-return $is_read;
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['readby'];
+    $split_list = explode(",",$read_list);
+    if (in_array($userid, $split_list)) {
+        $is_read = true;
+    } else {
+        $is_read = false;
+    }
+    return $is_read;
 }
 
 function check_read_forum($id,$userid) {
-$temp_res = mysql_query("SELECT * FROM `topics` WHERE board=$id");
-$was_read = true;
-while ($topic = mysql_fetch_array($temp_res))
-{ if (!check_read($topic['id'],$userid)) { $was_read = false; } }
-return $was_read;
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE board=$id");
+    $was_read = true;
+    while ($topic = mysql_fetch_array($temp_res)) {
+        if (!check_read($topic['id'],$userid)) { $was_read = false; }
+    }
+    return $was_read;
 }
 
 function set_read($id,$userid) {
-$temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
-$topic = mysql_fetch_array($temp_res);
-$read_list = $topic['readby'];
-$split_list = explode(",",$read_list);
-if (!in_array($userid, $split_list)) {
-$read_list = $read_list . ",$userid";
-mysql_query("UPDATE `topics` SET `readby` = '" . mse($read_list) . "' WHERE `topics`.`id` =" . $id);
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['readby'];
+    $split_list = explode(",",$read_list);
+    if (!in_array($userid, $split_list)) {
+        $read_list = $read_list . ",$userid";
+        mysql_query("UPDATE `topics` SET `readby` = '" . mse($read_list) . "' WHERE `topics`.`id` =" . $id);
+    }
 }
-}
-
 
 function set_unread($id) {
-mysql_query("UPDATE `topics` SET `readby` = '' WHERE `topics`.`id` =" . $id);
+    mysql_query("UPDATE `topics` SET `readby` = '' WHERE `topics`.`id` =" . $id);
 }
 
 function check_voted($id,$userid) {
-$temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
-$topic = mysql_fetch_array($temp_res);
-$read_list = $topic['voters'];
-$split_list = explode(",",$read_list);
-if (in_array($userid, $split_list)) {
-$is_read = true;
-} else {
-$is_read = false;
-}
-return $is_read;
+    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['voters'];
+    $split_list = explode(",",$read_list);
+    if (in_array($userid, $split_list)) {
+        $is_read = true;
+    } else {
+        $is_read = false;
+    }
+    return $is_read;
 }
 
 function set_voted($id,$userid) {
-$temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
-$topic = mysql_fetch_array($temp_res);
-$read_list = $topic['voters'];
-$split_list = explode(",",$read_list);
-if (!in_array($userid, $split_list)) {
-$read_list = $read_list . ",$userid";
-mysql_query("UPDATE `polls` SET `voters` = '" . mse($read_list) . "' WHERE `polls`.`id` =" . $id);
-}
-}
-
-if ($_POST['action'] == "login")
-{
-$userresult = mysql_query("SELECT * FROM users WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);
-$tempuser = mysql_fetch_array($userresult);
-if ((strtoupper($_POST['uname']) == strtoupper($tempuser['name'])) and (md5($_POST['upass']) == $tempuser['password'])) {
-$_SESSION['user_name'] = $tempuser['name'];
-$_SESSION['user_pass'] = md5($_POST['upass']);
-$_SESSION['sess_id'] = time();
-$_SESSION['last_on'] = time();
-if ($_POST['remember'] == "ON") {
-setcookie("rem_user", $tempuser['name'], time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
-setcookie("rem_pass", md5($_POST['upass']), time()+60*60*24*365*10); // lol
-setcookie("rem_yes", "yes", time()+60*60*24*365*10);
-} else {
-setcookie("rem_user", "", time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
-setcookie("rem_pass", "", time()+60*60*24*365*10); // lol
-setcookie("rem_yes", "no", time()+60*60*24*365*10);
-}
-$result = mysql_query("SELECT * FROM users WHERE UCASE(name)=UCASE('" . $_SESSION['user_name'] . "')", $db);
-$user = mysql_fetch_array($result);
-mysql_query("DELETE FROM `sessions` WHERE `user`=" . $user['id'] . "");
-mysql_query("INSERT INTO `sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $user['id'] . ", " . $_SESSION['last_on'] . ");");
-if ($_POST['admin']) {
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['signedin'],"admin.php");
-} else {
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['signedin'],"forum.php");
-}
-} else {
-$ip = $_SERVER['REMOTE_ADDR'];
-$name = $_POST['uname'];
-mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_POST['upass'] . "', 'Forum, $name', '" . $ip . "' );");
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['failed_login']);
-}
+    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['voters'];
+    $split_list = explode(",",$read_list);
+    if (!in_array($userid, $split_list)) {
+        $read_list = $read_list . ",$userid";
+        mysql_query("UPDATE `polls` SET `voters` = '" . mse($read_list) . "' WHERE `polls`.`id` =" . $id);
+    }
 }
 
-
-if ($_POST['action'] == "new_topic") // If a new topic is being posted
-{
-//print "<!-- New Topic Added -->";
-$content = $_POST['content'];
-$results =  mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_POST['board']);
-if (!$board = mysql_fetch_array($results)) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_board']);
-}
-if (!isWriteableTopic($user['level'],$_POST['board'])) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permissions']);
-}
-if (strlen($_POST['subj']) < 3) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_too_short']);
-}
-if ($_POST['add_poll'] == "on") {
-	$has_poll = "1";
-	// Add the poll.
-	mysql_query("INSERT INTO `polls` ( `id`, `title`, `op1_name`) VALUES (NULL, '" . mse($_POST['p_name']) . "', '" . mse($_POST['op1']) . "');");
-	$testresult = mysql_query("SELECT * FROM `polls` ORDER BY `id` DESC LIMIT 1");
-	$poll = mysql_fetch_array($testresult);
-	$poll_id = $poll['id'];
-} else {
-	$has_poll = "0";
-	$poll_id = "0";
-}
-mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , " . $_POST['user'] . ", " . $_POST['board'] . ", '" . mse($_POST['subj']) . "', " . $has_poll . ", " . $poll_id . " );");
-$result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
-$topic = mysql_fetch_array($result);
-$ip=$_SERVER['REMOTE_ADDR'];
-mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip`) VALUES ( NULL , " . $topic['id'] . " , " . $_POST['user'] . " , '" . mse($content) . "' , " . time() . " , '" . $ip . "');");
-$result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
-$reply = mysql_fetch_array($result);
-mysql_query("UPDATE `topics` SET `lastpost` = " . $reply['id'] . " WHERE `topics`.`id` =" . $topic['id']);
-mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
-mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_topic_added'],"forum.php?do=viewtopic&id=" . $topic['id']);
+if ($_POST['action'] == "login") {
+    $userresult = mysql_query("SELECT * FROM users WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);
+    $tempuser = mysql_fetch_array($userresult);
+    if ((strtoupper($_POST['uname']) == strtoupper($tempuser['name'])) and (md5($_POST['upass']) == $tempuser['password'])) {
+        $_SESSION['user_name'] = $tempuser['name'];
+        $_SESSION['user_pass'] = md5($_POST['upass']);
+        $_SESSION['sess_id'] = time();
+        $_SESSION['last_on'] = time();
+        if ($_POST['remember'] == "ON") {
+            setcookie("rem_user", $tempuser['name'], time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
+            setcookie("rem_pass", md5($_POST['upass']), time()+60*60*24*365*10); // lol
+            setcookie("rem_yes", "yes", time()+60*60*24*365*10);
+        } else {
+            setcookie("rem_user", "", time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
+            setcookie("rem_pass", "", time()+60*60*24*365*10); // lol
+            setcookie("rem_yes", "no", time()+60*60*24*365*10);
+        }
+        $result = mysql_query("SELECT * FROM users WHERE UCASE(name)=UCASE('" . $_SESSION['user_name'] . "')", $db);
+        $user = mysql_fetch_array($result);
+        mysql_query("DELETE FROM `sessions` WHERE `user`=" . $user['id'] . "");
+        mysql_query("INSERT INTO `sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $user['id'] . ", " . $_SESSION['last_on'] . ");");
+        if ($_POST['admin']) {
+            messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['signedin'],"admin.php");
+        } else {
+            messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['signedin'],"forum.php");
+        }
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $name = $_POST['uname'];
+        mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_POST['upass'] . "', 'Forum, $name', '" . $ip . "' );");
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['failed_login']);
+    }
 }
 
-if ($_POST['action'] == "new_pm") // If a new PM is being sent
-{
-if (strlen($_POST['subj']) < 3) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['pm_too_short']);
+// If a new topic is being posted
+if ($_POST['action'] == "new_topic") {
+    $content = $_POST['content'];
+    $results =  mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_POST['board']);
+    if (!$board = mysql_fetch_array($results)) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_board']);
+    }
+    if (!isWriteableTopic($user['level'],$_POST['board'])) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permissions']);
+    }
+    if (strlen($_POST['subj']) < 3) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_too_short']);
+    }
+    if ($_POST['add_poll'] == "on") {
+	    $has_poll = "1";
+	    // Add the poll.
+	    mysql_query("INSERT INTO `polls` ( `id`, `title`, `op1_name`) VALUES (NULL, '" . mse($_POST['p_name']) . "', '" . mse($_POST['op1']) . "');");
+	    $testresult = mysql_query("SELECT * FROM `polls` ORDER BY `id` DESC LIMIT 1");
+	    $poll = mysql_fetch_array($testresult);
+	    $poll_id = $poll['id'];
+    } else {
+	    $has_poll = "0";
+	    $poll_id = "0";
+    }
+    mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , " . $_POST['user'] . ", " . $_POST['board'] . ", '" . mse($_POST['subj']) . "', " . $has_poll . ", " . $poll_id . " );");
+    $result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
+    $topic = mysql_fetch_array($result);
+    $ip=$_SERVER['REMOTE_ADDR'];
+    mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip`) VALUES ( NULL , " . $topic['id'] . " , " . $_POST['user'] . " , '" . mse($content) . "' , " . time() . " , '" . $ip . "');");
+    $result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
+    $reply = mysql_fetch_array($result);
+    mysql_query("UPDATE `topics` SET `lastpost` = " . $reply['id'] . " WHERE `topics`.`id` =" . $topic['id']);
+    mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
+    mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_topic_added'],"forum.php?do=viewtopic&id=" . $topic['id']);
 }
-$pmdate = time();
-$toname = $_POST['toline'];
-$result = mysql_query("SELECT * FROM `users` WHERE `name`='$toname'");
-$temp_user = mysql_fetch_array($result);
-$pmto = $temp_user['id'];
-$pmtitle = $_POST['subj'];
-$pmcontent = $_POST['content'];
-$pmfrom = $user['id'];
-mysql_query("INSERT INTO `pms` ( `id` , `to` , `from` , `title` , `content` , `read` , `time` )
+
+// If a new PM is being sent
+if ($_POST['action'] == "new_pm") {
+    if (strlen($_POST['subj']) < 3) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['pm_too_short']);
+    }
+    $pmdate = time();
+    $toname = $_POST['toline'];
+    $result = mysql_query("SELECT * FROM `users` WHERE `name`='$toname'");
+    $temp_user = mysql_fetch_array($result);
+    $pmto = $temp_user['id'];
+    $pmtitle = $_POST['subj'];
+    $pmcontent = $_POST['content'];
+    $pmfrom = $user['id'];
+    mysql_query("INSERT INTO `pms` ( `id` , `to` , `from` , `title` , `content` , `read` , `time` )
 VALUES (
 NULL , '$pmto', '$pmfrom', '$pmtitle', '$pmcontent', '0', '$pmdate'
 );");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['pm_sent'],"forum.php?do=pmbox");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['pm_sent'],"forum.php?do=pmbox");
 }
 
-if ($_POST['action'] == "new_reply") // If a new topic is being posted
-{
-//print "<!-- New Post Added -->";
-$content = $_POST['content'];
-$topic = $_POST['topic'];
-$ip=$_SERVER['REMOTE_ADDR'];
-$topic_sql = mysql_query("SELECT * FROM `topics` WHERE `id`=$topic");
-if ($this_topic = mysql_fetch_array($topic_sql)) {
-if (!isWriteable($user['level'],$this_topic['board'])) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permission']);
-}
-if ($this_topic['locked'] == 1) {
-if ($user['level'] < $site_info['mod_rank']) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['locked_topic_post']);
-}
-}
-} else {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_topic']);
+// If a new topic is being posted
+if ($_POST['action'] == "new_reply") {
+    $content = $_POST['content'];
+    $topic = $_POST['topic'];
+    $ip=$_SERVER['REMOTE_ADDR'];
+    $topic_sql = mysql_query("SELECT * FROM `topics` WHERE `id`=$topic");
+    if ($this_topic = mysql_fetch_array($topic_sql)) {
+        if (!isWriteable($user['level'],$this_topic['board'])) {
+            messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permission']);
+        }
+        if ($this_topic['locked'] == 1) {
+            if ($user['level'] < $site_info['mod_rank']) {
+                messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['locked_topic_post']);
+            }
+        }
+    } else {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_topic']);
+    }
+
+    set_unread($topic);
+    mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content` , `time` , `ip` ) VALUES ( NULL , '" . $topic . "', '" . $user['id'] . "', '" . mse($content) . "' , '" . time() . "', '" . $ip . "' );");
+    $result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
+    $reply = mysql_fetch_array($result);
+    mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic);
+    mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_reply_added'],"forum.php?do=viewtopic&last=1&id=" . $topic);
 }
 
-set_unread($topic);
-mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content` , `time` , `ip` ) VALUES ( NULL , '" . $topic . "', '" . $user['id'] . "', '" . mse($content) . "' , '" . time() . "', '" . $ip . "' );");
-$result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
-$reply = mysql_fetch_array($result);
-mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic);
-mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_reply_added'],"forum.php?do=viewtopic&last=1&id=" . $topic);
-}
-if ($_POST['action'] == "vote_poll")
-{
+if ($_POST['action'] == "vote_poll") {
 	$vote = $_POST['poll'];
 	$pid = $_POST['pid'];
 	$tid = $_POST['tid'];
@@ -248,113 +244,112 @@ if ($_POST['action'] == "vote_poll")
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['vote_cast'],"forum.php?do=viewtopic&last=1&id=" . $tid);
 }
 
-
-if ($_POST['action'] == "edit_reply") // If an old post is being edited
-{
-$content = $_POST['content'];
-mysql_query("UPDATE `posts` SET `content` = '" . mse($content) . "' WHERE `posts`.`id` =" . $_POST['id'] . ";");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&id=" . $_POST['topic']);
+// If an old post is being edited
+if ($_POST['action'] == "edit_reply") {
+    $content = $_POST['content'];
+    mysql_query("UPDATE `posts` SET `content` = '" . mse($content) . "' WHERE `posts`.`id` =" . $_POST['id'] . ";");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&id=" . $_POST['topic']);
 }
 
-if ($_POST['action'] == "edit_title") // If a topic title is being changed
-{
-$title = $_POST['title'];
-mysql_query("UPDATE `topics` SET `title` = '" . mse($title) . "' WHERE `topics`.`id` =" . $_POST['topicid'] . ";");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_title_edited'],"forum.php");
+// If a topic title is being changed
+if ($_POST['action'] == "edit_title") {
+    $title = $_POST['title'];
+    mysql_query("UPDATE `topics` SET `title` = '" . mse($title) . "' WHERE `topics`.`id` =" . $_POST['topicid'] . ";");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_title_edited'],"forum.php");
 }
 
-if ($_POST['action'] == "move_topic") // If a topic is being moved
-{
-$board = $_POST['board'];
-mysql_query("UPDATE `topics` SET `board` = $board WHERE `topics`.`id` =" . $_POST['topid'] . ";");
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&id=" . $_POST['topid']);
+// If a topic is being moved
+if ($_POST['action'] == "move_topic") {
+    $board = $_POST['board'];
+    mysql_query("UPDATE `topics` SET `board` = $board WHERE `topics`.`id` =" . $_POST['topid'] . ";");
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&id=" . $_POST['topid']);
 }
 
-if ($_POST['action'] == "edit_profile") // If an old post is being edited
-{
-print "<!-- Post Edited -->";
-$userid = $user['id'];
-if ($_POST['adm'] == "true") {
-$userid = $_POST['id'];
-}
-mysql_query("UPDATE `users` SET `name` = '" . mse($_POST['name']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `sig` = '" . mse($_POST['sig']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `avatar` = '" . mse($_POST['avatar']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `email` = '" . mse($_POST['email']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `aim` = '" . mse($_POST['aim']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `msn` = '" . mse($_POST['msn']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `yahoo` = '" . mse($_POST['yah']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `icq` = '" . mse($_POST['icq']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `live` = '" . mse($_POST['live']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `xfire` = '" . mse($_POST['xfire']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `pand` = '" . mse($_POST['pand']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `theme` = '" . mse($_POST['theme']) . "' WHERE `users`.`id` =" . $userid);
-mysql_query("UPDATE `users` SET `color` = '" . mse($_POST['color']) . "' WHERE `users`.`id` =" . $userid);
-if ($_POST['sbonforum'] == "on") {
-$sbon = 1;
-} else {
-$sbon = 0;
-}
-mysql_query("UPDATE `users` SET `sbonforum` = " . $sbon . " WHERE `users`.`id` =" . $userid);
-if ($_POST['apass'] != "") {
-	if ($_POST['apass'] == $_POST['cpass']) {
-	mysql_query("UPDATE `users` SET `password` = '" . md5($_POST['apass']) . "' WHERE `users`.`id` =" . $userid);
-	}
-}
-messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['profile_edited'],"forum.php");
-}
-if ($_POST['action'] == "newuser") // If a new user is registering
-{
-$name = mse($_POST['name']);
-$email = mse($_POST['email']);
-$pass = $_POST['pass'];
-$code = $_POST['code'];
-$results = mysql_query("SELECT * FROM `users` WHERE `name`='" . $name . "'");
-$check_name = mysql_fetch_array($results);
-if ($check_name != null) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered']);
-}
-$results = mysql_query("SELECT * FROM `users` WHERE `email`='" . $email . "'");
-$check_mail = mysql_fetch_array($results);
-if ($check_mail != null) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_mail']);
-}
-if ($code != $_SESSION['seccode']) {
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['security_code']);
-}
-if ($email != mse($_POST['cemail'])){
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['email_no_match']);
-}
-if ($pass != $_POST['cpass']){
-messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['password_no_match']);
+// If an old post is being edited
+if ($_POST['action'] == "edit_profile") {
+    $userid = $user['id'];
+    if ($_POST['adm'] == "true") {
+        $userid = $_POST['id'];
+    }
+    mysql_query("UPDATE `users` SET `name` = '" . mse($_POST['name']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `sig` = '" . mse($_POST['sig']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `avatar` = '" . mse($_POST['avatar']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `email` = '" . mse($_POST['email']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `aim` = '" . mse($_POST['aim']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `msn` = '" . mse($_POST['msn']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `yahoo` = '" . mse($_POST['yah']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `icq` = '" . mse($_POST['icq']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `live` = '" . mse($_POST['live']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `xfire` = '" . mse($_POST['xfire']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `pand` = '" . mse($_POST['pand']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `theme` = '" . mse($_POST['theme']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `color` = '" . mse($_POST['color']) . "' WHERE `users`.`id` =" . $userid);
+    if ($_POST['sbonforum'] == "on") {
+        $sbon = 1;
+    } else {
+        $sbon = 0;
+    }
+    mysql_query("UPDATE `users` SET `sbonforum` = " . $sbon . " WHERE `users`.`id` =" . $userid);
+    if ($_POST['apass'] != "") {
+	    if ($_POST['apass'] == $_POST['cpass']) {
+	        mysql_query("UPDATE `users` SET `password` = '" . md5($_POST['apass']) . "' WHERE `users`.`id` =" . $userid);
+	    }
+    }
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['profile_edited'],"forum.php");
 }
 
-// If we get to this point, then the user's registration checks out. We'll start by sending the email.
-$message = "";
-if ($CONFIG_MAIL) {
-$body = $_PWNDATA['forum']['confirm_email'][1] . $site_info['name'] . ".\n";
-$body = $body . $_PWNDATA['forum']['confirm_email'][2] . "'$name' with the password '$pass'.\n";
-$body = $body . $_PWNDATA['forum']['confirm_email'][3] . $conf_email . ".";
-if (!mail($email, $_PWNDATA['forum']['confirm_email'][4] . $site_info['name'], $body)) {
-  $message = $message . $_PWNDATA['forum']['send_email_failed'] . "<br>";
-}
-}
-mysql_query("INSERT INTO `users` ( `id` , `name` , `email` , `password` , `sig` , `avatar` ) VALUES ( NULL , '" . $name . "', '" . $email . "', '" . md5($pass) . "', '', '' );");
-$_POST['action'] = "";
-$message = $message . $_PWNDATA['forum']['create_account_success'];
-messageRedirect($_PWNDATA['forum_page_title'],$message,"forum.php?do=login");
+// If a new user is registering
+if ($_POST['action'] == "newuser") {
+    $name = mse($_POST['name']);
+    $email = mse($_POST['email']);
+    $pass = $_POST['pass'];
+    $code = $_POST['code'];
+    $results = mysql_query("SELECT * FROM `users` WHERE `name`='" . $name . "'");
+    $check_name = mysql_fetch_array($results);
+    if ($check_name != null) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered']);
+    }
+    $results = mysql_query("SELECT * FROM `users` WHERE `email`='" . $email . "'");
+    $check_mail = mysql_fetch_array($results);
+    if ($check_mail != null) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_mail']);
+    }
+    if ($code != $_SESSION['seccode']) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['security_code']);
+    }
+    if ($email != mse($_POST['cemail'])){
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['email_no_match']);
+    }
+    if ($pass != $_POST['cpass']){
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['password_no_match']);
+    }
+    // If we get to this point, then the user's registration checks out. We'll start by sending the email.
+    $message = "";
+    if ($CONFIG_MAIL) {
+        $body = $_PWNDATA['forum']['confirm_email'][1] . $site_info['name'] . ".\n";
+        $body = $body . $_PWNDATA['forum']['confirm_email'][2] . "'$name' with the password '$pass'.\n";
+        $body = $body . $_PWNDATA['forum']['confirm_email'][3] . $conf_email . ".";
+        if (!mail($email, $_PWNDATA['forum']['confirm_email'][4] . $site_info['name'], $body)) {
+            $message = $message . $_PWNDATA['forum']['send_email_failed'] . "<br>";
+        }
+    }
+    mysql_query("INSERT INTO `users` ( `id` , `name` , `email` , `password` , `sig` , `avatar` ) VALUES ( NULL , '" . $name . "', '" . $email . "', '" . md5($pass) . "', '', '' );");
+    $_POST['action'] = "";
+    $message = $message . $_PWNDATA['forum']['create_account_success'];
+    messageRedirect($_PWNDATA['forum_page_title'],$message,"forum.php?do=login");
 }
 
-if ($_GET['do'] == "delete")
-{
+// Delete a post
+if ($_GET['do'] == "delete") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_post']);
 	}
 	mysql_query("DELETE FROM `posts` WHERE `posts`.`id` =" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_deleted'],"forum.php");
 }
-if ($_GET['do'] == "deltop")
-{
+
+// Delete a topic
+if ($_GET['do'] == "deltop") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_topic']);
 	}
@@ -362,32 +357,36 @@ if ($_GET['do'] == "deltop")
 	mysql_query("DELETE FROM `posts` WHERE `posts`.`topicid` =" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_posts_deleted'],"forum.php");
 }
-if ($_GET['do'] == "sticktop")
-{
+
+// Sticky a topic
+if ($_GET['do'] == "sticktop") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `stick` = 1 WHERE `topics`.`id`=" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_stickied'],"forum.php?do=viewtopic&id=" . $_GET['id']);
 }
-if ($_GET['do'] == "unsticktop")
-{
+
+// Unsticky a topic
+if ($_GET['do'] == "unsticktop") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `stick` = 0 WHERE `topics`.`id`=" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unstickied'],"forum.php?do=viewtopic&id=" . $_GET['id']);
 }
-if ($_GET['do'] == "locktop")
-{
+
+// Lock a topic
+if ($_GET['do'] == "locktop") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_lock_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `locked` = 1 WHERE `topics`.`id`=" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_locked'],"forum.php?do=viewtopic&id=" . $_GET['id']);
 }
-if ($_GET['do'] == "unlocktop")
-{
+
+// Unlock a topic
+if ($_GET['do'] == "unlocktop") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_unlock_topic']);
 	}
