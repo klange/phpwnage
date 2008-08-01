@@ -151,7 +151,7 @@ function bbJava($stuff) {
     return $stuff;
 }
 function bbCSharp($stuff) {
-    // Usage: Takes in Java code and spits out nicely highlighted code in a box
+    // Usage: Takes in C# code and spits out nicely highlighted code in a box
     $stuff = str_replace("<br />","\n",$stuff);
     $stuff = str_replace("\\\"", "\"",$stuff);
     $stuff = preg_replace("/(\/\/)(.*?)(\n+?)/si","<font style='color: #00AA00'>$1$2</font>$3",$stuff);
