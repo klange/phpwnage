@@ -23,6 +23,9 @@
 //	and isn't quite up to scratch with what I want. The installer
 //	works and should be able to utilize any theme (Though who
 //	cares enough to switch it?), and that's good enough for now.
+
+if(file_exists("installer.lock")) die("There is a lock on the installer. If you wish to do a reinstall, please delete the file 'installer.lock' and run this script again."); 
+
 print <<<END
 <html>
 <head>
@@ -40,6 +43,11 @@ function file_put_contents_debug($file_name, $content) {
 $ourFileHandle = fopen($file_name, 'w') or die("Error creating $file_name! You must create the file manually!");
 fwrite($ourFileHandle,$content);
 fclose($ourFileHandle);
+}
+
+// Return the URL for the current running directory.
+function getURL() {
+    return "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 }
 
 function DrawBlock($name,$right,$content)
@@ -242,6 +250,7 @@ print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page3
 
 if ($_GET['do'] == 'page3')
 {
+$this_dir = getURL() . "/"; // Current running directory
 $print_what = <<<END
 <form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="install">
 <table width="100%">
@@ -272,7 +281,7 @@ $print_what = <<<END
     <font size="2">The URL for your site (including the /) Ex: http://oasis-games.com/home/</font></td>
     <td width="50%" valign="top" align="right">
  
-  <input type="text" name="site_url" style="width: 100%"></td>
+  <input type="text" value="$this_dir" name="site_url" style="width: 100%"></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
@@ -555,6 +564,7 @@ print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4
 }
 // XXX: This tutorial is *very* old and needs to be updated.
 if ($_GET['do'] == 'page4') {
+file_put_contents_debug("installer.lock","Installer is locked");
 $print_what = <<<END
 <table width="100%">
   <tr>
