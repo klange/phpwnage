@@ -1545,7 +1545,7 @@ if ($user['level'] >= $site_info['mod_rank']) // Moderation Tools
 if ($user['level'] >= $site_info['admin_rank']) {
 $post_content = $post_content . drawButton("javascript:buddyAlert('IP: " . $row['ip'] . "');",$_PWNDATA['forum']['ip']);
 } // Only administrators can view the IP of a post. This is to keep moderators from h4xing
-$post_content = $post_content . drawButton("forum.php?do=delete&id=" . $row['id'],$_PWNDATA['forum']['delete']);
+$post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=delete&id=" . $row['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['delete']);
 }
 if (($user['id'] != $post_author['id']) and (!($board['post_level'] > $user['level'])) and ($islocked == false)){
 $post_content = $post_content . drawButton("<a href=\"forum.php?do=newreply&id=" . $topic['id'] . "&quote=" . $row['id'],$_PWNDATA['forum']['quote']);
@@ -1559,7 +1559,7 @@ if ((!($board['post_level'] > $user['level'])) and ($islocked == false)){
 $post_content = $post_content . drawButton("forum.php?do=newreply&id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
 }
 if ($user['level'] >= $site_info['mod_rank']){
-$post_content = $post_content . drawButton("forum.php?do=deltop&id=" . $topic['id'],$_PWNDATA['forum']['del_topic']);
+$post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=deltop&id=" . $topic['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['del_topic']);
 if ($topic['stick'] == 0) { // Stick
 $post_content = $post_content . drawButton("forum.php?do=sticktop&id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
 } else { // Unstick

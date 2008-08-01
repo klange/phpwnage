@@ -415,6 +415,8 @@ $_PWNDATA['forum']['searching_for'] = "Searching for";
 $_PWNDATA['forum']['search_results'] = "Search results for";
 $_PWNDATA['forum']['search_resultsb'] = "Search Results";
 $_PWNDATA['forum']['posted_in'] = "Posted in";
+$_PWNDATA['forum']['delete_confirm'] = "Are you sure?";
+$_PWNDATA['forum']['delete_confirm_accept'] = "Delete";
 
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";
