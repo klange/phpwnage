@@ -19,7 +19,17 @@
 
 */
 
-require 'config.php'; // Connect to the SQL database, check IP ban list as well
+
+// Check for and merge the configuration file
+$config_exists = @include 'config.php';
+if (!$config_exists) {
+    die("<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php\">Error: Not installed. Redirecting to installer.");
+    // @Daniel: I don't cheat headers. There are browsers that ignore this.
+    // A meta-refresh is more universal, and as I use it ever where else
+    // it feels appropriate here as well.
+}
+
+
 require 'includes.php'; // Important stuff.
 
 // Begin printing the page, starting with the meta tags.
