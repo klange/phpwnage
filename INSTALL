@@ -1,7 +1,23 @@
 Installation instructions for PHPwnage News, Forum and Calendar
-PHPwnage requires that you have a working MySQL server and at least one available database. If the database you select does not exist, PHPwnage will attempt to create it, but will most likely fail. Your server must also be set up to allow PHP to write to a new file. If it is not, you must manually edit fresh_install.php to enable direct output of the generated config file to the HTML stream (search for 'Create_File_Failed' where you will find instructions on fixing the problem). PHPwnage is designed for PHP 5 but may work on PHP 4 (but it is not supported in any way on PHP 4). Once you are sure that you have your MySQL and PHP set up properly, navigate to 'fresh_install.php' on your web browser and follow the instructions shown.
+PHPwnage requires that you have a working MySQL server and at least one 
+available database. If the database you select does not exist, PHPwnage 
+will attempt to create it, but will most likely fail. Your server must 
+also be set up to allow PHP to write to a new file. If it is not, you 
+must manually edit fresh_install.php to enable direct output of the 
+generated config file to the HTML stream (search for 
+'Create_File_Failed' where you will find instructions on fixing the 
+problem). PHPwnage is designed for PHP 5 but may work on PHP 4 (but it 
+is not supported in any way on PHP 4). Once you are sure that you have 
+your MySQL and PHP set up properly, navigate to 'fresh_install.php' on
+your web browser and follow the instructions shown.
 
 Things to do after installing:
-1. Set up a forum. This is the real purpose of PHPwnage. You can do this in the admin control panel. (There is no default forum created by the installer, but one may be added in 1.8)
-2. Set up blocks. Primarily, a theme block, as one is not provided (1.8 will include a dynamic one that will search for .css style sheets and background images and print a nice little theme selector, but this is not yet included)
-3. Add a favicon. Nothing improves the look of a site more than a little definitive icon.
+1. Set up a forum. This is the real purpose of PHPwnage. You can do 
+   this in the admin control panel. (There is no default forum created 
+   by the installer, but one may be added in 1.8)
+2. Set up blocks. Primarily, a theme block, as one is not provided 
+   (1.8 will include a dynamic one that will search for .css style sheets 
+   and background images and print a nice little theme selector, but 
+   this is not yet included)
+3. Add a favicon. Nothing improves the look of a site more than a 
+   little definitive icon.
