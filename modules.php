@@ -21,39 +21,9 @@
 require 'config.php';require 'includes.php';
 require "modules/" . $_GET['m'] . ".php";
 
-print <<<END
+standardHeaders($site_info['name'] . " :: Modules :: " . $mod['title'],true);
 
-<html>
-
-<head>
-<title>
-END;
-print $site_info['name'] . " :: Modules :: " . $mod['title'];
-print "</title>\n";
-require 'css.php';
-require 'header.php';
-
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "<a href=\"index.php\">" . $site_info['name'] . "</a> :: {$_PWNDATA['modules_page_title']} :: " . $mod['title'];
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text">
-END;
-print $mod['right'];
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-
-END;
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> :: {$_PWNDATA['modules_page_title']} :: " . $mod['title'],$mod['right']);
 
 require 'sidebar.php';
 

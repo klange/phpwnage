@@ -32,43 +32,8 @@ mysql_query("UPDATE `news` SET `title` = '" . $_POST['title'] . "' WHERE `news`.
 messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
-
-print <<<END
-
-<html>
-
-<head>
-<title>
-END;
-print $site_info['name'] . " :: Article #" . $_GET['id'] . " - " . $row['title'];
-print "</title>\n";
-
-require 'css.php';
-
-require 'header.php';
-
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'];
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text">
-END;
-print $site_info['right_data'];
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-
-END;
-
+standardHeaders($site_info['name'] . " :: Article #" . $_GET['id'] . " - " . $row['title'],true);
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
 require 'sidebar.php';
 
 $result = mysql_query("SELECT * FROM news WHERE id='" . $_GET['id'] . "'", $db);
@@ -90,8 +55,8 @@ $content = printPosterMini('content', $topic['id']) . <<<END
 <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="new_reply">
 END;
-$content = $content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\">";
-$content = $content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\">";
+$content = $content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
+$content = $content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
 $content = $content . <<<END
 <textarea name="content" style="width: 95%;" rows="5"></textarea><br />
 <input type="submit" name="sub" value="Post"></form>

@@ -21,15 +21,7 @@
 require 'config.php';
 require 'includes.php';
 
-print <<<END
-<html>
-<head>
-<title>
-END;
-print $site_info['name'] . " :: " . $_PWNDATA['cal']['name'];
-print "</title>\n";
-require 'css.php';
-require 'header.php';
+standardHeaders($site_info['name'] . " :: " . $_PWNDATA['cal']['name'],true);
 
 if ($_POST['action'] == "add_event") // If a new event is being added
 {
@@ -82,25 +74,10 @@ print <<<END
 END;
 }
 
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['cal']['name']}","<a href=\"calendar.php\">{$_PWNDATA['cal']['name']}</a>");
 
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['cal']['name']}";
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text"><a href="calendar.php">{$_PWNDATA['cal']['name']}</a>
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-END;
 require 'sidebar.php';
+
 print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">
