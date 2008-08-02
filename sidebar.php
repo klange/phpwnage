@@ -19,11 +19,13 @@
 
 */
 print <<<END
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function hideSideBar() {
 document.getElementById('sidebar').style.display = "none"
 document.getElementById('sb').style.width = "0"
 }
+//]]>
 </script>
 <table class="borderless_table" width="100%">
   <tr>
@@ -57,7 +59,7 @@ for($index=0; $index < $indexCount; $index++) {
 }
 print <<<END
 	<tr>
-	<td> <font face="tahoma" size="1"><a href="javascript:hideSideBar()">{$_PWNDATA['hide_sidebar']}</a></font</td>
+	<td> <font face="tahoma" size="1"><a href="javascript:hideSideBar()">{$_PWNDATA['hide_sidebar']}</a></font></td>
 	</tr>
 END;
 print "	</table></div>\n";

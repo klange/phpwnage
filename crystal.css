@@ -43,7 +43,9 @@
 .pan_ur {background-image: url(crystal/block_up_right.png); height:29px; width:12px;} /* Upper right */
 
 .pan_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
-.pan_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;} /* body */
+.pan_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;
+font-family: "Verdana, Tahoma, sans"; font-size: 12px;
+} /* body */
 .pan_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
 
 .pan_bl {background-image: url(crystal/block_down_left.png); height:14px; width:10px;} /* bottom left */
@@ -56,7 +58,8 @@
 .block_ur {background-image: url(crystal/block_up_right.png); height:29px; width:12px;} /* Upper right */
 
 .block_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
-.block_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;} /* body */
+.block_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;
+font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
 .block_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
 
 .block_bl {background-image: url(crystal/block_down_left.png); height:14px; width:10px;} /* bottom left */
@@ -77,6 +80,7 @@
 	padding: 1px 1px 1px 1px;
 	border-style: solid solid solid solid;
 	border-color:#333333;
+	font-family: "Verdana, Tahoma, sans"; font-size: 12px;
 }
 /* The set of buttons to edit a post, quote it, view the ip, etc. */
 .mod_set td {

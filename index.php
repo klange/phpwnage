@@ -23,7 +23,7 @@
 // Check for and merge the configuration file
 $config_exists = @include 'config.php';
 if (!$config_exists) {
-    die("<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php\">Error: Not installed. Redirecting to installer.");
+    die("<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php\" />Error: Not installed. Redirecting to installer.");
     // @Daniel: I don't cheat headers. There are browsers that ignore this.
     // A meta-refresh is more universal, and as I use it ever where else
     // it feels appropriate here as well.
@@ -32,40 +32,9 @@ if (!$config_exists) {
 
 require 'includes.php'; // Important stuff.
 
-// Begin printing the page, starting with the meta tags.
-print <<<END
-<html>
-<head>
-	<title>
-END;
-print $site_info['name']; // Print the name of the site into the title.
-print "	</title>\n";
+standardHeaders($site_info['name'],true);
 
-require 'css.php'; // Load theme data from the appropriate CSS file
-
-require 'header.php'; // Print the header
-
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']) . " <a href=\"?show=all\">[{$_PWNDATA['show_all']}]</a>";
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text">
-END;
-print $site_info['right_data'];
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-
-END;
+drawSubbar("{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']) . " <a href=\"?show=all\">[{$_PWNDATA['show_all']}]</a>",$site_info['right_data']);
 
 require 'sidebar.php';
 
@@ -82,7 +51,7 @@ if ($_GET['show'] == 'all') {
 }
 while ($row = mysql_fetch_array($result)) {
 	// News article
-	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), $row['content']);
+	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), str_replace("<br>","<br />",$row['content']));
 }
 print <<<END
 	</table>

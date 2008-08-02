@@ -352,7 +352,7 @@ $_PWNDATA['forum']['no_new_posts'] = "No New Posts";
 $_PWNDATA['forum']['new_posts'] = "New Posts";
 $_PWNDATA['forum']['locked'] = "Locked";
 $_PWNDATA['forum']['poll'] = "Poll";
-$_PWNDATA['forum']['sticky'] = "Sticly";
+$_PWNDATA['forum']['sticky'] = "Sticky";
 $_PWNDATA['forum']['members_online'] = "Members Online";
 $_PWNDATA['forum']['user'] = "User";
 $_PWNDATA['forum']['moderator'] = "Moderator";
@@ -417,6 +417,8 @@ $_PWNDATA['forum']['search_resultsb'] = "Search Results";
 $_PWNDATA['forum']['posted_in'] = "Posted in";
 $_PWNDATA['forum']['delete_confirm'] = "Are you sure?";
 $_PWNDATA['forum']['delete_confirm_accept'] = "Delete";
+$_PWNDATA['forum']['board_weblink'] = "Web Link";
+$_PWNDATA['forum']['secimg'] = "You must have images enabled to register.";
 
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";

@@ -19,7 +19,7 @@
 
 */
 if ($site_info['pheader'] != "") {
-    $pheader = "<a href=\"index.php\"><img src=\"" . $site_info['pheader'] . "\" /></a>";
+    $pheader = "<a href=\"index.php\"><img src=\"" . $site_info['pheader'] . "\" alt=\"" . $site_info['name'] . "\"/></a>";
 } else {
     $pheader = "&nbsp;";
 }
@@ -27,21 +27,21 @@ if ($site_info['pheader'] != "") {
 $SITETITLE = $site_info['name'];
 if (file_exists("favicon.ico")) {
     $tempmeta =  getimagesize("favicon.ico");
-    $FAVMETA = "<link rel=\"icon\" type=\"" . $tempmeta['mime'] . "\" href=\"favicon.ico\">";
+    $FAVMETA = "<link rel=\"icon\" type=\"" . $tempmeta['mime'] . "\" href=\"favicon.ico\" />";
 } else {
     $FAVMETA = "";
 }
 print <<<END
-<meta http-equiv="Content-Language" content="en-us">
-<meta name="GENERATOR" content="PHPwnage">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<meta name="keywords" content="PHPwnage, PHP, php, CMS, forum, Forum, news, calendar, Oasis-Games"> 
+<meta http-equiv="Content-Language" content="en-us" />
+<meta name="GENERATOR" content="PHPwnage" />
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
+<meta name="keywords" content="PHPwnage, PHP, php, CMS, forum, Forum, news, calendar, Oasis-Games" /> 
 $FAVMETA
-<link rel="alternate" type="application/rss+xml" title="$SITETITLE" href="/rss.php"></head>
+<link rel="alternate" type="application/rss+xml" title="$SITETITLE" href="/rss.php" /></head>
 
 <body>
 
-<table class="borderless_table" width="100%" height="92">
+<table class="borderless_table" width="100%">
   <tr>
     <td class="head_left">$pheader</td>
     <td class="head_mid">&nbsp;</td>

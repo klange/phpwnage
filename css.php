@@ -18,7 +18,7 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-print "<style>\n";
+print "<style type=\"text/css\">\n";
 print "body {background-image: url(colors/" . $imageroot . ".gif);} \n";
 print "</style>\n";
 print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$theme.css\" />";

@@ -21,10 +21,10 @@
 
 // error_reporting(6143); // Error reporting for debugging purposes.
 require 'config.php';
-$_POSTSPERPAGE = 10; // Number of posts per page. This should move to a User Option!
-$_THREADSPERPAGE = 10; // Same. Threads per page in viewforum (new in 1.8)
+$_POSTSPERPAGE = 10;    // Number of posts per page. This should move to a User Option!
+$_THREADSPERPAGE = 10;  // Same. Threads per page in viewforum (new in 1.8)
 $_CHECKPANDEMIC = true; // Check Pandemic status?
-$CONFIG_MAIL = false; // Should we send an email? This is buggy.
+$CONFIG_MAIL = false;   // Should we send an email? This is buggy.
 require 'includes.php';
 
 function check_read($id,$userid) {
@@ -156,7 +156,7 @@ if ($_POST['action'] == "new_topic") {
     mysql_query("UPDATE `topics` SET `lastpost` = " . $reply['id'] . " WHERE `topics`.`id` =" . $topic['id']);
     mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
     mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_topic_added'],"forum.php?do=viewtopic&id=" . $topic['id']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_topic_added'],"forum.php?do=viewtopic&amp;id=" . $topic['id']);
 }
 
 // If a new PM is being sent
@@ -204,7 +204,7 @@ if ($_POST['action'] == "new_reply") {
     $reply = mysql_fetch_array($result);
     mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic);
     mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
-    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_reply_added'],"forum.php?do=viewtopic&last=1&id=" . $topic);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_reply_added'],"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic);
 }
 
 if ($_POST['action'] == "vote_poll") {
@@ -241,14 +241,14 @@ if ($_POST['action'] == "vote_poll") {
 	}
 	$stri = substr($stri,0,strlen($stri)-1);
 	mysql_query("UPDATE `polls` SET `op1_votes`=" . $stri . " WHERE `id`=$pid");
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['vote_cast'],"forum.php?do=viewtopic&last=1&id=" . $tid);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['vote_cast'],"forum.php?do=viewtopic&amp;last=1&amp;id=" . $tid);
 }
 
 // If an old post is being edited
 if ($_POST['action'] == "edit_reply") {
     $content = $_POST['content'];
     mysql_query("UPDATE `posts` SET `content` = '" . mse($content) . "' WHERE `posts`.`id` =" . $_POST['id'] . ";");
-    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&id=" . $_POST['topic']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&amp;id=" . $_POST['topic']);
 }
 
 // If a topic title is being changed
@@ -262,7 +262,7 @@ if ($_POST['action'] == "edit_title") {
 if ($_POST['action'] == "move_topic") {
     $board = $_POST['board'];
     mysql_query("UPDATE `topics` SET `board` = $board WHERE `topics`.`id` =" . $_POST['topid'] . ";");
-    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&id=" . $_POST['topid']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&amp;id=" . $_POST['topid']);
 }
 
 // If an old post is being edited
@@ -330,7 +330,7 @@ if ($_POST['action'] == "newuser") {
         $body = $body . $_PWNDATA['forum']['confirm_email'][2] . "'$name' with the password '$pass'.\n";
         $body = $body . $_PWNDATA['forum']['confirm_email'][3] . $conf_email . ".";
         if (!mail($email, $_PWNDATA['forum']['confirm_email'][4] . $site_info['name'], $body)) {
-            $message = $message . $_PWNDATA['forum']['send_email_failed'] . "<br>";
+            $message = $message . $_PWNDATA['forum']['send_email_failed'] . "<br />";
         }
     }
     mysql_query("INSERT INTO `users` ( `id` , `name` , `email` , `password` , `sig` , `avatar` ) VALUES ( NULL , '" . $name . "', '" . $email . "', '" . md5($pass) . "', '', '' );");
@@ -364,7 +364,7 @@ if ($_GET['do'] == "sticktop") {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `stick` = 1 WHERE `topics`.`id`=" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_stickied'],"forum.php?do=viewtopic&id=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_stickied'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
 // Unsticky a topic
@@ -373,7 +373,7 @@ if ($_GET['do'] == "unsticktop") {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `stick` = 0 WHERE `topics`.`id`=" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unstickied'],"forum.php?do=viewtopic&id=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unstickied'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
 // Lock a topic
@@ -382,7 +382,7 @@ if ($_GET['do'] == "locktop") {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_lock_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `locked` = 1 WHERE `topics`.`id`=" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_locked'],"forum.php?do=viewtopic&id=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_locked'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
 // Unlock a topic
@@ -391,7 +391,7 @@ if ($_GET['do'] == "unlocktop") {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_unlock_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `locked` = 0 WHERE `topics`.`id`=" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unlocked'],"forum.php?do=viewtopic&id=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unlocked'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
 // XXX: Begin function calls for output
@@ -417,26 +417,18 @@ function post_sub_r($userid) {
     return $post_sub_r;
 }
 
-// Return the flipVisibility javascript function
-function flipVisibility() {
-return <<<END
-    <script>
-function flipVisibility(what) {
-    if (document.getElementById(what).style.display != "none") {
-        document.getElementById(what).style.display = "none"
-    } else {
-        document.getElementById(what).style.display = "inline"
-    }
-}
-    </script>
+// Return the preview box Iframe
+function previewBox() {
+    return <<<END
+    <iframe name="previewbox" id="previewbox" height="0px" style="width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;"></iframe>
 END;
 }
 
 // Return the preview box javascript
-function previewBox() {
+function previewBoxScript() {
     return <<<END
-<iframe name="previewbox" id="previewbox" height="0px" style="width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;"></iframe>
-<script language="JavaScript">
+<script type="text/javascript">
+//<![CDATA[
 var IE = document.all?true:false
 if (!IE) document.captureEvents(Event.MOUSEMOVE)
 document.onmousemove = getMouseXY
@@ -453,15 +445,15 @@ function getMouseXY(e) {
     tempX = e.pageX
     tempY = e.pageY
   }
-if (!blam && !blama) {
+if (!blam &amp;&amp; !blama) {
   document.getElementById('previewbox').style.width = "0px"
 } else {
   blam = false
 if (blama) { shazam = 520 }
   blama = false
   document.getElementById('previewbox').style.width = "500px"
-  document.getElementById('previewbox').style.left = tempX + 10 - shazam
-  document.getElementById('previewbox').style.top = tempY + 10
+  document.getElementById('previewbox').style.left = (tempX + 10 - shazam) + 'px'
+  document.getElementById('previewbox').style.top = (tempY + 10) + 'px'
   shazam = 0
   return true
 }
@@ -474,39 +466,36 @@ frames['previewbox'].location.href = "about:blank";
 frames['previewbox'].location.href = "forum.php?do=preview&a=" + url
 }
 }
+//]]>
 </script>
 END;
 }
 
 // Forum post preview generator
 if ($_GET['do'] == "preview") {
-    print <<<END
-<html>
-<head>
-END;
-    require 'css.php';
+    standardHeaders("",false);
     print <<<END
 </head>
 <script type="text/javascript">
+//<![CDATA[
 function autofitIframe(id){
-try {
-parent.document.getElementById(id).style.height = "10px";
+    try {
+        parent.document.getElementById(id).style.height = "60px";
+    } catch (err) {
+        window.status = err.message;
+    }
+    try {
+	    if (!window.opera && !document.mimeType && document.all && document.getElementById){
+		    parent.document.getElementById(id).style.height=this.document.body.offsetHeight+"px";
+	    }
+	    else if(document.getElementById) {
+		    parent.document.getElementById(id).style.height=this.document.body.scrollHeight+"px";
+	    }
+    } catch(err) {
+        window.status = err.message;
+    }
 }
-catch (err) {
-window.status = err.message;
-}
-try {
-	if (!window.opera && !document.mimeType && document.all && document.getElementById){
-		parent.document.getElementById(id).style.height=this.document.body.offsetHeight+"px";
-	}
-	else if(document.getElementById) {
-		parent.document.getElementById(id).style.height=this.document.body.scrollHeight+"px"
-	}
-}
-catch(err) {
-window.status = err.message;
-}
-}
+//]]>
 </script>
 <body onload="autofitIframe('previewbox')" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
 <table style="border-style: solid solid solid solid; border-width: 1px 1px 1px 1px; padding: 2px 2px 2px 2px; margin: 0px 0px 0px 0px; border-collapse: collapse;" width="100%">
@@ -537,36 +526,13 @@ if ($_GET['do'] == "") {
     $post_title_add = "";
     $post_sub_add = "";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = flipVisibility();
+    $post_content = "";
     $cats = mysql_query("SELECT * FROM categories ORDER BY orderid", $db);
+    
     while ($cat = mysql_fetch_array($cats)) {
         $category = $cat['id'];
-        $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <a href="javascript:flipVisibility('category_$category')"><font class="pan_title_text" style="text-decoration: none; ">
-END;
-        $post_content = $post_content .  $cat['name'];
-        $post_content = $post_content .  <<<END
-	</font></a></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-        $post_content = $post_content .  "&nbsp;";
-        $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-	<div id="category_$category" width="100%" style="border: 0px">
-		<font class="forum_base_text">
+        $block_content =  <<<END
+	<div id="category_$category" style="border: 0px">
 		<table class="forum_base" width="100%">
 END;
         $result = mysql_query("SELECT * FROM boards WHERE `catid`=$category ORDER BY orderid", $db);
@@ -576,16 +542,16 @@ END;
                     $readmb = check_read_forum($row['id'],$user['id']);
                     $idd = $row['id'];
                     if ($readmb) {
-                        $read_or_not = "<img src=\"smiles/forum_read.png\" align=\"left\">";
+                        $read_or_not = "<img src=\"smiles/forum_read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/>";
                     } else {
-                        $read_or_not = "<a href=\"forum.php?do=setread&id=$idd\"><img src=\"smiles/forum_unread.png\" align=\"left\"></a>";
+                        $read_or_not = "<a href=\"forum.php?do=setread&amp;id=$idd\"><img src=\"smiles/forum_unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_new']}\" /></a>";
                     }
-                    $post_content = $post_content .  <<<END
+                    $block_content = $block_content .  <<<END
 	<tr><td rowspan="2" width="32">$read_or_not</td>
-		<td><a href="forum.php?do=viewforum&id=
+		<td><a href="forum.php?do=viewforum&amp;id=
 END;
-                    $post_content = $post_content . $row['id'] . "\">" . $row['title'];
-                    $post_content = $post_content . "</a></td><td rowspan=\"2\" width=\"30%\">";
+                    $block_content = $block_content . $row['id'] . "\">" . $row['title'];
+                    $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\">";
                     $resulta = mysql_query("SELECT * FROM topics WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
                     $topic = mysql_fetch_array($resulta);
                     $resulta = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' ORDER BY id DESC LIMIT 1", $db);
@@ -602,42 +568,31 @@ END;
                     $post_bb = str_replace("\r","",$post_bb);
                     $post_bb = str_replace("\"","&quot;",$post_bb);
                     $post_bb = str_replace("'","\\'",$post_bb);
+                    $post_bb = str_replace("<","&lt;",$post_bb);
+                    $post_bb = str_replace(">","&gt;",$post_bb);
                     $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
 
-                    $post_content = $post_content . "<center><font size=\"2\"><strong>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&last=1&id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></strong><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&id=$authid\">" . $poster['name'] . "</a> $post_time</font></center></td>";
-                    $post_content = $post_content . "<td rowspan=\"2\" align=\"middle\" valign=\"top\" width=\"70\"><font size=\"2\">$topics_in_board {$_PWNDATA['forum']['topics']}</font></td>";
-                    $post_content = $post_content . "<td rowspan=\"2\" align=\"middle\" valign=\"top\" width=\"70\"><font size=\"2\">" . getPostsInBoard($row['id']) . " {$_PWNDATA['forum']['posts']}</font></td></tr>";
-                    $post_content = $post_content . "\n	<tr><td><font size=\"2\">" . $row['desc'] . "</font></td></tr>";
+                    $block_content = $block_content . "<center><font size=\"2\"><strong>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></strong><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></center></td>";
+                    $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" valign=\"top\" width=\"70\"><font size=\"2\">$topics_in_board {$_PWNDATA['forum']['topics']}</font></td>";
+                    $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" valign=\"top\" width=\"70\"><font size=\"2\">" . getPostsInBoard($row['id']) . " {$_PWNDATA['forum']['posts']}</font></td></tr>";
+                    $block_content = $block_content . "\n	<tr><td><font size=\"2\">" . $row['desc'] . "</font></td></tr>";
                 } else {
                     // Has a link.
                     $link = $row['link'];
-                    $post_content = $post_content .  <<<END
-	<tr><td rowspan="2" width="32"><img src="smiles/globe.png"></td>
+                    $block_content = $block_content .  <<<END
+	<tr><td rowspan="2" width="32"><img src="smiles/globe.png" alt="{$_PWNDATA['forum']['board_weblink']}"/></td>
 END;
-                    $post_content = $post_content . "<td><a href=\"$link\">" . $row['title'];
-                    $post_content = $post_content . "</a></td><td rowspan=\"2\" width=\"30%\"></td>";
-                    $post_content = $post_content . "<td rowspan=\"2\" align=\"middle\" valign=\"top\" width=\"70\"></td></tr>";
-                    $post_content = $post_content . "\n	<tr><td><font size=\"2\">" . $row['desc'] . "</font></td></tr>";
+                    $block_content = $block_content . "<td><a href=\"$link\">" . $row['title'];
+                    $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\"></td>";
+                    $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" valign=\"top\" width=\"70\"></td></tr>";
+                    $block_content = $block_content . "\n	<tr><td><font size=\"2\">" . $row['desc'] . "</font></td></tr>";
                 }
             }
         }
-        $post_content = $post_content .  <<<END
-	</table>
-	</font></div></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+        $block_content = $block_content . "</table></div>";
+        $post_content = $post_content . makeBlock("<a href=\"javascript:flipVisibility('category_$category')\">" . $cat['name'] . "</a>","&nbsp;",$block_content);
     } // End category
-    $post_content = $post_content . previewBox();
+    $use_previewbox = "yes";
 }
 
 
@@ -646,62 +601,24 @@ END;
 if ($_GET['do'] == "login") {
     $post_title_add = "";
     $post_sub_add = "";
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['forum']['login'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  " ";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-		<table class="forum_base" width="100%">
-END;
     $adminlog = $_GET['admin'];
-    $post_content = $post_content . <<<END
-<tr><td align="center"><form action="forum.php" method="post">
-  <input type="hidden" name="admin" value="$adminlog">
-  <input type="hidden" name="action" value="login">
-  {$_PWNDATA['profile']['username']}:<br />
-  <input type="text" name="uname" size="20"><br />
-  {$_PWNDATA['profile']['password']}:<br />
-  <input type="password" name="upass" size="20"><br />
-  <input type="checkbox" name="remember" value="ON">{$_PWNDATA['forum']['remember_me']}<br />
-  <input type="submit" value="{$_PWNDATA['forum']['login']}" name="B1">
-  </form></td></tr>
+    $block_content = <<<END
+		<table class="forum_base" width="100%">
+            <tr><td align="center">
+                <form action="forum.php" method="post">
+                  <input type="hidden" name="admin" value="$adminlog" />
+                  <input type="hidden" name="action" value="login" />
+                  {$_PWNDATA['profile']['username']}:<br />
+                  <input type="text" name="uname" size="20" /><br />
+                  {$_PWNDATA['profile']['password']}:<br />
+                  <input type="password" name="upass" size="20" /><br />
+                  <input type="checkbox" name="remember" value="ON" />{$_PWNDATA['forum']['remember_me']}<br />
+                  <input type="submit" value="{$_PWNDATA['forum']['login']}" name="B1" />
+                </form>
+            </td></tr>
+        </table>
 END;
-    $post_content = $post_content .  <<<END
-	</table>
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['login'],$block_content);
 }
 
 // Captcha. Sort of.
@@ -735,62 +652,23 @@ if ($_GET['do'] == "secimg") {
 if ($_GET['do'] == "newuser") {
     $post_title_add = "";
     $post_sub_add = "";
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['forum']['register'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  " ";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
+    
+    $block_content = <<<END
 		<font class="forum_base_text">
 		<table class="forum_base" width="100%">
+            <tr><td><form method="POST" action="forum.php"><font class="forum_base_text">
+              <input type="hidden" name="action" value="newuser">
+              {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20"><br />
+              {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20"><br />
+              {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20"><br />
+              {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20"><br />
+              {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20"><br />
+              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}"/><br />
+              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20"><br />
+              <input type="submit" value="{$_PWNDATA['forum']['register']}"></font>
+            </form></td></tr></table>
 END;
-    $post_content = $post_content . <<<END
-<tr><td><form method="POST" action="forum.php"><font class="forum_base_text">
-  <input type="hidden" name="action" value="newuser">
-  {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20"><br />
-  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20"><br />
-  {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20"><br />
-  {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20"><br />
-  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20"><br />
-  <img src="forum.php?do=secimg"><br />
-  {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20"><br />
-  <input type="submit" value="{$_PWNDATA['forum']['register']}"></font>
-</form></td></tr>
-END;
-    $post_content = $post_content .  <<<END
-	</table>
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['register'],$block_content);
 }
 
 // Show the topics in this board.
@@ -801,7 +679,7 @@ if ($_GET['do'] == "viewforum") {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permission']);
     }
     $post_title_add = " :: " . $board['title'];
-    $post_sub_add = " > <a href=\"forum.php?do=viewforum&id=" . $board['id'] . "\">" . $board['title'] . "</a>";
+    $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a>";
     $post_sub_r = post_sub_r($user['id']);
     $post_content = "";
     $post_content = $post_content .  <<<END
@@ -832,7 +710,7 @@ END;
 	<table class="mod_set"><tr>
 END;
     if (!($board['top_level'] > $user['level'])) {
-        drawButton("forum.php?do=newtopic&id=" . $board['id'] . "\"", $_PWNDATA['forum']['new_topic']);
+        drawButton("forum.php?do=newtopic&amp;id=" . $board['id'] . "\"", $_PWNDATA['forum']['new_topic']);
     }
     if (!isset($_GET['p'])) {
         $page = 0;
@@ -840,13 +718,13 @@ END;
         $page = ($_GET['p'] - 1) * $_THREADSPERPAGE;
     }
     if ($page > 0) {
-        drawButton("forum.php?do=viewforum&id=" . $board['id'] . "&p=" . ($page / $_THREADSPERPAGE) . "\"", $_PWNDATA['forum']['previous_page']);
+        drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE) . "\"", $_PWNDATA['forum']['previous_page']);
     }
     $temp_mysql = mysql_query("SELECT COUNT(*) FROM topics WHERE board='" . $board['id'] . "'", $db);
     $temp_res = mysql_fetch_array($temp_mysql);
     $total_posts = $temp_res['COUNT(*)'];
     if ($total_posts > $page + $_THREADSPERPAGE) {
-        drawButton("forum.php?do=viewforum&id=" . $board['id'] . "&p=" . ($page / $_THREADSPERPAGE + 2) . "\"", $_PWNDATA['forum']['next_page']);
+        drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2) . "\"", $_PWNDATA['forum']['next_page']);
     }
     $post_content = $post_content .  <<<END
 		</tr></table>
@@ -870,45 +748,49 @@ END;
         $post_bb = str_replace("\r","",$post_bb);
         $post_bb = str_replace("\"","&quot;",$post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
+        $post_bb = str_replace("<","&lt;",$post_bb);
+        $post_bb = str_replace(">","&gt;",$post_bb);
         $spazm = "onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
         $post_bb = "[b]Posted by:[/b] " . $rowd['name'] . "!NL!" . substr(str_replace("\n","!NL!",$rowc['content']),0,500);
         $post_bb = str_replace("\r","",$post_bb);
         $post_bb = str_replace("\"","&quot;",$post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
+        $post_bb = str_replace("<","&lt;",$post_bb);
+        $post_bb = str_replace(">","&gt;",$post_bb);
         $spazma = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
         if ($readmb) {
-            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\">";
+            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/>";
         } else {
-            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\">";
+            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/>";
         }
         if ($row['has_poll'] == 1) {
 	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/readp.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/readp.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['poll']}\"/>";
 	        } else {
-	            $read_or_not = "<img src=\"smiles/unreadp.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/unreadp.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['poll']}\"/>";
 	        }
 	        $read_or_not = $read_or_not . "<font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['poll']}</b></font> ";
         }
         if ($row['locked'] == 1) {
 	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/lread.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/lread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['locked']}\"/>";
 	        } else {
-	            $read_or_not = "<img src=\"smiles/lunread.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/lunread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['locked']}\"/>";
 	        }
 	        $read_or_not = $read_or_not . "<font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['locked']}</b></font> ";
         }
         if ($row['stick'] == 1) {
 	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/sread.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/sread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['sticky']}\"/>";
 	        } else {
-	            $read_or_not = "<img src=\"smiles/sunread.png\" align=\"left\">";
+	            $read_or_not = "<img src=\"smiles/sunread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['sticky']}\"/>";
 	        }
 	        $read_or_not = $read_or_not . "<font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['sticky']}</b></font> ";
         }
         $diver = $row['id'];
         $post_content = $post_content .  <<<END
 	<tr>
-		<td>$read_or_not<div id="title_$diver" style="display: inline;" $spazm><a href="forum.php?do=viewtopic&id=
+		<td>$read_or_not<div id="title_$diver" style="display: inline;" $spazm><a href="forum.php?do=viewtopic&amp;id=
 END;
         $post_content = $post_content . $row['id'] . "\">" . $row['title'];
         $top_temp = $row['id'];
@@ -920,7 +802,7 @@ END;
         if ($pages > 0) {
             $pagination = " &nbsp;&nbsp;&nbsp;" . $_PWNDATA['forum']['goto'] . ": ";
             for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
-                $pagination = $pagination . "<a href=\"forum.php?do=viewtopic&id=$top_temp&p=$page_count\">$page_count</a>";
+                $pagination = $pagination . "<a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;p=$page_count\">$page_count</a>";
                 if ($page_count != $pages + 1) {
                     $pagination = $pagination . ", ";
                 }
@@ -943,9 +825,9 @@ END;
         } else {
             $edtitle = " ";
         }
-        $post_content = $post_content . "</a></div>\n$edtitle<br /><font size=\"2\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&id=$authid\">$author</a>$pagination</td></td><td rowspan=\"1\" width=\"30%\">";
+        $post_content = $post_content . "</a></div>\n$edtitle<br /><font size=\"2\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>$pagination</td></td><td rowspan=\"1\" width=\"30%\">";
         $authid = $rowd['id'];
-        $post_content = $post_content . "<center>\n<font size=\"2\"><strong><a href=\"forum.php?do=viewtopic&id=$top_temp&last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</strong> <a href=\"forum.php?do=viewprofile&id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</font></center></td></tr>";
+        $post_content = $post_content . "<center>\n<font size=\"2\"><strong><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</strong> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</font></center></td></tr>";
     }
     $post_content = $post_content .  <<<END
 	</table>
@@ -959,8 +841,7 @@ END;
       </tr>
     </table>
 END;
-    $post_content = $post_content . previewBox();
-    $post_content = $post_content . flipVisibility();
+    $use_previewbox = "yes";
 }
 
 // Show the PM box
@@ -1016,7 +897,7 @@ END;
     <td class="but_mid">
     <font class="forum_button_text">
 END;
-        $post_content = $post_content . "<a href=\"forum.php?do=delpm&id=ALL\">{$_PWNDATA['pm']['empty_box']}</a>";
+        $post_content = $post_content . "<a href=\"forum.php?do=delpm&amp;id=ALL\">{$_PWNDATA['pm']['empty_box']}</a>";
         $post_content = $post_content . <<<END
 </font></td>
 <td class="but_right"></td>
@@ -1034,13 +915,13 @@ END;
     while ($row = mysql_fetch_array($pmresult)) {
         $readmb = $row['read'];
         if ($readmb == 1) {
-            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\">";
+            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\" alt=\"\"/>";
         } else {
-            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\">";
+            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\" alt=\"**\"/>";
         }
         $post_content = $post_content .  <<<END
 	<tr>
-		<td>$read_or_not<a href="forum.php?do=readpm&id=
+		<td>$read_or_not<a href="forum.php?do=readpm&amp;id=
 END;
 //"
         $resultb = mysql_query("SELECT * FROM users WHERE id='" . $row['from'] . "'" , $db);
@@ -1049,7 +930,7 @@ END;
         $author = $rowb['name'];
         $authid = $rowb['id'];
         $tim = date("F j, Y (g:ia T)", $row['time']);
-        $post_content = $post_content . "</a><br /><font size=\"2\">{$_PWNDATA['pm']['from']}: <a href=\"forum.php?do=viewprofile&id=$authid\">$author</a>, {$_PWNDATA['pm']['sent_at']} $tim</td></td></tr>";
+        $post_content = $post_content . "</a><br /><font size=\"2\">{$_PWNDATA['pm']['from']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>, {$_PWNDATA['pm']['sent_at']} $tim</td></td></tr>";
     }
 
     $post_content = $post_content .  <<<END
@@ -1117,7 +998,7 @@ if ($_GET['do'] == "readpm") {
         <td class="pan_um">
         <font class="pan_title_text">
 END;
-    $post_content = $post_content . $pm['title'] . " {$_PWNDATA['pm']['from']} <a href=\"forum.php?do=viewprofile&id=" . $fromuser['id'] . "\">" . $fromuser['name'] . "</a>";
+    $post_content = $post_content . $pm['title'] . " {$_PWNDATA['pm']['from']} <a href=\"forum.php?do=viewprofile&amp;id=" . $fromuser['id'] . "\">" . $fromuser['name'] . "</a>";
     $post_content = $post_content .  <<<END
 	</font>
         <td class="pan_um">
@@ -1133,9 +1014,9 @@ END;
         <td class="pan_body" valign="top" colspan="2">
 		<font class="forum_base_text"><table class="mod_set"><tr>
 END;
-    $post_content = $post_content . drawButton("forum.php?do=newpm&to=$replyto&s=$replytitle",$_PWNDATA['pm']['reply']);
-    $post_content = $post_content . drawButton("forum.php?do=delpm&id=$pid",$_PWNDATA['pm']['delete']);
-    $post_content = $post_content . drawButton("forum.php?do=newpm&to=$replyto&s=$replytitle&q=$pid",$_PWNDATA['pm']['quote']);
+    $post_content = $post_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle",$_PWNDATA['pm']['reply']);
+    $post_content = $post_content . drawButton("forum.php?do=delpm&amp;id=$pid",$_PWNDATA['pm']['delete']);
+    $post_content = $post_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle&amp;q=$pid",$_PWNDATA['pm']['quote']);
     $post_content = $post_content .  <<<END
 		</tr></table><table class="forum_base" width="100%"><tr><td><font class="forum_body">
 END;
@@ -1256,7 +1137,7 @@ if ($_GET['do'] == "viewtopic") {
     }
     $post_title_add = " :: " . $topic['title'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_sub_add = " > <a href=\"forum.php?do=viewforum&id=" . $board['id'] . "\">" . $board['title'] . "</a> > <a href=\"forum.php?do=viewtopic&id=" . $topic['id'] . "\">" . $topic['title'] . "</a>";
+    $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > <a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topic['title'] . "</a>";
     $post_content = "";
     $post_content = $post_content .  <<<END
 	
@@ -1330,7 +1211,7 @@ END;
 	        }
 	        $post_content = $post_content . "<tr style=\"border: 0px\"><td style=\"border: 0px\" align=\"right\">$bounce<font class=\"forum_body\">" . $poll_options[$i] . "</font></td>\n";
 	        $wid = ($poll_votes[$i] / $totalVotes) * $widthOfBar;
-	        $post_content = $post_content . "<td style=\"border: 0px\" align=\"left\"><img src=\"smiles/poll_bars/$i/poll_left.png\" /><img src=\"smiles/poll_bars/$i/poll_mid.png\" height=\"10\" width=\"$wid\" /><img src=\"smiles/poll_bars/$i/poll_right.png\" /><font size=\"1\"> (" . $poll_votes[$i] . ") </font></td></tr>\n";
+	        $post_content = $post_content . "<td style=\"border: 0px\" align=\"left\"><img src=\"smiles/poll_bars/$i/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$i/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$i/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . $poll_votes[$i] . ") </font></td></tr>\n";
         }
         if ($hasVoted == false) {
 	        $submitPoll = "<input type=\"submit\" value=\"{$_PWNDATA['forum']['vote']}\" />";
@@ -1370,7 +1251,7 @@ END;
 		<td width=\"15%\" valign=top $topglow>
 END;
         if ($post_author['avatar'] != "") {
-            $ava = "<img src=\"" . $post_author['avatar'] . "\"><br />";
+            $ava = "<img src=\"" . $post_author['avatar'] . "\" alt=\"" . $post_auther['name']  . "'s {$_PWNDATA['profile']['avatar']}\"/><br />";
         } else {
             $ava = "";
         }
@@ -1397,32 +1278,32 @@ END;
         if ($post_author['msn'] != "") {
             $has_messenger = true;
             $authmsn = $post_author['msn'];
-            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&id=$authid\"><img src=\"smiles/msn.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/msn.png\" border=\"0\" /></a>";
         }
         if ($post_author['yahoo'] != "") {
             $has_messenger = true;
             $authyahoo = $post_author['yahoo'];
-            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&id=$authid\"><img src=\"smiles/yahoo.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/yahoo.png\" border=\"0\" /></a>";
         }
         if ($post_author['aim'] != "") { // AIM we're actually going to do something usefull for...
             $has_messenger = true;
             $authaim = $post_author['aim'];
-            $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&message=Hello+Are+you+there?\"><img src=\"smiles/aim.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\"><img src=\"smiles/aim.png\" border=\"0\" /></a>";
         }
         if ($post_author['icq'] != "") { // ICQ as well...
             $has_messenger = true;
             $authicq = $post_author['icq'];
-            $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\"><img src=\"smiles/icq.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\"><img src=\"smiles/icq.png\" border=\"0\" /></a>";
         }
         if ($post_author['xfire'] != "") { // xfire
             $has_messenger = true;
             $authxf = $post_author['xfire'];
-            $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\"><img src=\"smiles/xfire.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\"><img src=\"smiles/xfire.png\" border=\"0\" /></a>";
         }
         if ($post_author['live'] != "") { // xfire
             $has_messenger = true;
             $authlive = str_replace(" ","+",$post_author['live']);
-            $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&GamerTag=$authlive\"><img src=\"smiles/live.png\" border=\"0\"></a>";
+            $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\"><img src=\"smiles/live.png\" border=\"0\" /></a>";
         }
         if ($post_author['pand'] != "") { // Pandemic
             $has_messenger = true;
@@ -1441,41 +1322,41 @@ END;
 	            $userInfo = explode("|_|",$return);
 	            socket_close($sock);
 	            if ($userInfo[1] == "1") {
-	            $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\"></a>";
+	            $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" /></a>";
 	            } else {
-	            $auth_info = $auth_info . "<img src=\"smiles/panoff.png\" border=\"0\"></a>";
+	            $auth_info = $auth_info . "<img src=\"smiles/panoff.png\" border=\"0\" /></a>";
 	            }
             } else {
-                $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\"></a>";
+                $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" /></a>";
             }
         }
         if ($has_messenger) {
             $messaging = "[b]" . $post_author['name'] . "[/b]!NL![img]smiles/mess.png[/img]!NL![img]smiles/aim.png[/img]: $authaim!NL![img]smiles/msn.png[/img]: $authmsn!NL![img]smiles/yahoo.png[/img]: $authyahoo!NL![img]smiles/icq.png[/img]: $authicq!NL![img]smiles/xfire.png[/img]: $authxf!NL![img]smiles/live.png[/img]: $authlive!NL![img]smiles/pan.png[/img]: $authpand!NL!";
-            $auth_info = "<img src=\"smiles/mess.png\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$messaging')\"><br />" . $auth_info;
+            $auth_info = "<img src=\"smiles/mess.png\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$messaging')\" /><br />" . $auth_info;
         }
         $postinfo = "";
         if ($user['level'] > 0) {
 	        // Yes, this can exclude some members, but we don't really care because they're BANNED. (Level = 0)
-	        $postinfo = "<br>$pCount posts";
+	        $postinfo = "<br />$pCount posts";
         }
-        $post_content = $post_content . "<font class=\"forum_user\"><a href=\"forum.php?do=viewprofile&id=$authid\">" . $post_author['name'] . "</a><br />" . $ava . $auth_info . $postinfo . "</font>";
+        $post_content = $post_content . "<font class=\"forum_user\"><a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $post_author['name'] . "</a><br />" . $ava . $auth_info . $postinfo . "</font>";
         $post_content = $post_content . "</td>\n<td valign=top style=\"padding:5px\"><font class=\"forum_time\"><p align=\"right\">{$_PWNDATA['forum']['posted_at']} " . date("F j, Y (g:ia T)", $row['time']) . "</p></font>\n";
         $post_content = $post_content . "<font class=\"forum_body\">\n" . $contenta;
         $post_content = $post_content . "\n</font>\n<br /><hr color=\"#555555\" size=\"1\" width=\"50%\">\n<font class=\"forum_body\">" . $contentb;
         $post_content = $post_content . "\n</font><br />\n<table class=\"mod_set\"><tr>\n";
         // Is this the viewing member's post?
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
-            $post_content = $post_content . drawButton("forum.php?do=editreply&id=" . $row['id'],$_PWNDATA['forum']['edit']);
+            $post_content = $post_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit']);
         }
         // Moderation Tools 
         if ($user['level'] >= $site_info['mod_rank']) {
             if ($user['level'] >= $site_info['admin_rank']) {
                 $post_content = $post_content . drawButton("javascript:buddyAlert('IP: " . $row['ip'] . "');",$_PWNDATA['forum']['ip']);
             } // Only administrators can view the IP of a post. This is to keep moderators from h4xing
-            $post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=delete&id=" . $row['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['delete']);
+            $post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=delete&amp;id=" . $row['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['delete']);
         }
         if (($user['id'] != $post_author['id']) and (!($board['post_level'] > $user['level'])) and ($islocked == false)) {
-            $post_content = $post_content . drawButton("<a href=\"forum.php?do=newreply&id=" . $topic['id'] . "&quote=" . $row['id'],$_PWNDATA['forum']['quote']);
+            $post_content = $post_content . drawButton("<a href=\"forum.php?do=newrepl&amp;id=" . $topic['id'] . "&amp;quote=" . $row['id'],$_PWNDATA['forum']['quote']);
         }
         $post_content = $post_content . "</tr></table></td></tr>";
     }
@@ -1483,19 +1364,19 @@ END;
 	</table><table border="0"><tr>
 END;
     if ((!($board['post_level'] > $user['level'])) and ($islocked == false)) {
-        $post_content = $post_content . drawButton("forum.php?do=newreply&id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
+        $post_content = $post_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
     }
     if ($user['level'] >= $site_info['mod_rank']) {
-        $post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=deltop&id=" . $topic['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['del_topic']);
+        $post_content = $post_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " <a href=\\'forum.php?do=deltop&amp;id=" . $topic['id'] . "\\'>" . $_PWNDATA['forum']['delete_confirm_accept'] . "</a>');", $_PWNDATA['forum']['del_topic']);
         if ($topic['stick'] == 0) { // Stick
-            $post_content = $post_content . drawButton("forum.php?do=sticktop&id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
+            $post_content = $post_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
         } else { // Unstick
-            $post_content = $post_content . drawButton("forum.php?do=unsticktop&id=" . $topic['id'],$_PWNDATA['forum']['unstick_topic']);
+            $post_content = $post_content . drawButton("forum.php?do=unsticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unstick_topic']);
         }
         if ($topic['locked'] == 0) {
-            $post_content = $post_content . drawButton("forum.php?do=locktop&id=" . $topic['id'],$_PWNDATA['forum']['lock_topic']);
+            $post_content = $post_content . drawButton("forum.php?do=locktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['lock_topic']);
         } else {
-            $post_content = $post_content . drawButton("forum.php?do=unlocktop&id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic']);
+            $post_content = $post_content . drawButton("forum.php?do=unlocktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic']);
         }
         $post_content = $post_content . <<<END
 <td>
@@ -1550,7 +1431,7 @@ END;
         $post_content = $post_content . "<td> &nbsp;&nbsp;&nbsp;{$_PWNDATA['forum']['goto']}: ";
         for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
             if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
-                $post_content = $post_content . "<a href=\"forum.php?do=viewtopic&id=$top_id&p=$page_count\">$page_count</a>"; 
+                $post_content = $post_content . "<a href=\"forum.php?do=viewtopic&amp;id=$top_id&amp;p=$page_count\">$page_count</a>"; 
             } else {
                 $post_content = $post_content . "<strong>$page_count</strong>";
             }
@@ -1567,7 +1448,8 @@ END;
         $post_content = $post_content . <<<END
 <div>
 <p align="center">
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function changeOpacity(obj, percent)
 {
 if (navigator.appName.indexOf("Microsoft")!= -1 
@@ -1577,10 +1459,11 @@ else if (navigator.appName.indexOf("Netscape")!=-1
   &&parseInt(navigator.appVersion)>=5)
 	obj.style.MozOpacity = percent / 100
 }
+//]]>
 </script>
 <a name="qreply_bm"></a>
 <table name="quick_reply" style="border: 1px solid;" width="95%">
-<tr><td align="middle">
+<tr><td align="center">
 <font class="forum_body">
 <b><a href="javascript:flipVisibility('qreply');">{$_PWNDATA['forum']['quick_reply']}</a></b><br />
 <div id="qreply" style="display: none";>
@@ -1613,8 +1496,7 @@ END;
       </tr>
     </table>
 END;
-    $post_content = $post_content . previewBox();
-    $post_content = $post_content . flipVisibility();
+    $use_previewbox = "yes";
 }
 
 // Create a new topic.
@@ -1625,7 +1507,7 @@ if ($_GET['do'] == "newtopic") {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_permitted_topic_new']);
     }
     $post_title_add = " :: " . $board['title'] . " :: " . $_PWNDATA['forum']['new_topic'];
-    $post_sub_add = " > <a href=\"forum.php?do=viewforum&id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['new_topic'];
+    $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['new_topic'];
     $post_sub_r = post_sub_r($user['id']);
     $post_content = "";
     $post_content = $post_content .  <<<END
@@ -1652,7 +1534,6 @@ END;
       <tr>
         <td class="pan_ml">&nbsp;</td>
         <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
 END;
     $post_content = $post_content .  printPoster('content') . <<<END
 <form action="forum.php" method="post" name="form">
@@ -1703,7 +1584,7 @@ if ($_GET['do'] == "newreply") {
         }
     }
     $post_title_add = " :: " . $board['title'] . " :: {$_PWNDATA['forum']['replying_to']} " . $topic['title'];
-    $post_sub_add = " > <a href=\"forum.php?do=viewforum&id=" . $board['id'] . "\">" . $board['title'] . "</a> > {$_PWNDATA['forum']['replying_to']} <a href=\"forum.php?do=viewtopic&id=" . $topic['id'] . "\">" . $topic['title'] . "</a>";
+    $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > {$_PWNDATA['forum']['replying_to']} <a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topic['title'] . "</a>";
     $post_sub_r = post_sub_r($user['id']);
     $post_content = "";
     $post_content = $post_content .  <<<END
@@ -1789,7 +1670,7 @@ if ($_GET['do'] == "editreply") {
     $result = mysql_query("SELECT * FROM boards WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($result);
     $post_title_add = " :: " . $board['title'] . " :: " . $_PWNDATA['forum']['editing'];
-    $post_sub_add = " > <a href=\"forum.php?do=viewforum&id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['editing'];
+    $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['editing'];
     $post_sub_r = post_sub_r($user['id']);
     $post_content = "";
     $post_content = $post_content .  <<<END
@@ -1997,7 +1878,7 @@ END;
     $posts = postCount($replyto);
     $modstatus = getRankName($vuser['level'],$site_info,$posts);
     if ($ava != "") {
-        $post_content = $post_content . "<img src=\"$ava\" align=\"top\">";
+        $post_content = $post_content . "<img src=\"$ava\" align=\"top\" />";
     }
     $post_content = $post_content . <<<END
   <strong> $uname</strong><br />$modstatus<br />
@@ -2005,17 +1886,17 @@ END;
   {$_PWNDATA['forum']['posts']}: $posts
   <br />
   <strong>{$_PWNDATA['profile']['messaging']}:</strong><br />
-  <img src="smiles/msn.png"> MSN: $umsn<br />
-  <img src="smiles/aim.png"> AIM: $uaim<br />
-  <img src="smiles/yahoo.png"> Yahoo: $uyah<br />
-  <img src="smiles/icq.png"> ICQ: $uicq<br />
-  <img src="smiles/xfire.png"> xFire: $uxfire<br />
-  <img src="smiles/live.png"> Gamertag: $ulive<br />
-  <img src="smiles/pan.png"> Pandemic: $pand<br />
-  <a href="forum.php?do=newpm&to=$replyto">{$_PWNDATA['pm']['send_a']}</a><br /><br />
+  <img src="smiles/msn.png" /> MSN: $umsn<br />
+  <img src="smiles/aim.png" /> AIM: $uaim<br />
+  <img src="smiles/yahoo.png" /> Yahoo: $uyah<br />
+  <img src="smiles/icq.png" /> ICQ: $uicq<br />
+  <img src="smiles/xfire.png" /> xFire: $uxfire<br />
+  <img src="smiles/live.png" /> Gamertag: $ulive<br />
+  <img src="smiles/pan.png" /> Pandemic: $pand<br />
+  <a href="forum.php?do=newpm&amp;to=$replyto">{$_PWNDATA['pm']['send_a']}</a><br /><br />
 END;
     $post_content = $post_content .  <<<END
-	<img src="smiles/quotea.png" align="top"><font face="Times New Roman" size="5"><i>$sig</i></font><img src="smiles/quoteb.png"><br />
+	<img src="smiles/quotea.png" align="top" /><font face="Times New Roman" size="5"><i>$sig</i></font><img src="smiles/quoteb.png" /><br />
 	</font></td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
@@ -2122,7 +2003,7 @@ END;
         if ($post_board['vis_level'] > $user['level']) {
             // Do nothing, this post is in a board the user isn't allowed to see!
         } else {
-            $post_content = $post_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\"><b><i>{$_PWNDATA['forum']['posted_in']}: <a href=\"forum.php?do=viewtopic&id=" . $post_topic['id'] . "\">" . $post_topic['title'] . "</a></i></b><br />$dec_post</font></td></tr>\n";
+            $post_content = $post_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\"><b><i>{$_PWNDATA['forum']['posted_in']}: <a href=\"forum.php?do=viewtopic&amp;id=" . $post_topic['id'] . "\">" . $post_topic['title'] . "</a></i></b><br />$dec_post</font></td></tr>\n";
         }
     }
     $post_content = $post_content . "</table>";
@@ -2143,46 +2024,36 @@ END;
 }
 
 // XXX: Begin core output.
-print <<<END
-<html>
-<head>
-<title>
-END;
-print $site_info['name'] . " :: " . $_PWNDATA['forum_page_title'] . $post_title_add;
-print "</title>\n";
 
-require 'css.php';      // Setup the theme
-
-require 'header.php';   // Append the header
+standardHeaders($site_info['name'] . " :: " . $_PWNDATA['forum_page_title'] . $post_title_add,true);
 
 print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
+    <script type="text/javascript">
+    //<![CDATA[
+function flipVisibility(what) {
+    if (document.getElementById(what).style.display != "none") {
+        document.getElementById(what).style.display = "none"
+    } else {
+        document.getElementById(what).style.display = "inline"
+    }
+}
+    //]]>
+    </script>
 END;
-print "<a href=\"index.php\">" . $site_info['name'] . "</a> > <a href=\"forum.php\">{$_PWNDATA['forum_page_title']}</a>" . $post_sub_add;
-print <<<END
-    </font></td>
-    <td class="sub_mid">
+if ($use_previewbox) {
+    print previewBoxScript();
+}
 
-    <p align="right"><font class="sub_body_text">
-END;
-print $post_sub_r;
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > <a href=\"forum.php\">{$_PWNDATA['forum_page_title']}</a>" . $post_sub_add,$post_sub_r);
 
-END;
 if ($user['level'] < 1) {
-require 'sidebar.php';
+    require 'sidebar.php';
 } else {
-if ($user['sbonforum'] == 1) {
-require 'sidebar.php';
+    if ($user['sbonforum'] == 1) {
+        require 'sidebar.php';
+    }
 }
-}
+
 print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">
@@ -2190,31 +2061,7 @@ END;
 // CONTENT OF FORUM PAGE GOES HERE!!
 print $post_content;
 // Print the board statistics -----------------------------------------------------------------------------
-print  <<<END
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-print $_PWNDATA['forum']['stats'];
-print  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-print  $_PWNDATA['forum']['at'] . " " . $site_info['name'];
-print  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<p align="center"><font class="forum_base_text"><font size="2">
-END;
+
 $sql_temp = mysql_query("SELECT COUNT(*) FROM `users`");
 $stat_a = mysql_fetch_array($sql_temp);
 $sql_temp = mysql_query("SELECT COUNT(*) FROM `topics`");
@@ -2231,44 +2078,35 @@ $num_posts = $stat_c['COUNT(*)'];
 $num_sticks = $stat_d['COUNT(*)'];
 $last_member = $stat_e['name'];
 $last_member_id = $stat_e['id'];
-print "<table border=\"0px\" cellspacing=\"8px\"><tr><td align=\"center\"><img src=\"smiles/forum_read.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_no']}</font></td>\n";
-print "<td align=\"center\"><img src=\"smiles/forum_unread.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_new']}</font></td>\n";
-print "<td width=\"15\">&nbsp;</td>\n";
-print "<td align=\"center\"><img src=\"smiles/read.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['no_new_posts']}</font></td>\n";
-print "<td align=\"center\"><img src=\"smiles/unread.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['new_posts']}</font></td>\n";
-print "<td align=\"center\"><img src=\"smiles/lread.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['locked']}</font></td>\n";
-print "<td align=\"center\"><img src=\"smiles/readp.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['poll']}</font></td>\n";
-print "<td align=\"center\"><img src=\"smiles/sread.png\"><br /><font size=\"2\">{$_PWNDATA['forum']['sticky']}</font></td></tr></table>\n";
-print "{$_PWNDATA['forum']['there_are']}$num_posts{$_PWNDATA['forum']['posts_by']}$num_users{$_PWNDATA['forum']['members_in']}$num_topics{$_PWNDATA['forum']['_topics']}\n";
-print "$num_sticks{$_PWNDATA['forum']['are_sticky']}\n";
-print "<a href=\"forum.php?do=viewprofile&id=$last_member_id\">$last_member</a>\n<br />";
+$block_content = "";
+$block_content = $block_content . "<table border=\"0px\" cellspacing=\"8px\"><tr><td align=\"center\"><img src=\"smiles/forum_read.png\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_no']}</font></td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/forum_unread.png\" alt=\"{$_PWNDATA['forum']['board_has_new']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_new']}</font></td>\n";
+$block_content = $block_content . "<td width=\"15\">&nbsp;</td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/read.png\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['no_new_posts']}</font></td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/unread.png\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['new_posts']}</font></td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/lread.png\" alt=\"{$_PWNDATA['forum']['locked']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['locked']}</font></td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/readp.png\" alt=\"{$_PWNDATA['forum']['poll']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['poll']}</font></td>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/sread.png\" alt=\"{$_PWNDATA['forum']['sticky']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['sticky']}</font></td></tr></table>\n";
+$block_content = $block_content . "{$_PWNDATA['forum']['there_are']}$num_posts{$_PWNDATA['forum']['posts_by']}$num_users{$_PWNDATA['forum']['members_in']}$num_topics{$_PWNDATA['forum']['_topics']}\n";
+$block_content = $block_content . "$num_sticks{$_PWNDATA['forum']['are_sticky']}\n";
+$block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$last_member_id\">$last_member</a>\n<br />";
 
-print "<strong>{$_PWNDATA['forum']['members_online']}</strong>: ";
+$block_content = $block_content . "<strong>{$_PWNDATA['forum']['members_online']}</strong>: ";
 $sql_temp = mysql_query("SELECT * FROM `sessions` ORDER BY `user`");
 while ($on_session = mysql_fetch_array($sql_temp)) {
 $on_temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $on_session['user']);
 $on_user = mysql_fetch_array($on_temp);
 $on_id = $on_session['user'];
-print "<a href=\"forum.php?do=viewprofile&id=$on_id\">";
-if ($on_user['level'] < $site_info['mod_rank']) { print $on_user['name']; }
-if (($on_user['level'] >= $site_info['mod_rank']) and ($on_user['level'] < $site_info['admin_rank'])) { print "<font class='mod_name'>" . $on_user['name'] . "</font>"; }
-if ($on_user['level'] >= $site_info['admin_rank']) { print "<font class='adm_name'>" . $on_user['name'] . "</font>"; }
-print "</a> ";
+$block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$on_id\">";
+if ($on_user['level'] < $site_info['mod_rank']) { $block_content = $block_content . $on_user['name']; }
+if (($on_user['level'] >= $site_info['mod_rank']) and ($on_user['level'] < $site_info['admin_rank'])) { $block_content = $block_content . "<font class='mod_name'>" . $on_user['name'] . "</font>"; }
+if ($on_user['level'] >= $site_info['admin_rank']) { $block_content = $block_content . "<font class='adm_name'>" . $on_user['name'] . "</font>"; }
+$block_content = $block_content . "</a> ";
 }
-print  <<<END
+$block_content = $block_content .  <<<END
 	<br /><font size="1">({$_PWNDATA['forum']['user']} <font class='mod_name'>{$_PWNDATA['forum']['moderator']}</font> <font class='adm_name'>{$_PWNDATA['forum']['admin']}</font>)</font>
-	</font></font></p></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
 END;
+print makeBlock($_PWNDATA['forum']['stats'],$_PWNDATA['forum']['at'] . " " . $site_info['name'],$block_content);
 // End         --------------------------------------------------------------------------
 
 print <<<END
@@ -2277,5 +2115,8 @@ print <<<END
   </tr>
 </table>
 END;
+if ($use_previewbox) {
+    print previewBox();
+}
 require 'footer.php';
 ?>

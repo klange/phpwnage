@@ -192,7 +192,7 @@ function BBDecode($content) {
     $content = preg_replace("/(\[csharp\])(.+?)(\[\/csharp\])/sie","bbCSharp('$2')",$content);
     $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/si","<a href=\"$2\">$4</a>",$content);
     $content = preg_replace("/(\[url\])(.+?)(\[\/url\])/si","<a href=\"$2\">$2</a>",$content);
-    $content = preg_replace("/(\[img\])(.+?)(\[\/img\])/si","<img border=\"0\" src=\"$2\">",$content);
+    $content = preg_replace("/(\[img\])(.+?)(\[\/img\])/si","<img alt=\"forum image\" border=\"0\" src=\"$2\" />",$content);
     $content = preg_replace("/(\[list\])(.+?)(\[\/list\])/si","<ul>$2</ul>",$content);
     $content = preg_replace("/(\[num\])(.+?)(\[\/num\])/si","<ol>$2</ol>",$content);
     $content = str_replace("[*]","<li>",$content); // A list item
@@ -211,7 +211,7 @@ function BBDecode($content) {
     // Smiles are stored in MySQL
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $content = str_replace($smile['code'],"<img src=\"smiles/" . $smile['image'] . "\">",$content);
+        $content = str_replace($smile['code'],"<img alt=\"{$smile['name']}\" src=\"smiles/" . $smile['image'] . "\" />",$content);
     }
     // Censorship
     $censor_list = array("ass", "bitch", "bastard", "cunt", "cock", "shit", "damn", "fuck", "fucker", "fucking");
@@ -240,7 +240,8 @@ function printPoster($where) {
 	// Print the posting tool buttons
     global $_PWNDATA;
     $return = <<<END
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function addCode(code,codeclose) {
 var Text = document.form.$where.value;
 var selectedText = Text.substring(document.form.$where.selectionStart, document.form.$where.selectionEnd);
@@ -256,13 +257,14 @@ frames['previewbox'].location.href = 'forum.php?do=preview&a=' + Text;
 function addSize(sizeToAdd) {
 document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 }
+//]]>
 </script>
 <iframe name="previewbox" width="100%" style="border: 0px;" height="0px" id="previewbox"></iframe>
 {$_PWNDATA['poster']['smileys']}: 
 END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\">";
+        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "<br /><table class=\"mod_set\">" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
     $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
@@ -286,7 +288,8 @@ function printPosterMini($where, $topID) {
 	// Print the posting tools in a smaller package.
     global $_PWNDATA;
     $return = <<<END
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function addCode(code,codeclose) {
 var Text = document.form.$where.value;
 var selectedText = Text.substring(document.form.$where.selectionStart, document.form.$where.selectionEnd);
@@ -297,12 +300,13 @@ document.form.$where.value = beforeSelected+code+selectedText+codeclose+afterSel
 function addSize(sizeToAdd) {
 document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 }
+//]]>
 </script>
 {$_PWNDATA['poster']['smileys']}: 
 END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\">";
+        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "<br /><table class=\"mod_set\">" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
     $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
@@ -313,7 +317,7 @@ END;
     $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";
     $return = $return . drawButton("javascript:addSize(2)","\/") . "\n";
     $return = $return . drawButton("javascript:addSize(-2)","/\\") . "\n";
-    $return = $return . drawButton("forum.php?do=newreply&id=" . $topID,$_PWNDATA['poster']['go_advanced']) . "\n";
+    $return = $return . drawButton("forum.php?do=newreply&amp;id=" . $topID,$_PWNDATA['poster']['go_advanced']) . "\n";
     $return = $return . "</table>";
     return $return;
 }
@@ -388,8 +392,8 @@ END;
     $output = $output . $functitle;
     $output = $output . <<<END
 	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
+        <td class="pan_um" align="right">
+        <font class="pan_title_text">
 END;
     $output = $output . $funcright;
     $output = $output . <<<END
@@ -399,11 +403,9 @@ END;
       <tr>
         <td class="pan_ml">&nbsp;</td>
         <td class="pan_body" valign="top" colspan="2">
-		<font class="pan_body_text">
 END;
     $output = $output . $funccont;
     $output = $output . <<<END
-	</font>
 	</td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
@@ -437,11 +439,9 @@ END;
       <tr>
         <td class="block_ml">&nbsp;</td>
         <td class="block_body" valign="top">
-		<font class="block_body_text">
 END;
     $output = $output . $funccont;
     $output = $output . <<<END
-	</font>
 	</td>
         <td class="block_mr">&nbsp;</td>
       </tr>
@@ -477,14 +477,53 @@ END;
 }
 function messageRedirect($title, $message, $redirect) {
 	global $_PWNDATA, $site_info;
-	$content = $message . "<meta http-equiv=\"Refresh\" content=\"1;url=" . $redirect . "\"><br>" . $_PWNDATA['redirecting'] . "...";
+	$content = $message . "<meta http-equiv=\"Refresh\" content=\"1;url=" . $redirect . "\" /><br />" . $_PWNDATA['redirecting'] . "...";
 	drawMessage($title, $content);
 }
 function messageBack($title, $message) {
 	global $_PWNDATA, $site_info;
-	$content = $message . "<br><a href=\"javascript:history.back()\">" . $_PWNDATA['go_back'] . "</a>";
+	$content = $message . "<br /><a href=\"javascript:history.back()\">" . $_PWNDATA['go_back'] . "</a>";
 	drawMessage($title, $content);
 }
+function drawSubbar($left, $right) {
+    global $_PWNDATA, $site_info, $theme, $imageroot, $user;
+    print <<<END
+<table class="borderless_table" width="100%">
+  <tr>
+    <td class="sub_left"></td>
+    <td class="sub_mid"><font class="sub_body_text">
+END;
+    print $left;
+    print <<<END
+    </font></td>
+    <td class="sub_mid" align="right">
+
+    <font class="sub_body_text">
+END;
+    print $right;
+    print <<<END
+    </font></td>
+    <td class="sub_right"></td>
+  </tr>
+</table>
+END;
+}
+function standardHeaders($title, $draw_header) {
+    global $_PWNDATA, $site_info, $theme, $imageroot, $user;
+    print <<<END
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
+<head>
+<title>
+END;
+    print $title;
+    print "</title>\n";
+    require 'css.php';      // Setup the theme
+    if ($draw_header == true) {
+        require 'header.php';
+    }
+}
+
 
 if ($no_login != true) {
     // Handle the current session
@@ -498,7 +537,6 @@ if ($no_login != true) {
 		    $_SESSION['last_on'] = time();
 		    mysql_query("DELETE FROM `sessions` WHERE `user`=" . $tempuser['id'] . "");
 		    mysql_query("INSERT INTO `sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $tempuser['id'] . ", " . $_SESSION['last_on'] . ");");
-		    //drawMessage($_PWNDATA['auto_signin'],"<meta http-equiv=\"Refresh\" content=\"0\">" . $_PWNDATA['auto_signin']);
 	    } else {
 		    setcookie("rem_user", "_", time()+60*60*24*365*10); // This cookie will last for another 10 years (just in case)
 		    setcookie("rem_pass", "_", time()+60*60*24*365*10); 

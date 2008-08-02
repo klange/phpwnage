@@ -24,7 +24,8 @@ print <<<END
 
 
 <!-- PwnBuddy -->
-<script>
+<script type="text/javascript">
+//<![CDATA[
 document.onkeydown = KeyCheck
 var tempXa = 1
 var tempYa = 1
@@ -38,13 +39,13 @@ function KeyCheck(e)
 var keyid = (window.event) ? event.keyCode : e.keyCode
 if (keyid == 18)
 {
-    document.getElementById('buddy').style.left = tempX
-    document.getElementById('buddy').style.top = tempY
+    document.getElementById('buddy').style.left = tempX + 'px'
+    document.getElementById('buddy').style.top = tempY + 'px'
 }
 }
 function forceToMouse() {
-    document.getElementById('buddy').style.left = tempX
-    document.getElementById('buddy').style.top = tempY
+    document.getElementById('buddy').style.left = tempX + 'px'
+    document.getElementById('buddy').style.top = tempY + 'px'
 }
 function buddyAlert(text) {
     forceToMouse()
@@ -65,6 +66,7 @@ catch(err) {
 window.status = err.message;
 }
 }
+//]]>
 </script>
 <div id="buddy" style="width: 300px; border: 0px; position: absolute; top: 10px; left: 600px;">
 <table class="borderless_table" width="100%">
@@ -81,10 +83,11 @@ print $_PWNDATA['buddy']['afternoon'] . ", " . $user['name'] . "!";
 } elseif (intval($current_time) > 19) {
 print $_PWNDATA['buddy']['evening'] . ", " . $user['name'] . "!";
 }
-print "<br>";
+print "<br />";
 // Tabs, make use of custom visibilty javascript.
 print <<<END
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function changeTab(tabname) {
 document.getElementById('tab1').style.display = "none"
 document.getElementById('sel_tab1').className = "tab_head_off"
@@ -99,6 +102,7 @@ document.getElementById('sel_tab5').className = "tab_head_off"
 document.getElementById(tabname).style.display = "block"
 document.getElementById('sel_' + tabname).className = "tab_head_on"
 }
+//]]>
 </script>
 <style>
 .tab {
@@ -131,7 +135,7 @@ elseif ($num_unread == 1){
 print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['one_new']}</a>"; }
 else {
 print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['some_new']}</a>"; }
-print "<br>";
+print "<br />";
 $pmresult = mysql_query("SELECT * FROM pms WHERE `to`=" . $user['id'] . " ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($pmresult)) {
 $resultb = mysql_query("SELECT * FROM users WHERE id='" . $row['from'] . "'" , $db);
@@ -140,12 +144,12 @@ $author = $rowb['name'];
 $authid = $rowb['id'];
 if ($row['read'] == 0)
 	print "{$_PWNDATA['buddy']['new']} ";
-print "<a href=\"forum.php?do=readpm&id=" . $row['id'] . "\"><b>" . $row['title'] . "</b></a> {$_PWNDATA['buddy']['from']} <a href=\"forum.php?do=viewprofile&id=$authid\">$author</a><br>";
+print "<a href=\"forum.php?do=readpm&amp;id=" . $row['id'] . "\"><b>" . $row['title'] . "</b></a> {$_PWNDATA['buddy']['from']} <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a><br />";
 }
 print <<<END
 </div>
 <div id="tab2" class="tab_contents" style="display: none;">
-<b>{$_PWNDATA['buddy']['recent']}</b><br>
+<b>{$_PWNDATA['buddy']['recent']}</b><br />
 END;
 $post_results = mysql_query("SELECT * FROM `topics` ORDER BY `lastpost` DESC LIMIT 5");
 while ($topic = mysql_fetch_array($post_results)) {
@@ -155,13 +159,13 @@ $topicName = substr($topic['title'],0,20) . "...";
 } else {
 $topicName = $topic['title'];
 }
-print "<a href=\"forum.php?do=viewtopic&id=" . $topic['id'] . "\">" . $topicName . "</a> {$_PWNDATA['buddy']['in']} " . getBoardName($topic['board']) . "<br>";
+print "<a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topicName . "</a> {$_PWNDATA['buddy']['in']} " . getBoardName($topic['board']) . "<br />";
 }
 }
 print <<<END
 </div>
 <div id="tab3" class="tab_contents" style="display: none;">
-<b>{$_PWNDATA['cal']['upcoming']}</b><br>
+<b>{$_PWNDATA['cal']['upcoming']}</b><br />
 END;
 print "\n";
 $view_date = time();
@@ -175,23 +179,23 @@ $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $today . "
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
-	$events = $events . "- " . $query_row['title'] . "<br>\n";
+	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
-print "<a href=\"calendar.php?view=date&day=$today\">{$_PWNDATA['cal']['today']}</a>:<br>$events";
+print "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNDATA['cal']['today']}</a>:<br />$events";
 $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $tomorrow . "'");
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
-	$events = $events . "- " . $query_row['title'] . "<br>\n";
+	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
-print "<a href=\"calendar.php?view=date&day=$tomorrow\">{$_PWNDATA['cal']['tomorrow']}</a>:<br>$events";
+print "<a href=\"calendar.php?view=date&amp;day=$tomorrow\">{$_PWNDATA['cal']['tomorrow']}</a>:<br />$events";
 $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $dayafter . "'");
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
-	$events = $events . "- " . $query_row['title'] . "<br>\n";
+	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
-print "<a href=\"calendar.php?view=date&day=$dayafter\">{$_PWNDATA['cal']['day_after']}</a>:<br>$events";
+print "<a href=\"calendar.php?view=date&amp;day=$dayafter\">{$_PWNDATA['cal']['day_after']}</a>:<br />$events";
 print <<<END
 </div>
 <div id="tab4" class="tab_contents" style="display: none;">
