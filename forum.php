@@ -2078,8 +2078,8 @@ $num_posts = $stat_c['COUNT(*)'];
 $num_sticks = $stat_d['COUNT(*)'];
 $last_member = $stat_e['name'];
 $last_member_id = $stat_e['id'];
-$block_content = "";
-$block_content = $block_content . "<table border=\"0px\" cellspacing=\"8px\"><tr><td align=\"center\"><img src=\"smiles/forum_read.png\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_no']}</font></td>\n";
+$block_content = "<div style=\"text-align: center;\">";
+$block_content = $block_content . "<table border=\"0px\" cellspacing=\"8px\" align=\"center\"><tr><td align=\"center\"><img src=\"smiles/forum_read.png\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_no']}</font></td>\n";
 $block_content = $block_content . "<td align=\"center\"><img src=\"smiles/forum_unread.png\" alt=\"{$_PWNDATA['forum']['board_has_new']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_new']}</font></td>\n";
 $block_content = $block_content . "<td width=\"15\">&nbsp;</td>\n";
 $block_content = $block_content . "<td align=\"center\"><img src=\"smiles/read.png\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['no_new_posts']}</font></td>\n";
@@ -2104,7 +2104,7 @@ if ($on_user['level'] >= $site_info['admin_rank']) { $block_content = $block_con
 $block_content = $block_content . "</a> ";
 }
 $block_content = $block_content .  <<<END
-	<br /><font size="1">({$_PWNDATA['forum']['user']} <font class='mod_name'>{$_PWNDATA['forum']['moderator']}</font> <font class='adm_name'>{$_PWNDATA['forum']['admin']}</font>)</font>
+	<br /><font size="1">({$_PWNDATA['forum']['user']} <font class='mod_name'>{$_PWNDATA['forum']['moderator']}</font> <font class='adm_name'>{$_PWNDATA['forum']['admin']}</font>)</font></div>
 END;
 print makeBlock($_PWNDATA['forum']['stats'],$_PWNDATA['forum']['at'] . " " . $site_info['name'],$block_content);
 // End         --------------------------------------------------------------------------
