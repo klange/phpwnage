@@ -45,7 +45,7 @@ END;
 
 
 // News article
-drawBlock($row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), $row['content']);
+drawBlock($row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), BBDecode($row['content'],true));
 
 if ($row['topicid'] != 0){
 $results = mysql_query("SELECT * FROM `topics` WHERE `id`=" . $row['topicid']);

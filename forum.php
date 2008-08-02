@@ -475,7 +475,6 @@ END;
 if ($_GET['do'] == "preview") {
     standardHeaders("",false);
     print <<<END
-</head>
 <script type="text/javascript">
 //<![CDATA[
 function autofitIframe(id){
@@ -497,9 +496,11 @@ function autofitIframe(id){
 }
 //]]>
 </script>
-<body onload="autofitIframe('previewbox')" style="margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px;">
-<table style="border-style: solid solid solid solid; border-width: 1px 1px 1px 1px; padding: 2px 2px 2px 2px; margin: 0px 0px 0px 0px; border-collapse: collapse;" width="100%">
-<tr><td class="pan_body" width="100%"><font class="forum_body">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+</head>
+<body onload="autofitIframe('previewbox')" style="margin: 0px; padding: 0px;">
+<table style="border-style: solid; border-width: 0px; padding: 0px; margin: 0px; border-collapse: collapse;" width="100%">
+<tr><td class="pan_body" width="100%"><div style="border-width: 1px; border-style: solid; padding: 1px;"><font class="forum_body">
 
 END;
     $bbtext = str_replace("!NL!","\n",$_GET['a']);
@@ -507,7 +508,7 @@ END;
     $bbtext = str_replace("\\\"","\"",$bbtext);
     $bbtext = str_replace("\\\\","\\",$bbtext);
     print BBDecode($bbtext);
-    print "\n</font>\n</td></tr></table>\n</body>\n</html>";
+    print "\n</font>\n</div></td></tr></table>\n</body>\n</html>";
     die("");
 }
 
@@ -1095,7 +1096,7 @@ END;
 {$_PWNDATA['pm']['subject']}: <br />
 <input type="text" name="subj" size="51" style="width:100%" value="$subjto"><br />
 {$_PWNDATA['pm']['body']}:<br />
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20">$quoted</textarea><br />
+<textarea rows="11" name="content" style="width:100%;" cols="20">$quoted</textarea><br />
 <input type="submit" value="{$_PWNDATA['pm']['send']}" name="sub">
 END;
     $post_content = $post_content . "<input type=\"hidden\" name=\"board\" value=\"" . $board['id'] . "\">";

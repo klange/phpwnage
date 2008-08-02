@@ -34,7 +34,7 @@ messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting
 // Begin POST functions
 if ($_POST['action'] == "add_article")
 {
-$newcontent = str_replace("\n","<br />", $_POST['content']);
+$newcontent = $_POST['content'];
 mysql_query("INSERT INTO `news` ( `id` , `title` , `content` , `time_code`, `user` )
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . $_SESSION['user_name'] . "'
@@ -55,7 +55,7 @@ $reply = mysql_fetch_array($result);
 mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic['id']);
 mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
 mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-$newcontenta = $newcontent . "\n<br />\n<br />\n<br /><a href=\"article.php?id=" . $article_id . "\">" . $_PWNDATA['discuss_article_here'] . "</a>.";
+$newcontenta = $newcontent . "\n\n\n[url=article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
 mysql_query("UPDATE `news` SET `content` = '" . $newcontenta . "' WHERE `news`.`id` =" . $article_id);
 mysql_query("UPDATE `news` SET `topicid` = " . $topic['id'] . " WHERE `news`.`id` =" . $article_id);
 $message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";
@@ -314,44 +314,8 @@ messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_demoted']
 }
 
 
-print <<<END
-
-<html>
-
-<head>
-<title>
-END;
-print $site_info['name'] . " :: " . $_PWNDATA['admin_page_title'];
-print "</title>\n";
-
-require 'css.php';
-
-require 'header.php';
-
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "<a href=\"index.php\">";
-print $site_info['name'] . "</a> > " . $_PWNDATA['admin_page_title'];
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text">
-END;
-print $site_info['right_data'];
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-
-END;
-
-
+standardHeaders($site_info['name'] . " :: " . $_PWNDATA['admin_page_title'],true);
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $_PWNDATA['admin_page_title'],$site_info['right_data']);
 
 print <<<END
 <td height="269" valign="top">
@@ -364,7 +328,7 @@ END;
 if ($_GET['view'] == "news") {
 // Add article
 $content = <<<END
-<form action="admin.php" method="post">
+<form action="admin.php" method="post" name="form">
 <input type="hidden" name="action" value="add_article">
 <input type="text" name="title" value="{$_PWNDATA['admin']['forms']['article_title']}">
 <input type="checkbox" name="add_to_forum">{$_PWNDATA['admin']['forms']['article_forum_post']}
@@ -384,6 +348,8 @@ while ($cat = mysql_fetch_array($result))
 }
 $content = $content . <<<END
 </SELECT>
+END;
+$content = $content . printPoster('content') . <<<END
 <textarea rows="6" name="content" style="width:95%;">{$_PWNDATA['admin']['forms']['article_content']}</textarea><br />
 END;
 $content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['article_add']}\"></form>";

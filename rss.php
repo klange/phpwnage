@@ -35,7 +35,7 @@ print "	<item>\n		<title>" . htmlspecialchars($row['title']) . "</title>\n";
 print "     <pubDate>" . date("D, d M Y H:i:s T", $row['time_code']) . "</pubDate>\n";
 print "		<link>" . $site_info['url'] . "article.php?id=" . $row['id'] . "</link>\n";
 $rowtemp = trim($row['content'], "\n");
-print "		<description><![CDATA[" . $rowtemp . "]]></description>\n";
+print "		<description><![CDATA[" . BBDecode($rowtemp,true) . "]]></description>\n";
 print "	</item>\n";
 }
 print "</channel>\n</rss>";

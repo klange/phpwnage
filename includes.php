@@ -175,9 +175,15 @@ function bbCSharp($stuff) {
     $stuff = "<font style=\"font-family: monospaced;\"><b>C#:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
     return $stuff;
 }
-function BBDecode($content) {
-    $content = str_replace("<","&lt;",$content); // Kill HTML in posts
-    $content = str_replace(">","&gt;",$content);
+function BBDecode($content,$allowhtml = false) {
+    if (!$allowhtml) {
+        $content = str_replace("<","&lt;",$content); // Kill HTML in posts
+        $content = str_replace(">","&gt;",$content);
+    } else {
+        $content = str_replace("<br>","<br />",$content);
+        $order   = array("\r\n<br />", "\n<br />", "\r<br />");
+        $content = str_replace($order,"\n",$content); // line break
+    }
     $order   = array("\r\n", "\n", "\r");
     $content = str_replace($order,"<br />",$content); // line break
     // Standard bbCode replacements follow

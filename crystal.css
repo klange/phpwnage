@@ -212,4 +212,8 @@ a:hover {color: #75507b; text-decoration: underline; }
 
 a:link img, a:visited img { border-style: none }
 
+textarea {
+    font-family: Tahoma, sans;
+    font-size: 10pt;
+}
 

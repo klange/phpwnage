@@ -51,7 +51,7 @@ if ($_GET['show'] == 'all') {
 }
 while ($row = mysql_fetch_array($result)) {
 	// News article
-	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), str_replace("<br>","<br />",$row['content']));
+	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), BBDecode($row['content'],true));
 }
 print <<<END
 	</table>
