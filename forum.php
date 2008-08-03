@@ -1360,33 +1360,7 @@ if ($_GET['do'] == "newreply") {
     $post_title_add = " :: " . $board['title'] . " :: {$_PWNDATA['forum']['replying_to']} " . $topic['title'];
     $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > {$_PWNDATA['forum']['replying_to']} <a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topic['title'] . "</a>";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $topic['title'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['forum']['replying'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-END;
+    $block_content = "";
     if ($_GET['quote'] != 0) {
 	    $result = mysql_query("SELECT * FROM posts WHERE id='" . $_GET['quote'] . "'", $db);
 	    $quoted = mysql_fetch_array($result);
@@ -1395,38 +1369,29 @@ END;
 	    $postquoted = preg_replace("/(\[quote\])(.+?)(\[\/quote\])/si","",$quoted['content']);
 	    $cont = "[quote][b]{$_PWNDATA['forum']['original']}[/b] " . $quotedauthor['name'] . "\n" . $postquoted . "[/quote]";
     }
-    $post_content = $post_content .  printPoster('content') . <<<END
+    $block_content = $block_content .  printPoster('content') . <<<END
 <form action="forum.php" method="post" name="form">
-<input type="hidden" name="action" value="new_reply">
+<input type="hidden" name="action" value="new_reply" />
 {$_PWNDATA['forum']['body']}:<br />
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20" onselect="copySelection(this)">$cont</textarea><br />
-<input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub">
+<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">$cont</textarea><br />
+<input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" />
 END;
-    $post_content = $post_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\">";
-    $post_content = $post_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\"></form>";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" /></form>";
     $resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
-    $post_content = $post_content . "<br /><b>{$_PWNDATA['forum']['recent']}:</b><table class=\"forum_base\" width=\"100%\">\n";
+    $block_content = $block_content . "<br /><b>{$_PWNDATA['forum']['recent']}:</b><table class=\"forum_base\" width=\"100%\">\n";
     while ($rowz = mysql_fetch_array($resultz)) {
         $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         $auth_name = $post_author['name'];
         $dec_post = BBDecode($rowz['content']);
-        $post_content = $post_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\">$dec_post</font></td></tr>\n";
+        $block_content = $block_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\">$dec_post</font></td></tr>\n";
     }
-    $post_content = $post_content .  <<<END
-	</table></font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
+    $block_content = $block_content .  <<<END
+	</table>
 END;
+
+    $post_content = makeBlock($topic['title'],$_PWNDATA['forum']['replying'],$block_content);
 }
 
 // Edit a past post
