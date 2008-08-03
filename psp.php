@@ -23,21 +23,23 @@ require 'includes.php';
 
 
 print <<<END
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
 <title>
 END;
 print $site_info['name'] . " :: Mobile";
 print <<<END
 </title>
-<style>
+<meta http-equiv="Content-type" content="text/html;charset=windows-1252" />
+<style type="text/css">
 img {width:120;}
 </style>
 </head>
 
 <body>
 
-<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" height="351">
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse">
   <tr>
     <td width="100%"  height="19"><center>
 END;
@@ -46,7 +48,7 @@ print <<<END
 </center></td>
   </tr>
   <tr>
-    <td width="100%" height="331" valign="top"><table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%">
+    <td width="100%" height="331" valign="top"><table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
 END;
 $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($result)) {
@@ -61,7 +63,7 @@ print <<<END
       <tr>
         <td width="100%">
 END;
-print $row['content'];
+print BBDecode($row['content'],true);
 print "</td></tr>";
 }
 print <<<END
@@ -75,11 +77,17 @@ print <<<END
 	</center></td>
       </tr>
 </table>
-
+END;
+   $mtime = microtime();
+   $mtime = explode(" ",$mtime);
+   $mtime = $mtime[1] + $mtime[0];
+   $endtime = $mtime;
+   $totaltime = ($endtime - $starttime); 
+print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
+print <<<END
 </body>
 
 </html>
 END;
-
-
+die('');
 ?>
