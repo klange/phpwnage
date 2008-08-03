@@ -1318,60 +1318,25 @@ if ($_GET['do'] == "newtopic") {
     $post_title_add = " :: " . $board['title'] . " :: " . $_PWNDATA['forum']['new_topic'];
     $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['new_topic'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $board['title'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['forum']['new_topic'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-END;
-    $post_content = $post_content .  printPoster('content') . <<<END
+    $block_content = "";
+    $block_content = $block_content .  printPoster('content') . <<<END
 <form action="forum.php" method="post" name="form">
-<input type="hidden" name="action" value="new_topic">
+<input type="hidden" name="action" value="new_topic" />
 {$_PWNDATA['forum']['subject']}: <br />
-<input type="text" name="subj" size="51" style="width:100%"><br />
+<input type="text" name="subj" size="51" style="width:100%" /><br />
 {$_PWNDATA['forum']['body']}:<br />
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20" onselect="copySelection(this)"></textarea><br />
-<input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub"><br />
+<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)"></textarea><br />
+<input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" /><br />
 END;
-    $post_content = $post_content . "<input type=\"hidden\" name=\"board\" value=\"" . $board['id'] . "\">";
-    $post_content = $post_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\">";
-    $post_content = $post_content .  <<<END
+    $block_content = $block_content . "<input type=\"hidden\" name=\"board\" value=\"" . $board['id'] . "\" />";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
+    $block_content = $block_content .  <<<END
 	<input type="checkbox" name="add_poll" /> {$_PWNDATA['forum']['poll_add']}<br />
-	{$_PWNDATA['forum']['poll_title']}: <input type="text" name="p_name" width="300" /><br />
+	{$_PWNDATA['forum']['poll_title']}: <input type="text" name="p_name" /><br />
 	{$_PWNDATA['forum']['poll_options']}: <input type="text" name="op1" /><br />
-	</form></font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
+	</form>
 END;
+    $post_content = makeBlock($board['title'],$_PWNDATA['forum']['new_topic'],$block_content);  
 }
 
 // Create a new reply.
