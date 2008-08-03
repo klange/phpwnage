@@ -214,4 +214,9 @@ textarea {
     font-family: Tahoma, sans;
     font-size: 10pt;
 }
+.tab {
+    border-width: 1px 1px 1px 1px;
+    border-color: #000000;
+    width: 100%;
+}
 

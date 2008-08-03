@@ -30,7 +30,7 @@ if (isset($_SESSION['sess_id'])) {
     $ip = $_SERVER['REMOTE_ADDR'];
     $name = $_SESSION['user_name'];
     mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_SESSION['user_pass'] . "', 'Admin, $name', '" . $ip . "' );");
-    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&admin=yes"); 
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;amp;admin=yes"); 
 }
 
 // XXX: Begin POST functions
@@ -369,7 +369,6 @@ standardHeaders($site_info['name'] . " :: " . $_PWNDATA['admin_page_title'],true
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $_PWNDATA['admin_page_title'],$site_info['right_data']);
 
 print <<<END
-<td height="269" valign="top">
 <table class="borderless_table" width="100%">
 END;
 
@@ -378,29 +377,29 @@ if ($_GET['view'] == "news") {
 // Add article
 $content = <<<END
 <form action="admin.php" method="post" name="form">
-<input type="hidden" name="action" value="add_article">
-<input type="text" name="title" value="{$_PWNDATA['admin']['forms']['article_title']}">
-<input type="checkbox" name="add_to_forum">{$_PWNDATA['admin']['forms']['article_forum_post']}
-<SELECT name="board">
+<input type="hidden" name="action" value="add_article" />
+<input type="text" name="title" value="{$_PWNDATA['admin']['forms']['article_title']}" />
+<input type="checkbox" name="add_to_forum" />{$_PWNDATA['admin']['forms']['article_forum_post']}
+<select name="board">
 END;
 $result = mysql_query("SELECT * FROM `categories` ORDER BY `orderid`");
 while ($cat = mysql_fetch_array($result))
 {
-    $content = $content . "\n<OPTGROUP label=\"" . $cat['name'] . "\">";
+    $content = $content . "\n<optgroup label=\"" . $cat['name'] . "\">";
     $catid = $cat['id'];
     $resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
     while ($board = mysql_fetch_array($resultb)) {
-        $content = $content . "\n<OPTION label=\"" . $board['title'] . "\" value=" . $board['id'] . ">" . $board['title'] . "</OPTION>";
+        $content = $content . "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
     }
-    $content = $content . "\n</OPTGROUP>";
+    $content = $content . "\n</optgroup>";
 }
 $content = $content . <<<END
-</SELECT>
+</select>
 END;
 $content = $content . printPoster('content') . <<<END
-<textarea rows="6" name="content" style="width:95%;">{$_PWNDATA['admin']['forms']['article_content']}</textarea><br />
+<textarea rows="6" name="content" style="width:95%;" cols="80" >{$_PWNDATA['admin']['forms']['article_content']}</textarea><br />
 END;
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['article_add']}\"></form>";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['article_add']}\" /></form>";
 drawBlock("{$_PWNDATA['admin']['forms']['article_add']}","{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']),$content);
 
 // View article, jump to edit
@@ -417,7 +416,7 @@ $back = "";
 }
 $content = $content . "<tr><td $back>";
 $content = $content . $article['title'] . " ({$_PWNDATA['posted_on']} " . date("n/j/y", $article['time_code']) . "; {$_PWNDATA['posted_on_by']} " . $article['user'] . ")</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=del_news&id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"article.php?id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
+$content = $content . "<td $back><a href=\"admin.php?do=del_news&amp;id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"article.php?id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
 $content = $content . "</tr>";
 
 }
@@ -430,13 +429,13 @@ if ($_GET['view'] == "pages") {
 // Add a new page
 $content = <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="custom_page">
-{$_PWNDATA['admin']['forms']['page_link']}: <input type="text" name="name" value=""><br />
-{$_PWNDATA['admin']['forms']['page_title']}: <input type="text" name="display_name" value=""><br />
-{$_PWNDATA['admin']['forms']['page_content']}: <br /><textarea rows="6" name="content" style="width:95%;"></textarea><br />
-{$_PWNDATA['admin']['forms']['page_author']}: <input type="text" name="author" value=""><br />
-{$_PWNDATA['admin']['forms']['page_sidebar']}(true / false): <input type="text" name="showsidebar" value="false"><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['page_add']}"></form>
+<input type="hidden" name="action" value="custom_page" />
+{$_PWNDATA['admin']['forms']['page_link']}: <input type="text" name="name" value="" /><br />
+{$_PWNDATA['admin']['forms']['page_title']}: <input type="text" name="display_name" value="" /><br />
+{$_PWNDATA['admin']['forms']['page_content']}: <br /><textarea rows="6" name="content" style="width:95%;" cols="80"></textarea><br />
+{$_PWNDATA['admin']['forms']['page_author']}: <input type="text" name="author" value="" /><br />
+{$_PWNDATA['admin']['forms']['page_sidebar']}(true / false): <input type="text" name="showsidebar" value="false"/><br />
+<input type="submit" value="{$_PWNDATA['admin']['forms']['page_add']}" /></form>
 END;
 drawBlock("{$_PWNDATA['admin']['forms']['page_add']}","",$content);
 
@@ -454,7 +453,7 @@ $back = "";
 }
 $content = $content . "<tr><td $back>";
 $content = $content . $page['display_name'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=del_page&page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"pages.php?page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
+$content = $content . "<td $back><a href=\"admin.php?do=del_page&amp;page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"pages.php?page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
 $content = $content . "</tr>";
 
 }
@@ -497,9 +496,9 @@ $back = "class=\"odd_cell\"";
 $back = "";
 }
 $catid = $cat['id'];
-$content = $content . "<tr><td $back><input type=\"radio\" name=\"cats\" value=\"$catid\"><b>\n";
-$content = $content . $cat['name'] . "</b> <a href=\"admin.php?do=edit_cat&id=$catid\">[{$_PWNDATA['admin']['forms']['edit']}]</a></td>\n";
-$content = $content . "<td $back><b><a href=\"admin.php?do=del_cat&cat=" . $cat['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_cat&g=up&id=" . $cat['id'] . "&cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_up']}</a>, <a href=\"admin.php?do=mov_cat&g=down&id=" . $cat['id'] . "&cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_down']}</a></b></td>\n";
+$content = $content . "<tr><td $back><input type=\"radio\" name=\"cats\" value=\"$catid\" /><b>\n";
+$content = $content . $cat['name'] . "</b> <a href=\"admin.php?do=edit_cat&amp;id=$catid\">[{$_PWNDATA['admin']['forms']['edit']}]</a></td>\n";
+$content = $content . "<td $back><b><a href=\"admin.php?do=del_cat&amp;cat=" . $cat['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_cat&amp;g=up&amp;id=" . $cat['id'] . "&amp;cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_up']}</a>, <a href=\"admin.php?do=mov_cat&amp;g=down&amp;id=" . $cat['id'] . "&amp;cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_down']}</a></b></td>\n";
 $content = $content . "</tr>";
 
 	$resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
@@ -513,8 +512,8 @@ $back = "";
 }
 		$content = $content . "<tr><td $back> ---- ";
 		$brdid = $board['id'];
-		$content = $content . $board['title'] . " <a href=\"admin.php?do=edit_brd&id=" . $board['id'] . "\">[{$_PWNDATA['admin']['forms']['edit']}]</a></td>\n";
-		$content = $content . "<td $back><a href=\"admin.php?do=del_brd&id=" . $board['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_brd&g=up&id=" . $board['id'] . "&cur=" . $board['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_up']}</a>, <a href=\"admin.php?do=mov_brd&g=down&id=" . $board['id'] . "&cur=" . $board['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_down']}</a>, <a href=\"javascript: move_board('$brdid')\">{$_PWNDATA['admin']['forms']['forum_move_to_cat']}</a></td>\n";
+		$content = $content . $board['title'] . " <a href=\"admin.php?do=edit_brd&amp;id=" . $board['id'] . "\">[{$_PWNDATA['admin']['forms']['edit']}]</a></td>\n";
+		$content = $content . "<td $back><a href=\"admin.php?do=del_brd&amp;id=" . $board['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_brd&amp;g=up&amp;id=" . $board['id'] . "&amp;cur=" . $board['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_up']}</a>, <a href=\"admin.php?do=mov_brd&amp;g=down&amp;id=" . $board['id'] . "&amp;cur=" . $board['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_down']}</a>, <a href=\"javascript: move_board('$brdid')\">{$_PWNDATA['admin']['forms']['forum_move_to_cat']}</a></td>\n";
 		$content = $content . "</tr>";
 		$lastbrd = $board['id'];
 	}
@@ -524,16 +523,16 @@ $back = "class=\"odd_cell\"";
 } else {
 $back = "";
 }
-$content = $content . "<tr><td $back> -- <b><a href=\"admin.php?do=add_brd&cat=" . $cat['id'] . "&last=$lastbrd\">[{$_PWNDATA['admin']['forms']['forum_add_board']}]</a></b></td></tr>\n";
+$content = $content . "<tr><td $back> -- <b><a href=\"admin.php?do=add_brd&amp;cat=" . $cat['id'] . "&amp;last=$lastbrd\">[{$_PWNDATA['admin']['forms']['forum_add_board']}]</a></b></td></tr>\n";
 $lastcat = $catid;
 }
-$content = $content . "</table></form><b><a href=\"admin.php?do=new_cat&last=$lastcat\">[{$_PWNDATA['admin']['forms']['forum_add_cat']}]</a></b>\n";
+$content = $content . "</table></form><b><a href=\"admin.php?do=new_cat&amp;last=$lastcat\">[{$_PWNDATA['admin']['forms']['forum_add_cat']}]</a></b>\n";
 drawBlock("{$_PWNDATA['admin']['forms']['forums']} - {$_PWNDATA['admin']['forms']['forum_order']}","",$content);
 // Smiley Control
 $content = "<b>{$_PWNDATA['admin']['forms']['forum_smileys']}: ({$_PWNDATA['admin']['forms']['forum_click_edit']})</b><br />";
 $smilesSet = mysql_query("SELECT * FROM `smileys`");
 while ($smile = mysql_fetch_array($smilesSet)) {
-$content = $content . "<a href=\"admin.php?do=editsmiley&id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\"></a>";
+$content = $content . "<a href=\"admin.php?do=editsmiley&amp;id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\"></a>";
 }
 $smileyList = "<select name=\"smileys\">";
 $smileyStyle = "<style>";
@@ -561,11 +560,11 @@ $smileyStyle = $smileyStyle . "\nselect { height: 3ex }\n</style>";
 $content = $content . "<br />" . <<<END
 <br />
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="addsmiley">
-{$_PWNDATA['admin']['forms']['forum_smileys_code']}: <input type="text" name="code" value="">
+<input type="hidden" name="action" value="addsmiley" />
+{$_PWNDATA['admin']['forms']['forum_smileys_code']}: <input type="text" name="code" value="" />
 $smileyStyle
 $smileyList<br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['forum_smileys_add']}"></form>
+<input type="submit" value="{$_PWNDATA['admin']['forms']['forum_smileys_add']}" /></form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['forum_smileys'],"",$content);
 }
@@ -604,12 +603,12 @@ $smileyList = $smileyList . "</select>";
 $smileyStyle = $smileyStyle . "\nselect { height: 3ex }\n</style>";
 $content = $content . "<br />" . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="editsmiley">
-<input type="hidden" name="id" value="$id">
-{$_PWNDATA['admin']['forms']['forum_smileys_code']}: <input type="text" name="code" value="$code">
+<input type="hidden" name="action" value="editsmiley" />
+<input type="hidden" name="id" value="$id" />
+{$_PWNDATA['admin']['forms']['forum_smileys_code']}: <input type="text" name="code" value="$code" />
 $smileyStyle
 $smileyList<br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['forum_smileys_save']}"><input type="button" value="{$_PWNDATA['admin']['forms']['forum_smileys_delete']}" onclick="window.location.href='admin.php?do=delsmile&id=$id'"></form>
+<input type="submit" value="{$_PWNDATA['admin']['forms']['forum_smileys_save']}" /><input type="button" value="{$_PWNDATA['admin']['forms']['forum_smileys_delete']}" onclick="window.location.href='admin.php?do=delsmile&amp;id=$id'" /></form>
 END;
 
 drawBlock($_PWNDATA['admin']['forms']['forum_smileys_edit'],"",$content);
@@ -620,11 +619,11 @@ $neworder = $_GET['last'] + 1;
 $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="add_category">
+<input type="hidden" name="action" value="add_category" />
 END;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['forum_cat_name']}\"><br />";
-$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neworder\">";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_cat']}\"></form>";
+$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['forum_cat_name']}\" /><br />";
+$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neworder\" />";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_cat']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_add_cat'],"",$content);
 }
 
@@ -636,11 +635,11 @@ $cat_name = $cat['name'];
 $cat_id = $cat['id'];
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="edit_category">
-<input type="hidden" name="id" value="$cat_id">
+<input type="hidden" name="action" value="edit_category" />
+<input type="hidden" name="id" value="$cat_id" />
 END;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"$cat_name\"><br />";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_save_cat']}\"></form>";
+$content = $content . "<input name=\"title\" type=\"text\" value=\"$cat_name\" /><br />";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_save_cat']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_edit_cat'],"",$content);
 }
 
@@ -648,19 +647,19 @@ if ($_GET['do'] == "add_brd") {
 $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="add_board">
+<input type="hidden" name="action" value="add_board" />
 END;
 $newcat = $_GET['cat'];
 $neword = $_GET['last'] + 1;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['forum_board_name']}\"><br />";
-$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\">{$_PWNDATA['admin']['forms']['forum_board_desc']}</textarea><br />\n";
-$content = $content . "<input name=\"cat\" type=\"hidden\" value=\"$newcat\">";
-$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neword\">";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"0\"><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"1\"><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"1\"><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_url']}: <input name=\"link\" type=\"text\" value=\"NONE\"><br />";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_board']}\"></form>";
+$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['forum_board_name']}\" /><br />";
+$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\" cols=\"80\">{$_PWNDATA['admin']['forms']['forum_board_desc']}</textarea><br />\n";
+$content = $content . "<input name=\"cat\" type=\"hidden\" value=\"$newcat\" />";
+$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neword\" />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"0\" /><br />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"1\" /><br />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"1\" /><br />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_url']}: <input name=\"link\" type=\"text\" value=\"NONE\" /><br />";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_board']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_add_board'],"",$content);
 }
 
@@ -677,16 +676,16 @@ $brd_id = $board['id'];
 $brd_lnk = $board['link'];
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="edit_board">
-<input type="hidden" name="id" value="$brd_id">
+<input type="hidden" name="action" value="edit_board" />
+<input type="hidden" name="id" value="$brd_id" />
 END;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"$brd_name\"><br />";
-$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\">$brd_desc</textarea><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"$brd_perma\"><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"$brd_permb\"><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"$brd_permc\"><br />";
+$content = $content . "<input name=\"title\" type=\"text\" value=\"$brd_name\" /><br />";
+$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\" cols=\"80\">$brd_desc</textarea><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"$brd_perma\" /><br />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"$brd_permb\" /><br />";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"$brd_permc\" /><br />";
 $content = $content . "{$_PWNDATA['admin']['forms']['forum_board_url']}: <input name=\"link\" type=\"text\" value=\"$brd_lnk\"><br />";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_board_save']}\"></form>";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_board_save']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_board_edit'],"",$content);
 }
 
@@ -694,11 +693,11 @@ if ($_GET['view'] == "blocks") {
 $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="add_block">
+<input type="hidden" name="action" value="add_block" />
 END;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['block_name']}\"><br />";
-$content = $content . "<textarea rows=\"7\" name=\"content\" style=\"width:95%;\">{$_PWNDATA['admin']['forms']['block_content']}</textarea><br />\n";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_add']}\"></form>";
+$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['block_name']}\" /><br />";
+$content = $content . "<textarea rows=\"7\" name=\"content\" style=\"width:95%;\" cols=\"80\">{$_PWNDATA['admin']['forms']['block_content']}</textarea><br />\n";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_add']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['block_add'],"",$content);
 $content = " ";
 
@@ -725,7 +724,7 @@ $result = mysql_query("SELECT * FROM blocks ORDER BY `id`", $db);
 while ($row = mysql_fetch_array($result)) {
 $block_id = $row['id'];
 // Print the title
-$content = $content . "<form action=\"admin.php\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"edit_block\">" . makeBlock("<input type=\"hidden\" name=\"blockid\" value=\"" . $row['id'] . "\"><input type=\"text\" name=\"title\" value=\"" . $row['title'] . "\">","<a href=\"admin.php?do=del_block&id=$block_id\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_block&g=up&id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_up']}</a>, <a href=\"admin.php?do=mov_block&g=down&id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_down']}</a>", "<textarea rows=\"9\" name=\"content\" style=\"width:100%;\">" . $row['content'] . "</textarea><br />\n<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_save']}\">") . "</form>";
+$content = $content . "<form action=\"admin.php\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"edit_block\" />" . makeBlock("<input type=\"hidden\" name=\"blockid\" value=\"" . $row['id'] . "\" /><input type=\"text\" name=\"title\" value=\"" . $row['title'] . "\" />","<a href=\"admin.php?do=del_block&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_block&amp;g=up&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_up']}</a>, <a href=\"admin.php?do=mov_block&amp;g=down&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_down']}</a>", "<textarea rows=\"9\" name=\"content\" style=\"width:100%;\" cols=\"80\">" . $row['content'] . "</textarea><br />\n<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_save']}\" />") . "</form>";
 }
 $content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['block_edit'],"",$content);
@@ -736,14 +735,14 @@ if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_pa
 $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="site_info">
+<input type="hidden" name="action" value="site_info" />
 END;
-$content = $content . "{$_PWNDATA['admin']['forms']['si_name']}: <input name=\"name\" type=\"text\" value=\"" . $site_info['name'] . "\"><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_url']}: <input name=\"url\" type=\"text\" value=\"" . $site_info['url'] . "\"><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['si_name']}: <input name=\"name\" type=\"text\" value=\"" . $site_info['name'] . "\" /><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['si_url']}: <input name=\"url\" type=\"text\" value=\"" . $site_info['url'] . "\" /><br />\n";
 $content = $content . "{$_PWNDATA['admin']['forms']['si_copy']}: <input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\"><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea rows=\"1\" name=\"right_data\" style=\"width:95%;\">" . $site_info['right_data'] . "</textarea><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_header']}: <input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\"><br />\n";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\"></form>";
+$content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea rows=\"1\" name=\"right_data\" style=\"width:95%;\"  cols=\"80\" >" . $site_info['right_data'] . "</textarea><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['si_header']}: <input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" /><br />\n";
+$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['si'],"",$content);
 
 
@@ -783,12 +782,12 @@ document.getElementById('extra_log').style.display = "inline"
 </script>
 <a href="javascript:showlog()">{$_PWNDATA['admin']['forms']['si_log_show']}</a>
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="clear_security">
+<input type="hidden" name="action" value="clear_security" />
 <input type="hidden" name="pw" value="
 END;
 //"
 $content = $content . $_GET['pw'];
-$content = $content . "\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_log_clear']}\"></form>";
+$content = $content . "\" /><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_log_clear']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['si_log'],"",$content);
 }
 
@@ -807,10 +806,10 @@ $back = "class=\"odd_cell\"";
 } else {
 $back = "";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&id=" . $member['id'] . "\">" . $member['name'] . "</a></td>\n";
-$content = $content . "<td $back><a href=\"forum.php?do=newpm&to=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_pm']}</a></td>\n";
-$content = $content . "<td $back><a href=\"admin.php?do=edit_prof&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_edit']}</a></td>\n";
-$content = $content . "<td $back><a href=\"admin.php?do=del_user&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_delete']}</a></td>\n";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td>\n";
+$content = $content . "<td $back><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_pm']}</a></td>\n";
+$content = $content . "<td $back><a href=\"admin.php?do=edit_prof&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_edit']}</a></td>\n";
+$content = $content . "<td $back><a href=\"admin.php?do=del_user&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_delete']}</a></td>\n";
 $content = $content . "</tr>";
 }
 $content = $content . "</table>";
@@ -837,26 +836,26 @@ $uaim = $vuser['aim'];
 $uxfire = $vuser['xfire'];
 $ulive = $vuser['live'];
 $post_content = $post_content . <<<END
-<form method="POST" action="forum.php" name="form">
-  <input type="hidden" name="action" value="edit_profile">
-  <input type="hidden" name="id" value="$uid">
-  <input type="hidden" name="adm" value="true">
-  {$_PWNDATA['profile']['username']}: $uname <input type="hidden" name="name" size="20" value="$uname"><br />
-  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" value="$umail"><br />
-  {$_PWNDATA['profile']['password']}: <input type="password" name="apass" size="20" value=""><br />
-  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" value=""><br />
+<form method="post" action="forum.php" name="form">
+  <input type="hidden" name="action" value="edit_profile" />
+  <input type="hidden" name="id" value="$uid" />
+  <input type="hidden" name="adm" value="true" />
+  {$_PWNDATA['profile']['username']}: $uname <input type="hidden" name="name" size="20" value="$uname" /><br />
+  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" value="$umail" /><br />
+  {$_PWNDATA['profile']['password']}: <input type="password" name="apass" size="20" value="" /><br />
+  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" value="" /><br />
   <br /><strong>{$_PWNDATA['profile']['messaging']}:</strong><br />
-  MSN: <input type="text" name="msn" size="20" value="$umsn"><br />
-  AIM: <input type="text" name="aim" size="20" value="$uaim"><br />
-  Yahoo: <input type="text" name="yah" size="20" value="$uyah"><br />
-  ICQ: <input type="text" name="icq" size="20" value="$uicq"><br />
-  xFire: <input type="text" name="xfire" size="20" value="$uxfire"><br />
-  Gamertag: <input type="text" name="live" size="20" value="$ulive"><br />
+  MSN: <input type="text" name="msn" size="20" value="$umsn" /><br />
+  AIM: <input type="text" name="aim" size="20" value="$uaim" /><br />
+  Yahoo: <input type="text" name="yah" size="20" value="$uyah" /><br />
+  ICQ: <input type="text" name="icq" size="20" value="$uicq" /><br />
+  xFire: <input type="text" name="xfire" size="20" value="$uxfire" /><br />
+  Gamertag: <input type="text" name="live" size="20" value="$ulive" /><br />
   {$_PWNDATA['profile']['sig']}:<br />
-  <textarea rows="5" name="sig" style="width:100%">$sig</textarea><br />
+  <textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea><br />
   {$_PWNDATA['profile']['avatar']}:<br />
-  <input type="text" name="avatar" size="20" value="$ava"><br /><br />
-  <input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub"></form>
+  <input type="text" name="avatar" size="20" value="$ava" /><br /><br />
+  <input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub" /></form>
 END;
 }
 drawBlock($_PWNDATA['admin']['forms']['members_edit'],"",$post_content);
@@ -866,14 +865,14 @@ if ($_GET['view'] == "bans") {
 if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['banunban']); }
 $content = <<<END
 <form action="admin.php" method="post">
-<input type="hidden" name="action" value="add_ban">
-IP: <input type="text" name="ip" value="XX.XX.XX.XX"><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['banip']}" name="ban">
+<input type="hidden" name="action" value="add_ban" />
+IP: <input type="text" name="ip" value="XX.XX.XX.XX" /><br />
+<input type="submit" value="{$_PWNDATA['admin']['forms']['banip']}" name="ban" />
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['banip'],"",$content);
 if ($_GET['all'] != 1) {
-$content = "({$_PWNDATA['admin']['forms']['ban_limit']}, <a href=\"admin.php?view=bans&all=1\">{$_PWNDATA['admin']['forms']['ban_click']}</a> {$_PWNDATA['admin']['forms']['ban_showall']})";
+$content = "({$_PWNDATA['admin']['forms']['ban_limit']}, <a href=\"admin.php?view=bans&amp;all=1\">{$_PWNDATA['admin']['forms']['ban_click']}</a> {$_PWNDATA['admin']['forms']['ban_showall']})";
 $members_result = mysql_query("SELECT * FROM `banlist` LIMIT 20");
 } else {
 $content = "";
@@ -890,7 +889,7 @@ $back = "class=\"odd_cell\"";
 $back = "";
 }
 $content = $content . "<tr><td $back>" . $ban['ip'] . "</td>\n";
-$content = $content . "<td $back><a href=\"admin.php?do=del_ban&ban=" . $ban['ip'] . "\">{$_PWNDATA['admin']['forms']['ban_lift']}</a></td>\n";
+$content = $content . "<td $back><a href=\"admin.php?do=del_ban&amp;ban=" . $ban['ip'] . "\">{$_PWNDATA['admin']['forms']['ban_lift']}</a></td>\n";
 $content = $content . "</tr>\n";
 }
 $content = $content . "</table>";
@@ -903,27 +902,27 @@ $content = "<b>{$_PWNDATA['admin']['forms']['ranks_custom']}:</b><br />";
 // List ranks
 $results = mysql_query("SELECT * FROM `ranks`");
 while ($rank = mysql_fetch_array($results)) {
-$content = $content . $rank['name'] . " - {$_PWNDATA['admin']['forms']['ranks_level']}: " . $rank['value'] . " {$_PWNDATA['admin']['forms']['ranks_posts']}: " . $rank['posts'] . " [<a href=\"admin.php?do=delrank&rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]<br />";
+$content = $content . $rank['name'] . " - {$_PWNDATA['admin']['forms']['ranks_level']}: " . $rank['value'] . " {$_PWNDATA['admin']['forms']['ranks_posts']}: " . $rank['posts'] . " [<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]<br />";
 }
 $modrank = $site_info['mod_rank'];
 $admrank = $site_info['admin_rank'];
 $content = $content . <<<END
-<form action="admin.php" method="POST">
-<input type="hidden" name="action" value="addrank">
+<form action="admin.php" method="post">
+<input type="hidden" name="action" value="addrank" />
 <b>{$_PWNDATA['admin']['forms']['ranks_add']}:</b><br />
-{$_PWNDATA['admin']['forms']['ranks_level']}: <input type="text" name="level" value="-1"> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
-{$_PWNDATA['admin']['forms']['ranks_posts']}: <input type="text" name="posts" value="-1"> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
-{$_PWNDATA['admin']['forms']['ranks_name']}: <input type="text" name="name" value=""><br />
-<input type="submit" value="Add Rank">
+{$_PWNDATA['admin']['forms']['ranks_level']}: <input type="text" name="level" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
+{$_PWNDATA['admin']['forms']['ranks_posts']}: <input type="text" name="posts" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
+{$_PWNDATA['admin']['forms']['ranks_name']}: <input type="text" name="name" value="" /><br />
+<input type="submit" value="Add Rank" />
 </form>
-<form action="admin.php" method="POST" name="form">
-<input type="hidden" name="action" value="setranks">
-<input type="hidden" name="mod_old" value="$modrank">
-<input type="hidden" name="adm_old" value="$admrank">
+<form action="admin.php" method="post" name="form">
+<input type="hidden" name="action" value="setranks" />
+<input type="hidden" name="mod_old" value="$modrank" />
+<input type="hidden" name="adm_old" value="$admrank" />
 <b>{$_PWNDATA['admin']['forms']['ranks_set']}</b> <i>{$_PWNDATA['admin']['forms']['ranks_set_warn']}</i><br />
-{$_PWNDATA['admin']['forms']['ranks_mod']}: <input type="text" name="mod" value="$modrank"><br />
-{$_PWNDATA['admin']['forms']['ranks_adm']}: <input type="text" name="adm" value="$admrank"><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['ranks_save']}">
+{$_PWNDATA['admin']['forms']['ranks_mod']}: <input type="text" name="mod" value="$modrank" /><br />
+{$_PWNDATA['admin']['forms']['ranks_adm']}: <input type="text" name="adm" value="$admrank" /><br />
+<input type="submit" value="{$_PWNDATA['admin']['forms']['ranks_save']}" />
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
@@ -944,8 +943,8 @@ $add = "";
 if ($member['level'] < 1) {
 $add = " {$_PWNDATA['admin']['forms']['ranks_banned']}";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . $add . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . $add . "</td>";
+$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
@@ -959,8 +958,8 @@ $back = "class=\"odd_cell\"";
 } else {
 $back = "";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
+$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
@@ -974,8 +973,8 @@ $back = "class=\"odd_cell\"";
 } else {
 $back = "";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
+$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $content = $content . "</table>";
@@ -989,24 +988,24 @@ $content = <<<END
 <table class="borderless_table" width="100%">
   <tr>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=news"><img border="0" src="admin/news.png"><br />
+    <a href="admin.php?view=news"><img border="0" src="admin/news.png" alt="{$_PWNDATA['admin']['groups']['news']}"/><br />
     {$_PWNDATA['admin']['groups']['news']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=forum"><img border="0" src="admin/forums.png" ><br />
+    <a href="admin.php?view=forum"><img border="0" src="admin/forums.png" alt="{$_PWNDATA['admin']['groups']['forums']}" /><br />
     {$_PWNDATA['admin']['groups']['forums']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=blocks"><img border="0" src="admin/blocks.png" ><br />
+    <a href="admin.php?view=blocks"><img border="0" src="admin/blocks.png" alt="{$_PWNDATA['admin']['groups']['blocks']}" /><br />
     {$_PWNDATA['admin']['groups']['blocks']}</a></td>
   </tr>
   <tr>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=members"><img border="0" src="admin/members.png" ><br />
+    <a href="admin.php?view=members"><img border="0" src="admin/members.png" alt="{$_PWNDATA['admin']['groups']['members']}" /><br />
     {$_PWNDATA['admin']['groups']['members']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="forum.php?do=logoff"><img border="0" src="admin/logout.png" ><br />
+    <a href="forum.php?do=logoff"><img border="0" src="admin/logout.png" alt="{$_PWNDATA['admin']['groups']['logout']}" /><br />
     {$_PWNDATA['admin']['groups']['logout']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=pages"><img border="0" src="admin/pages.png" ><br />
+    <a href="admin.php?view=pages"><img border="0" src="admin/pages.png" alt="{$_PWNDATA['admin']['groups']['pages']}" /><br />
     {$_PWNDATA['admin']['groups']['pages']}</a></td>
   </tr>
 END;
@@ -1014,13 +1013,13 @@ if ($user['level'] >= $site_info['admin_rank']) {
 $content = $content . <<<END
   <tr>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=site_info"><img border="0" src="admin/site_info.png" ><br />
+    <a href="admin.php?view=site_info"><img border="0" src="admin/site_info.png" alt="{$_PWNDATA['admin']['groups']['site_info']}" /><br />
     {$_PWNDATA['admin']['groups']['site_info']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=promo"><img border="0" src="admin/promos.png" ><br />
+    <a href="admin.php?view=promo"><img border="0" src="admin/promos.png" alt="{$_PWNDATA['admin']['groups']['promo']}" /><br />
     {$_PWNDATA['admin']['groups']['promo']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=bans"><img border="0" src="admin/bans.png" ><br />
+    <a href="admin.php?view=bans"><img border="0" src="admin/bans.png" alt="{$_PWNDATA['admin']['groups']['bans']}" /><br />
     {$_PWNDATA['admin']['groups']['bans']}</a></td>
   </tr>
 END;
@@ -1031,9 +1030,6 @@ END;
 drawBlock($_PWNDATA['admin_page_title'],"",$content);
 print <<<END
 	</table>
-        </td>
-  </tr>
-</table>
 END;
 require 'footer.php';
 ?>

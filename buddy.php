@@ -71,7 +71,7 @@ window.status = err.message;
 <div id="buddy" style="width: 300px; border: 0px; position: absolute; top: 10px; left: 600px;">
 <table class="borderless_table" width="100%">
 <tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_ur">&nbsp;</td></tr>
-<tr><td class="block_ml">&nbsp;</td><td class="block_body"><font class="block_body_text">
+<tr><td class="block_ml">&nbsp;</td><td class="block_body">
 END;
 // PwnBuddy content
 // Welcome message
@@ -104,13 +104,6 @@ document.getElementById('sel_' + tabname).className = "tab_head_on"
 }
 //]]>
 </script>
-<style>
-.tab {
-border: 1px 1px 1px 1px;
-border-color: #000000;
-width: 100%;
-}
-</style>
 <ul class="menu">
 <li id = "sel_tab1" class="tab_head_on">
 <a onclick="javascript:changeTab('tab1')" href="javascript: void(null);">{$_PWNDATA['buddy']['inbox']}</a></li>
@@ -208,7 +201,7 @@ print <<<END
 </div>
 END;
 print <<<END
-</font></td><td class="block_mr">&nbsp;</td></tr>
+</td><td class="block_mr">&nbsp;</td></tr>
 <tr><td class="block_bl"></td><td class="block_bm"></td><td class="block_br"></td></tr>
 </table>
 </div>

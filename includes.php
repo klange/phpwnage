@@ -270,9 +270,9 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
+        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "<br /><table class=\"mod_set\">" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
+    $return = $return . "<br /><table class=\"mod_set\"><tr>" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
     $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
     $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
     $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
@@ -282,7 +282,7 @@ END;
     $return = $return . drawButton("javascript:setPreview()","{$_PWNDATA['poster']['preview']}") . "\n";
     $return = $return . drawButton("javascript:addSize(2)","\/") . "\n";
     $return = $return . drawButton("javascript:addSize(-2)","/\\") . "\n";
-    $return = $return . "</table>";
+    $return = $return . "</tr></table>";
     return $return;
 }
 function getDay($timecode) {
