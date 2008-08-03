@@ -5,7 +5,7 @@
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Generald Public License as published by
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
@@ -429,42 +429,44 @@ function previewBoxScript() {
     return <<<END
 <script type="text/javascript">
 //<![CDATA[
-var IE = document.all?true:false
-if (!IE) document.captureEvents(Event.MOUSEMOVE)
-document.onmousemove = getMouseXY
-var tempX = 0
-var tempY = 0
-var blam = false
-var blama = false
-var shazam = 0
+function showPrev(url) {
+    if (url == 'EXIT') {
+        frames['previewbox'].location.href = "about:blank";
+    } else {
+        frames['previewbox'].location.href = "forum.php?do=preview&a=" + url
+    }
+    return true;
+}
+var IE = document.all?true:false;
+if (!IE) document.captureEvents(Event.MOUSEMOVE);
+document.onmousemove = getMouseXY;
+var tempX = 0;
+var tempY = 0;
+var blam = false;
+var blama = false;
+var magicnumber = 0;
 function getMouseXY(e) {
-  if (IE) {
-    tempX = event.clientX + document.body.scrollLeft
-    tempY = event.clientY + document.body.scrollTop
-  } else {
-    tempX = e.pageX
-    tempY = e.pageY
-  }
-if (!blam &amp;&amp; !blama) {
-  document.getElementById('previewbox').style.width = "0px"
-} else {
-  blam = false
-if (blama) { shazam = 520 }
-  blama = false
-  document.getElementById('previewbox').style.width = "500px"
-  document.getElementById('previewbox').style.left = (tempX + 10 - shazam) + 'px'
-  document.getElementById('previewbox').style.top = (tempY + 10) + 'px'
-  shazam = 0
-  return true
-}
-}
-function showPrev(url)
-{
-if (url == 'EXIT') {
-frames['previewbox'].location.href = "about:blank";
-} else {
-frames['previewbox'].location.href = "forum.php?do=preview&a=" + url
-}
+    if (IE) {
+        tempX = event.clientX + document.body.scrollLeft;
+        tempY = event.clientY + document.body.scrollTop;
+    } else {
+        tempX = e.pageX;
+        tempY = e.pageY;
+    }
+    if (!blam &amp;&amp; !blama) {
+        document.getElementById('previewbox').style.width = "0px"
+    } else {
+        blam = false
+        if (blama) {
+            magicnumber = 520;
+        }
+        blama = false;
+        document.getElementById('previewbox').style.width = "500px";
+        document.getElementById('previewbox').style.left = (tempX + 10 - magicnumber) + 'px';
+        document.getElementById('previewbox').style.top = (tempY + 10) + 'px';
+        magicnumber = 0;
+        return true;
+    }
 }
 //]]>
 </script>
@@ -2026,7 +2028,11 @@ END;
 
 // XXX: Begin core output.
 
-standardHeaders($site_info['name'] . " :: " . $_PWNDATA['forum_page_title'] . $post_title_add,true);
+if ($use_previewbox == "yes") {
+    standardHeaders($site_info['name'] . " :: " . $_PWNDATA['forum_page_title'] . $post_title_add, true,previewBoxScript());
+} else {
+    standardHeaders($site_info['name'] . " :: " . $_PWNDATA['forum_page_title'] . $post_title_add, true);
+}
 
 print <<<END
     <script type="text/javascript">
@@ -2041,9 +2047,7 @@ function flipVisibility(what) {
     //]]>
     </script>
 END;
-if ($use_previewbox) {
-    print previewBoxScript();
-}
+
 
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > <a href=\"forum.php\">{$_PWNDATA['forum_page_title']}</a>" . $post_sub_add,$post_sub_r);
 
@@ -2116,7 +2120,7 @@ print <<<END
   </tr>
 </table>
 END;
-if ($use_previewbox) {
+if ($use_previewbox == "yes") {
     print previewBox();
 }
 require 'footer.php';

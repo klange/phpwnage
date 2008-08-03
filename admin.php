@@ -5,7 +5,7 @@
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Generald Public License as published by
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
@@ -44,7 +44,7 @@ mysql_query("UPDATE `info` SET `last_updated` = '" . time() . "' WHERE `info`.`i
 
 $message = $_PWNDATA['admin']['article_add_suc'];
 if ($_POST['add_to_forum'] == true) {
-$content = "[url]article.php?id=" . $article_id . "[/]" . $_PWNDATA['read_article_here'] . "[/url]";
+$content = "[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['read_article_here'] . "[/url]";
 mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mysql_real_escape_string($_POST['title']) . "');");
 $result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
 $topic = mysql_fetch_array($result);
@@ -55,7 +55,7 @@ $reply = mysql_fetch_array($result);
 mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic['id']);
 mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
 mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-$newcontenta = $newcontent . "\n\n\n[url=article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
+$newcontenta = $newcontent . "\n\n\n[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
 mysql_query("UPDATE `news` SET `content` = '" . $newcontenta . "' WHERE `news`.`id` =" . $article_id);
 mysql_query("UPDATE `news` SET `topicid` = " . $topic['id'] . " WHERE `news`.`id` =" . $article_id);
 $message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";

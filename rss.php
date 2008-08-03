@@ -5,7 +5,7 @@
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Generald Public License as published by
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
@@ -21,22 +21,24 @@
 require 'config.php';
 $no_login = true;
 require 'includes.php';
-header("Content-type: application/xhtml+xml");
+header("Content-type: application/rss+xml");
 
 print "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\n";
-print "<rss version=\"2.0\">\n";
+print "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
 print "<channel>\n";
-print "	<title>" . $site_info['name'] . "</title>\n";
-print "	<description>Powered by PHPwnage</description>\n";
-print "	<link>" . $site_info['url'] . "</link>\n";
+print " <title>" . $site_info['name'] . "</title>\n";
+print " <description>Powered by PHPwnage</description>\n";
+print " <link>" . $site_info['url'] . "</link>\n";
 $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($result)) {
-print "	<item>\n		<title>" . htmlspecialchars($row['title']) . "</title>\n";
-print "     <pubDate>" . date("D, d M Y H:i:s T", $row['time_code']) . "</pubDate>\n";
-print "		<link>" . $site_info['url'] . "article.php?id=" . $row['id'] . "</link>\n";
+print " <item>\n  <title>" . htmlspecialchars($row['title']) . "</title>\n";
+print "  <pubDate>" . date("D, d M Y H:i:s T", $row['time_code']) . "</pubDate>\n";
+print "  <link>" . $site_info['url'] . "article.php?id=" . $row['id'] . "</link>\n";
+print "  <guid>" . $site_info['url'] . "article.php?id=" . $row['id'] . "</guid>\n";
 $rowtemp = trim($row['content'], "\n");
-print "		<description><![CDATA[" . BBDecode($rowtemp,true) . "]]></description>\n";
+print "  <description><![CDATA[" . BBDecode($rowtemp,true) . "]]></description>\n";
 print "	</item>\n";
 }
+print "<atom:link href=\"" . $site_info['url'] . "rss.php\" rel=\"self\" type=\"application/rss+xml\" />\n";
 print "</channel>\n</rss>";
 ?>

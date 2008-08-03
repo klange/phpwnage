@@ -5,7 +5,7 @@
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Generald Public License as published by
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
@@ -514,7 +514,7 @@ END;
 </table>
 END;
 }
-function standardHeaders($title, $draw_header) {
+function standardHeaders($title, $draw_header, $additionalHead = "") {
     global $_PWNDATA, $site_info, $theme, $imageroot, $user;
     print <<<END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -525,6 +525,7 @@ END;
     print $title;
     print "</title>\n";
     require 'css.php';      // Setup the theme
+    print $additionalHead;
     if ($draw_header == true) {
         require 'header.php';
     }

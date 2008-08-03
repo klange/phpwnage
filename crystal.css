@@ -4,7 +4,7 @@
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
-	it under the terms of the GNU Generald Public License as published by
+	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
 
@@ -89,7 +89,7 @@ font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
 	border-style: none none none none;
 }
 /* Said button  */
-.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none; border-collapse: stretch;}
+.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none;}
 /* cell thing, keeps everything in line */
 .forum_button td {
 	border-width: 0px 0px 0px 0px;
@@ -178,14 +178,12 @@ th {
 	padding: 0px 0px 0px 0px;
 	border-style: none none none none;
 	border-color: gray gray gray gray;
-	-moz-border-radius: 0px 0px 0px 0px;
 }
 td {
 	border-width: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;
 	border-style: none none none none;
 	border-color: gray gray gray gray;
-	-moz-border-radius: 0px 0px 0px 0px;
 }
 textarea {
  background-color: #EEEEEC;
