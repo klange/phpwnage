@@ -163,6 +163,7 @@ border: 1px #000 solid;
 border-top: 0;
 font-family: sans-serif, Tahoma;
 font-size: 12px;
+padding-left: 2px;
 }
 .menu {
 border-bottom: 1px #000 solid;
