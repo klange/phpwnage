@@ -722,8 +722,10 @@ $content = "<table class=\"borderless_table\" width=\"100%\">";
 $result = mysql_query("SELECT * FROM blocks ORDER BY `id`", $db);
 while ($row = mysql_fetch_array($result)) {
 $block_id = $row['id'];
+$bl_content = str_replace("<","&lt;",$row['content']);
+$bl_content = str_replace(">","&gt;",$bl_content);
 // Print the title
-$content = $content . "<form action=\"admin.php\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"edit_block\" />" . makeBlock("<input type=\"hidden\" name=\"blockid\" value=\"" . $row['id'] . "\" /><input type=\"text\" name=\"title\" value=\"" . $row['title'] . "\" />","<a href=\"admin.php?do=del_block&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_block&amp;g=up&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_up']}</a>, <a href=\"admin.php?do=mov_block&amp;g=down&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_down']}</a>", "<textarea rows=\"9\" name=\"content\" style=\"width:100%;\" cols=\"80\">" . $row['content'] . "</textarea><br />\n<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_save']}\" />") . "</form>";
+$content = $content . "<tr><td width=\"100%\"><form action=\"admin.php\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"edit_block\" />" . makeBlockSA("<input type=\"hidden\" name=\"blockid\" value=\"" . $row['id'] . "\" /><input type=\"text\" name=\"title\" value=\"" . $row['title'] . "\" />","<a href=\"admin.php?do=del_block&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_block&amp;g=up&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_up']}</a>, <a href=\"admin.php?do=mov_block&amp;g=down&amp;id=$block_id\">{$_PWNDATA['admin']['forms']['block_move_down']}</a>", "<textarea rows=\"9\" name=\"content\" style=\"width:100%;\" cols=\"80\">" . $bl_content . "</textarea><br />\n<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['block_save']}\" />") . "</form></td></tr>";
 }
 $content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['block_edit'],"",$content);
@@ -738,8 +740,10 @@ $content = $content . <<<END
 END;
 $content = $content . "{$_PWNDATA['admin']['forms']['si_name']}: <input name=\"name\" type=\"text\" value=\"" . $site_info['name'] . "\" /><br />\n";
 $content = $content . "{$_PWNDATA['admin']['forms']['si_url']}: <input name=\"url\" type=\"text\" value=\"" . $site_info['url'] . "\" /><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_copy']}: <input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\"><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea rows=\"1\" name=\"right_data\" style=\"width:95%;\"  cols=\"80\" >" . $site_info['right_data'] . "</textarea><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['si_copy']}: <input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\" /><br />\n";
+$rd = str_replace("<","&lt;",$site_info['right_data']);
+$rd = str_replace(">","&gt;",$rd);
+$content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea rows=\"1\" name=\"right_data\" style=\"width:95%;\"  cols=\"80\" >" . $rd . "</textarea><br />\n";
 $content = $content . "{$_PWNDATA['admin']['forms']['si_header']}: <input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" /><br />\n";
 $content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['si'],"",$content);
@@ -773,11 +777,13 @@ $content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:
 }
 $content = $content . <<<END
 </table></div>
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function showlog() {
 document.getElementById('cut_log').style.display = "none"
 document.getElementById('extra_log').style.display = "inline"
 }
+//]]>
 </script>
 <a href="javascript:showlog()">{$_PWNDATA['admin']['forms']['si_log_show']}</a>
 <form action="admin.php" method="post">

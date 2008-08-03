@@ -426,6 +426,44 @@ END;
 END;
     return $output;
 }
+function makeBlockSA($functitle, $funcright, $funccont) {
+    // Page Body
+    $output = <<<END
+    <table class="borderless_table" width="100%">
+      <tr>
+        <td class="pan_ul">&nbsp;</td>
+        <td class="pan_um">
+        <font class="pan_title_text">
+END;
+    $output = $output . $functitle;
+    $output = $output . <<<END
+	</font></td>
+        <td class="pan_um" align="right">
+        <font class="pan_title_text">
+END;
+    $output = $output . $funcright;
+    $output = $output . <<<END
+	</font></td>
+        <td class="pan_ur">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="pan_ml">&nbsp;</td>
+        <td class="pan_body" valign="top" colspan="2">
+END;
+    $output = $output . $funccont;
+    $output = $output . <<<END
+	</td>
+        <td class="pan_mr">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="pan_bl"></td>
+        <td class="pan_bm" colspan="2"></td>
+        <td class="pan_br"></td>
+      </tr>
+    </table>
+END;
+    return $output;
+}
 function makeBlockTrue($functitle, $funccont) {
     // Page Body
     $output = <<<END
