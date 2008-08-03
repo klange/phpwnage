@@ -66,9 +66,10 @@ print <<<END
 
 END;
 
-if ($page['showsidebar'] == "true")
-{
-require 'sidebar.php';
+if ($page['showsidebar'] == "true") {
+    require 'sidebar.php';
+} else {
+    print "<table class=\"borderless_table\" width=\"100%\"><tr>";
 }
 print <<<END
 <td height="269" valign="top">

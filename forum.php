@@ -2023,6 +2023,8 @@ if ($user['level'] < 1) {
 } else {
     if ($user['sbonforum'] == 1) {
         require 'sidebar.php';
+    } else {
+        print "<table class=\"borderless_table\" width=\"100%\"><tr>";
     }
 }
 
