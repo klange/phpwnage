@@ -1436,33 +1436,8 @@ if ($_GET['do'] == "editprofile") {
     $post_title_add = " :: " . $_PWNDATA['profile']['editing'];
     $post_sub_add = " > " . $_PWNDATA['profile']['editing'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $_PWNDATA['profile']['title'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['profile']['editing'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-END;
+    $block_content = "";
+
     $uid = $user['id'];
     $umail = $user['email'];
     $uname = $user['name'];
@@ -1485,50 +1460,38 @@ END;
     }
     $theme_list = themeList($u_theme);
     $color_list = colorList($u_color);
-    $post_content = $post_content . <<<END
+    $block_content = $block_content . <<<END
 <form method="post" action="forum.php" name="form">
-  <input type="hidden" name="action" value="edit_profile">
-  <input type="hidden" name="id" value="$uid">
+  <input type="hidden" name="action" value="edit_profile" />
+  <input type="hidden" name="id" value="$uid" />
   <strong>{$_PWNDATA['profile']['registration']}:</strong><br />
-  {$_PWNDATA['profile']['username']}: $uname <input type="hidden" name="name" size="20" value="$uname"><br />
-  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" value="$umail"><br />
-  {$_PWNDATA['profile']['password']}: <input type="password" name="apass" size="20" value=""><br />
-  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" value=""><br />
+  {$_PWNDATA['profile']['username']}: $uname <input type="hidden" name="name" size="20" value="$uname" /><br />
+  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" value="$umail" /><br />
+  {$_PWNDATA['profile']['password']}: <input type="password" name="apass" size="20" value="" /><br />
+  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" value="" /><br />
   <br /><strong>{$_PWNDATA['profile']['messaging']}:</strong><br />
-  MSN: <input type="text" name="msn" size="20" value="$umsn"><br />
-  AIM: <input type="text" name="aim" size="20" value="$uaim"><br />
-  Yahoo: <input type="text" name="yah" size="20" value="$uyah"><br />
-  ICQ: <input type="text" name="icq" size="20" value="$uicq"><br />
-  xFire: <input type="text" name="xfire" size="20" value="$uxfire"><br />
-  Gamertag: <input type="text" name="live" size="20" value="$ulive"><br />
-  Pandemic: <input type="text" name="pand" size="20" value="$pand"><br />
+  MSN: <input type="text" name="msn" size="20" value="$umsn" /><br />
+  AIM: <input type="text" name="aim" size="20" value="$uaim" /><br />
+  Yahoo: <input type="text" name="yah" size="20" value="$uyah" /><br />
+  ICQ: <input type="text" name="icq" size="20" value="$uicq" /><br />
+  xFire: <input type="text" name="xfire" size="20" value="$uxfire" /><br />
+  Gamertag: <input type="text" name="live" size="20" value="$ulive" /><br />
+  Pandemic: <input type="text" name="pand" size="20" value="$pand" /><br />
   <br /><strong>{$_PWNDATA['profile']['posting']}:</strong><br />
   {$_PWNDATA['profile']['sig']}:<br />
 END;
-    $post_content = $post_content . printPoster('sig') . <<<END
-  <textarea rows="5" name="sig" style="width:100%">$sig</textarea><br />
+    $block_content = $block_content . printPoster('sig') . <<<END
+  <textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea><br />
   {$_PWNDATA['profile']['avatar']}<br />
-  <input type="text" name="avatar" size="20" value="$ava"><br />
+  <input type="text" name="avatar" size="20" value="$ava" /><br />
   <br /><strong>{$_PWNDATA['profile']['settings']}:</strong><br />
-  {$_PWNDATA['profile']['sidebar']}: <input name="sbonforum" type="checkbox" $sbon><br />
+  {$_PWNDATA['profile']['sidebar']}: <input name="sbonforum" type="checkbox" $sbon /><br />
   {$_PWNDATA['profile']['theme']}: $theme_list<br />
   {$_PWNDATA['profile']['color']}: $color_list<br /><br />
-  <input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub">
+  <input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub" />
+	</form>	
 END;
-    $post_content = $post_content .  <<<END
-	</form></font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $post_content = makeBlock($_PWNDATA['profile']['title'], $_PWNDATA['profile']['editing'],$block_content);
 }
 
 // View a user's profile
