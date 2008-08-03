@@ -1937,30 +1937,8 @@ if ($_GET['do'] == "search") {
     $post_sub_add = " > {$_PWNDATA['forum']['searching_for']} '$search'";
     $post_sub_r = post_sub_r($user['id']);
     $resultz = mysql_query("SELECT * FROM posts WHERE MATCH (content) AGAINST ('$search')", $db);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . "{$_PWNDATA['forum']['search_results']} '$search'";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">{$_PWNDATA['forum']['search']}
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font face="Tahoma" color="#FFFFFF">
-END;
-    $post_content = $post_content . "<b>{$_PWNDATA['forum']['search_resultsb']}:</b><table class=\"forum_base\" width=\"100%\">\n";
+    $block_content =  "<b>{$_PWNDATA['forum']['search_resultsb']}:</b><table class=\"forum_base\" width=\"100%\">\n";
+    $results_count = 0;
     while ($rowz = mysql_fetch_array($resultz)) {
         $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
@@ -1973,24 +1951,15 @@ END;
         if ($post_board['vis_level'] > $user['level']) {
             // Do nothing, this post is in a board the user isn't allowed to see!
         } else {
-            $post_content = $post_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\"><b><i>{$_PWNDATA['forum']['posted_in']}: <a href=\"forum.php?do=viewtopic&amp;id=" . $post_topic['id'] . "\">" . $post_topic['title'] . "</a></i></b><br />$dec_post</font></td></tr>\n";
+            $block_content = $block_content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\"><b><i>{$_PWNDATA['forum']['posted_in']}: <a href=\"forum.php?do=viewtopic&amp;id=" . $post_topic['id'] . "\">" . $post_topic['title'] . "</a></i></b><br />$dec_post</font></td></tr>\n";
+            $results_count++;
         }
     }
-    $post_content = $post_content . "</table>";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    if ($results_count < 1) {
+        $block_content = $block_content . "<tr><td>No results.</td></tr>";
+    }
+    $block_content = $block_content . "</table>";
+    $post_content = makeBlock("{$_PWNDATA['forum']['search_results']} '$search'",$_PWNDATA['forum']['search'],$block_content);
 }
 
 // XXX: Begin core output.

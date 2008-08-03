@@ -29,59 +29,27 @@ messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit
 $result = mysql_query("SELECT * FROM pages WHERE name='" . $_GET['page'] . "'", $db);
 $page = mysql_fetch_array($result);
 
-
-print <<<END
-
-<html>
-
-<head>
-<title>
-END;
-print $site_info['name'] . " :: " . $page['display_name'];
-print "</title>\n";
-
-require 'css.php';
-require 'header.php';
-
-print <<<END
-<table class="borderless_table" width="100%">
-  <tr>
-    <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-print "<a href=\"index.php\">";
-print $site_info['name'] . "</a> > <a href=\"custompages.php\">{$_PWNDATA['admin']['forms']['pages']}</a> > " . $page['display_name'];
-print <<<END
-    </font></td>
-    <td class="sub_mid">
-
-    <p align="right"><font class="sub_body_text">
-END;
-print $site_info['right_data'];
-print <<<END
-    </font></td>
-    <td class="sub_right"></td>
-  </tr>
-</table>
-
-END;
+standardHeaders($site_info['name'] . " :: " . $page['display_name'],true);
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > <a href=\"custompages.php\">{$_PWNDATA['admin']['forms']['pages']}</a> > " . $page['display_name'],$site_info['right_data']);
 
 if ($page['showsidebar'] == "true") {
     require 'sidebar.php';
 } else {
     print "<table class=\"borderless_table\" width=\"100%\"><tr>";
 }
+
 print <<<END
 <td height="269" valign="top">
 <table class="borderless_table" width="100%">
 END;
 drawBlock($page['display_name'],$page['author'],$page['content']);
 if ($user['level'] >= $site_info['mod_rank']) {
+$content_temp = str_replace(">","&gt;",str_replace("<","&lt;",$page['content']));
 $content = <<<END
 <form action="pages.php?page={$page['name']}" method="post">
-<input type="hidden" name="action" value="true">
-<textarea rows="8" name="content" style="width:100%; font=Tahoma">{$page['content']}</textarea>
-<br><input type="submit" value="{$_PWNDATA['articles']['save_page']}"></form>
+<input type="hidden" name="action" value="true" />
+<textarea rows="8" name="content" style="width:100%;" cols="80">$content_temp</textarea>
+<br /><input type="submit" value="{$_PWNDATA['articles']['save_page']}" /></form>
 END;
 drawBlock("{$_PWNDATA['articles']['edita']} " . $page['title'], $page['author'], $content);
 }
