@@ -1513,69 +1513,33 @@ if ($_GET['do'] == "viewprofile") {
     $post_title_add = " :: {$_PWNDATA['profile']['view']}'$uname'";
     $post_sub_add = " > {$_PWNDATA['profile']['view']} '$uname'";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $uname . $_PWNDATA['profile']['possessive_profile'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['profile']['view'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font face="Tahoma" color="#FFFFFF">
-END;
+    $block_content = "";
     $replyto = $vuser['id'];
     $posts = postCount($replyto);
     $modstatus = getRankName($vuser['level'],$site_info,$posts);
     if ($ava != "") {
         $post_content = $post_content . "<img src=\"$ava\" align=\"top\" />";
     }
-    $post_content = $post_content . <<<END
+    $block_content = $block_content . <<<END
   <strong> $uname</strong><br />$modstatus<br />
   <br />
   {$_PWNDATA['forum']['posts']}: $posts
   <br />
   <strong>{$_PWNDATA['profile']['messaging']}:</strong><br />
-  <img src="smiles/msn.png" /> MSN: $umsn<br />
-  <img src="smiles/aim.png" /> AIM: $uaim<br />
-  <img src="smiles/yahoo.png" /> Yahoo: $uyah<br />
-  <img src="smiles/icq.png" /> ICQ: $uicq<br />
-  <img src="smiles/xfire.png" /> xFire: $uxfire<br />
-  <img src="smiles/live.png" /> Gamertag: $ulive<br />
-  <img src="smiles/pan.png" /> Pandemic: $pand<br />
+  <img src="smiles/msn.png" alt="*"/> MSN: $umsn<br />
+  <img src="smiles/aim.png" alt="*"/> AIM: $uaim<br />
+  <img src="smiles/yahoo.png" alt="*"/> Yahoo: $uyah<br />
+  <img src="smiles/icq.png" alt="*"/> ICQ: $uicq<br />
+  <img src="smiles/xfire.png" alt="*"/> xFire: $uxfire<br />
+  <img src="smiles/live.png" alt="*"/> Gamertag: $ulive<br />
+  <img src="smiles/pan.png" alt="*"/> Pandemic: $pand<br />
   <a href="forum.php?do=newpm&amp;to=$replyto">{$_PWNDATA['pm']['send_a']}</a><br /><br />
 END;
-    $post_content = $post_content .  <<<END
-	<img src="smiles/quotea.png" align="top" /><font face="Times New Roman" size="5"><i>$sig</i></font><img src="smiles/quoteb.png" /><br />
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
+    $block_content = $block_content .  <<<END
+	<img src="smiles/quotea.png" align="top" alt="``"/><font face="Times New Roman" size="5"><i>$sig</i></font><img src="smiles/quoteb.png" alt="''"/><br />
 END;
+    $post_content = makeBlock($uname . $_PWNDATA['profile']['possessive_profile'],$_PWNDATA['profile']['view'],$block_content);
+    
 }
 
 // Search the forum
