@@ -453,7 +453,7 @@ function getMouseXY(e) {
         tempX = e.pageX;
         tempY = e.pageY;
     }
-    if (!blam &amp;&amp; !blama) {
+    if (!blam && !blama) {
         document.getElementById('previewbox').style.width = "0px"
     } else {
         blam = false
