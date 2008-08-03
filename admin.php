@@ -464,7 +464,6 @@ drawBlock($_PWNDATA['admin']['forms']['pages'],"",$content);
 if ($_GET['view'] == "forum") {
 $result = mysql_query("SELECT * FROM `categories` ORDER BY `orderid`");
 $content =  <<<END
-</font>
 <script type="text/javascript">
 //<![CDATA[
 function move_board(boardId) {
@@ -483,9 +482,8 @@ function move_board(boardId) {
 }
 //]]>
 </script>
-<font class="pan_body_text">
 END;
-$content = $content . "<form name=\"cats\"><table class=\"borderless_table\" width=\"100%\">\n";
+$content = $content . "<form name=\"cats\" action=\"admin.php\"><table class=\"borderless_table\" width=\"100%\">\n";
 $odd = 1;
 while ($cat = mysql_fetch_array($result))
 {
@@ -532,10 +530,11 @@ drawBlock("{$_PWNDATA['admin']['forms']['forums']} - {$_PWNDATA['admin']['forms'
 $content = "<b>{$_PWNDATA['admin']['forms']['forum_smileys']}: ({$_PWNDATA['admin']['forms']['forum_click_edit']})</b><br />";
 $smilesSet = mysql_query("SELECT * FROM `smileys`");
 while ($smile = mysql_fetch_array($smilesSet)) {
-$content = $content . "<a href=\"admin.php?do=editsmiley&amp;id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\"></a>";
+$content = $content . "<a href=\"admin.php?do=editsmiley&amp;id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" /></a>";
 }
 $smileyList = "<select name=\"smileys\">";
-$smileyStyle = "<style>";
+// The following will never validate, but we honestly don't care.
+$smileyStyle = "<style type=\"text/css\">";
 $myDirectory = opendir("smiles"); // Open smiles directory
 while($entryName = readdir($myDirectory)) {
 	$dirArray[] = $entryName; // Get our list of files
