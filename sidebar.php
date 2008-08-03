@@ -29,7 +29,7 @@ document.getElementById('sb').style.width = "0"
 </script>
 <table class="borderless_table" width="100%">
   <tr>
-    <td id="sb" valign="top" >
+    <td id="sb" valign="top" width="200px">
 	<div id="sidebar" style="display: inline; padding: 0px 0px 0px 0px;">
     <table class="borderless_table" width="100%">
 END;
