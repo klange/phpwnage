@@ -33,7 +33,7 @@ $topic = $_POST['subj'];
 $content = $_POST['content'];
 $uid = $_POST['user'];
 mysql_query("INSERT INTO `calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
-messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&day=$date");
+messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&amp;day=$date");
 }
 if ($_POST['action'] == "edit_event") // If an event is being edited
 {
@@ -46,28 +46,28 @@ $title = $_POST['subj'];
 $content = $_POST['content'];
 mysql_query("UPDATE `calendar` SET `title`='$title' WHERE `id`=$eid");
 mysql_query("UPDATE `calendar` SET `content`='$content' WHERE `id`=$eid");
-messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&day=$date");
+messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&amp;day=$date");
 }
 if ($_GET['view'] == "del_event") {
 if ($user['level'] < $site_info['mod_rank']) {
 messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
 }
 mysql_query("DELETE FROM `calendar` WHERE `id`=" . $_GET['e']);
-messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&day=$date");
+messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&amp;day=$date");
 }
 
 function printDay($day, $content, $upper) {
 print <<<END
-<td border="1" bordercolor="#000000">
-    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-width: 0" bordercolor="#111111" width="100%" height="100">
+<td style="border-width: 1px; border-color: #000000;">
+    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-width: 0; border-color=#111111" width="100%">
       <tr>
-        <td width="76%" height="24" style="border-style: none; border-width: medium">
-        <p align="center"><font class="forum_body"><font size="2">$upper</font></font></td>
-        <td width="24%" height="24" style="border-style: none; border-width: medium" bgcolor="#C0C0C0">
-        <p align="center"><i><font class="forum_body"><font size="5">$day</font></font></i></td>
+        <td width="76%" height="24" style="border-style: none; border-width: medium" align="center">
+        <font class="forum_body"><font size="2">$upper</font></font></td>
+        <td width="24%" height="24" style="border-style: none; border-width: medium" bgcolor="#C0C0C0" align="center">
+        <i><font class="forum_body"><font size="5">$day</font></font></i></td>
       </tr>
       <tr>
-        <td width="100%" colspan="2" height="59" style="border-style: none; border-width: medium; padding: 1px 1px 1px 1px" valign="top"><font class="forum_body">$content</font></td>
+        <td width="100%" colspan="2" height="59" style="border-style: none; border-width: medium; padding: 1px 1px 1px 1px" valign="top">$content</td>
       </tr>
     </table>
 </td>
@@ -88,18 +88,15 @@ print <<<END
         <td class="pan_ul">&nbsp;</td>
         <td class="pan_um">
         <font class="pan_title_text">{$_PWNDATA['cal']['name']}</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-	</font></td>
+        <td class="pan_um">&nbsp;</td>
         <td class="pan_ur">&nbsp;</td>
       </tr>
       <tr>
         <td class="pan_ml">&nbsp;</td>
         <td class="pan_body" valign="top" colspan="2">
-        <font class="pan_body_text">
 
 END;
-print "<a href=\"calendar.php\">{$_PWNDATA['cal']['month_view']}</a><br>";
+print "<a href=\"calendar.php\">{$_PWNDATA['cal']['month_view']}</a><br />";
 
 $mode = $_GET['view'];
 $month = $_GET['mon'];
@@ -130,8 +127,8 @@ $year = $year + 1;
 if ($year > 99) {
 $year = $year - 100;
 }
-print "<p align=\"center\"><font size=\"4\">" . date("F, Y",$time_view) . "</font><br><font size=\"2\"><a href=\"calendar.php?view=viewmonth&mon=" . (intval($month) - 1) . "&y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a> | <a href=\"calendar.php?view=viewmonth&mon=" . (intval($month) + 1) . "&y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></font></p>\n";
-print "<table border=\"1\" style=\"border-collapse: collapse; border-width: 1; table-layout: fixed\" width=\"100%\" bordercolor=\"#000000\">\n";
+print "<p align=\"center\"><font size=\"4\">" . date("F, Y",$time_view) . "</font><br /><font size=\"2\"><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a> | <a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></font></p>\n";
+print "<table border=\"1\" style=\"border-collapse: collapse; border-width: 1; table-layout: fixed; border-color: #000000;\" width=\"100%\">\n";
 print "<tr><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['sunday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['monday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['tuesday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['wednesday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['thursday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['friday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['saturday']}</font></td></tr>";
 $month_started = 0;
 $days_left = $days_in_month;
@@ -143,11 +140,11 @@ if ($first_day == $day - 1) {
 $month_started = 1;
 }
 }
-$zing = "<a href=\"calendar.php?view=viewmonth&mon=" . (intval($month) - 1) . "&y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a>";
+$zing = "<a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a>";
 $zinga = "X";
 $top_cell = "";
 if ($month_started == 2) {
-$zing = "<a href=\"calendar.php?view=viewmonth&mon=" . (intval($month) + 1) . "&y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a>";
+$zing = "<a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a>";
 }
 if ($month_started == 1) {
 $zinga = $days_in_month - $days_left + 1; // The current day of the month.
@@ -156,12 +153,12 @@ $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $today . "
 $zing = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
-	$zing = $zing . "- " . $query_row['title'] . "<br>\n";
+	$zing = $zing . "- " . $query_row['title'] . "<br />\n";
 }
 if ($user['level'] >= $site_info['mod_rank']) {
-$top_cell = "<a href=\"calendar.php?view=add&day=$today\"><img src=\"smiles/cal_add.png\"></a> <a href=\"calendar.php?view=date&day=$today\"><img src=\"smiles/cal_view.png\"></a>";
+$top_cell = "<a href=\"calendar.php?view=add&amp;day=$today\"><img src=\"smiles/cal_add.png\" alt=\"Add\" /></a> <a href=\"calendar.php?view=date&amp;day=$today\"><img src=\"smiles/cal_view.png\" alt=\"View\" /></a>";
 } else {
-$top_cell = "<a href=\"calendar.php?view=date&day=$today\"><img src=\"smiles/cal_view.png\"></a>";
+$top_cell = "<a href=\"calendar.php?view=date&amp;day=$today\"><img src=\"smiles/cal_view.png\" alt=\"View\" /></a>";
 }
 $days_left = $days_left - 1;
 if ($days_left <= 0) {
@@ -179,7 +176,7 @@ if ($mode == "date") // View a particular day
 {
 $date_info = split(",", $_GET['day']);
 $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval($date_info[2]));
-print "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br><br>\n"; 
+print "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
 $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $_GET['day'] . "'");
 $day_stuff = $_GET['day'];
 $zing = "";
@@ -189,15 +186,15 @@ $resultb = mysql_query("SELECT * FROM users WHERE id=" .  $query_row['user']);
 $post_author = mysql_fetch_array($resultb);
 $uid = $query_row['user'];
 $uname = $post_author['name'];
-$zing = $zing . "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&id=$uid\">$uname</a><br>\n--- " . bbDecode($query_row['content']);
+$zing = $zing . "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a><br />\n--- " . bbDecode($query_row['content']);
 if ($user['level'] >= $site_info['mod_rank']) {
-	$zing = $zing . " [<a href=\"calendar.php?view=edit&e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['edit']}</a>] [<a href=\"calendar.php?view=del_event&e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]";
+	$zing = $zing . " [<a href=\"calendar.php?view=edit&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['edit']}</a>] [<a href=\"calendar.php?view=del_event&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]";
 }
-$zing = $zing . "<br>\n\n";
+$zing = $zing . "<br />\n\n";
 }
-if ($zing == "") { $zing = "{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a>"; }
+if ($zing == "") { $zing = "{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a>"; }
 print $zing;
-print "<br><br><br><a href=\"calendar.php?view=add&day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
+print "<br /><br /><br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
 }
 
 if ($mode == "add") {
@@ -206,17 +203,17 @@ if ($user['level'] < $site_info['mod_rank']) { messageBack($_PWNDATA['cal']['nam
 $userid = $user['id'];
 print <<<END
 <form method="post" action="calendar.php" name="form">
-<input type="hidden" name="action" value="add_event">
-<input type="hidden" name="day" value="$day">
-<input type="hidden" name="user" value="$userid">
-{$_PWNDATA['cal']['event_name']}: <br>
-<input type="text" name="subj" size="51" style="width:100%"><br>
-{$_PWNDATA['cal']['event_desc']}:<br>
+<input type="hidden" name="action" value="add_event" />
+<input type="hidden" name="day" value="$day" />
+<input type="hidden" name="user" value="$userid" />
+{$_PWNDATA['cal']['event_name']}: <br />
+<input type="text" name="subj" size="51" style="width:100%" /><br />
+{$_PWNDATA['cal']['event_desc']}:<br />
 END;
 print printPoster("content");
 print <<<END
-<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20"></textarea><br>
-<input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub">
+<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20"></textarea><br />
+<input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" />
 </form>
 END;
 }
@@ -231,22 +228,22 @@ $content = $event['content'];
 $date = $event['day'];
 print <<<END
 <form method="post" action="calendar.php" name="form">
-<input type="hidden" name="action" value="edit_event">
-<input type="hidden" name="event" value="$eid">
-<input type="hidden" name="date" value="$date">
-{$_PWNDATA['cal']['event_name']}: <br>
-<input type="text" name="subj" value="$title" size="51" style="width:100%"><br>
-{$_PWNDATA['cal']['event_desc']}:<br>
+<input type="hidden" name="action" value="edit_event" />
+<input type="hidden" name="event" value="$eid" />
+<input type="hidden" name="date" value="$date" />
+{$_PWNDATA['cal']['event_name']}: <br />
+<input type="text" name="subj" value="$title" size="51" style="width:100%" /><br />
+{$_PWNDATA['cal']['event_desc']}:<br />
 END;
 print printPoster("content");
 print <<<END
-<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20">$content</textarea><br>
-<input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub">
+<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20">$content</textarea><br />
+<input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" />
 </form>
 END;
 }
 print <<<END
-	</font></td>
+	</td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
       <tr>
