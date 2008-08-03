@@ -1,0 +1,222 @@
+/*
+	This file is part of PHPwnage (Aeolus Theme)
+
+	Copyright 2008 Kevin Lange <klange@ogunderground.com>
+
+	PHPwnage is free software: you can redistribute it and/or modify
+	it under the terms of the GNU Generald Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	PHPwnage is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+.borderless_table {border-width: 0px; border-spacing: 0px; border-style: none none none none; border-collapse: collapse; margin: 2px 2px 2px 2px;} /* basic table, used for panels and subheader bars, etc. */
+.sub_body_text {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* text in the body of a sub header */
+.pan_body_text {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* text in the body of a panel */
+.pan_title_text {font-family: Verdana, Tahoma, sans; font-size: 10px; font-weight: bold; color: #112255;} /* text in the title of a panel */
+
+.block_body_text {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* text in the body of a panel */
+.block_title_text {font-family: Verdana, Tahoma, sans; font-size: 10px; font-weight: bold; color: #112255;} /* text in the title of a panel */
+
+.head_left	{background-image: url(aeolus/header_left.png); height:106px; width:416px;} /* left header */
+.head_mid	{background-image: url(aeolus/header_middle.png); height:106px;} /* middle, tiling header */
+.head_right	{background-image: url(aeolus/header_right.png); width:94px; height:106px;} /* right header */
+
+.sub_left {background-image: url(aeolus/sub.png); height:20px; width:10px;} /* sub header */
+.sub_mid {background-image: url(aeolus/sub.png); height:20px; vertical-align: top; padding: 4px 0px 0px 0px;}
+.sub_right {background-image: url(aeolus/sub.png); height:20px; width:10px;}
+
+.but_left {background-image: url(aeolus/but_left.png); height:16px; width:16px;} /* button */
+.but_mid {background-image: url(aeolus/but_mid.png); height:16px; vertical-align: middle; padding: 0px 0px 0px 0px;}
+.but_right {background-image: url(aeolus/but_right.png); height:16px; width:16px;}
+
+.pan_ul {background-image: url(aeolus/top_left.png); height:29px; width:15px;} /* Upper Left */
+.pan_um {background-image: url(aeolus/top_mid.png) ; height:29px; } /* Top middle */
+.pan_ur {background-image: url(aeolus/top_right.png); height:29px; width:15px;} /* Upper right */
+
+.pan_ml {background-image: url(aeolus/mid_left.png); width:15px;} /* Left  */
+.pan_body {background-image: url(aeolus/body.png); padding: 3px 3px 3px 3px;
+font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
+.pan_mr {background-image: url(aeolus/mid_right.png); width:15px;} /* right  */
+
+.pan_bl {background-image: url(aeolus/bot_left.png); height:7px; width:15px;} /* bottom left */
+.pan_bm {background-image: url(aeolus/bot_mid.png); height:7px;} /* bottom middle  */
+.pan_br {background-image: url(aeolus/bot_right.png); height:7px; width:15px;} /* bottom right */
+
+/* Block */
+.block_ul {background-image: url(aeolus/top_left.png); height:29px; width:15px;} /* Upper Left */
+.block_um {background-image: url(aeolus/top_mid.png) ; height:29px; } /* Top middle */
+.block_ur {background-image: url(aeolus/top_right.png); height:29px; width:15px; padding-right: 4px; background-repeat: no-repeat;} /* Upper right */
+
+.block_ml {background-image: url(aeolus/mid_left.png); width:15px;} /* Left  */
+.block_body {background-image: url(aeolus/body.png); padding: 3px 3px 3px 3px;
+font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
+.block_mr {background-image: url(aeolus/mid_right.png); width:15px; padding-right: 4px; background-repeat: repeat-y;} /* right  */
+
+.block_bl {background-image: url(aeolus/bot_left.png); height:7px; width:15px;} /* bottom left */
+.block_bm {background-image: url(aeolus/bot_mid.png); height:7px;} /* bottom middle  */
+.block_br {background-image: url(aeolus/bot_right.png); height:7px; width:15px; padding-right: 4px; background-repeat: no-repeat;} /* bottom right */
+
+
+
+.panel_news {height:100%; width:100%; display:block; border: 0px;} /* Front Page News item, the scrolling div */
+/*
+	Forum
+*/
+/* Base Forum Table */
+.forum_base {border-width: 1px 1px 1px 1px; border-color:#000000; border-style: solid solid solid solid; border-collapse: collapse;}
+/* Cells in the base forum table */
+.forum_base td {
+	border-width: 1px 1px 1px 1px;
+	padding: 1px 1px 1px 1px;
+	border-style: solid solid solid solid;
+	border-color:#000000;
+	font-family: Verdana, Tahoma, sans; font-size: 12px;
+}
+/* The set of buttons to edit a post, quote it, view the ip, etc. */
+.mod_set td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+}
+/* Said button  */
+.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none; border-collapse: collapse;}
+/* cell thing, keeps everything in line */
+.forum_button td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+}
+
+.quote {background-image: url(aero/quote.png); background-repeat: no-repeat; border: 1px dashed black; padding: 5px;} /* post quote */
+.forum_button_text {font-family: Verdana, Tahoma, sans; font-size: 10px; color: #FFFFFF;} /* button text */
+.forum_button_text :link {color: #FFFFFF; text-decoration: none;}
+.forum_button_text :visited {color: #FFFFFF; text-decoration: none;}
+.forum_base_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* panel text in the forum */
+.forum_user {font-family: Verdana, Tahoma, sans; font-size: 12px; font-weight: bold} /* user name in post */
+.forum_body {font-family: Verdana, Tahoma, sans; font-size: 12px; color: #000000;} /* post body (did I even use this?) */
+.forum_time {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* time code */
+.forum_quote {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* quoted text  */
+.mod_name {color: #0000BB;}
+.adm_name {color: #00BB00;}
+
+.glow_admin {background-image: url(aeolus/glow_admin.png); background-repeat: repeat-x; }
+.glow_mod{background-image: url(aeolus/glow_mod.png); background-repeat: repeat-x; }
+/*
+	PwnBuddy Enhancements
+*/
+.tab_head_off a {
+text-decoration : none;
+border : 1px solid #000;
+background-image: url(aeolus/body.png);
+color: #4b6f94;
+float : left;
+margin-right : 4px;
+line-height: 13px;
+padding-left: 2px;
+padding-right: 2px;
+font-size: 10px;
+}
+.tab_head_off a:hover {
+background-color: #79a7b4;
+}
+.tab_head_on a {
+text-decoration : none;
+border : 1px solid #000;
+background-color: #7f9ab5;
+color: #c9d7e4;
+border-bottom: 1px solid #7f9ab5;
+margin-right : 4px;
+float : left;
+font-size: 10px;
+line-height: 13px;
+padding-left: 2px;
+padding-right: 2px;
+}
+.tab_head_on {
+font-family: sans-serif, Tahoma;
+display : inline;
+list-style: none;
+margin: 0;
+}
+.tab_head_off {
+font-family: sans-serif, Tahoma;
+display : inline;
+list-style: none;
+margin: 0;
+}
+.tab_contents {
+clear : both;
+background-color: #7f9ab5;
+border: 1px #000 solid;
+border-top: 0;
+font-family: sans-serif, Tahoma;
+font-size: 12px;
+}
+.menu {
+border-bottom: 1px #000 solid;
+margin: 0;
+padding-left: 2px;
+padding-bottom: 14px;
+}
+/*
+	Basic pieces, very important.
+*/
+/* These better be self explanatory... */
+th {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+	-moz-border-radius: 0px 0px 0px 0px;
+}
+textarea {
+ background-color: #E6EAED;
+ color: #4F697C;
+ border: 1px solid #FFFFFF;
+}
+input {
+ background-color: #E6EAED;
+ color: #4F697C;
+ border: 1px solid #FFFFFF;
+}
+select {
+ background-color: #E6EAED;
+ color: #4F697C;
+ border: 1px solid #FFFFFF;
+}
+.odd_cell {
+ background-color: #E6EAED;
+}
+body font {color: #000000;}
+:link {color: #112255; text-decoration: underline;}
+:visited {color: #112255; text-decoration: underline;}
+a:hover {color: #FF9900; text-decoration: underline; }
+
+a:link img, a:visited img { border-style: none }
+
+textarea {
+    font-family: Tahoma, sans;
+    font-size: 10pt;
+}
+.tab {
+    border-width: 1px 1px 1px 1px;
+    border-color: #000000;
+    width: 100%;
+}
+

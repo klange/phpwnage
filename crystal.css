@@ -105,9 +105,9 @@ font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
 .forum_button_text :hover {color: #CCCCCC; text-decoration: none;}
 .forum_base_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* panel text in the forum */
 .forum_user {font-family: Verdana, Tahoma, sans; font-size: 12px; font-weight: bold} /* user name in post */
-.forum_body {font-family: Verdana, Tahoma, sans; font-size: 10px; color: #000000;} /* post body (did I even use this?) */
+.forum_body {font-family: Verdana, Tahoma, sans; font-size: 12px; color: #000000;} /* post body (did I even use this?) */
 .forum_time {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* time code */
-.forum_quote {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* quoted text  */
+.forum_quote {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* quoted text  */
 .mod_name {color: #73d216;}
 .adm_name {color: #f57900;}
 
