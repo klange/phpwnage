@@ -1411,60 +1411,24 @@ if ($_GET['do'] == "editreply") {
     $post_title_add = " :: " . $board['title'] . " :: " . $_PWNDATA['forum']['editing'];
     $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a> > " . $_PWNDATA['forum']['editing'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $topic['title'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  $_PWNDATA['forum']['editing'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-END;
-    $post_content = $post_content . printPoster('content') . <<<END
+    $block_content = "";
+    $block_content = $block_content . printPoster('content') . <<<END
 <form action="forum.php" method="post" name="form">
-<input type="hidden" name="action" value="edit_reply">
+<input type="hidden" name="action" value="edit_reply" />
 {$_PWNDATA['forum']['body']}:<br />
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20" onselect="copySelection(this)">
+<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
 END;
-    $post_content = $post_content . $reply['content'];
-    $post_content = $post_content . <<<END
+    $block_content = $block_content . $reply['content'];
+    $block_content = $block_content . <<<END
 </textarea><br />
-<input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub">
+<input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" />
 END;
-    $post_content = $post_content . "<input type=\"hidden\" name=\"id\" value=\"" . $reply['id'] . "\">";
-    $post_content = $post_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\">";
-    $post_content = $post_content .  <<<END
-	</form></font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
+    $block_content = $block_content . "<input type=\"hidden\" name=\"id\" value=\"" . $reply['id'] . "\" />";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
+    $block_content = $block_content .  <<<END
+	</form>
 END;
+    $post_content = makeBlock($topic['title'],$_PWNDATA['forum']['editing'],$block_content);
 }
 
 // Edit a profile
