@@ -487,11 +487,17 @@ function autofitIframe(id){
     }
     try {
 	    if (!window.opera && !document.mimeType && document.all && document.getElementById){
-		    parent.document.getElementById(id).style.height=this.document.body.offsetHeight+"px";
+		    parent.document.getElementById(id).style.height = this.document.body.offsetHeight + "px";
+		} else if(document.getElementById) {
+		    parent.document.getElementById(id).style.height = this.document.body.scrollHeight + "px";
 	    }
-	    else if(document.getElementById) {
-		    parent.document.getElementById(id).style.height=this.document.body.scrollHeight+"px";
-	    }
+    } catch(err) {
+        window.status = err.message;
+    }
+    try {
+        if (document.all) {
+            parent.document.getElementById(id).style.height = (this.document.body.offsetHeight + 4) + "px";
+        }
     } catch(err) {
         window.status = err.message;
     }

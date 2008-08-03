@@ -19,12 +19,12 @@
 */
 
 .borderless_table {border-width: 0px; border-spacing: 0px; border-style: none none none none; border-collapse: collapse; margin: 0px 0px 0px 0px;} /* basic table, used for panels and subheader bars, etc. */
-.sub_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a sub header */
-.pan_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a panel */
-.pan_title_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
+.sub_body_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* text in the body of a sub header */
+.pan_body_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* text in the body of a panel */
+.pan_title_text {font-family: Verdana, Tahoma, sans; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
 
-.block_body_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* text in the body of a panel */
-.block_title_text {font-family: "Verdana, Tahoma, sans"; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
+.block_body_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* text in the body of a panel */
+.block_title_text {font-family: Verdana, Tahoma, sans; font-size: 12px; font-weight: bold; color: #204a87;} /* text in the title of a panel */
 
 .head_left	{height:110px; width:500px;} /* left header */
 .head_mid	{height:110px;} /* middle, tiling header */
@@ -35,7 +35,7 @@
 .sub_right {background-image: url(crystal/sub_right.png); height:27px; width:17px;}
 
 .but_left {background-image: url(crystal/sub_left.png); height:27px; width:11px;} /* button */
-.but_mid {background-image: url(crystal/sub_mid.png); height:27px;}
+.but_mid {background-image: url(crystal/sub_mid.png); height:27px; vertical-align: middle; padding: 0px 0px 0px 0px;}
 .but_right {background-image: url(crystal/sub_right.png); height:27px; width:17px;}
 
 .pan_ul {background-image: url(crystal/block_up_left.png); height:29px; width:10px;} /* Upper Left */
@@ -44,7 +44,7 @@
 
 .pan_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
 .pan_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;
-font-family: "Verdana, Tahoma, sans"; font-size: 12px;
+font-family: Verdana, Tahoma, sans; font-size: 12px;
 } /* body */
 .pan_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
 
@@ -59,7 +59,7 @@ font-family: "Verdana, Tahoma, sans"; font-size: 12px;
 
 .block_ml {background-image: url(crystal/block_left.png); width:10px;} /* Left  */
 .block_body {background-image: url(crystal/block_body.png); padding: 3px 3px 3px 3px;
-font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
+font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
 .block_mr {background-image: url(crystal/block_right.png); width:12px;} /* right  */
 
 .block_bl {background-image: url(crystal/block_down_left.png); height:14px; width:10px;} /* bottom left */
@@ -80,7 +80,7 @@ font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
 	padding: 1px 1px 1px 1px;
 	border-style: solid solid solid solid;
 	border-color:#333333;
-	font-family: "Verdana, Tahoma, sans"; font-size: 12px;
+	font-family: Verdana, Tahoma, sans; font-size: 12px;
 }
 /* The set of buttons to edit a post, quote it, view the ip, etc. */
 .mod_set td {
@@ -88,8 +88,9 @@ font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
 	padding: 0px 0px 0px 0px;
 	border-style: none none none none;
 }
+
 /* Said button  */
-.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none;}
+.forum_button {border-width: 0px; border-spacing: 0px; padding: 0px; border-style: none; border-collapse: collapse;}
 /* cell thing, keeps everything in line */
 .forum_button td {
 	border-width: 0px 0px 0px 0px;
@@ -98,15 +99,15 @@ font-family: "Verdana, Tahoma, sans"; font-size: 12px;} /* body */
 }
 
 .quote {background-image: url(aero/quote.png); background-repeat: no-repeat; border: 1px dashed black; padding: 5px;} /* post quote */
-.forum_button_text {font-family: "Verdana"; font-size: 10px; color: #000000;} /* button text */
+.forum_button_text {font-family: Verdana, Tahoma, sans; font-size: 10px; color: #000000;} /* button text */
 .forum_button_text :link {color: #000000; text-decoration: none;}
 .forum_button_text :visited {color: #000000; text-decoration: none;}
 .forum_button_text :hover {color: #CCCCCC; text-decoration: none;}
-.forum_base_text {font-family: "Verdana"; font-size: 12px;} /* panel text in the forum */
-.forum_user {font-family: "Verdana"; font-size: 12px; font-weight: bold} /* user name in post */
-.forum_body {font-family: "Verdana"; font-size: 10px; color: #000000;} /* post body (did I even use this?) */
-.forum_time {font-family: "Verdana"; font-size: 10px;} /* time code */
-.forum_quote {font-family: "Verdana"; font-size: 10px;} /* quoted text  */
+.forum_base_text {font-family: Verdana, Tahoma, sans; font-size: 12px;} /* panel text in the forum */
+.forum_user {font-family: Verdana, Tahoma, sans; font-size: 12px; font-weight: bold} /* user name in post */
+.forum_body {font-family: Verdana, Tahoma, sans; font-size: 10px; color: #000000;} /* post body (did I even use this?) */
+.forum_time {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* time code */
+.forum_quote {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* quoted text  */
 .mod_name {color: #73d216;}
 .adm_name {color: #f57900;}
 

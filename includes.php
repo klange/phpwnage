@@ -93,12 +93,11 @@ function drawButton($dowhat, $title) {
 	<table class="forum_button">
 	<tr>
     <td class="but_left"></td>
-    <td class="but_mid">
-    <font class="forum_button_text">
+    <td class="but_mid"><font class="forum_button_text">
 END;
     $post_content = $post_content . "<a href=\"$dowhat\">$title</a>";
     $post_content = $post_content . <<<END
-	</font></td>
+</font></td>
     <td class="but_right"></td>
   </tr>
 </table>
