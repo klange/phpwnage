@@ -1547,46 +1547,13 @@ if ($_GET['do'] == "search_form") {
     $post_title_add = " :: " . $_PWNDATA['forum']['search'];
     $post_sub_add = " > " . $_PWNDATA['forum']['search'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $_PWNDATA['forum']['search'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font face="Tahoma" color="#FFFFFF">
+    $block_content = <<<END
 		<form action="forum.php?do=search" method="post" name="form">
-		{$_PWNDATA['forum']['search_terms']}: <input type="text" name="q">
-		<input type="submit" value="{$_PWNDATA['forum']['search_submit']}" name="sub">
+		{$_PWNDATA['forum']['search_terms']}: <input type="text" name="q" />
+		<input type="submit" value="{$_PWNDATA['forum']['search_submit']}" name="sub" /></form>
 END;
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+$post_content = makeBlock($_PWNDATA['forum']['search'],"",$block_content);
+    
 }
 
 // Search results
