@@ -97,13 +97,13 @@ print $output;
 
 function FileFault($file)
 {
-print "Could not write file. Printing instead...<br><br>\n\n";
+print "Could not write file. Printing instead...<br /><br />\n\n";
 print "<!-- BEGIN CONFIG.PHP\n";
 print $file;
 print "\nEND CONFIG.PHP-->\n\n";
 print "View the source for this page and save everything between BEGIN CONFIG.PHP and END CONFIG.PHP to a file named 'config.php' and place it in your PHPwnage root directory.\n";
 print "When you have uploaded the file to your webserver, continue to the next page by clicking <a href=\"fresh_install.php?do=page3\">here</a>";
-die ("\n<br>Breaking installer...");
+die ("\n<br />Breaking installer...");
 }
 
 if ($_GET['do'] == '') {
@@ -150,35 +150,35 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-    <p align="left">SQL Database Server Location<br>
+    <p align="left">SQL Database Server Location<br />
     <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></td>
     <td width="52%" valign="top" align="right">
   <input type="text" name="sql_server" style="width: 100%"></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-SQL User Name <br>
+SQL User Name <br />
     <font size="2">The user name you use to access your SQL server.</font></td>
     <td width="52%" valign="top" align="right">
   <input type="text" name="sql_user" style="width: 100%"></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-    SQL  Password<br>
+    SQL  Password<br />
     <font size="2">The password you use to access your SQL server. cAsE sEnSiTiVe</font></td>
     <td width="52%" valign="top" align="right">
   <input type="text" name="sql_password" style="width: 100%"></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-    SQL Database  Name<br>
+    SQL Database  Name<br />
     <font size="2">The name of the database in which PHPwnage will install. </font></td>
     <td width="52%" valign="top" align="right">
   <input type="text" name="sql_database" style="width: 100%"></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-    Administrator Email <br>
+    Administrator Email <br />
     <font size="2">The email address you would like to display if an error is 
     encountered.</font></td>
     <td width="52%" valign="top" align="right">
@@ -227,7 +227,7 @@ $data = $data . <<<END
    // Meh, calculate the generation time...
 \$db_fail = false;
 \$db = mysql_connect(\$conf_server,\$conf_user,\$conf_password) or 
-die ("<font face=\"Tahoma\">We've experienced an internal error. Please contact " . \$conf_email . ".<br>\nError Code 001: Failed to connect to SQL server.</font>"); 
+die ("<font face=\"Tahoma\">We've experienced an internal error. Please contact " . \$conf_email . ".<br />\nError Code 001: Failed to connect to SQL server.</font>"); 
 mysql_select_db(\$conf_database, \$db) or \$db_fail = true; 
 
 putenv("TZ=America/New_York"); // Set the time zone to EST
@@ -244,7 +244,7 @@ END;
 // <?
 file_put_contents_debug("config.php",$data);
 // FileFault($date); // XXX: Create_File_Failed, replace the above with this line.
-print "<br>Success! Moving to next page...";
+print "<br />Success! Moving to next page...";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page3\">";
 }
 
@@ -261,7 +261,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    <p align="left">Forum Title<br>
+    <p align="left">Forum Title<br />
     <font size="2">A short description for your site. Ex: Oasis-Games.com</font></td>
     <td width="50%" valign="top" align="right">
   <input type="text" name="site_name" style="width: 100%"></td>
@@ -269,7 +269,7 @@ $print_what = <<<END
   <tr>
     <td width="50%" valign="top" align="left">
  
-    Copyright Line<br>
+    Copyright Line<br />
     <font size="2">A message displayed in the footer. Ex: (C) 2007 Oasis-Games</font></td>
     <td width="50%" valign="top" align="right">
  
@@ -277,7 +277,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    Installation URL <br>
+    Installation URL <br />
     <font size="2">The URL for your site (including the /) Ex: http://oasis-games.com/home/</font></td>
     <td width="50%" valign="top" align="right">
  
@@ -285,7 +285,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    Site Descri ption<br>
+    Site Descri ption<br />
     <font size="2">A short piece of text to display in the right of the &quot;sub 
     header&quot;</font></td>
     <td width="50%" valign="top" align="right">
@@ -294,7 +294,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    Administrator User Name <br>
+    Administrator User Name <br />
     <font size="2">The name you would like to use to log in to the admin panel. 
     Ex: Admin</font></td>
     <td width="50%" valign="top" align="right">
@@ -303,7 +303,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    Administrator Password <br>
+    Administrator Password <br />
     <font size="2">The password you would like to use to log in to the admin 
     panel. cAsE sEnSiTiVe</font></td>
     <td width="50%" valign="top" align="right">
@@ -545,19 +545,19 @@ CREATE TABLE  `sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
-print "Completed database setup. Moving on to data...<br>\n";
+print "Completed database setup. Moving on to data...<br />\n";
 $info = "INSERT INTO `info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2);";
 $result = mysql_query($info);
-print "Primary site information added! Moving on to generic set up...<br>\n";
-print "Adding administrator forum user...<br>\n";
+print "Primary site information added! Moving on to generic set up...<br />\n";
+print "Adding administrator forum user...<br />\n";
 $adminname = $_POST['site_admin_name'];
 $adminpass = md5($_POST['site_admin_pass']);
 mysql_query("INSERT INTO `users` (`name`, `password`, `level`)  VALUES ('$adminname', '$adminpass', 3);");
-print "Adding generic news item...<br>\n";
+print "Adding generic news item...<br />\n";
 $time = time();
 mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at <a href=\"http://oasis-games.com/\">our home page</a>. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
-print "Adding navigation block...<br>\n";
-mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br>\r\n<a href=\"admin.php\">Admin</a><br>\r\n<a href=\"psp.php\">Mobile</a><br>\r\n<a href=\"rss.php\">RSS</a><br>\r\n<a href=\"forum.php\">Forum</a><br>\r\n<a href=\"modules.php?m=members\">Member List</a>');");
+print "Adding navigation block...<br />\n";
+mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\r\n<a href=\"admin.php\">Admin</a><br />\r\n<a href=\"psp.php\">Mobile</a><br />\r\n<a href=\"rss.php\">RSS</a><br />\r\n<a href=\"forum.php\">Forum</a><br />\r\n<a href=\"modules.php?m=members\">Member List</a>');");
 print "Completed! Moving to next page...\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4\">";
 // Now that the core of the installation has completed, grab the $_POST data...
@@ -576,10 +576,10 @@ $print_what = <<<END
   <tr>
     <td width="100%" valign="top" align="left" dir="ltr">
     <p align="left" dir="ltr"> Thank you for 
-    installing PHPwnage!<br>
+    installing PHPwnage!<br />
     You can access your site now, or continue with this tutorial which will show 
-    you how to work the administration panel.<br>
-    To access your site <a href="index.php">Click Here</a><br>
+    you how to work the administration panel.<br />
+    To access your site <a href="index.php">Click Here</a><br />
     To read the tutorial, click the button. Also, please be sure to delete this installer!
     <div>
 	<input value="Show Tutorial" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide Tutorial'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show Tutorial'; }" type="button"></div>
@@ -587,21 +587,21 @@ $print_what = <<<END
 	<div style="display: none;">
     <p align="center" dir="ltr">
     <b>-- Welcome to the PHPwnage Administration Tutorial 
-    --</b><br>
+    --</b><br />
     This tutorial will guide you through adding new news topics, creating 
     blocks, adding user pages, designing and installing modules, and using the 
-    various site features, such as themes and background colors.<br>
-    <b>Part 1<br>
-    </b>The Admin Panel<br>
+    various site features, such as themes and background colors.<br />
+    <b>Part 1<br />
+    </b>The Admin Panel<br />
     The main place to administer your new site is the 'Admin Panel'. You must 
     login before accessing the admin panel. You can log in from the forum. 
     Afterwards, you 
     can access the Admin Panel <a href="admin.php">here</a>. From the Admin Panel, we will be able to 
     add blocks, news topics, forums, user pages, and even review a security log. 
     Moderators can also view the Admin Panel, but have limited capabilities to 
-    prevent them from overpowering administrators.<br>
-    <b>Part 2</b><br>
-    News Topics<br>
+    prevent them from overpowering administrators.<br />
+    <b>Part 2</b><br />
+    News Topics<br />
     With news topics, your site can be anything from a blog to a respectable 
     world news headquarters. To add a new news article, find the &quot;News&quot; section 
     on the Admin Panel. You will be directed to a page where you can add a new 
@@ -612,9 +612,9 @@ $print_what = <<<END
     your article, press &quot;Add Article&quot;. If you wish to edit or change your 
     article, you can do so by click on its name in the main page. If you are 
     logged in to the Admin Panel, you will be shown not only the article, but a 
-    text box containing the HTML code for the article.<br>
-    <b>Part 3</b><br>
-    Custom Pages<br>
+    text box containing the HTML code for the article.<br />
+    <b>Part 3</b><br />
+    Custom Pages<br />
     Custom Pages, or also referred to as User Pages, are places where site 
     members can create new HTML pages within your website. They are edited by 
     the users using a password entered into the address bar after the page URL. 
@@ -629,25 +629,25 @@ $print_what = <<<END
     either `true` or `false`. When set to true, the blocks on the left are 
     visible. When set to false, they are hidden. Moderators and administrators 
     have the ability to edit these pages and will be shown the HTML code for 
-    them when they are logged in.<b><br>
-    Part 4</b><br>
-    Site Information<br>
+    them when they are logged in.<b><br />
+    Part 4</b><br />
+    Site Information<br />
     Here you can change the information for your site, which you entered during 
-    installation.<br>
-    <b>Part 5</b><br>
+    installation.<br />
+    <b>Part 5</b><br />
     Site Info -
-    The Security Log<br>
+    The Security Log<br />
     Shown here is every failed attempt to access the administration panel, along 
     with the password that was tried and the IP address of the perpetrator. You 
-    can clear this log by pressing &quot;Clear Security Log&quot;<br>
-    <b>Part 6</b><br>
-    Blocks<br>
+    can clear this log by pressing &quot;Clear Security Log&quot;<br />
+    <b>Part 6</b><br />
+    Blocks<br />
     Here you can add new blocks to the side bar. As with news articles, these 
     use HTML code. If you wish to edit a block, find it on the left and edit it 
     appropriately. Note that HTML can also be used in the title. You can also 
-    move and delete existing blocks as well.<br>
-    <b>Part 7</b><br>
-    Forums<br>
+    move and delete existing blocks as well.<br />
+    <b>Part 7</b><br />
+    Forums<br />
     PHPwnage's forum system is divided into categories, and categories are 
     divided into boards. From the forum section, you can add new categories, put 
     boards in them, edit existing boards and categories, and reorder the boards. 
@@ -662,9 +662,9 @@ $print_what = <<<END
     you want new posts to be at. A news forum, for example, can be set to 0, 2, 
     1, allowing guests to read the news, moderators and administrators to post 
     new topics, and members to post comments. For your reference: 0 = Guest, 1 = 
-    Member, 2 = Moderator, 3 = Administrator<br>
-    <b>Part 8</b><br>
-    The Forum<br>
+    Member, 2 = Moderator, 3 = Administrator<br />
+    <b>Part 8</b><br />
+    The Forum<br />
     The Forum is a place where members can join your site for discussion on 
     relevant topics. New users can join from a link in the sub header of the 
     forum. New in PHPwnage 1.5 is the ability to see what topics have new posts. 
@@ -673,7 +673,7 @@ $print_what = <<<END
     appear yellow. If not, it will appear grey. Clicking a status indicator in 
     the forum viewer will set all topics to &quot;read&quot;. Also new in 1.5 are private 
     messages. Each users is given a mailbox for messages that they can send to 
-    other users.<br>
+    other users.<br />
     When logged into the administrator user, you will be able to edit and delete 
     posts on the forum. Regular users are given the option of editing their own 
     posts as well. Guests have no permissions for security reasons. Update: New 
@@ -681,16 +681,16 @@ $print_what = <<<END
     divide your boards by relevance. The new bbCode insertion system is also 
     present in $_PWNVERSION. Also new is the ability to hide boards to certain user 
     levels. 0 = Guest, 1 = Member, 2 = Moderator, 3 = Administrator. This allows 
-    private boards to be added.<br>
-    <b>Part 9</b><br>
-    RSS and the Mobile Page<br>
+    private boards to be added.<br />
+    <b>Part 9</b><br />
+    RSS and the Mobile Page<br />
     A key feature in PHPwnage is RSS. RSS, or &quot;Really Simple Syndication&quot;, 
     allows users to read news articles from other programs. The Mobile site has 
     been engineered specifically for use on mobile phones and the Sony 
     PlayStation Portable. Both of these items can be accessed by links found at 
-    the bottom of the page.<br>
-	<b>Part 10</b><br>
-    Themes and Colors<br>
+    the bottom of the page.<br />
+	<b>Part 10</b><br />
+    Themes and Colors<br />
     Background colors have been in PHPwnage since version 1.3, but themes are a 
     new thing. With themes, you can define your own set up for the look of your 
     site. This installation comes with a few to start you off: The classic theme 
@@ -699,18 +699,18 @@ $print_what = <<<END
     site. Almost all themes support backgrounds because they are made using 
     semi-transparent PNGs. To change the background color, add ?imageroot={color} 
     to the end of any URL on the site. Here is a list of included colors and 
-    their codes:<br>
-    <font size="2">Light Blue - images<br>
-    Dark Blue - darkblue<br>
-    Green - green<br>
-    Dark Green - darkgreen<br>
-    Red - red<br>
-    Pink - fortheladies<br>
-    Black - black<br>
-    Slate - slate<br>
-    Entropy Caution Lines - classic<br></font>
-    <b>Part 11</b><br>
-    Additions in PHPwnage 1.7<br>
+    their codes:<br />
+    <font size="2">Light Blue - images<br />
+    Dark Blue - darkblue<br />
+    Green - green<br />
+    Dark Green - darkgreen<br />
+    Red - red<br />
+    Pink - fortheladies<br />
+    Black - black<br />
+    Slate - slate<br />
+    Entropy Caution Lines - classic<br /></font>
+    <b>Part 11</b><br />
+    Additions in PHPwnage 1.7<br />
     With update to 1.7, tons of new features have been added to the CMS. The 
     most prominent of these are the new forum upgrades and the administrative 
     panel. As this release is centered around being an easy-to-use, yet 
@@ -720,7 +720,7 @@ $print_what = <<<END
     features. The new look also keeps the site fast by dividing the admin pages 
     into sections. If you have any concerns with PHPwnage $_PWNVERSION, please contact
     <a href="mailto:klange@oasis-games.com">
-    klange@oasis-games.com</a> for more information.<br>
+    klange@oasis-games.com</a> for more information.<br />
     Thank you for choosing PHPwnage as your CMS. For more information, please 
     visit our official site at <a href="http://oasis-games.com/home">
     http://oasis-games.com/home</a>
