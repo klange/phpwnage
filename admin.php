@@ -23,296 +23,347 @@ require 'config.php';
 require 'includes.php';
 // Jump to the login page instead of yelling and screaming.
 if (isset($_SESSION['sess_id'])) {
-if ($user['level'] < $site_info['mod_rank']) { messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php"); }
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
+    }
 } else {
-$ip = $_SERVER['REMOTE_ADDR'];
-$name = $_SESSION['user_name'];
-mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_SESSION['user_pass'] . "', 'Admin, $name', '" . $ip . "' );");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&admin=yes"); 
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $name = $_SESSION['user_name'];
+    mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_SESSION['user_pass'] . "', 'Admin, $name', '" . $ip . "' );");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&admin=yes"); 
 }
 
-// Begin POST functions
-if ($_POST['action'] == "add_article")
-{
-$newcontent = $_POST['content'];
-mysql_query("INSERT INTO `news` ( `id` , `title` , `content` , `time_code`, `user` )
+// XXX: Begin POST functions
+
+// Add a new article
+if ($_POST['action'] == "add_article") {
+    $newcontent = $_POST['content'];
+    mysql_query("INSERT INTO `news` ( `id` , `title` , `content` , `time_code`, `user` )
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . $_SESSION['user_name'] . "'
 );");
-$article_id = mysql_insert_id();
-mysql_query("UPDATE `info` SET `last_updated` = '" . time() . "' WHERE `info`.`id` =1");
+    $article_id = mysql_insert_id();
+    mysql_query("UPDATE `info` SET `last_updated` = '" . time() . "' WHERE `info`.`id` =1");
+    $message = $_PWNDATA['admin']['article_add_suc'];
+    if ($_POST['add_to_forum'] == true) {
+        $content = "[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['read_article_here'] . "[/url]";
+        mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mysql_real_escape_string($_POST['title']) . "');");
+        $result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
+        $topic = mysql_fetch_array($result);
+        $ip=$_SERVER['REMOTE_ADDR'];
+        mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip` ) VALUES ( NULL , " . $topic['id'] . " , " . $user['id'] . " , '" . mysql_real_escape_string($content) . "' , " . time() . " , '" . $ip . "' );");
+        $result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
+        $reply = mysql_fetch_array($result);
+        mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic['id']);
+        mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
+        mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
+        $newcontenta = $newcontent . "\n\n\n[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
+        mysql_query("UPDATE `news` SET `content` = '" . $newcontenta . "' WHERE `news`.`id` =" . $article_id);
+        mysql_query("UPDATE `news` SET `topicid` = " . $topic['id'] . " WHERE `news`.`id` =" . $article_id);
+        $message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";
+    }
+    messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=news"); 
+}
 
-$message = $_PWNDATA['admin']['article_add_suc'];
-if ($_POST['add_to_forum'] == true) {
-$content = "[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['read_article_here'] . "[/url]";
-mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mysql_real_escape_string($_POST['title']) . "');");
-$result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
-$topic = mysql_fetch_array($result);
-$ip=$_SERVER['REMOTE_ADDR'];
-mysql_query("INSERT INTO `posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip` ) VALUES ( NULL , " . $topic['id'] . " , " . $user['id'] . " , '" . mysql_real_escape_string($content) . "' , " . time() . " , '" . $ip . "' );");
-$result = mysql_query("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT 1");
-$reply = mysql_fetch_array($result);
-mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic['id']);
-mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
-mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-$newcontenta = $newcontent . "\n\n\n[url=" . $site_info['url'] .  "article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
-mysql_query("UPDATE `news` SET `content` = '" . $newcontenta . "' WHERE `news`.`id` =" . $article_id);
-mysql_query("UPDATE `news` SET `topicid` = " . $topic['id'] . " WHERE `news`.`id` =" . $article_id);
-$message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";
-}
-messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=news"); 
-}
+// Add a new rank
 if ($_POST['action'] == "addrank") {
-if ($user['level'] < $site_info['admin_rank']) { die("<font face=\"Tahoma\">" . $_PWNDATA['admin']['only_moderators_ranks'] . "</font>"); }
-$rank = $_POST['level'];
-$name = $_POST['name'];
-$posts = $_POST['posts'];
-mysql_query("INSERT INTO `ranks` (`value`, `name`, `posts`) VALUES ($rank, '$name', $posts)");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_added'] . ": '$name'","admin.php?view=promo"); 
+    if ($user['level'] < $site_info['admin_rank']) {
+        die("<font face=\"Tahoma\">" . $_PWNDATA['admin']['only_moderators_ranks'] . "</font>");
+    }
+    $rank = $_POST['level'];
+    $name = $_POST['name'];
+    $posts = $_POST['posts'];
+    mysql_query("INSERT INTO `ranks` (`value`, `name`, `posts`) VALUES ($rank, '$name', $posts)");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_added'] . ": '$name'","admin.php?view=promo"); 
 }
-if ($_POST['action'] == "clear_security")
-{
-mysql_query("TRUNCATE TABLE `security`");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['security_log_cleared'],"admin.php?view=site_info"); 
+
+// Clear the security log
+if ($_POST['action'] == "clear_security") {
+    mysql_query("TRUNCATE TABLE `security`");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['security_log_cleared'],"admin.php?view=site_info"); 
 }
-if ($_POST['action'] == "custom_page")
-{
-mysql_query("INSERT INTO `pages` ( `name` , `display_name` , `content` , `showsidebar` , `author`)
+
+// Custom pages
+if ($_POST['action'] == "custom_page") {
+    mysql_query("INSERT INTO `pages` ( `name` , `display_name` , `content` , `showsidebar` , `author`)
 VALUES (
 '" . $_POST['name'] . "', '" . $_POST['display_name'] . "', '" . $_POST['content'] . "', '" . $_POST['showsidebar'] . "', '" . $_POST['author'] . "'
 );");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_added'],"admin.php?view=pages"); 
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_added'],"admin.php?view=pages"); 
 }
-if ($_POST['action'] == "site_info")
-{
-mysql_query("UPDATE `info` SET `name` = '" . $_POST['name'] . "' WHERE `info`.`id` =1");
-mysql_query("UPDATE `info` SET `url` = '" . $_POST['url'] . "' WHERE `info`.`id` =1");
-mysql_query("UPDATE `info` SET `copyright` = '" . $_POST['copyright'] . "' WHERE `info`.`id` =1");
-mysql_query("UPDATE `info` SET `pheader` = '" . $_POST['pheader'] . "' WHERE `info`.`id` =1");
-mysql_query("UPDATE `info` SET `right_data` = '" . $_POST['right_data'] . "' WHERE `info`.`id` =1");
-messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['site_info_updated'], "admin.php?view=site_info");
+
+// Update site information
+if ($_POST['action'] == "site_info") {
+    mysql_query("UPDATE `info` SET `name` = '" . $_POST['name'] . "' WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `url` = '" . $_POST['url'] . "' WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `copyright` = '" . $_POST['copyright'] . "' WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `pheader` = '" . $_POST['pheader'] . "' WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `right_data` = '" . $_POST['right_data'] . "' WHERE `info`.`id` =1");
+    messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['site_info_updated'], "admin.php?view=site_info");
 }
-if ($_POST['action'] == "edit_block")
-{
-mysql_query("UPDATE `blocks` SET `title` = '" . $_POST['title'] . "' WHERE `blocks`.`id` =" . $_POST['blockid'] . ";");
-mysql_query("UPDATE `blocks` SET `content` = '" . $_POST['content'] . "' WHERE `blocks`.`id` =" . $_POST['blockid'] . ";");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_edited'] . ": '" . $_POST['title'] . "'","admin.php?view=blocks");
+
+// Update existing block
+if ($_POST['action'] == "edit_block") {
+    mysql_query("UPDATE `blocks` SET `title` = '" . $_POST['title'] . "' WHERE `blocks`.`id` =" . $_POST['blockid'] . ";");
+    mysql_query("UPDATE `blocks` SET `content` = '" . $_POST['content'] . "' WHERE `blocks`.`id` =" . $_POST['blockid'] . ";");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_edited'] . ": '" . $_POST['title'] . "'","admin.php?view=blocks");
 }
-if ($_POST['action'] == "add_block")
-{
-mysql_query("INSERT INTO `blocks` ( `id` , `title` , `content` )
+
+// Add new block
+if ($_POST['action'] == "add_block") {
+    mysql_query("INSERT INTO `blocks` ( `id` , `title` , `content` )
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "'
 );");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_added']. ": '" . $_POST['title'] . "'","admin.php?view=blocks");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_added']. ": '" . $_POST['title'] . "'","admin.php?view=blocks");
 }
-if ($_POST['action'] == "add_board")
-{
-mysql_query("INSERT INTO `boards` 
+
+// Add new board
+if ($_POST['action'] == "add_board") {
+    mysql_query("INSERT INTO `boards` 
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "', " . $_POST['order'] . ", " . $_POST['cat'] . ", " . $_POST['perma'] . ", " . $_POST['permb'] . ", " . $_POST['permc'] . ",'" . $_POST['link'] . "');");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
-}
-if ($_POST['action'] == "edit_board")
-{
-mysql_query("UPDATE `boards` SET `title`= '" . $_POST['title'] . "', `desc`='" . $_POST['content'] . "', `vis_level`=" . $_POST['perma'] . ", `top_level`=" . $_POST['permb'] . ", `post_level`=" . $_POST['permc'] . ", `link`='" . $_POST['link'] . "' WHERE `id` =" . $_POST['id'] . ";");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
-}
-if ($_POST['action'] == "add_category")
-{
-mysql_query("INSERT INTO `categories` VALUES (
-NULL , " . $_POST['order'] . ", '" . $_POST['title'] . "');");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
-}
-if ($_POST['action'] == "edit_category")
-{
-mysql_query("UPDATE `categories` SET `name`= '" . $_POST['title'] . "' WHERE `id` =" . $_POST['id'] . ";");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
-}
-if ($_POST['action'] == "add_ban") {
-mysql_query("INSERT INTO `banlist` VALUES ('" . $_POST['ip'] . "');");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ip_banned'] . ": '" . $_POST['ip'],"admin.php?view=bans");
-}
-if ($_POST['action'] == "setranks") {
-if ($user['id'] != 1) {
-messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_root_ranks']);
-}
-mysql_query("UPDATE `info` SET `mod_rank`=" . $_POST['mod'] . " WHERE `id`=1");
-mysql_query("UPDATE `info` SET `admin_rank`=" . $_POST['adm'] . " WHERE `id`=1");
-mysql_query("UPDATE `users` SET `level`=" . $_POST['mod'] . " WHERE `level`>=" . $_POST['mod_old'] . " AND `level`<" . $_POST['adm_old']);
-mysql_query("UPDATE `users` SET `level`=" . $_POST['adm'] . " WHERE `level`>=" . $_POST['adm_old']);
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ranks_update'],"admin.php?view=promo");
-}
-if ($_POST['action'] == "editsmiley") {
-$id = $_POST['id'];
-$name = $_POST['smileys'];
-$code = $_POST['code'];
-mysql_query("UPDATE `smileys` SET `code`='$code' WHERE `id`=$id");
-mysql_query("UPDATE `smileys` SET `image`='$name' WHERE `id`=$id");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_edited'],"admin.php?view=forum");
-}
-if ($_POST['action'] == "addsmiley") {
-$name = $_POST['smileys'];
-$code = $_POST['code'];
-mysql_query("INSERT INTO `smileys` (`code`, `image`) VALUES ('$code','$name')");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_added'],"admin.php?view=forum");
-}
-if ($_GET['do'] == "delsmile") {
-mysql_query("DELETE FROM `smileys` WHERE `id`=" . $_GET['id']);
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_deleted'],"admin.php?view=forum");
-}
-if ($_GET['do'] == "del_news") {
-mysql_query("DELETE FROM `news` WHERE `id`=" . $_GET['id']);
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['article_deleted'],"admin.php?view=news");
-}
-if ($_GET['do'] == "del_page") {
-mysql_query("DELETE FROM `pages` WHERE `name`='" . $_GET['page'] . "'");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_deleted'],"admin.php?view=pages");
-}
-if ($_GET['do'] == "del_ban") {
-mysql_query("DELETE FROM `banlist` WHERE `ip`='" . $_GET['ban'] . "'");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ban_lifted'] . ": " . $_GET['ban'],"admin.php?view=bans");
-}
-if ($_GET['do'] == "del_brd") {
-mysql_query("DELETE FROM `boards` WHERE `id`=" . $_GET['id']);
-$top_count = 0;
-$temp = mysql_query("SELECT * FROM `topics` WHERE `board`=" . $_GET['id']);
-while ($top = mysql_fetch_array($temp)) {
-	$top_count++;
-	mysql_query("DELETE FROM `posts` WHERE `topicid`=" . $top['id']);
-}
-mysql_query("DELETE FROM `topics` WHERE `board`=" . $_GET['id']);
-$message = $_PWNDATA['admin']['board_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
-messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
 }
 
+// Edit existing board
+if ($_POST['action'] == "edit_board") {
+    mysql_query("UPDATE `boards` SET `title`= '" . $_POST['title'] . "', `desc`='" . $_POST['content'] . "', `vis_level`=" . $_POST['perma'] . ", `top_level`=" . $_POST['permb'] . ", `post_level`=" . $_POST['permc'] . ", `link`='" . $_POST['link'] . "' WHERE `id` =" . $_POST['id'] . ";");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
+}
+
+// Add category
+if ($_POST['action'] == "add_category") {
+    mysql_query("INSERT INTO `categories` VALUES (
+NULL , " . $_POST['order'] . ", '" . $_POST['title'] . "');");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
+}
+
+// Edit existing category
+if ($_POST['action'] == "edit_category") {
+    mysql_query("UPDATE `categories` SET `name`= '" . $_POST['title'] . "' WHERE `id` =" . $_POST['id'] . ";");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
+}
+
+// Add an IP ban
+if ($_POST['action'] == "add_ban") {
+    mysql_query("INSERT INTO `banlist` VALUES ('" . $_POST['ip'] . "');");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ip_banned'] . ": '" . $_POST['ip'],"admin.php?view=bans");
+}
+
+// Set up ranks
+if ($_POST['action'] == "setranks") {
+    if ($user['id'] != 1) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_root_ranks']);
+    }
+    mysql_query("UPDATE `info` SET `mod_rank`=" . $_POST['mod'] . " WHERE `id`=1");
+    mysql_query("UPDATE `info` SET `admin_rank`=" . $_POST['adm'] . " WHERE `id`=1");
+    mysql_query("UPDATE `users` SET `level`=" . $_POST['mod'] . " WHERE `level`>=" . $_POST['mod_old'] . " AND `level`<" . $_POST['adm_old']);
+    mysql_query("UPDATE `users` SET `level`=" . $_POST['adm'] . " WHERE `level`>=" . $_POST['adm_old']);
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ranks_update'],"admin.php?view=promo");
+}
+
+// Edit existing smiley
+if ($_POST['action'] == "editsmiley") {
+    $id = $_POST['id'];
+    $name = $_POST['smileys'];
+    $code = $_POST['code'];
+    mysql_query("UPDATE `smileys` SET `code`='$code' WHERE `id`=$id");
+    mysql_query("UPDATE `smileys` SET `image`='$name' WHERE `id`=$id");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_edited'],"admin.php?view=forum");
+}
+
+// Add new smiley
+if ($_POST['action'] == "addsmiley") {
+    $name = $_POST['smileys'];
+    $code = $_POST['code'];
+    mysql_query("INSERT INTO `smileys` (`code`, `image`) VALUES ('$code','$name')");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_added'],"admin.php?view=forum");
+}
+
+// Delete existing smiley
+if ($_GET['do'] == "delsmile") {
+    mysql_query("DELETE FROM `smileys` WHERE `id`=" . $_GET['id']);
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_deleted'],"admin.php?view=forum");
+}
+
+// Delete news item
+if ($_GET['do'] == "del_news") {
+    mysql_query("DELETE FROM `news` WHERE `id`=" . $_GET['id']);
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['article_deleted'],"admin.php?view=news");
+}
+
+// Delete custom page
+if ($_GET['do'] == "del_page") {
+    mysql_query("DELETE FROM `pages` WHERE `name`='" . $_GET['page'] . "'");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_deleted'],"admin.php?view=pages");
+}
+
+// Delete IP ban
+if ($_GET['do'] == "del_ban") {
+    mysql_query("DELETE FROM `banlist` WHERE `ip`='" . $_GET['ban'] . "'");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ban_lifted'] . ": " . $_GET['ban'],"admin.php?view=bans");
+}
+
+// Delete board
+if ($_GET['do'] == "del_brd") {
+    mysql_query("DELETE FROM `boards` WHERE `id`=" . $_GET['id']);
+    $top_count = 0;
+    $temp = mysql_query("SELECT * FROM `topics` WHERE `board`=" . $_GET['id']);
+    while ($top = mysql_fetch_array($temp)) {
+        $top_count++;
+        mysql_query("DELETE FROM `posts` WHERE `topicid`=" . $top['id']);
+    }
+    mysql_query("DELETE FROM `topics` WHERE `board`=" . $_GET['id']);
+    $message = $_PWNDATA['admin']['board_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
+    messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
+}
+
+// Delete category
 if ($_GET['do'] == "del_cat") {
-mysql_query("DELETE FROM `categories` WHERE `id`=" . $_GET['cat']);
-$brd_count = 0;
-$top_count = 0;
-$temp = mysql_query("SELECT * FROM `boards` WHERE `catid`=" . $_GET['cat']);
-while ($brd = mysql_fetch_array($temp)) {
-	$brd_count++;
-	$tempb = mysql_query("SELECT * FROM `topics` WHERE `board`=" . $brd['id']);
-	while ($top = mysql_fetch_array($tempb)) {
-		$top_count++;
-		mysql_query("DELETE FROM `posts` WHERE `topicid`=" . $top['id']);
-	}
-	mysql_query("DELETE FROM `topics` WHERE `board`=" . $brd['id']);
+    mysql_query("DELETE FROM `categories` WHERE `id`=" . $_GET['cat']);
+    $brd_count = 0;
+    $top_count = 0;
+    $temp = mysql_query("SELECT * FROM `boards` WHERE `catid`=" . $_GET['cat']);
+    while ($brd = mysql_fetch_array($temp)) {
+        $brd_count++;
+        $tempb = mysql_query("SELECT * FROM `topics` WHERE `board`=" . $brd['id']);
+        while ($top = mysql_fetch_array($tempb)) {
+            $top_count++;
+            mysql_query("DELETE FROM `posts` WHERE `topicid`=" . $top['id']);
+        }
+        mysql_query("DELETE FROM `topics` WHERE `board`=" . $brd['id']);
+    }
+    mysql_query("DELETE FROM `boards` WHERE `catid`=" . $_GET['cat']);
+    $message = $_PWNDATA['admin']['category_deleted'] . "<br />$brd_count " . $_PWNDATA['admin']['boards_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
+    messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
 }
-mysql_query("DELETE FROM `boards` WHERE `catid`=" . $_GET['cat']);
-$message = $_PWNDATA['admin']['category_deleted'] . "<br />$brd_count " . $_PWNDATA['admin']['boards_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
-messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
-}
+
+// Move board
 if ($_GET['do'] == "mov_brd") {
-$temp = mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_GET['id']);
-$board = mysql_fetch_array($temp);
-$cat = $board['catid'];
-$my_id = $_GET['id'];
-$cur = $_GET['cur'];
-	if ($_GET['g'] == "up") {
-	$up = $cur - 1;
-	mysql_query("UPDATE `boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$up");
-	mysql_query("UPDATE `boards` SET `orderid`=$up WHERE `id`=$my_id");
-	}
-	if ($_GET['g'] == "down") {
-	$down = $cur + 1;
-	mysql_query("UPDATE `boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$down");
-	mysql_query("UPDATE `boards` SET `orderid`=$down WHERE `id`=$my_id");
-	}
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
+    $temp = mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_GET['id']);
+    $board = mysql_fetch_array($temp);
+    $cat = $board['catid'];
+    $my_id = $_GET['id'];
+    $cur = $_GET['cur'];
+    if ($_GET['g'] == "up") {
+        $up = $cur - 1;
+        mysql_query("UPDATE `boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$up");
+        mysql_query("UPDATE `boards` SET `orderid`=$up WHERE `id`=$my_id");
+    } elseif ($_GET['g'] == "down") {
+        $down = $cur + 1;
+        mysql_query("UPDATE `boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$down");
+        mysql_query("UPDATE `boards` SET `orderid`=$down WHERE `id`=$my_id");
+    }
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
 }
+
 // Move a forum to a different category. Specify: id = board; catid = category to move to - IE: admin.php?do=recat&id=1&catid=4 (will move board #1 to category #4 and give it an orderid of 0 (top)
 if ($_GET['do'] == "recat") {
-$temp = mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_GET['id']);
-$board = mysql_fetch_array($temp);
-$cat = $board['catid'];
-$my_id = $_GET['id'];
-$up = $_GET['cat'];
-	mysql_query("UPDATE `boards` SET `catid`=$up WHERE `id`=$my_id");
-	mysql_query("UPDATE `boards` SET `orderid`=0 WHERE `id`=$my_id");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
+    $temp = mysql_query("SELECT * FROM `boards` WHERE `id`=" . $_GET['id']);
+    $board = mysql_fetch_array($temp);
+    $cat = $board['catid'];
+    $my_id = $_GET['id'];
+    $up = $_GET['cat'];    mysql_query("UPDATE `boards` SET `catid`=$up WHERE `id`=$my_id");
+    mysql_query("UPDATE `boards` SET `orderid`=0 WHERE `id`=$my_id");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
 }
 
+// Move category
 if ($_GET['do'] == "mov_cat") {
-$temp = mysql_query("SELECT * FROM `categories` WHERE `id`=" . $_GET['id']);
-$board = mysql_fetch_array($temp);
-$my_id = $_GET['id'];
-$cur = $_GET['cur'];
-	if ($_GET['g'] == "up") {
-	$up = $cur - 1;
-	mysql_query("UPDATE `categories` SET `orderid`=$cur WHERE `orderid`=$up");
-	mysql_query("UPDATE `categories` SET `orderid`=$up WHERE `id`=$my_id");
-	}
-	if ($_GET['g'] == "down") {
-	$down = $cur + 1;
-	mysql_query("UPDATE `categories` SET `orderid`=$cur WHERE `orderid`=$down");
-	mysql_query("UPDATE `categories` SET `orderid`=$down WHERE `id`=$my_id");
-	}
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_moved'],"admin.php?view=forum");
-}
-if ($_GET['do'] == "del_block") {
-mysql_query("DELETE FROM `blocks` WHERE `id`='" . $_GET['id'] . "'");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_deleted'],"admin.php?view=blocks");
-}
-if ($_GET['do'] == "del_user") {
-mysql_query("DELETE FROM `users` WHERE `id`='" . $_GET['id'] . "'");
-mysql_query("DELETE FROM `users` WHERE `authorid`='" . $_GET['id'] . "'");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_posts_deleted'],"admin.php?view=members");
-}
-if ($_GET['do'] == "mov_block") {
-$my_id = $_GET['id'];
-	if ($_GET['g'] == "up") {
-	$up = $my_id - 1;
-	mysql_query("UPDATE `blocks` SET `id`=1234 WHERE `id`=$my_id");
-	mysql_query("UPDATE `blocks` SET `id`=$my_id WHERE `id`=$up");
-	mysql_query("UPDATE `blocks` SET `id`=$up WHERE `id`=1234");
-	}
-	if ($_GET['g'] == "down") {
-	$down = $my_id + 1;
-	mysql_query("UPDATE `blocks` SET `id`=1234 WHERE `id`=$my_id");
-	mysql_query("UPDATE `blocks` SET `id`=$my_id WHERE `id`=$down");
-	mysql_query("UPDATE `blocks` SET `id`=$down WHERE `id`=1234");
-	}
-$temp_query = mysql_query("SELECT COUNT(`id`) FROM `blocks`");
-$temp_ret = mysql_fetch_array($temp_query);
-$highest = $temp_ret['COUNT(`id`)'] + 1;
-mysql_query("ALTER TABLE `blocks` auto_increment = $highest");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_moved'],"admin.php?view=blocks");
-}
-if ($_GET['do'] == "delrank") {
-if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_delranks']); }
-mysql_query("DELETE FROM `ranks` WHERE `id`=" . $_GET['rank']);
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_deleted'],"admin.php?view=promo");
-}
-if ($_GET['do'] == "promote") {
-if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_promote']); }
-$temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $_GET['id']);
-$auser = mysql_fetch_array($temp);
-if ($user['id'] == $auser['id'] && $user['id'] != 1) {
-messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['promote_self']);
-}
-if ($auser['level'] == $user['level'] && $user['id'] != 1) {
-messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['promote_beyond']);
-}
-$level = $auser['level'] + 1;
-$my_id = $_GET['id'];
-mysql_query("UPDATE `users` SET `level`=$level WHERE `id`=$my_id");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_promoted'],"admin.php?view=promo");
-}
-if ($_GET['do'] == "demote") {
-if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_demote']); }
-$temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $_GET['id']);
-$auser = mysql_fetch_array($temp);
-if ($auser['level'] > $user['level'] && $user['id'] != 1) {
-messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['demote_above']);
-}
-$level = $auser['level'] - 1;
-$my_id = $_GET['id'];
-mysql_query("UPDATE `users` SET `level`=$level WHERE `id`=$my_id");
-messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_demoted'],"admin.php?view=promo");
+    $temp = mysql_query("SELECT * FROM `categories` WHERE `id`=" . $_GET['id']);
+    $board = mysql_fetch_array($temp);
+    $my_id = $_GET['id'];
+    $cur = $_GET['cur'];
+    if ($_GET['g'] == "up") {
+        $up = $cur - 1;
+        mysql_query("UPDATE `categories` SET `orderid`=$cur WHERE `orderid`=$up");
+        mysql_query("UPDATE `categories` SET `orderid`=$up WHERE `id`=$my_id");
+    } elseif ($_GET['g'] == "down") {
+        $down = $cur + 1;
+        mysql_query("UPDATE `categories` SET `orderid`=$cur WHERE `orderid`=$down");
+        mysql_query("UPDATE `categories` SET `orderid`=$down WHERE `id`=$my_id");
+    }
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_moved'],"admin.php?view=forum");
 }
 
+// Delete existing block
+if ($_GET['do'] == "del_block") {
+    mysql_query("DELETE FROM `blocks` WHERE `id`='" . $_GET['id'] . "'");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_deleted'],"admin.php?view=blocks");
+}
+
+// Delete user
+if ($_GET['do'] == "del_user") {
+    mysql_query("DELETE FROM `users` WHERE `id`='" . $_GET['id'] . "'");
+    mysql_query("DELETE FROM `posts` WHERE `authorid`='" . $_GET['id'] . "'");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_posts_deleted'],"admin.php?view=members");
+}
+
+// Move block
+if ($_GET['do'] == "mov_block") {
+    $my_id = $_GET['id'];
+    if ($_GET['g'] == "up") {
+        $up = $my_id - 1;
+        mysql_query("UPDATE `blocks` SET `id`=1234 WHERE `id`=$my_id");
+        mysql_query("UPDATE `blocks` SET `id`=$my_id WHERE `id`=$up");
+        mysql_query("UPDATE `blocks` SET `id`=$up WHERE `id`=1234");
+    } elseif ($_GET['g'] == "down") {
+        $down = $my_id + 1;
+        mysql_query("UPDATE `blocks` SET `id`=1234 WHERE `id`=$my_id");
+        mysql_query("UPDATE `blocks` SET `id`=$my_id WHERE `id`=$down");
+        mysql_query("UPDATE `blocks` SET `id`=$down WHERE `id`=1234");
+    }
+    $temp_query = mysql_query("SELECT COUNT(`id`) FROM `blocks`");
+    $temp_ret = mysql_fetch_array($temp_query);
+    $highest = $temp_ret['COUNT(`id`)'] + 1;
+    mysql_query("ALTER TABLE `blocks` auto_increment = $highest");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_moved'],"admin.php?view=blocks");
+}
+
+// Delete rank
+if ($_GET['do'] == "delrank") {
+    if ($user['level'] < $site_info['admin_rank']) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_delranks']);
+    }
+    mysql_query("DELETE FROM `ranks` WHERE `id`=" . $_GET['rank']);
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_deleted'],"admin.php?view=promo");
+}
+
+// Promote user
+if ($_GET['do'] == "promote") {
+    if ($user['level'] < $site_info['admin_rank']) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_promote']);
+    }
+    $temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $_GET['id']);
+    $auser = mysql_fetch_array($temp);
+    if ($user['id'] == $auser['id'] && $user['id'] != 1) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['promote_self']);
+    }
+    if ($auser['level'] == $user['level'] && $user['id'] != 1) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['promote_beyond']);
+    }
+    $level = $auser['level'] + 1;
+    $my_id = $_GET['id'];
+    mysql_query("UPDATE `users` SET `level`=$level WHERE `id`=$my_id");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_promoted'],"admin.php?view=promo");
+}
+
+// Demote user
+if ($_GET['do'] == "demote") {
+    if ($user['level'] < $site_info['admin_rank']) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_demote']);
+    }
+    $temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $_GET['id']);
+    $auser = mysql_fetch_array($temp);
+    if ($auser['level'] > $user['level'] && $user['id'] != 1) {
+        messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['demote_above']);
+    }
+    $level = $auser['level'] - 1;
+    $my_id = $_GET['id'];
+    mysql_query("UPDATE `users` SET `level`=$level WHERE `id`=$my_id");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_demoted'],"admin.php?view=promo");
+}
 
 standardHeaders($site_info['name'] . " :: " . $_PWNDATA['admin_page_title'],true);
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $_PWNDATA['admin_page_title'],$site_info['right_data']);
@@ -321,8 +372,6 @@ print <<<END
 <td height="269" valign="top">
 <table class="borderless_table" width="100%">
 END;
-
-
 
 // ------------------------------------------------------------ News
 if ($_GET['view'] == "news") {
@@ -337,14 +386,13 @@ END;
 $result = mysql_query("SELECT * FROM `categories` ORDER BY `orderid`");
 while ($cat = mysql_fetch_array($result))
 {
-	$content = $content . "\n<OPTGROUP label=\"" . $cat['name'] . "\">";
-	$catid = $cat['id'];
-	$resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
-	while ($board = mysql_fetch_array($resultb))
-	{
-		$content = $content . "\n<OPTION label=\"" . $board['title'] . "\" value=" . $board['id'] . ">" . $board['title'] . "</OPTION>";
-	}
-	$content = $content . "\n</OPTGROUP>";
+    $content = $content . "\n<OPTGROUP label=\"" . $cat['name'] . "\">";
+    $catid = $cat['id'];
+    $resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
+    while ($board = mysql_fetch_array($resultb)) {
+        $content = $content . "\n<OPTION label=\"" . $board['title'] . "\" value=" . $board['id'] . ">" . $board['title'] . "</OPTION>";
+    }
+    $content = $content . "\n</OPTGROUP>";
 }
 $content = $content . <<<END
 </SELECT>
