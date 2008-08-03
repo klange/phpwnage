@@ -171,6 +171,11 @@ margin: 0;
 padding-left: 2px;
 padding-bottom: 14px;
 }
+hr {
+    color:  #555555;
+    size:   1px;
+    width:  50%;
+}
 /*
 	Basic pieces, very important.
 */
