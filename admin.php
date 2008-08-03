@@ -466,7 +466,8 @@ if ($_GET['view'] == "forum") {
 $result = mysql_query("SELECT * FROM `categories` ORDER BY `orderid`");
 $content =  <<<END
 </font>
-<script>
+<script type="text/javascript">
+//<![CDATA[
 function move_board(boardId) {
 	var radioLength = document.cats.cats.length;
 	var catId = -1;
@@ -481,6 +482,7 @@ function move_board(boardId) {
 	window.location = 'admin.php?do=recat&id='+boardId+'&cat='+catId;
 	}
 }
+//]]>
 </script>
 <font class="pan_body_text">
 END;

@@ -657,18 +657,17 @@ if ($_GET['do'] == "newuser") {
     $post_sub_add = "";
     
     $block_content = <<<END
-		<font class="forum_base_text">
 		<table class="forum_base" width="100%">
-            <tr><td><form method="POST" action="forum.php"><font class="forum_base_text">
-              <input type="hidden" name="action" value="newuser">
-              {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20"><br />
-              {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20"><br />
-              {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20"><br />
-              {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20"><br />
-              {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20"><br />
-              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}"/><br />
-              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20"><br />
-              <input type="submit" value="{$_PWNDATA['forum']['register']}"></font>
+            <tr><td><form method="post" action="forum.php"><font class="forum_base_text">
+              <input type="hidden" name="action" value="newuser" />
+              {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20" /><br />
+              {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" /><br />
+              {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20" /><br />
+              {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20" /><br />
+              {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" /><br />
+              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}" /><br />
+              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20" /><br />
+              <input type="submit" value="{$_PWNDATA['forum']['register']}" /></font>
             </form></td></tr></table>
 END;
     $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['register'],$block_content);
@@ -684,36 +683,12 @@ if ($_GET['do'] == "viewforum") {
     $post_title_add = " :: " . $board['title'];
     $post_sub_add = " > <a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "\">" . $board['title'] . "</a>";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $board['title'];
-    $post_content = $post_content .  <<<END
-	</font>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  "";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
+    $block_content = "";
+    $block_content = $block_content .   <<<END
 	<table class="mod_set"><tr>
 END;
     if (!($board['top_level'] > $user['level'])) {
-        drawButton("forum.php?do=newtopic&amp;id=" . $board['id'] . "\"", $_PWNDATA['forum']['new_topic']);
+        $block_content = $block_content . drawButton("forum.php?do=newtopic&amp;id=" . $board['id'], $_PWNDATA['forum']['new_topic']);
     }
     if (!isset($_GET['p'])) {
         $page = 0;
@@ -721,15 +696,15 @@ END;
         $page = ($_GET['p'] - 1) * $_THREADSPERPAGE;
     }
     if ($page > 0) {
-        drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE) . "\"", $_PWNDATA['forum']['previous_page']);
+        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE), $_PWNDATA['forum']['previous_page']);
     }
     $temp_mysql = mysql_query("SELECT COUNT(*) FROM topics WHERE board='" . $board['id'] . "'", $db);
     $temp_res = mysql_fetch_array($temp_mysql);
     $total_posts = $temp_res['COUNT(*)'];
     if ($total_posts > $page + $_THREADSPERPAGE) {
-        drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2) . "\"", $_PWNDATA['forum']['next_page']);
+        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page']);
     }
-    $post_content = $post_content .  <<<END
+    $block_content = $block_content .   <<<END
 		</tr></table>
 		<table class="forum_base" width="100%">
 END;
@@ -791,11 +766,11 @@ END;
 	        $read_or_not = $read_or_not . "<font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['sticky']}</b></font> ";
         }
         $diver = $row['id'];
-        $post_content = $post_content .  <<<END
+        $block_content = $block_content .   <<<END
 	<tr>
 		<td>$read_or_not<div id="title_$diver" style="display: inline;" $spazm><a href="forum.php?do=viewtopic&amp;id=
 END;
-        $post_content = $post_content . $row['id'] . "\">" . $row['title'];
+        $block_content = $block_content .  $row['id'] . "\">" . $row['title'];
         $top_temp = $row['id'];
         $author = $rowb['name'];
         $authid = $rowb['id'];
@@ -816,10 +791,10 @@ END;
         $edtitle = <<<END
 <div id="titleedit_$diver" style="display: none;">
 <form action="forum.php" method="post" style="display: inline;">
-<input type="hidden" name="action" value="edit_title">
-<input type="hidden" name="topicid" value="$diver">
-<input type="text" name="title" value="$toptitle">
-<input type="submit" name="sub" value="{$_PWNDATA['forum']['edit_title']}">
+<input type="hidden" name="action" value="edit_title" />
+<input type="hidden" name="topicid" value="$diver" />
+<input type="text" name="title" value="$toptitle" />
+<input type="submit" name="sub" value="{$_PWNDATA['forum']['edit_title']}" />
 </form>
 </div>
 <a href="javascript: flipVisibility('title_$diver'); flipVisibility('titleedit_$diver');"><font style="font-size: 8px">{$_PWNDATA['forum']['edit_title']}</font></a>
@@ -828,22 +803,14 @@ END;
         } else {
             $edtitle = " ";
         }
-        $post_content = $post_content . "</a></div>\n$edtitle<br /><font size=\"2\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>$pagination</td></td><td rowspan=\"1\" width=\"30%\">";
+        $block_content = $block_content .  "</a></div>\n$edtitle<br /><font size=\"2\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>$pagination</font></td><td rowspan=\"1\" width=\"30%\">";
         $authid = $rowd['id'];
-        $post_content = $post_content . "<center>\n<font size=\"2\"><strong><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</strong> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</font></center></td></tr>";
+        $block_content = $block_content .  "<center>\n<font size=\"2\"><strong><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</strong> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</font></center></td></tr>";
     }
-    $post_content = $post_content .  <<<END
+    $block_content = $block_content .   <<<END
 	</table>
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
 END;
+    $post_content = makeBlock($board['title'], "&nbsp;",$block_content);
     $use_previewbox = "yes";
 }
 
@@ -1786,7 +1753,7 @@ END;
     $theme_list = themeList($u_theme);
     $color_list = colorList($u_color);
     $post_content = $post_content . <<<END
-<form method="POST" action="forum.php" name="form">
+<form method="post" action="forum.php" name="form">
   <input type="hidden" name="action" value="edit_profile">
   <input type="hidden" name="id" value="$uid">
   <strong>{$_PWNDATA['profile']['registration']}:</strong><br />
