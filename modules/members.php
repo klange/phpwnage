@@ -27,8 +27,8 @@ $members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
 $content = "";
 while ($member = mysql_fetch_array($members_result))
 {
-$content = $content . "<a href=\"forum.php?do=viewprofile&id=" . $member['id'] . "\">" . $member['name'] . "</a>";
-$content = $content . " | <a href=\"forum.php?do=newpm&to=" . $member['id'] . "\">Send a PM</a><br>";
+$content = $content . "<a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a>";
+$content = $content . " | <a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a><br />";
 }
 return $content;
 }
