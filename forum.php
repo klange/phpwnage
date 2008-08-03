@@ -825,65 +825,21 @@ if ($_GET['do'] == "pmbox") {
     $post_title_add = " :: {$_PWNDATA['pm']['view']}";
     $post_sub_add = " > <a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['view']}</a>";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $_PWNDATA['pm']['view'];
-    $post_content = $post_content .  <<<END
-	</font>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  "";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-END;
+    $block_content = "";
+
     if(isset($_SESSION['sess_id'])) {
-        $post_content = $post_content . <<<END
+        $block_content = $block_content . <<<END
 <table class="mod_set">
-<tr><td>
-	<table class="forum_button">
-	<tr>
-    <td class="but_left"></td>
-    <td class="but_mid">
-    <font class="forum_button_text">
-END;
-        $post_content = $post_content . "<a href=\"forum.php?do=newpm\">{$_PWNDATA['pm']['new_pm']}</a>";
-        $post_content = $post_content . <<<END
-</font></td>
-<td class="but_right"></td>
-</tr></table></td><td>
-<table class="forum_button">
 <tr>
-	<td class="but_left"></td> 
-    <td class="but_mid">
-    <font class="forum_button_text">
 END;
-        $post_content = $post_content . "<a href=\"forum.php?do=delpm&amp;id=ALL\">{$_PWNDATA['pm']['empty_box']}</a>";
-        $post_content = $post_content . <<<END
-</font></td>
-<td class="but_right"></td>
+        $block_content = $block_content . drawButton("forum.php?do=newpm",$_PWNDATA['pm']['new_pm']);
+        $block_content = $block_content . drawButton("forum.php?do=delpm&amp;id=ALL",$_PWNDATA['pm']['empty_box']);
+        $block_content = $block_content . <<<END
 </tr>
-</table>
-</td></tr>
 </table>
 END;
     }
-    $post_content = $post_content .  <<<END
+    $block_content = $block_content .  <<<END
 		<table class="forum_base" width="100%">
 END;
 
@@ -895,35 +851,22 @@ END;
         } else {
             $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\" alt=\"**\"/>";
         }
-        $post_content = $post_content .  <<<END
+        $block_content = $block_content .  <<<END
 	<tr>
 		<td>$read_or_not<a href="forum.php?do=readpm&amp;id=
 END;
 //"
         $resultb = mysql_query("SELECT * FROM users WHERE id='" . $row['from'] . "'" , $db);
         $rowb = mysql_fetch_array($resultb);
-        $post_content = $post_content . $row['id'] . "\">" . $row['title'];
+        $block_content = $block_content . $row['id'] . "\">" . $row['title'];
         $author = $rowb['name'];
         $authid = $rowb['id'];
         $tim = date("F j, Y (g:ia T)", $row['time']);
-        $post_content = $post_content . "</a><br /><font size=\"2\">{$_PWNDATA['pm']['from']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>, {$_PWNDATA['pm']['sent_at']} $tim</td></td></tr>";
+        $block_content = $block_content . "</a><br /><font size=\"2\">{$_PWNDATA['pm']['from']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>, {$_PWNDATA['pm']['sent_at']} $tim</font></td></tr>";
     }
 
-    $post_content = $post_content .  <<<END
-	</table>
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $block_content = $block_content . "</table>";
+    $post_content = makeBlock($_PWNDATA['pm']['view'],"",$block_content);
 }
 
 // Delete PM
@@ -963,55 +906,16 @@ if ($_GET['do'] == "readpm") {
     $post_title_add = " :: {$_PWNDATA['pm']['view']} :: {$_PWNDATA['pm']['reading']} '" . $pm['title'] . "'";
     $post_sub_add = " > <a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['view']}</a> > {$_PWNDATA['pm']['reading']} \"" . $pm['title'] . "\"";
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $pm['title'] . " {$_PWNDATA['pm']['from']} <a href=\"forum.php?do=viewprofile&amp;id=" . $fromuser['id'] . "\">" . $fromuser['name'] . "</a>";
-    $post_content = $post_content .  <<<END
-	</font>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .   "{$_PWNDATA['pm']['sent_at']} " . date("F j, Y (g:ia T)", $pm['time']);
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text"><table class="mod_set"><tr>
-END;
-    $post_content = $post_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle",$_PWNDATA['pm']['reply']);
-    $post_content = $post_content . drawButton("forum.php?do=delpm&amp;id=$pid",$_PWNDATA['pm']['delete']);
-    $post_content = $post_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle&amp;q=$pid",$_PWNDATA['pm']['quote']);
-    $post_content = $post_content .  <<<END
-		</tr></table><table class="forum_base" width="100%"><tr><td><font class="forum_body">
-END;
-    $post_content = $post_content . BBDecode($pm['content']);
-    $post_content = $post_content .  <<<END
-	</font></td></tr></table>
-	</font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $block_content = "";
+    $block_content = $block_content .  "<table class=\"mod_set\"><tr>";
+    $block_content = $block_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle",$_PWNDATA['pm']['reply']);
+    $block_content = $block_content . drawButton("forum.php?do=delpm&amp;id=$pid",$_PWNDATA['pm']['delete']);
+    $block_content = $block_content . drawButton("forum.php?do=newpm&amp;to=$replyto&amp;s=$replytitle&amp;q=$pid",$_PWNDATA['pm']['quote']);
+    $block_content = $block_content . "</tr></table><table class=\"forum_base\" width=\"100%\"><tr><td><font class=\"forum_body\">";
+    $block_content = $block_content . BBDecode($pm['content']);
+    $block_content = $block_content . "</font></td></tr></table>";
+    $post_content = makeBlock($pm['title'] . " {$_PWNDATA['pm']['from']} <a href=\"forum.php?do=viewprofile&amp;id=" . $fromuser['id'] . "\">" . $fromuser['name'] . "</a>","{$_PWNDATA['pm']['sent_at']} " . date("F j, Y (g:ia T)", $pm['time']),$block_content);
+    
 }
 
 // New PM (compose)
@@ -1036,60 +940,22 @@ if ($_GET['do'] == "newpm") {
     $post_title_add = " :: " . $_PWNDATA['pm']['composing'];
     $post_sub_add = " > " . $_PWNDATA['pm']['composing'];
     $post_sub_r = post_sub_r($user['id']);
-    $post_content = "";
-    $post_content = $post_content .  <<<END
-	
-      <tr>
-        <td width="100%">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td class="pan_ul">&nbsp;</td>
-        <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $post_content = $post_content . $_PWNDATA['pm']['composing'];
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
-END;
-    $post_content = $post_content .  "";
-    $post_content = $post_content .  <<<END
-	</font></td>
-        <td class="pan_ur">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-		<font class="forum_base_text">
-END;
-    $post_content = $post_content .  printPoster('content') . <<<END
+    $block_content = "";
+    $block_content = $block_content .  printPoster('content') . <<<END
 <form action="forum.php" method="post" name="form">
-<input type="hidden" name="action" value="new_pm">
+<input type="hidden" name="action" value="new_pm" />
 {$_PWNDATA['pm']['to']}: <br />
-<input type="text" name="toline" size="51" style="width:100%" value="$tousername"><br />
+<input type="text" name="toline" size="51" style="width:100%" value="$tousername" /><br />
 {$_PWNDATA['pm']['subject']}: <br />
-<input type="text" name="subj" size="51" style="width:100%" value="$subjto"><br />
+<input type="text" name="subj" size="51" style="width:100%" value="$subjto" /><br />
 {$_PWNDATA['pm']['body']}:<br />
 <textarea rows="11" name="content" style="width:100%;" cols="20">$quoted</textarea><br />
-<input type="submit" value="{$_PWNDATA['pm']['send']}" name="sub">
+<input type="submit" value="{$_PWNDATA['pm']['send']}" name="sub" />
 END;
-    $post_content = $post_content . "<input type=\"hidden\" name=\"board\" value=\"" . $board['id'] . "\">";
-    $post_content = $post_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\">";
-    $post_content = $post_content .  <<<END
-	</form></font></td>
-        <td class="pan_mr">&nbsp;</td>
-      </tr>
-      <tr>
-        <td class="pan_bl"></td>
-        <td class="pan_bm" colspan="2"></td>
-        <td class="pan_br"></td>
-      </tr>
-    </table>
-        </td>
-      </tr>
-	
-END;
+    $block_content = $block_content . "<input type=\"hidden\" name=\"board\" value=\"" . $board['id'] . "\" />";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
+    $block_content = $block_content . "</form>";
+    $post_content = makeBlock($_PWNDATA['pm']['composing'],"",$block_content);
 }
 
 // Show the posts in this topic.
