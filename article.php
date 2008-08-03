@@ -53,13 +53,13 @@ $topic = mysql_fetch_array($results);
 if (isWriteable($user['level'], $topic['board'])) {
 $content = printPosterMini('content', $topic['id']) . <<<END
 <form action="forum.php" method="post" name="form">
-<input type="hidden" name="action" value="new_reply">
+<input type="hidden" name="action" value="new_reply" />
 END;
 $content = $content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
 $content = $content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
 $content = $content . <<<END
-<textarea name="content" style="width: 95%;" rows="5"></textarea><br />
-<input type="submit" name="sub" value="Post"></form>
+<textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea><br />
+<input type="submit" name="sub" value="Post" /></form>
 END;
 }
 $resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC", $db);
@@ -76,12 +76,12 @@ drawBlock($_PWNDATA['articles']['comments'], "", $content);
 }
 if ($user['level'] >= $site_info['mod_rank']) {
 $content = "<form action=\"article.php?id=" . $row['id'];
-$content = $content . "&pw=" . $_GET['pw'];
+$content = $content . "&amp;pw=" . $_GET['pw'];
 $content = $content . <<<END
-" method="post"><input type="hidden" name="action" value="true"><textarea rows="8" name="content" style="width:100%; font=Tahoma">
+" method="post"><input type="hidden" name="action" value="true" /><textarea rows="8" name="content" style="width:100%;" cols="80">
 END;
-$content = $content . $row['content'];
-$content = $content . "</textarea><br><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\"><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\"></form>";
+$content = $content . str_replace(">","&gt;",str_replace("<","&lt;",$row['content']));
+$content = $content . "</textarea><br /><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" /><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></form>";
 drawBlock("{$_PWNDATA['articles']['edita']} " . $row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'], $content);
 }
 print <<<END
