@@ -233,14 +233,14 @@ if ($_POST['action'] == "vote_poll") {
 		if (!isset($poll_votes[$i])) {
 			$poll_votes[$i] = 0;
 		}
-		$a = $poll_votes[$i];
+		$a = (int)$poll_votes[$i];
 		if ($i == $vote) {
 			$a = $a + 1;
 		}
-		$stri = $a . ",";
+		$stri = $stri . $a . ",";
 	}
 	$stri = substr($stri,0,strlen($stri)-1);
-	mysql_query("UPDATE `polls` SET `op1_votes`=" . $stri . " WHERE `id`=$pid");
+	mysql_query("UPDATE `polls` SET `op1_votes`='" . $stri . "' WHERE `id`=$pid");
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['vote_cast'],"forum.php?do=viewtopic&amp;last=1&amp;id=" . $tid);
 }
 
@@ -1012,8 +1012,8 @@ END;
 	        $hasVoted = true;
         }
         $poll_options = split(",",$poll['op1_name']);
-        $poll_votes = split(",",$poll['op1_votes']);
         $poll_count = count($poll_options);
+        $poll_votes = split(",",$poll['op1_votes']);
         $totalVotes = 0;
         for ($i=0;$i<$poll_count;$i++) {
 	        if (!isset($poll_votes[$i])) {
@@ -1031,7 +1031,7 @@ END;
 	        }
 	        $block_content = $block_content . "<tr style=\"border: 0px\"><td style=\"border: 0px\" align=\"right\">$bounce<font class=\"forum_body\">" . $poll_options[$i] . "</font></td>\n";
 	        $wid = ($poll_votes[$i] / $totalVotes) * $widthOfBar;
-	        $block_content = $block_content . "<td style=\"border: 0px\" align=\"left\"><img src=\"smiles/poll_bars/$i/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$i/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$i/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . $poll_votes[$i] . ") </font></td></tr>\n";
+	        $block_content = $block_content . "<td style=\"border: 0px\" align=\"left\"><img src=\"smiles/poll_bars/$i/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$i/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$i/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . (int)$poll_votes[$i] . ") </font></td></tr>\n";
         }
         if ($hasVoted == false) {
 	        $submitPoll = "<input type=\"submit\" value=\"{$_PWNDATA['forum']['vote']}\" />";
