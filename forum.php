@@ -621,6 +621,7 @@ if ($_GET['do'] == "login") {
     $post_sub_add = "";
     $adminlog = $_GET['admin'];
     $block_content = <<<END
+           <div align="middle">
                 <form action="forum.php" method="post">
                   <input type="hidden" name="admin" value="$adminlog" />
                   <input type="hidden" name="action" value="login" />
@@ -630,9 +631,9 @@ if ($_GET['do'] == "login") {
                   <input type="password" name="upass" size="20" /><br />
                   <input type="checkbox" name="remember" value="ON" />{$_PWNDATA['forum']['remember_me']}<br />
                   <input type="submit" value="{$_PWNDATA['forum']['login']}" name="B1" />
-                </form>
+                </form></div>
 END;
-    $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['login'],$block_content);
+    $post_content = makeBlock($_PWNDATA['forum']['login'],"&nbsp;",$block_content);
 }
 
 // Captcha. Sort of.
@@ -689,7 +690,7 @@ END;
               <input type="submit" value="{$_PWNDATA['forum']['register']}" />
             </form>
 END;
-    $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['register'],$block_content);
+    $post_content = makeBlock($_PWNDATA['forum']['register'],"&nbsp;",$block_content);
 }
 
 // Show the topics in this board.
