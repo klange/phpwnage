@@ -621,8 +621,6 @@ if ($_GET['do'] == "login") {
     $post_sub_add = "";
     $adminlog = $_GET['admin'];
     $block_content = <<<END
-		<table class="forum_base" width="100%">
-            <tr><td align="center">
                 <form action="forum.php" method="post">
                   <input type="hidden" name="admin" value="$adminlog" />
                   <input type="hidden" name="action" value="login" />
@@ -633,8 +631,6 @@ if ($_GET['do'] == "login") {
                   <input type="checkbox" name="remember" value="ON" />{$_PWNDATA['forum']['remember_me']}<br />
                   <input type="submit" value="{$_PWNDATA['forum']['login']}" name="B1" />
                 </form>
-            </td></tr>
-        </table>
 END;
     $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['login'],$block_content);
 }
