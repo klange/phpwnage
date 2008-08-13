@@ -80,7 +80,7 @@ if ($_POST['action'] == "addrank") {
 // Clear the security log
 if ($_POST['action'] == "clear_security") {
     mysql_query("TRUNCATE TABLE `security`");
-    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['security_log_cleared'],"admin.php?view=site_info"); 
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['security_log_cleared'],"admin.php?view=bans"); 
 }
 
 // Custom pages
@@ -747,53 +747,6 @@ $content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea r
 $content = $content . "{$_PWNDATA['admin']['forms']['si_header']}: <input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" /><br />\n";
 $content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['si'],"",$content);
-
-
-$content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"borderless_table\">";
-$odd = 1;
-$result = mysql_query("SELECT * FROM security LIMIT 10", $db);
-while ($row = mysql_fetch_array($result)) {
-$odd = 1 - $odd;
-if ($odd == 1) {
-$back = "class=\"odd_cell\"";
-} else {
-$back = "";
-}
-$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
-}
-
-
-$content = $content . "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"borderless_table\">";
-$odd = 1;
-$result = mysql_query("SELECT * FROM security", $db);
-while ($row = mysql_fetch_array($result)) {
-$odd = 1 - $odd;
-if ($odd == 1) {
-$back = "class=\"odd_cell\"";
-} else {
-$back = "";
-}
-$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
-}
-$content = $content . <<<END
-</table></div>
-<script type="text/javascript">
-//<![CDATA[
-function showlog() {
-document.getElementById('cut_log').style.display = "none"
-document.getElementById('extra_log').style.display = "inline"
-}
-//]]>
-</script>
-<a href="javascript:showlog()">{$_PWNDATA['admin']['forms']['si_log_show']}</a>
-<form action="admin.php" method="post">
-<input type="hidden" name="action" value="clear_security" />
-<input type="hidden" name="pw" value="
-END;
-//"
-$content = $content . $_GET['pw'];
-$content = $content . "\" /><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_log_clear']}\" /></form>";
-drawBlock($_PWNDATA['admin']['forms']['si_log'],"",$content);
 }
 
 
@@ -899,6 +852,52 @@ $content = $content . "</tr>\n";
 }
 $content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['bans'],"",$content);
+
+$content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"borderless_table\">";
+$odd = 1;
+$result = mysql_query("SELECT * FROM security LIMIT 10", $db);
+while ($row = mysql_fetch_array($result)) {
+$odd = 1 - $odd;
+if ($odd == 1) {
+$back = "class=\"odd_cell\"";
+} else {
+$back = "";
+}
+$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
+}
+
+
+$content = $content . "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"borderless_table\">";
+$odd = 1;
+$result = mysql_query("SELECT * FROM security", $db);
+while ($row = mysql_fetch_array($result)) {
+$odd = 1 - $odd;
+if ($odd == 1) {
+$back = "class=\"odd_cell\"";
+} else {
+$back = "";
+}
+$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
+}
+$content = $content . <<<END
+</table></div>
+<script type="text/javascript">
+//<![CDATA[
+function showlog() {
+document.getElementById('cut_log').style.display = "none"
+document.getElementById('extra_log').style.display = "inline"
+}
+//]]>
+</script>
+<a href="javascript:showlog()">{$_PWNDATA['admin']['forms']['si_log_show']}</a>
+<form action="admin.php" method="post">
+<input type="hidden" name="action" value="clear_security" />
+<input type="hidden" name="pw" value="
+END;
+//"
+$content = $content . $_GET['pw'];
+$content = $content . "\" /><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_log_clear']}\" /></form>";
+drawBlock($_PWNDATA['admin']['forms']['si_log'],"",$content);
 }
 
 if ($_GET['view'] == "promo") {

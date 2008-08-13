@@ -157,7 +157,7 @@ $_PWNDATA['admin']['promote_self'] = "Sorry, you can not promote yourself.";
 $_PWNDATA['admin']['promote_beyond'] = "Sorry, you can only promote other users up to your rank.";
 $_PWNDATA['admin']['demote_above'] = "Sorry, you can not demote users with a higher rank than you.";
 $_PWNDATA['admin']['edit_site_info'] = "Sorry, only administrators can change the site information.";
-$_PWNDATA['admin']['banunban'] = "Sorry, only administrators can (un)ban IP addresses.";
+$_PWNDATA['admin']['banunban'] = "Sorry, only administrators can change security settings.";
 $_PWNDATA['admin']['article_add_suc'] = "New article added.";
 $_PWNDATA['admin']['news_post_added'] = "Forum post added.";
 $_PWNDATA['admin']['rank_added'] = "Rank added";
@@ -295,7 +295,7 @@ $_PWNDATA['admin']['groups']['logout'] = "Logout";
 $_PWNDATA['admin']['groups']['pages'] = "Pages";
 $_PWNDATA['admin']['groups']['site_info'] = "Site Info";
 $_PWNDATA['admin']['groups']['promo'] = "User Promotions";
-$_PWNDATA['admin']['groups']['bans'] = "Ban Filters";
+$_PWNDATA['admin']['groups']['bans'] = "Security";
 
 
 $_PWNDATA['forum']['invalid_board'] = "Invalid board specified.";
