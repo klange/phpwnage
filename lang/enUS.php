@@ -191,6 +191,7 @@ $_PWNDATA['admin']['user_posts_deleted'] = "User and posts deleted.";
 $_PWNDATA['admin']['rank_deleted'] = "Rank deleted.";
 $_PWNDATA['admin']['user_promoted'] = "User promoted.";
 $_PWNDATA['admin']['user_promoted'] = "User demoted.";
+$_PWNDATA['admin']['captcha_updated'] = "CAPTCHA settings updated.";
 
 // Admin : Form parts
 $_PWNDATA['admin']['forms']['article'] = "Article";
@@ -262,6 +263,7 @@ $_PWNDATA['admin']['forms']['members_edit'] = "Edit Profile";
 $_PWNDATA['admin']['forms']['members_delete'] = "Delete User";
 $_PWNDATA['admin']['forms']['sorry_rank'] = "Sorry, you can't edit this user's profile.<br />They are of a higher rank than you.";
 $_PWNDATA['admin']['forms']['banip'] = "Ban IP";
+$_PWNDATA['admin']['forms']['banipip'] = "IP";
 $_PWNDATA['admin']['forms']['ban_limit'] = "Limiting to 20";
 $_PWNDATA['admin']['forms']['ban_click'] = "click here";
 $_PWNDATA['admin']['forms']['ban_showall'] = "to try and show all";
@@ -285,6 +287,14 @@ $_PWNDATA['admin']['forms']['ranks_mod_a'] = "Moderators";
 $_PWNDATA['admin']['forms']['ranks_adm_a'] = "Administrators";
 $_PWNDATA['admin']['forms']['ranks_promote'] = "Promote";
 $_PWNDATA['admin']['forms']['ranks_demote'] = "Demote";
+$_PWNDATA['admin']['forms']['captcha'] = "Anti-Bot CAPTCHA";
+$_PWNDATA['admin']['forms']['security_mode'] = "CAPTCHA Mode";
+$_PWNDATA['admin']['forms']['sec_mod_a'] = "Minimal CAPTCHA";
+$_PWNDATA['admin']['forms']['sec_mod_b'] = "Advanced CAPTCHA";
+$_PWNDATA['admin']['forms']['sec_mod_c'] = "ReCAPTCHA";
+$_PWNDATA['admin']['forms']['recap_pub'] = "ReCAPTCHA Public Key";
+$_PWNDATA['admin']['forms']['recap_priv'] = "ReCAPTCHA Private Key";
+$_PWNDATA['admin']['forms']['sec_save'] = "Save CAPTCHA Settings";
 
 // Admin : Group titles
 $_PWNDATA['admin']['groups']['news'] = "News";
@@ -419,6 +429,7 @@ $_PWNDATA['forum']['delete_confirm'] = "Are you sure?";
 $_PWNDATA['forum']['delete_confirm_accept'] = "Delete";
 $_PWNDATA['forum']['board_weblink'] = "Web Link";
 $_PWNDATA['forum']['secimg'] = "You must have images enabled to register.";
+$_PWNDATA['forum']['recaptchafail'] = "ReCAPTCHA response was incorrect. Try again.";
 
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";

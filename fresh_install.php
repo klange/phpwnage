@@ -332,6 +332,13 @@ if ($db_fail) {
 mysql_query("CREATE DATABASE `$conf_database` ;") or print "<font color=#FF0000>Failed to create database, you will have to add it manually and return to this point in the installer.</font>";
 mysql_select_db($conf_database, $db);
 }
+/*
+    PHPwnage MySQL Database Table Generation
+    This section of the installer is *crucial*, it creates all
+    of the tables for your MySQL database. If you are upgrading
+    and an upgrade tool is not available for your version, look
+    here for more information on what to do with your tables.
+*/
 $query = <<<END
 CREATE TABLE  `banlist` (
   `ip` varchar(50) collate latin1_general_ci NOT NULL default ''
@@ -358,7 +365,7 @@ CREATE TABLE  `boards` (
   `top_level` int(11) NOT NULL default '1',
   `post_level` int(11) NOT NULL default '1',
   `link` varchar(200) collate latin1_general_ci default 'NONE',
-  KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
@@ -384,7 +391,7 @@ END;
 mysql_query($query);
 $query = <<<END
 CREATE TABLE  `info` (
-  `id` int(11) default NULL,
+  `id` int(11) NOT NULL default '1',
   `name` varchar(40) collate latin1_general_ci default NULL,
   `copyright` varchar(40) collate latin1_general_ci default NULL,
   `right_data` varchar(200) collate latin1_general_ci default NULL,
@@ -393,8 +400,10 @@ CREATE TABLE  `info` (
   `pheader` varchar(200) collate latin1_general_ci default NULL,
   `admin_rank` int(11) NOT NULL default '3',
   `mod_rank` int(11) NOT NULL default '2',
-  KEY `id` (`id`),
-  KEY `id_2` (`id`)
+  `security_mode` int(11) NOT NULL default '0',
+  `recap_pub` varchar(200) collate latin1_general_ci default NULL,
+  `recap_priv` varchar(200) collate latin1_general_ci default NULL,
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
@@ -406,8 +415,7 @@ CREATE TABLE  `news` (
   `time_code` varchar(100) collate latin1_general_ci default NULL,
   `user` varchar(50) collate latin1_general_ci default NULL,
   `topicid` int(11) default '0',
-  PRIMARY KEY  (`id`),
-  KEY `id` (`id`)
+  PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
@@ -491,7 +499,7 @@ CREATE TABLE  `topics` (
   `locked` int(11) NOT NULL default '0',
   `has_poll` int(10) NOT NULL default '0',
   `poll_id` int(10) NOT NULL default '0',
-  KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
@@ -512,7 +520,7 @@ CREATE TABLE  `users` (
   `level` int(11) NOT NULL default '1' COMMENT '1=user,2=mod,3=admin',
   `sbonforum` int(11) NOT NULL default '1',
   `pand` varchar(50) collate latin1_general_ci NOT NULL default '',
-  KEY `id` (`id`)
+  PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
@@ -546,7 +554,7 @@ CREATE TABLE  `sessions` (
 END;
 mysql_query($query);
 print "Completed database setup. Moving on to data...<br />\n";
-$info = "INSERT INTO `info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2);";
+$info = "INSERT INTO `info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2, 0, NULL, NULL);";
 $result = mysql_query($info);
 print "Primary site information added! Moving on to generic set up...<br />\n";
 print "Adding administrator forum user...<br />\n";

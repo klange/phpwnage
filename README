@@ -14,6 +14,10 @@ This is release version 1.8 (UNRELEASED, 2008). It is the first
 official GPL release and contains tons of new improvements over 1.7 
 and other previous versions.
 
+ReCAPTCHA notice:
+PHPwnage comes packaged with the ReCAPTCHA PHP library. The license for the
+ReCaptcha license can be found in the file 'recaptchalib.php'.
+
 CHANGELOG:
 1.8 - 
  + Moved all static text to a single file (lang/enUS.php)
@@ -23,6 +27,8 @@ CHANGELOG:
  + Made some improvements to the installer
  + New Crystal theme
  + Fixed RSS feeds with Firefox
+ + Integrated ReCAPTCHA (optional)
+ + Moved everything to XHTML
  NOT DONE
  + Added moderator tools: merge, split, bulk-delete (topics, posts)
  + New Image Gallery, integrated into forums

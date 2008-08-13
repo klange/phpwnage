@@ -102,6 +102,13 @@ if ($_POST['action'] == "site_info") {
     messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['site_info_updated'], "admin.php?view=site_info");
 }
 
+if ($_POST['action'] == "captcha") {
+    mysql_query("UPDATE `info` SET `security_mode` = " . $_POST['sec_mode'] . " WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `recap_pub` = '" . $_POST['recap_pub'] . "' WHERE `info`.`id` =1");
+    mysql_query("UPDATE `info` SET `recap_priv` = '" . $_POST['recap_priv'] . "' WHERE `info`.`id` =1");
+    messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['captcha_updated'], "admin.php?view=bans");
+}
+
 // Update existing block
 if ($_POST['action'] == "edit_block") {
     mysql_query("UPDATE `blocks` SET `title` = '" . $_POST['title'] . "' WHERE `blocks`.`id` =" . $_POST['blockid'] . ";");
@@ -819,12 +826,43 @@ END;
 drawBlock($_PWNDATA['admin']['forms']['members_edit'],"",$post_content);
 }
 
+// Security
 if ($_GET['view'] == "bans") {
 if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['banunban']); }
+// FIXME: Make this cleaner
+if ($site_info['security_mode'] == 0) {
+    $sel_a = "selected=\"selected\"";
+    $sel_b = "";
+    $sel_c = "";
+} else if ($site_info['security_mode'] == 1) {
+    $sel_a = "";
+    $sel_b = "selected=\"selected\"";
+    $sel_c = "";
+} else if ($site_info['security_mode'] == 2) {
+    $sel_a = "";
+    $sel_b = "";
+    $sel_c = "selected=\"selected\"";
+}
+$content = <<<END
+<form action="admin.php" method="post">
+<input type="hidden" name="action" value="captcha" />
+{$_PWNDATA['admin']['forms']['security_mode']}:
+<select name="sec_mode">
+    <option value="0" $sel_a>{$_PWNDATA['admin']['forms']['sec_mod_a']}</option>
+    <option value="1" $sel_b>{$_PWNDATA['admin']['forms']['sec_mod_b']}</option>
+    <option value="2" $sel_c>{$_PWNDATA['admin']['forms']['sec_mod_c']}</option>
+</select><br />
+{$_PWNDATA['admin']['forms']['recap_pub']}: <input type="text" name="recap_pub" value="{$site_info['recap_pub']}" /><br />
+{$_PWNDATA['admin']['forms']['recap_priv']}: <input type="text" name="recap_priv" value="{$site_info['recap_priv']}" /><br />
+<input type="submit" value="{$_PWNDATA['admin']['forms']['sec_save']}" name="save" />
+</form>
+END;
+drawBlock($_PWNDATA['admin']['forms']['captcha'],"",$content);
+
 $content = <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="add_ban" />
-IP: <input type="text" name="ip" value="XX.XX.XX.XX" /><br />
+{$_PWNDATA['admin']['forms']['banipip']}: <input type="text" name="ip" value="XX.XX.XX.XX" /><br />
 <input type="submit" value="{$_PWNDATA['admin']['forms']['banip']}" name="ban" />
 </form>
 END;

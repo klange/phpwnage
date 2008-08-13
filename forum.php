@@ -314,9 +314,18 @@ if ($_POST['action'] == "newuser") {
     if ($check_mail != null) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_mail']);
     }
-    if ($code != $_SESSION['seccode']) {
-        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['security_code']);
+    if ($site_info['security_mode'] < 2) {
+        if ($code != $_SESSION['seccode']) {
+            messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['security_code']);
+        }
+    } else if ($site_info['security_mode'] == 2) {
+        require_once('recaptchalib.php');
+        $resp = recaptcha_check_answer ($site_info['recap_priv'], $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+        if (!$resp->is_valid) {
+            messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['recaptchafail']);
+        }                    
     }
+
     if ($email != mse($_POST['cemail'])){
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['email_no_match']);
     }
@@ -661,20 +670,28 @@ if ($_GET['do'] == "secimg") {
 if ($_GET['do'] == "newuser") {
     $post_title_add = "";
     $post_sub_add = "";
-    
+    if ($site_info['security_mode'] == 0) {
+    $SECURITY = <<<END
+              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}" /><br />
+              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20" /><br />
+END;
+    } else if ($site_info['security_mode'] == 1) {
+        $SECURITY = "(Your registration will automatically fail as this CAPTCHA mode is invalid)<br />";
+    } else if ($site_info['security_mode'] == 2) {
+        require_once('recaptchalib.php');
+        $SECURITY = recaptcha_get_html($site_info['recap_pub']) . "<br />";
+    }
     $block_content = <<<END
-		<table class="forum_base" width="100%">
-            <tr><td><form method="post" action="forum.php"><font class="forum_base_text">
+		<form method="post" action="forum.php">
               <input type="hidden" name="action" value="newuser" />
               {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20" /><br />
               {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" /><br />
               {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20" /><br />
               {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20" /><br />
               {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" /><br />
-              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}" /><br />
-              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20" /><br />
-              <input type="submit" value="{$_PWNDATA['forum']['register']}" /></font>
-            </form></td></tr></table>
+              $SECURITY
+              <input type="submit" value="{$_PWNDATA['forum']['register']}" />
+            </form>
 END;
     $post_content = makeBlock("&nbsp;",$_PWNDATA['forum']['register'],$block_content);
 }
