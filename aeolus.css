@@ -31,7 +31,7 @@
 .head_right	{background-image: url(aeolus/header_right.png); width:94px; height:106px;} /* right header */
 
 .sub_left {background-image: url(aeolus/sub.png); height:20px; width:10px;} /* sub header */
-.sub_mid {background-image: url(aeolus/sub.png); height:20px; vertical-align: top; padding: 4px 0px 0px 0px;}
+.sub_mid {background-image: url(aeolus/sub.png); height:20px; vertical-align: middle;}
 .sub_right {background-image: url(aeolus/sub.png); height:20px; width:10px;}
 
 .but_left {background-image: url(aeolus/but_left.png); height:16px; width:16px;} /* button */
