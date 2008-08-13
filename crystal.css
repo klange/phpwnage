@@ -67,7 +67,6 @@ font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
 .block_br {background-image: url(crystal/block_down_right.png); height:14px; width:12px;} /* bottom right */
 
 
-
 .panel_news {height:100%; width:100%; display:block; border: 0px;} /* Front Page News item, the scrolling div */
 /*
 	Forum
@@ -226,4 +225,12 @@ textarea {
     border-color: #000000;
     width: 100%;
 }
-
+.sidebar {
+    
+}
+.panel {
+    
+}
+.block {
+    
+}

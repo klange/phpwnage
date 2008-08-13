@@ -18,7 +18,7 @@
 
 */
 
-.borderless_table {border-width: 0px; border-spacing: 0px; border-style: none none none none; border-collapse: collapse; margin: 2px 2px 2px 2px;} /* basic table, used for panels and subheader bars, etc. */
+.borderless_table {border-width: 0px; border-spacing: 0px; border-style: none none none none; border-collapse: collapse; margin: 0px 0px 0px 0px;} /* basic table, used for panels and subheader bars, etc. */
 .sub_body_text {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* text in the body of a sub header */
 .pan_body_text {font-family: Verdana, Tahoma, sans; font-size: 10px;} /* text in the body of a panel */
 .pan_title_text {font-family: Verdana, Tahoma, sans; font-size: 10px; font-weight: bold; color: #112255;} /* text in the title of a panel */
@@ -54,16 +54,16 @@ font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
 /* Block */
 .block_ul {background-image: url(aeolus/top_left.png); height:29px; width:15px;} /* Upper Left */
 .block_um {background-image: url(aeolus/top_mid.png) ; height:29px; } /* Top middle */
-.block_ur {background-image: url(aeolus/top_right.png); height:29px; width:15px; padding-right: 4px; background-repeat: no-repeat;} /* Upper right */
+.block_ur {background-image: url(aeolus/top_right.png); height:29px; width:15px;} /* Upper right */
 
 .block_ml {background-image: url(aeolus/mid_left.png); width:15px;} /* Left  */
 .block_body {background-image: url(aeolus/body.png); padding: 3px 3px 3px 3px;
 font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
-.block_mr {background-image: url(aeolus/mid_right.png); width:15px; padding-right: 4px; background-repeat: repeat-y;} /* right  */
+.block_mr {background-image: url(aeolus/mid_right.png); width:15px;} /* right  */
 
 .block_bl {background-image: url(aeolus/bot_left.png); height:7px; width:15px;} /* bottom left */
 .block_bm {background-image: url(aeolus/bot_mid.png); height:7px;} /* bottom middle  */
-.block_br {background-image: url(aeolus/bot_right.png); height:7px; width:15px; padding-right: 4px; background-repeat: no-repeat;} /* bottom right */
+.block_br {background-image: url(aeolus/bot_right.png); height:7px; width:15px;} /* bottom right */
 
 
 
@@ -160,6 +160,7 @@ border: 1px #000 solid;
 border-top: 0;
 font-family: sans-serif, Tahoma;
 font-size: 12px;
+padding-left: 2px;
 }
 .menu {
 border-bottom: 1px #000 solid;
@@ -224,5 +225,17 @@ hr {
     color:  #555555;
     size:   1px;
     width:  50%;
+}
+
+.sidebar {
+    padding-right: 4px;
+}
+.panel {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+.block {
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 

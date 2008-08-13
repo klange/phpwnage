@@ -387,7 +387,7 @@ function makeBlock($functitle, $funcright, $funccont) {
     // Page Body
     $output = <<<END
       <tr>
-        <td width="100%">
+        <td width="100%"><div class="panel">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="pan_ul">&nbsp;</td>
@@ -419,7 +419,7 @@ END;
         <td class="pan_bm" colspan="2"></td>
         <td class="pan_br"></td>
       </tr>
-    </table>
+    </table></div>
         </td>
       </tr>
 END;
@@ -428,6 +428,7 @@ END;
 function makeBlockSA($functitle, $funcright, $funccont) {
     // Page Body
     $output = <<<END
+    <div class="panel">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="pan_ul">&nbsp;</td>
@@ -460,6 +461,7 @@ END;
         <td class="pan_br"></td>
       </tr>
     </table>
+    </div>
 END;
     return $output;
 }
@@ -467,7 +469,7 @@ function makeBlockTrue($functitle, $funccont) {
     // Page Body
     $output = <<<END
       <tr>
-        <td width="100%">
+        <td width="100%"><div class="block">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="block_ul">&nbsp;</td>
@@ -493,7 +495,7 @@ END;
         <td class="block_bm"></td>
         <td class="block_br"></td>
       </tr>
-    </table>
+    </table></div>
         </td>
       </tr>
 END;

@@ -18,6 +18,7 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
+
 print <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -30,7 +31,7 @@ document.getElementById('sb').style.width = "0"
 <table class="borderless_table" width="100%">
   <tr>
     <td id="sb" valign="top" width="200px">
-	<div id="sidebar" style="display: inline; padding: 0px 0px 0px 0px;">
+	<div id="sidebar" class="sidebar">
     <table class="borderless_table" width="100%">
 END;
 
