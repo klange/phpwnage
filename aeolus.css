@@ -96,7 +96,7 @@ font-family: Verdana, Tahoma, sans; font-size: 12px;} /* body */
 	border-style: none none none none;
 }
 
-.quote {background-image: url(aero/quote.png); background-repeat: no-repeat; border: 1px dashed black; padding: 5px;} /* post quote */
+.quote {background-image: url(aeolus/quote.png); background-repeat: no-repeat; border: 1px dashed black; padding: 5px;} /* post quote */
 .forum_button_text {font-family: Verdana, Tahoma, sans; font-size: 10px; color: #FFFFFF;} /* button text */
 .forum_button_text :link {color: #FFFFFF; text-decoration: none;}
 .forum_button_text :visited {color: #FFFFFF; text-decoration: none;}
