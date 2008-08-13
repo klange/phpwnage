@@ -54,12 +54,16 @@ if (isWriteable($user['level'], $topic['board'])) {
 $content = printPosterMini('content', $topic['id']) . <<<END
 <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="new_reply" />
+<table class="forum_base" width="100%">
 END;
 $content = $content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
 $content = $content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
 $content = $content . <<<END
-<textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea><br />
-<input type="submit" name="sub" value="Post" /></form>
+<tr><td class="forum_topic_content">
+<textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea></td></tr>
+<tr><td class="forum_topic_sig"><input type="submit" name="sub" value="{$_PWNDATA['forum']['submit_post']}" /></td></tr>
+</table>
+</form>
 END;
 }
 $resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC", $db);
@@ -69,7 +73,7 @@ $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "
 $post_author = mysql_fetch_array($resultb);
 $auth_name = $post_author['name'];
 $dec_post = BBDecode($rowz['content']);
-$content = $content . "<tr><td width=\"20%\" valign=\"top\"><font size=\"2\">$auth_name</font></td><td><font size=\"2\">$dec_post</font></td></tr>\n";
+$content = $content . "<tr><td width=\"20%\" class=\"glow\" valign=\"top\">$auth_name</td><td class=\"forum_topic_content\">$dec_post</td></tr>\n";
 }
 $content = $content . "</table>";
 drawBlock($_PWNDATA['articles']['comments'], "", $content);
@@ -78,10 +82,13 @@ if ($user['level'] >= $site_info['mod_rank']) {
 $content = "<form action=\"article.php?id=" . $row['id'];
 $content = $content . "&amp;pw=" . $_GET['pw'];
 $content = $content . <<<END
-" method="post"><input type="hidden" name="action" value="true" /><textarea rows="8" name="content" style="width:100%;" cols="80">
+" method="post">
+<input type="hidden" name="action" value="true" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">
 END;
 $content = $content . str_replace(">","&gt;",str_replace("<","&lt;",$row['content']));
-$content = $content . "</textarea><br /><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" /><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></form>";
+$content = $content . "</textarea></td></tr><tr><td class=\"forum_topic_sig\"><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" /><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></td></tr></table></form>";
 drawBlock("{$_PWNDATA['articles']['edita']} " . $row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'], $content);
 }
 print <<<END

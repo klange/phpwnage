@@ -89,7 +89,7 @@ function setTheme()
 function drawButton($dowhat, $title) {
     $post_content = "";
     $post_content = $post_content . <<<END
-<td>
+<td style="border: 0px">
 	<table class="forum_button">
 	<tr>
     <td class="but_left"></td>
@@ -265,13 +265,14 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 //]]>
 </script>
 <iframe name="previewbox" width="100%" style="border: 0px;" height="0px" id="previewbox"></iframe>
-{$_PWNDATA['poster']['smileys']}: 
 END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
+    $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "<br /><table class=\"mod_set\"><tr>" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
+    $return = $return . "</td></tr><tr>";
+    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
     $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
     $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
     $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
@@ -307,13 +308,14 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 }
 //]]>
 </script>
-{$_PWNDATA['poster']['smileys']}: 
 END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
+    $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "<br /><table class=\"mod_set\"><tr>" . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
+    $return = $return . "</td></tr><tr>";
+    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
     $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
     $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
     $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
