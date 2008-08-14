@@ -72,13 +72,21 @@ function hideMe() {
 }
 function showMe() {
     document.getElementById('buddy').style.display = "inline";
+    document.getElementById('buddy_content').style.display = "inline";
+}
+function shadeMe() {
+    if (document.getElementById('buddy_content').style.display == "none") {
+        document.getElementById('buddy_content').style.display = "inline";
+    } else {
+        document.getElementById('buddy_content').style.display = "none";
+    }
 }
 //]]>
 </script>
 <div id="buddy" style="width: 300px; border: 0px; position: absolute; top: 10px; left: 600px;">
 <table class="borderless_table" width="100%">
-<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
-<tr><td class="block_ml">&nbsp;</td><td class="block_body" colspan="2">
+<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:shadeMe()">^</a><a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
+<tr><td class="block_ml">&nbsp;</td><td class="block_body" colspan="2"><div id="buddy_content">
 END;
 // PwnBuddy content
 // Welcome message
@@ -208,7 +216,7 @@ print <<<END
 </div>
 END;
 print <<<END
-</td><td class="block_mr">&nbsp;</td></tr>
+</div></td><td class="block_mr">&nbsp;</td></tr>
 <tr><td class="block_bl"></td><td class="block_bm" colspan="2"></td><td class="block_br"></td></tr>
 </table>
 </div>
