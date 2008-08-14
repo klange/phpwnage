@@ -378,6 +378,7 @@ $_PWNDATA['forum']['ip'] = "IP";
 $_PWNDATA['forum']['quote'] = "Quote";
 $_PWNDATA['forum']['delete'] = "Delete";
 $_PWNDATA['forum']['edit'] = "Edit";
+$_PWNDATA['forum']['qedit'] = "Quick Edit";
 $_PWNDATA['forum']['new_topic'] = "New Topic";
 $_PWNDATA['forum']['next_page'] = "Next Page";
 $_PWNDATA['forum']['previous_page'] = "Previous Page";

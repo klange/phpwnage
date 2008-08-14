@@ -1212,12 +1212,34 @@ END;
 	        $postinfo = "<br />$pCount posts";
         }
         $block_content = $block_content . "<font class=\"forum_user\"><a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $post_author['name'] . "</a><br />" . $ava . $auth_info . $postinfo . "</font>";
-        $block_content = $block_content . "</td>\n<td valign=\"top\" class=\"forum_topic_content\"><div align=\"right\" class=\"forum_time\">{$_PWNDATA['forum']['posted_at']} " . date("F j, Y (g:ia T)", $row['time']) . "</div>\n";
+        $block_content = $block_content . "</td>\n<td valign=\"top\" class=\"forum_topic_content\"><div align=\"right\" class=\"forum_time\">{$_PWNDATA['forum']['posted_at']} " . date("F j, Y (g:ia T)", $row['time']) . "</div>\n<div id=\"post_content_" . $row['id'] . "\">";
         $block_content = $block_content . "\n" . $contenta;
-        $block_content = $block_content . "\n</td></tr><tr><td class=\"forum_topic_sig\">" . $contentb;
+        if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
+            $post_bb = str_replace("\"","&quot;",$row['content']);
+            $post_bb = str_replace("<","&lt;",$post_bb);
+            $post_bb = str_replace(">","&gt;",$post_bb);
+            $block_content = $block_content . "</div><div style=\"display: none\" id=\"post_edit_" . $row['id'] . "\">";
+                $block_content = $block_content . printPoster('content') . <<<END
+            <form action="forum.php" method="post" name="form">
+<input type="hidden" name="action" value="edit_reply" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
+END;
+    $block_content = $block_content . $post_bb;
+    $block_content = $block_content . <<<END
+</textarea></td></tr>
+<tr><td class="forum_topic_sig">
+<input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" /></td></tr>
+</table>
+END;
+    $block_content = $block_content . "<input type=\"hidden\" name=\"id\" value=\"" . $row['id'] . "\" />";
+    $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $row['topicid'] . "\" /></form>";
+        }
+        $block_content = $block_content . "\n</div></td></tr><tr><td class=\"forum_topic_sig\">" . $contentb;
         $block_content = $block_content . "\n</td></tr><tr><td colspan=\"2\" class=\"forum_button_bar\" align=\"right\"><table class=\"borderless_table\"><tr>\n";
         // Is this the viewing member's post?
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
+            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_" . $row['id'] . "'); flipVisibility('post_edit_" . $row['id'] . "')",$_PWNDATA['forum']['qedit']);
             $block_content = $block_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit']);
         }
         // Moderation Tools 
