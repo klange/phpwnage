@@ -54,11 +54,11 @@ if (isWriteable($user['level'], $topic['board'])) {
 $content = printPosterMini('content', $topic['id']) . <<<END
 <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="new_reply" />
-<table class="forum_base" width="100%">
 END;
 $content = $content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
 $content = $content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
 $content = $content . <<<END
+<table class="forum_base" width="100%">
 <tr><td class="forum_topic_content">
 <textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea></td></tr>
 <tr><td class="forum_topic_sig"><input type="submit" name="sub" value="{$_PWNDATA['forum']['submit_post']}" /></td></tr>
