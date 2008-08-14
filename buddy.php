@@ -48,6 +48,7 @@ function forceToMouse() {
     document.getElementById('buddy').style.top = tempY + 'px'
 }
 function buddyAlert(text) {
+    showMe()
     forceToMouse()
     document.getElementById('tab5').innerHTML = text
     changeTab('tab5')
@@ -66,12 +67,18 @@ catch(err) {
 window.status = err.message;
 }
 }
+function hideMe() {
+    document.getElementById('buddy').style.display = "none";
+}
+function showMe() {
+    document.getElementById('buddy').style.display = "inline";
+}
 //]]>
 </script>
 <div id="buddy" style="width: 300px; border: 0px; position: absolute; top: 10px; left: 600px;">
 <table class="borderless_table" width="100%">
-<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_ur">&nbsp;</td></tr>
-<tr><td class="block_ml">&nbsp;</td><td class="block_body">
+<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
+<tr><td class="block_ml">&nbsp;</td><td class="block_body" colspan="2">
 END;
 // PwnBuddy content
 // Welcome message
@@ -202,7 +209,7 @@ print <<<END
 END;
 print <<<END
 </td><td class="block_mr">&nbsp;</td></tr>
-<tr><td class="block_bl"></td><td class="block_bm"></td><td class="block_br"></td></tr>
+<tr><td class="block_bl"></td><td class="block_bm" colspan="2"></td><td class="block_br"></td></tr>
 </table>
 </div>
 <!-- End PwnBuddy -->
