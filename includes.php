@@ -330,19 +330,20 @@ END;
 }
 function printPosterEditor($where, $pid) {
 	// Print the posting tools in a smaller package.
+	$what = "_" . $pid;
     global $_PWNDATA;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
-function addCode(code,codeclose) {
-var Text = document.form.$where.value;
-var selectedText = Text.substring(document.form.$where.selectionStart, document.form.$where.selectionEnd);
-var beforeSelected = Text.substring(0,document.form.$where.selectionStart);
-var afterSelected = Text.substring(document.form.$where.selectionEnd,Text.length);
-document.form.$where.value = beforeSelected+code+selectedText+codeclose+afterSelected;
+function addCode$what(code,codeclose) {
+var Text = document.form$what.$where.value;
+var selectedText = Text.substring(document.form$what.$where.selectionStart, document.form$what.$where.selectionEnd);
+var beforeSelected = Text.substring(0,document.form$what.$where.selectionStart);
+var afterSelected = Text.substring(document.form$what.$where.selectionEnd,Text.length);
+document.form$what.$where.value = beforeSelected+code+selectedText+codeclose+afterSelected;
 }
-function addSize(sizeToAdd) {
-document.form.$where.rows = document.form.$where.rows + sizeToAdd;
+function addSize$what(sizeToAdd) {
+document.form$what.$where.rows = document.form$what.$where.rows + sizeToAdd;
 }
 //]]>
 </script>
@@ -350,18 +351,18 @@ END;
     $smilesSet = mysql_query("SELECT * FROM `smileys`");
     $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
+        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}") . "\n";
-    $return = $return . drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}") . "\n";
-    $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";
-    $return = $return . drawButton("javascript:addSize(2)","\/") . "\n";
-    $return = $return . drawButton("javascript:addSize(-2)","/\\") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}") . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";
+    $return = $return . drawButton("javascript:addSize$what(2)","\/") . "\n";
+    $return = $return . drawButton("javascript:addSize$what(-2)","/\\") . "\n";
     $return = $return . drawButton("forum.php?do=editreply&amp;id=" . $pid,$_PWNDATA['poster']['go_advanced']) . "\n";
     $return = $return . "</tr></table>";
     return $return;

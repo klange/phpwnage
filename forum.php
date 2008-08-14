@@ -1220,7 +1220,7 @@ END;
             $post_bb = str_replace(">","&gt;",$post_bb);
             $block_content = $block_content . "</div><div style=\"display: none\" id=\"post_edit_" . $row['id'] . "\">";
                 $block_content = $block_content . printPosterEditor('content',$row['id']) . <<<END
-            <form action="forum.php" method="post" name="form">
+            <form action="forum.php" method="post" name="form_{$row['id']}">
 <input type="hidden" name="action" value="edit_reply" />
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
