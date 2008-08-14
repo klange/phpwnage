@@ -24,12 +24,14 @@ $mod['right_inner'] = "Members of " . $site_info['name'];
 function mod_print()
 {
 $members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
-$content = "";
+$content = "<table class=\"forum_base\" width=\"100%\">";
 while ($member = mysql_fetch_array($members_result))
 {
+$content = $content . "<tr><td class=\"forum_topic_content\">";
 $content = $content . "<a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a>";
-$content = $content . " | <a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a><br />";
+$content = $content . "</td><td class=\"forum_topic_content\" width=\"100\"><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a></td></tr>";
 }
+$content = $content . "</table>";
 return $content;
 }
 ?>
