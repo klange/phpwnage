@@ -430,6 +430,7 @@ function post_sub_r($userid) {
 
 // Return the preview box Iframe
 function previewBox() {
+    return "<div id=\"previewbox\" style=\"width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;\"></div>";
     return <<<END
     <iframe name="previewbox" id="previewbox" height="0px" style="width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;"></iframe>
 END;
@@ -442,9 +443,11 @@ function previewBoxScript() {
 //<![CDATA[
 function showPrev(url) {
     if (url == 'EXIT') {
-        frames['previewbox'].location.href = "about:blank";
+        document.getElementById('previewbox').innerHTML = "";
     } else {
-        frames['previewbox'].location.href = "forum.php?do=preview&a=" + url
+        document.getElementById('previewbox').innerHTML = "<table class=\"forum_base\" width=\"100%\">" +
+                                                          "<tr><td class=\"forum_topic_content\">" + url +
+                                                          "</td></tr></table>";
     }
     return true;
 }
@@ -584,10 +587,10 @@ END;
                     $topics_in_board = $counter["COUNT(*)"];
                     $post_time = date("M jS, g:i a", $post['time']);
 
-                    $post_bb = "[b]Posted by:[/b] " . $poster['name'] . "!NL!" . substr(str_replace("\n","!NL!",$post['content']),0,500);
-                    $post_bb = str_replace("\r","",$post_bb);
-                    $post_bb = str_replace("\"","&quot;",$post_bb);
+                    $post_bb = "[b]Posted by:[/b] " . $poster['name'] . "\n" . substr($post['content'],0,500);
+                    $post_bb = bbDecode($post_bb);
                     $post_bb = str_replace("'","\\'",$post_bb);
+                    $post_bb = str_replace("\"","&quot;",$post_bb);
                     $post_bb = str_replace("<","&lt;",$post_bb);
                     $post_bb = str_replace(">","&gt;",$post_bb);
                     $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
@@ -743,18 +746,18 @@ END;
         $posts_counter = mysql_fetch_array($result_posts);
         $resultd = mysql_query("SELECT * FROM users WHERE id='" . $rowc['authorid'] . "'" , $db);
         $rowd = mysql_fetch_array($resultd);
-        $post_bb = "[b]Posted by:[/b] " . $rowb['name'] . "!NL!" . substr(str_replace("\n","!NL!",$firstpost['content']),0,500);
+        $post_bb = "[b]Posted by:[/b] " . $rowb['name'] . "\n" . substr($firstpost['content'],0,500);
         $post_time = date("M jS, g:i a", $rowc['time']);
-        $post_bb = str_replace("\r","",$post_bb);
-        $post_bb = str_replace("\"","&quot;",$post_bb);
+        $post_bb = bbDecode($post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
+        $post_bb = str_replace("\"","&quot;",$post_bb);
         $post_bb = str_replace("<","&lt;",$post_bb);
         $post_bb = str_replace(">","&gt;",$post_bb);
         $spazm = "onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
-        $post_bb = "[b]Posted by:[/b] " . $rowd['name'] . "!NL!" . substr(str_replace("\n","!NL!",$rowc['content']),0,500);
-        $post_bb = str_replace("\r","",$post_bb);
-        $post_bb = str_replace("\"","&quot;",$post_bb);
+        $post_bb = "[b]Posted by:[/b] " . $rowd['name'] . "\n" . substr($rowc['content'],0,500);
+        $post_bb = bbDecode($post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
+        $post_bb = str_replace("\"","&quot;",$post_bb);
         $post_bb = str_replace("<","&lt;",$post_bb);
         $post_bb = str_replace(">","&gt;",$post_bb);
         $spazma = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
@@ -1174,8 +1177,13 @@ END;
             }
         }
         if ($has_messenger) {
-            $messaging = "[b]" . $post_author['name'] . "[/b]!NL![img]smiles/mess.png[/img]!NL![img]smiles/aim.png[/img]: $authaim!NL![img]smiles/msn.png[/img]: $authmsn!NL![img]smiles/yahoo.png[/img]: $authyahoo!NL![img]smiles/icq.png[/img]: $authicq!NL![img]smiles/xfire.png[/img]: $authxf!NL![img]smiles/live.png[/img]: $authlive!NL![img]smiles/pan.png[/img]: $authpand!NL!";
-            $auth_info = "<img src=\"smiles/mess.png\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$messaging')\" alt=\"Messaging\"/><br />" . $auth_info;
+            $messaging = "[b]" . $post_author['name'] . "[/b]\n[img]smiles/mess.png[/img]\n[img]smiles/aim.png[/img]: $authaim\n[img]smiles/msn.png[/img]: $authmsn\n[img]smiles/yahoo.png[/img]: $authyahoo\n[img]smiles/icq.png[/img]: $authicq\n[img]smiles/xfire.png[/img]: $authxf\n[img]smiles/live.png[/img]: $authlive\n[img]smiles/pan.png[/img]: $authpand\n";
+            $post_bb = bbDecode($messaging);
+            $post_bb = str_replace("'","\\'",$post_bb);
+            $post_bb = str_replace("\"","&quot;",$post_bb);
+            $post_bb = str_replace("<","&lt;",$post_bb);
+            $post_bb = str_replace(">","&gt;",$post_bb);
+            $auth_info = "<img src=\"smiles/mess.png\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb')\" alt=\"Messaging\"/><br />" . $auth_info;
         }
         $postinfo = "";
         if ($user['level'] > 0) {
