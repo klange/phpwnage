@@ -455,9 +455,6 @@ function post_sub_r($userid) {
 // Return the preview box Iframe
 function previewBox() {
     return "<div id=\"previewbox\" style=\"width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;\"></div>";
-    return <<<END
-    <iframe name="previewbox" id="previewbox" height="0px" style="width: 500px; border: 0px; position: absolute; top: 0px; left: 0px;"></iframe>
-END;
 }
 
 // Return the preview box javascript
