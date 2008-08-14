@@ -637,18 +637,20 @@ td {
 textarea {
     background-color: #EEEEEC;
     color: #204a87;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
+    font-family: Tahoma, sans;
+    font-size: 10pt;
 }
 
 input {
     background-color: #EEEEEC;
     color: #204a87;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
 }
 select {
     background-color: #EEEEEC;
     color: #204a87;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
 }
 
 body font {
@@ -670,9 +672,3 @@ a:hover {
 a:link img, a:visited img {
     border-style: none;
 }
-
-textarea {
-    font-family: Tahoma, sans;
-    font-size: 10pt;
-}
-
