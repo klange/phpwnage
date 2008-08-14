@@ -23,13 +23,120 @@ $mod['right'] = "Viewing List";
 $mod['right_inner'] = "Members of " . $site_info['name'];
 function mod_print()
 {
-$members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
 $content = "<table class=\"forum_base\" width=\"100%\">";
-while ($member = mysql_fetch_array($members_result))
+$content = $content . "<tr><td class=\"forum_thread_title\" width=\"20\"><a href=\"modules.php?m=members&o=uid\">#</a></td><td class=\"forum_thread_title\"><a href=\"modules.php?m=members&o=uname\">Username</a></td><td class=\"forum_thread_title\" width=\"100\">PM</td><td class=\"forum_thread_title\" width=\"120\">Messaging</td><td class=\"forum_thread_title\" width=\"30\"><a href=\"modules.php?m=members&o=posts\">Posts</a></td></tr>\n";
+$odd = 0;
+$result_set = array();
+if (!isset($_GET['o']) or $_GET['o'] == "uname") {
+$members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
+while ($temp = mysql_fetch_array($members_result)) {
+    array_push(&$result_set, $temp);
+}
+} else if ($_GET['o'] == "uid") {
+$members_result = mysql_query("SELECT * FROM `users` ORDER BY `id`");
+while ($temp = mysql_fetch_array($members_result)) {
+    array_push(&$result_set, $temp);
+}
+} else if ($_GET['o'] == "posts") {
+$members_result_t = mysql_query("SELECT COUNT(`authorid`), `authorid` FROM `posts` GROUP BY `authorid` ORDER BY COUNT(`authorid`) DESC");
+$ignore = "WHERE `id`<>";
+while ($memb = mysql_fetch_array($members_result_t)) {
+    $members_result = mysql_query("SELECT * FROM `users` WHERE `id`=" . $memb['authorid']);
+    $array = mysql_fetch_array($members_result);
+    if (isset($array['id'])) {
+        array_push(&$result_set, $array);
+    }
+    $ignore = $ignore . $memb['authorid'] . " AND `id`<>";
+}
+$members_result = mysql_query("SELECT * FROM `users` $ignore 0 ORDER BY `id`");
+while ($temp = mysql_fetch_array($members_result)) {
+    array_push(&$result_set, $temp);
+}
+} else {
+$members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
+while ($temp = mysql_fetch_array($members_result)) {
+    array_push(&$result_set, $temp);
+}
+}
+
+//while ($member = mysql_fetch_array($members_result))
+while (list($key,$member) = each(&$result_set))
 {
-$content = $content . "<tr><td class=\"forum_topic_content\">";
+$odd = 1 - $odd;
+if ($odd == 1) {
+    $back = "class=\"forum_topic_sig\"";
+} else {
+    $back = "class=\"forum_odd_row\"";
+}
+$content = $content . "<tr><td $back>" . $member['id'] . "</td><td $back>";
 $content = $content . "<a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a>";
-$content = $content . "</td><td class=\"forum_topic_content\" width=\"100\"><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a></td></tr>";
+$post_count = postCount($member['id']);
+$post_author = $member;
+$has_messenger = false; // then we'll go through the IMs...
+$auth_info = "";
+$authmsn = "";
+$authaim = "";
+$authyahoo = "";
+$authicq = "";
+$authlive = "";
+$authxf = "";
+$authid = $post_author['id'];
+if ($post_author['msn'] != "") {
+    $has_messenger = true;
+    $authmsn = $post_author['msn'];
+    $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/msn.png\" border=\"0\" alt=\"MSN\"/></a>";
+}
+if ($post_author['yahoo'] != "") {
+    $has_messenger = true;
+    $authyahoo = $post_author['yahoo'];
+    $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/yahoo.png\" border=\"0\" alt=\"Yahoo\"/></a>";
+}
+if ($post_author['aim'] != "") { // AIM we're actually going to do something usefull for...
+    $has_messenger = true;
+    $authaim = $post_author['aim'];
+    $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\"><img src=\"smiles/aim.png\" border=\"0\" alt=\"AIM\"/></a>";
+}
+if ($post_author['icq'] != "") { // ICQ as well...
+    $has_messenger = true;
+    $authicq = $post_author['icq'];
+    $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\"><img src=\"smiles/icq.png\" border=\"0\" alt=\"ICQ\"/></a>";
+}
+if ($post_author['xfire'] != "") { // xfire
+    $has_messenger = true;
+    $authxf = $post_author['xfire'];
+    $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\"><img src=\"smiles/xfire.png\" border=\"0\" alt=\"xFire\"/></a>";
+}
+if ($post_author['live'] != "") { // xfire
+    $has_messenger = true;
+    $authlive = str_replace(" ","+",$post_author['live']);
+    $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\"><img src=\"smiles/live.png\" border=\"0\" alt=\"Live\"/></a>";
+}
+if ($post_author['pand'] != "") { // Pandemic
+    $has_messenger = true;
+    $authpand = $post_author['pand']; // We assume we're using the default server from this point on.
+    $auth_info = $auth_info . "<a href=\"pandemic://sendmessage.$authpand\">";
+    if ($_CHECKPANDEMIC) { // If we're going to look...
+        $sock = socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
+        socket_connect($sock,"76.189.178.118",60009); // If you run a custom server, change this!
+        socket_send($sock,"10",strlen("10"),0);
+        $return = socket_read($sock,1024);
+        $return = socket_read($sock,1024);
+        $serverInfo = explode("|_|",$return);
+        socket_send($sock,"3|_|" . $authpand,strlen("3|_|" . $authpand),0);
+        $return = socket_read($sock,1024);
+        $return = socket_read($sock,1024);
+        $userInfo = explode("|_|",$return);
+        socket_close($sock);
+        if ($userInfo[1] == "1") {
+        $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+        } else {
+        $auth_info = $auth_info . "<img src=\"smiles/panoff.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+        }
+    } else {
+        $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+    }
+}
+$content = $content . "</td><td $back><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a></td><td $back>$auth_info</td><td $back>$post_count</td></tr>";
 }
 $content = $content . "</table>";
 return $content;
