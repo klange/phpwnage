@@ -74,6 +74,7 @@ $_PWNDATA['articles']['save'] = "Save Article";
 $_PWNDATA['articles']['save_page'] = "Save Page";
 $_PWNDATA['articles']['edit_page'] = "Page Edited Successfully";
 $_PWNDATA['articles']['comments'] = "Comment on this Article";
+$_PWNDATA['articles']['more_comments'] = "(More Comments)";
 
 // Buddy
 $_PWNDATA['buddy']['name'] = "PwnBuddy";

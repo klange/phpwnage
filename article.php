@@ -66,7 +66,7 @@ $content = $content . <<<END
 </form>
 END;
 }
-$resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC", $db);
+$resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC LIMIT 10", $db);
 $content = $content . "<table class=\"forum_base\" width=\"100%\">\n";
 while ($rowz = mysql_fetch_array($resultz)) {
 $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "'", $db);
@@ -75,6 +75,7 @@ $auth_name = $post_author['name'];
 $dec_post = BBDecode($rowz['content']);
 $content = $content . "<tr><td width=\"20%\" class=\"glow\" valign=\"top\">$auth_name</td><td class=\"forum_topic_content\">$dec_post</td></tr>\n";
 }
+$content = $content . "<tr><td colspan=\"2\" class=\"forum_topic_content\"><center><a href=\"forum.php?do=viewtopic&id=" . $row['topicid'] . "\">{$_PWNDATA['articles']['more_comments']}</a></center></td></tr>";
 $content = $content . "</table>";
 drawBlock($_PWNDATA['articles']['comments'], "", $content);
 }
