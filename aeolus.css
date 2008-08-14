@@ -334,6 +334,11 @@
     font-size: 12px;
 }
 
+.forum_edit_title {
+    display: inline;
+    font-size: 10px;
+}
+
 .mod_name {
     color: #0000BB;
 }
