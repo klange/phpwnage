@@ -40,6 +40,29 @@ function check_read($id,$userid) {
     return $is_read;
 }
 
+function findTopic($postnumber) {
+    $temp = mysql_query("SELECT `topicid` FROM `posts` WHERE `id`=" . $postnumber);
+    $post = mysql_fetch_array($temp);
+    $topic = $post['topicid'];
+    return $topic;
+}
+
+function findPage($postnumber, $topic = -1) {
+    global $_POSTSPERPAGE;
+    if ($topic == -1) {
+        $topic = findTopic($postnumber);
+    }
+    $temp_res = mysql_query("SELECT `id` FROM `posts` WHERE `topicid`=" . $topic);
+    $i = 0;
+    while ($post = mysql_fetch_array($temp_res)) {
+        $i++;
+        if ($post['id'] >= $postnumber)
+            break;
+    }
+    $page = (int)(($i - 1) / $_POSTSPERPAGE) + 1;
+    return $page;
+}
+
 function check_read_forum($id,$userid) {
     $temp_res = mysql_query("SELECT * FROM `topics` WHERE board=$id");
     $was_read = true;
@@ -248,7 +271,7 @@ if ($_POST['action'] == "vote_poll") {
 if ($_POST['action'] == "edit_reply") {
     $content = $_POST['content'];
     mysql_query("UPDATE `posts` SET `content` = '" . mse($content) . "' WHERE `posts`.`id` =" . $_POST['id'] . ";");
-    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&amp;id=" . $_POST['topic']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&amp;id=" . $_POST['topic'] . "&p=" . findPage($_POST['id']));
 }
 
 // If a topic title is being changed
@@ -355,8 +378,9 @@ if ($_GET['do'] == "delete") {
 	if ($user['level'] < 2) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_post']);
 	}
+	$topic = findTopic($_GET['id']);
 	mysql_query("DELETE FROM `posts` WHERE `posts`.`id` =" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_deleted'],"forum.php");
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_deleted'],"forum.php?do=viewtopic&id=$topic&p=" . findPage($_GET['id'],$topic));
 }
 
 // Delete a topic
