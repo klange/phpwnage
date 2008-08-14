@@ -1488,7 +1488,10 @@ if ($_GET['do'] == "editreply") {
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
 END;
-    $block_content = $block_content . $reply['content'];
+    $post_bb = str_replace("\"","&quot;",$reply['content']);
+    $post_bb = str_replace("<","&lt;",$post_bb);
+    $post_bb = str_replace(">","&gt;",$post_bb);
+    $block_content = $block_content . $post_bb;
     $block_content = $block_content . <<<END
 </textarea></td></tr>
 <tr><td class="forum_topic_sig">
