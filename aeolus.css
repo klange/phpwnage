@@ -251,12 +251,12 @@
 }
 
 .forum_board_readicon {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
 }
 
 .forum_board_linkicon {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
 }
 
@@ -273,14 +273,14 @@
 }
 
 .forum_board_linkdesc {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_desc {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
@@ -292,13 +292,13 @@
 }
 
 .forum_board_topics {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     font-size: 12px;
 }
 
 .forum_board_posts {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     font-size: 12px;
 }
@@ -311,17 +311,17 @@
 }
 
 .forum_thread_icon {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
 }
 
 .forum_thread_last {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
 }
 
 .forum_thread_author {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     padding: 1px 1px 1px 1px;
 }
@@ -333,17 +333,17 @@
 }
 
 .forum_topic_poll {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     padding: 4px;
 }
 
 .forum_topic_poll_option {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll_votebar {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
 }
 
 .forum_poll_table {
@@ -361,7 +361,7 @@
 .mod_set td {
 	border-width: 0px 0px 0px 0px;
 	border-style: none none none none;
-	background-color: #d7dbde;
+	background-color: #7f9ab5;
 }
 
 /* Said button  */
@@ -445,20 +445,20 @@
 }
 
 .glow {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     text-align: center;
 }
 
 .glow_admin {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_admin.png);
     background-repeat: repeat-x;
 }
 .glow_mod {
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_mod.png);
@@ -470,7 +470,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     height: auto;
     padding: 4px;
@@ -480,7 +480,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     padding: 4px;
     height: 1px;
@@ -500,7 +500,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 24px;
     color: #000000;
-    background-color: #e4edf4;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     height: auto;
     padding: 4px;
@@ -509,27 +509,27 @@
 .forum_button_bar {
     border: 1px #707070 solid;
     border-collapse: collapse;
-    background-color: #d7dbde;
+    background-color: #7f9ab5;
 }
 
 .forum_button_bar td {
 	border-width: 0px 0px 0px 0px;
 	border-style: none none none none;
 	border-collapse: collapse;
-	background-color: #d7dbde;
+	background-color: #7f9ab5;
 }
 
 .forum_topic_buttonbar {
     border: 1px #707070 solid;
     border-collapse: collapse;
-    background-color: #d7dbde;
+    background-color: #7f9ab5;
 }
 
 .forum_topic_buttonbar td {
 	border-width: 0px 0px 0px 0px;
 	border-style: none none none none;
 	border-collapse: collapse;
-	background-color: #d7dbde;
+	background-color: #7f9ab5;
 }
 
 .forum_quickreply {
@@ -541,7 +541,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #d7dbde;
+    background-color: #e6eaed;
     border: 1px #707070 solid;
     padding: 4px;
 }
@@ -664,23 +664,23 @@ td {
 }
 
 textarea {
-    background-color: #E6EAED;
+    background-color: #f9fafb;
     color: #4F697C;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
     font-family: Tahoma, sans;
     font-size: 10pt;
 }
 
 input {
-    background-color: #E6EAED;
+    background-color: #f9fafb;
     color: #4F697C;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
 }
 
 select {
-    background-color: #E6EAED;
+    background-color: #f9fafb;
     color: #4F697C;
-    border: 1px solid #FFFFFF;
+    border: 1px solid #707070;
 }
 
 body font {
