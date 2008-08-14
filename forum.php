@@ -1219,7 +1219,7 @@ END;
             $post_bb = str_replace("<","&lt;",$post_bb);
             $post_bb = str_replace(">","&gt;",$post_bb);
             $block_content = $block_content . "</div><div style=\"display: none\" id=\"post_edit_" . $row['id'] . "\">";
-                $block_content = $block_content . printPoster('content') . <<<END
+                $block_content = $block_content . printPosterEditor('content',$row['id']) . <<<END
             <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="edit_reply" />
 <table class="forum_base" width="100%">
