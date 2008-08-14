@@ -269,7 +269,9 @@ if ($_POST['action'] == "move_topic") {
 if ($_POST['action'] == "edit_profile") {
     $userid = $user['id'];
     if ($_POST['adm'] == "true") {
-        $userid = $_POST['id'];
+        if ($user['level'] >= $site_info['mod_rank']) {
+            $userid = $_POST['id'];
+        }
     }
     mysql_query("UPDATE `users` SET `name` = '" . mse($_POST['name']) . "' WHERE `users`.`id` =" . $userid);
     mysql_query("UPDATE `users` SET `sig` = '" . mse($_POST['sig']) . "' WHERE `users`.`id` =" . $userid);

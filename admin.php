@@ -809,6 +809,9 @@ $uxfire = $vuser['xfire'];
 $ulive = $vuser['live'];
 $post_content = $post_content . <<<END
 <form method="post" action="forum.php" name="form">
+<input type="hidden" name="action" value="edit_profile" />
+<input type="hidden" name="adm" value="true" />
+<input type="hidden" name="id" value="$uid" />
   <table class="forum_base" width="100%">
   <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['registration']}</td></tr>
   <tr><td class="forum_topic_sig" width="300">{$_PWNDATA['profile']['username']}</td><td class="forum_topic_sig"><input type="text" name="name" value="$uname" style="width: 100%;" /></td></tr>
