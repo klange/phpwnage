@@ -530,7 +530,7 @@
     text-decoration : none;
     border : 1px solid #000;
     background-image: url(crystal/block_body.png);
-    color: #729fcf;
+    color: #204a87;
     float : left;
     margin-right : 4px;
     line-height: 13px;
@@ -540,15 +540,15 @@
 }
 
 .tab_head_off a:hover {
-    background-color: #79a7b4;
+    background-color: #b6d0e0;
 }
 
 .tab_head_on a {
     text-decoration : none;
     border : 1px solid #000;
-    background-color: #729fcf;
-    color: #c9d7e4;
-    border-bottom: 1px solid #729fcf;
+    background-color: #b6d0e0;
+    color: #204a87;
+    border-bottom: 1px solid #b6d0e0;
     margin-right : 4px;
     float : left;
     font-size: 10px;
@@ -573,7 +573,7 @@
 
 .tab_contents {
     clear : both;
-    background-color: #729fcf;
+    background-color: #b6d0e0;
     border: 1px #000 solid;
     border-top: 0;
     font-family: sans-serif, Tahoma;
@@ -607,7 +607,7 @@
 }
 
 .odd_cell {
-    background-color: #729fcf;
+    background-color: #e4edf4;
 }
 
 hr {
