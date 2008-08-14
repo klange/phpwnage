@@ -382,11 +382,13 @@ END;
 // ------------------------------------------------------------ News
 if ($_GET['view'] == "news") {
 // Add article
-$content = <<<END
+$content = printPoster('content') . <<<END
 <form action="admin.php" method="post" name="form">
 <input type="hidden" name="action" value="add_article" />
-<input type="text" name="title" value="{$_PWNDATA['admin']['forms']['article_title']}" />
-<input type="checkbox" name="add_to_forum" />{$_PWNDATA['admin']['forms']['article_forum_post']}
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content" width="300">{$_PWNDATA['admin']['forms']['article_title']}</td>
+<td class="forum_topic_content"><input type="text" name="title" value="" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig"><input type="checkbox" name="add_to_forum" />{$_PWNDATA['admin']['forms']['article_forum_post']}</td><td class="forum_topic_sig">
 <select name="board">
 END;
 $result = mysql_query("SELECT * FROM `categories` ORDER BY `orderid`");
@@ -401,29 +403,30 @@ while ($cat = mysql_fetch_array($result))
     $content = $content . "\n</optgroup>";
 }
 $content = $content . <<<END
-</select>
+</select></td></tr>
 END;
-$content = $content . printPoster('content') . <<<END
-<textarea rows="6" name="content" style="width:95%;" cols="80" >{$_PWNDATA['admin']['forms']['article_content']}</textarea><br />
+$content = $content . <<<END
+<tr><td colspan="2" class="forum_thread_title">{$_PWNDATA['admin']['forms']['article_content']}</td></tr>
+<tr><td colspan="2" class="forum_topic_sig"><textarea rows="6" name="content" style="width:100%;" cols="80" ></textarea></td></tr>
 END;
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['article_add']}\" /></form>";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['article_add']}\" /></td></tr></table></form>";
 drawBlock("{$_PWNDATA['admin']['forms']['article_add']}","{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']),$content);
 
 // View article, jump to edit
-$content = "<table class=\"borderless_table\" width=\"100%\">";
+$content = "<table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
 $result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC");
 while ($article = mysql_fetch_array($result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\" ";
 }
 $content = $content . "<tr><td $back>";
 $content = $content . $article['title'] . " ({$_PWNDATA['posted_on']} " . date("n/j/y", $article['time_code']) . "; {$_PWNDATA['posted_on_by']} " . $article['user'] . ")</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=del_news&amp;id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"article.php?id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
+$content = $content . "<td $back><a href=\"admin.php?do=del_news&amp;id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a></td><td $back><a href=\"article.php?id=" . $article['id'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
 $content = $content . "</tr>";
 
 }
@@ -437,12 +440,15 @@ if ($_GET['view'] == "pages") {
 $content = <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="custom_page" />
-{$_PWNDATA['admin']['forms']['page_link']}: <input type="text" name="name" value="" /><br />
-{$_PWNDATA['admin']['forms']['page_title']}: <input type="text" name="display_name" value="" /><br />
-{$_PWNDATA['admin']['forms']['page_content']}: <br /><textarea rows="6" name="content" style="width:95%;" cols="80"></textarea><br />
-{$_PWNDATA['admin']['forms']['page_author']}: <input type="text" name="author" value="" /><br />
-{$_PWNDATA['admin']['forms']['page_sidebar']}(true / false): <input type="text" name="showsidebar" value="false"/><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['page_add']}" /></form>
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content" width="300">{$_PWNDATA['admin']['forms']['page_link']}</td><td class="forum_topic_content"><input type="text" name="name" value="" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['page_title']}</td><td class="forum_topic_sig"><input type="text" name="display_name" value="" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['admin']['forms']['page_content']}</td></tr><tr><td class="forum_topic_sig" colspan="2"><textarea rows="6" name="content" style="width:100%;" cols="80"></textarea><br />
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['page_author']}</td><td class="forum_topic_sig"><input type="text" name="author" value="" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['page_sidebar']} (true / false)</td><td class="forum_topic_sig"><input type="text" name="showsidebar" value="false" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['forms']['page_add']}" /></td></tr>
+
+</table></form>
 END;
 drawBlock("{$_PWNDATA['admin']['forms']['page_add']}","",$content);
 
@@ -490,15 +496,15 @@ function move_board(boardId) {
 //]]>
 </script>
 END;
-$content = $content . "<form name=\"cats\" action=\"admin.php\"><table class=\"borderless_table\" width=\"100%\">\n";
+$content = $content . "<form name=\"cats\" action=\"admin.php\"><table class=\"forum_base\" width=\"100%\">\n";
 $odd = 1;
 while ($cat = mysql_fetch_array($result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\" ";
 }
 $catid = $cat['id'];
 $content = $content . "<tr><td $back><input type=\"radio\" name=\"cats\" value=\"$catid\" /><b>\n";
@@ -511,9 +517,9 @@ $content = $content . "</tr>";
 	{
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\" ";
 }
 		$content = $content . "<tr><td $back> ---- ";
 		$brdid = $board['id'];
@@ -524,14 +530,14 @@ $back = "";
 	}
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\" ";
 }
-$content = $content . "<tr><td $back> -- <b><a href=\"admin.php?do=add_brd&amp;cat=" . $cat['id'] . "&amp;last=$lastbrd\">[{$_PWNDATA['admin']['forms']['forum_add_board']}]</a></b></td></tr>\n";
+$content = $content . "<tr><td $back colspan=\"2\"> -- <b><a href=\"admin.php?do=add_brd&amp;cat=" . $cat['id'] . "&amp;last=$lastbrd\">[{$_PWNDATA['admin']['forms']['forum_add_board']}]</a></b></td></tr>\n";
 $lastcat = $catid;
 }
-$content = $content . "</table></form><b><a href=\"admin.php?do=new_cat&amp;last=$lastcat\">[{$_PWNDATA['admin']['forms']['forum_add_cat']}]</a></b>\n";
+$content = $content . "<tr><td $back colspan=\"2\"><a href=\"admin.php?do=new_cat&amp;last=$lastcat\">[{$_PWNDATA['admin']['forms']['forum_add_cat']}]</a></td></tr></table></form>\n";
 drawBlock("{$_PWNDATA['admin']['forms']['forums']} - {$_PWNDATA['admin']['forms']['forum_order']}","",$content);
 // Smiley Control
 $content = "<b>{$_PWNDATA['admin']['forms']['forum_smileys']}: ({$_PWNDATA['admin']['forms']['forum_click_edit']})</b><br />";
@@ -744,15 +750,16 @@ $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="site_info" />
+<table class="forum_base" width="100%">
 END;
-$content = $content . "{$_PWNDATA['admin']['forms']['si_name']}: <input name=\"name\" type=\"text\" value=\"" . $site_info['name'] . "\" /><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_url']}: <input name=\"url\" type=\"text\" value=\"" . $site_info['url'] . "\" /><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_copy']}: <input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\" /><br />\n";
+$content = $content . "<tr><td class=\"forum_topic_content\" width=\"300\">{$_PWNDATA['admin']['forms']['si_name']}</td><td class=\"forum_topic_content\"><input name=\"name\" type=\"text\" value=\"" . $site_info['name'] . "\" style=\"width:100%;\" /></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['si_url']}</td><td class=\"forum_topic_sig\"><input name=\"url\" type=\"text\" value=\"" . $site_info['url'] . "\" style=\"width:100%;\" /></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['si_copy']}</td><td class=\"forum_topic_sig\"><input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\" style=\"width:100%;\" /></td></tr>\n";
 $rd = str_replace("<","&lt;",$site_info['right_data']);
 $rd = str_replace(">","&gt;",$rd);
-$content = $content . "{$_PWNDATA['admin']['forms']['si_rightbar']}: <textarea rows=\"1\" name=\"right_data\" style=\"width:95%;\"  cols=\"80\" >" . $rd . "</textarea><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['si_header']}: <input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" /><br />\n";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></form>";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\">{$_PWNDATA['admin']['forms']['si_rightbar']}</td></tr><tr><td class=\"forum_topic_sig\" colspan=\"2\"><textarea rows=\"1\" name=\"right_data\" style=\"width:100%;\"  cols=\"80\" >" . $rd . "</textarea></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['si_header']}</td><td class=\"forum_topic_sig\"><input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" style=\"width:100%;\" /></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></td></tr></table></form>";
 drawBlock($_PWNDATA['admin']['forms']['si'],"",$content);
 }
 
@@ -762,14 +769,14 @@ if ($_GET['view'] == "members") {
 $content = "";
 $members_result = mysql_query("SELECT * FROM `users` ORDER BY `name`");
 $odd = 1;
-$content = $content . "<table class=\"borderless_table\" width=\"100%\">";
+$content = $content . "<table class=\"forum_base\" width=\"100%\">";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td>\n";
 $content = $content . "<td $back><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_pm']}</a></td>\n";
@@ -802,25 +809,29 @@ $uxfire = $vuser['xfire'];
 $ulive = $vuser['live'];
 $post_content = $post_content . <<<END
 <form method="post" action="forum.php" name="form">
-  <input type="hidden" name="action" value="edit_profile" />
-  <input type="hidden" name="id" value="$uid" />
-  <input type="hidden" name="adm" value="true" />
-  {$_PWNDATA['profile']['username']}: $uname <input type="hidden" name="name" size="20" value="$uname" /><br />
-  {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" value="$umail" /><br />
-  {$_PWNDATA['profile']['password']}: <input type="password" name="apass" size="20" value="" /><br />
-  {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" value="" /><br />
-  <br /><strong>{$_PWNDATA['profile']['messaging']}:</strong><br />
-  MSN: <input type="text" name="msn" size="20" value="$umsn" /><br />
-  AIM: <input type="text" name="aim" size="20" value="$uaim" /><br />
-  Yahoo: <input type="text" name="yah" size="20" value="$uyah" /><br />
-  ICQ: <input type="text" name="icq" size="20" value="$uicq" /><br />
-  xFire: <input type="text" name="xfire" size="20" value="$uxfire" /><br />
-  Gamertag: <input type="text" name="live" size="20" value="$ulive" /><br />
-  {$_PWNDATA['profile']['sig']}:<br />
-  <textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea><br />
-  {$_PWNDATA['profile']['avatar']}:<br />
-  <input type="text" name="avatar" size="20" value="$ava" /><br /><br />
-  <input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub" /></form>
+  <table class="forum_base" width="100%">
+  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['registration']}</td></tr>
+  <tr><td class="forum_topic_sig" width="300">{$_PWNDATA['profile']['username']}</td><td class="forum_topic_sig">$uname <input type="hidden" name="name" value="$uname" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['email']}</td><td class="forum_topic_sig"><input type="text" name="email" value="$umail" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['password']}</td><td class="forum_topic_sig"><input type="password" name="apass" value="" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="password" name="cpass" value="" style="width: 100%" /></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['messaging']}</strong></td></tr>
+  <tr><td class="forum_topic_sig">MSN</td><td class="forum_topic_sig"><input type="text" name="msn" value="$umsn" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">AIM</td><td class="forum_topic_sig"><input type="text" name="aim" value="$uaim" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">Yahoo</td><td class="forum_topic_sig"><input type="text" name="yah" value="$uyah" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">ICQ</td><td class="forum_topic_sig"><input type="text" name="icq" value="$uicq" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">xFire</td><td class="forum_topic_sig"><input type="text" name="xfire" value="$uxfire" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">Gamertag</td><td class="forum_topic_sig"><input type="text" name="live" value="$ulive" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">Pandemic</td><td class="forum_topic_sig"><input type="text" name="pand" value="$pand" style="width: 100%" /></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['posting']}</strong></td></tr>
+  <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['profile']['sig']}</td></tr>
+  <tr><td class="forum_topic_sig" colspan="2"><textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['avatar']}</td>
+  <td class="forum_topic_sig"><input type="text" name="avatar" value="$ava" style="width: 100%" /></td></tr>
+  
+  <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub" /></td></tr>
+  </table>
+  </form>
 END;
 }
 drawBlock($_PWNDATA['admin']['forms']['members_edit'],"",$post_content);
@@ -846,15 +857,18 @@ if ($site_info['security_mode'] == 0) {
 $content = <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="captcha" />
-{$_PWNDATA['admin']['forms']['security_mode']}:
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content" width="300">{$_PWNDATA['admin']['forms']['security_mode']}</td>
+<td class="forum_topic_content">
 <select name="sec_mode">
     <option value="0" $sel_a>{$_PWNDATA['admin']['forms']['sec_mod_a']}</option>
     <option value="1" $sel_b>{$_PWNDATA['admin']['forms']['sec_mod_b']}</option>
     <option value="2" $sel_c>{$_PWNDATA['admin']['forms']['sec_mod_c']}</option>
-</select><br />
-{$_PWNDATA['admin']['forms']['recap_pub']}: <input type="text" name="recap_pub" value="{$site_info['recap_pub']}" /><br />
-{$_PWNDATA['admin']['forms']['recap_priv']}: <input type="text" name="recap_priv" value="{$site_info['recap_priv']}" /><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['sec_save']}" name="save" />
+</select></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['recap_pub']}</td><td class="forum_topic_sig"><input type="text" name="recap_pub" value="{$site_info['recap_pub']}" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['recap_priv']}</td><td class="forum_topic_sig"><input type="text" name="recap_priv" value="{$site_info['recap_priv']}" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['forms']['sec_save']}" name="save" /></td></tr>
+</table>
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['captcha'],"",$content);
@@ -862,8 +876,10 @@ drawBlock($_PWNDATA['admin']['forms']['captcha'],"",$content);
 $content = <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="add_ban" />
-{$_PWNDATA['admin']['forms']['banipip']}: <input type="text" name="ip" value="XX.XX.XX.XX" /><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['banip']}" name="ban" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content">{$_PWNDATA['admin']['forms']['banipip']}</td><td class="forum_topic_content"><input type="text" name="ip" value="XX.XX.XX.XX" style="width: 100%;" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['forms']['banip']}" name="ban" /></td></tr>
+</table>
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['banip'],"",$content);
@@ -875,14 +891,14 @@ $content = "";
 $members_result = mysql_query("SELECT * FROM `banlist`");
 }
 $odd = 1;
-$content = $content . "<table class=\"borderless_table\" width=\"100%\">";
+$content = $content . "<table class=\"forum_base\" width=\"100%\">";
 while ($ban = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back>" . $ban['ip'] . "</td>\n";
 $content = $content . "<td $back><a href=\"admin.php?do=del_ban&amp;ban=" . $ban['ip'] . "\">{$_PWNDATA['admin']['forms']['ban_lift']}</a></td>\n";
@@ -891,31 +907,31 @@ $content = $content . "</tr>\n";
 $content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['bans'],"",$content);
 
-$content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"borderless_table\">";
+$content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
 $result = mysql_query("SELECT * FROM security LIMIT 10", $db);
 while ($row = mysql_fetch_array($result)) {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
+$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . "</td><td $back>Password used: " . $row['passused'] . "</td><td $back>IP: " . $row['ip'] . "</td></tr>\n";
 }
 
 
-$content = $content . "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"borderless_table\">";
+$content = $content . "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
 $result = mysql_query("SELECT * FROM security", $db);
 while ($row = mysql_fetch_array($result)) {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . " | Password used: " . $row['passused'] . " | IP: " . $row['ip'] . "</td></tr>\n";
+$content = $content . "<tr><td $back>" .  $row['where'] . " " . date("F j, Y (g:ia T)", $row['time']) . "</td><td $back>Password used: " . $row['passused'] . "</td><td $back>IP: " . $row['ip'] . "</td></tr>\n";
 }
 $content = $content . <<<END
 </table></div>
@@ -940,46 +956,51 @@ drawBlock($_PWNDATA['admin']['forms']['si_log'],"",$content);
 
 if ($_GET['view'] == "promo") {
 if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_promote']); }
-$content = "<b>{$_PWNDATA['admin']['forms']['ranks_custom']}:</b><br />";
+$content = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_thread_title\" colspan=\"4\"><b>{$_PWNDATA['admin']['forms']['ranks_custom']}:</b></td></tr>";
 // List ranks
 $results = mysql_query("SELECT * FROM `ranks`");
 while ($rank = mysql_fetch_array($results)) {
-$content = $content . $rank['name'] . " - {$_PWNDATA['admin']['forms']['ranks_level']}: " . $rank['value'] . " {$_PWNDATA['admin']['forms']['ranks_posts']}: " . $rank['posts'] . " [<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]<br />";
+$content = $content . "<tr><td class=\"forum_topic_sig\">" . $rank['name'] . "</td><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['ranks_level']}: " . $rank['value'] . "</td><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['ranks_posts']}: " . $rank['posts'] . "</td><td class=\"forum_topic_sig\">[<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]</td></tr>";
 }
+$content = $content . "</table>";
 $modrank = $site_info['mod_rank'];
 $admrank = $site_info['admin_rank'];
 $content = $content . <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="addrank" />
-<b>{$_PWNDATA['admin']['forms']['ranks_add']}:</b><br />
-{$_PWNDATA['admin']['forms']['ranks_level']}: <input type="text" name="level" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
-{$_PWNDATA['admin']['forms']['ranks_posts']}: <input type="text" name="posts" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}<br />
-{$_PWNDATA['admin']['forms']['ranks_name']}: <input type="text" name="name" value="" /><br />
-<input type="submit" value="Add Rank" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['admin']['forms']['ranks_add']}:</b></td></tr>
+<tr><td class="forum_topic_sig" width="300">{$_PWNDATA['admin']['forms']['ranks_level']}</td><td class="forum_topic_sig"><input type="text" name="level" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}</td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['ranks_posts']}</td><td class="forum_topic_sig"><input type="text" name="posts" value="-1" /> {$_PWNDATA['admin']['forms']['ranks_ignore']}</td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['ranks_name']}</td><td class="forum_topic_sig"><input type="text" name="name" value="" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Add Rank" /></td></tr>
+</table>
 </form>
 <form action="admin.php" method="post" name="form">
 <input type="hidden" name="action" value="setranks" />
 <input type="hidden" name="mod_old" value="$modrank" />
 <input type="hidden" name="adm_old" value="$admrank" />
-<b>{$_PWNDATA['admin']['forms']['ranks_set']}</b> <i>{$_PWNDATA['admin']['forms']['ranks_set_warn']}</i><br />
-{$_PWNDATA['admin']['forms']['ranks_mod']}: <input type="text" name="mod" value="$modrank" /><br />
-{$_PWNDATA['admin']['forms']['ranks_adm']}: <input type="text" name="adm" value="$admrank" /><br />
-<input type="submit" value="{$_PWNDATA['admin']['forms']['ranks_save']}" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['admin']['forms']['ranks_set']}</b> <i>{$_PWNDATA['admin']['forms']['ranks_set_warn']}</i></td></tr>
+<tr><td class="forum_topic_sig" width="300">{$_PWNDATA['admin']['forms']['ranks_mod']}</td><td class="forum_topic_sig"><input type="text" name="mod" value="$modrank" /></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['ranks_adm']}</td><td class="forum_topic_sig"><input type="text" name="adm" value="$admrank" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['forms']['ranks_save']}" /></td></tr>
+</table>
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
 $content = "";
-$content = $content . "<table class=\"borderless_table\" width=\"100%\">";
-$members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `name`");
-$content = $content . "<tr><td> --- {$_PWNDATA['admin']['forms']['ranks_users']} --- </td></tr>";
+$content = $content . "<table class=\"forum_base\" width=\"100%\">";
+$members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- {$_PWNDATA['admin']['forms']['ranks_users']} --- </td></tr>";
 $odd = 1;
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
 $add = "";
 if ($member['level'] < 1) {
@@ -990,30 +1011,30 @@ $content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $memb
 $content = $content . "</tr>";
 }
 $odd = 1;
-$members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `name`");
-$content = $content . "<tr><td> --- <font class='mod_name'>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</font> --- </td></tr>";
+$members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- <font class='mod_name'>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</font> --- </td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
 $content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
-$members_result = mysql_query("SELECT * FROM `users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `name`");
-$content = $content . "<tr><td> --- <font class='adm_name'>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</font> --- </td></tr>";
+$members_result = mysql_query("SELECT * FROM `users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `level`, `name`");
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- <font class='adm_name'>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</font> --- </td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
 $content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
