@@ -417,7 +417,7 @@ $content = "<table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
 if (!isset($_GET['nolimit'])) {
     $result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC LIMIT 10");
-    $content = $content . "<tr><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['news_limit']} <a href=\"admin.php?view=news&amp;nolimit=1\">{$_PWNDATA['admin']['forms']['news_limit_all']}</a></td></tr>";
+    $content = $content . "<tr><td class=\"forum_topic_content\" colspan=\"3\">{$_PWNDATA['admin']['forms']['news_limit']} <a href=\"admin.php?view=news&amp;nolimit=1\">{$_PWNDATA['admin']['forms']['news_limit_all']}</a></td></tr>";
 } else {
     $result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC");
 }
