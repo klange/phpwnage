@@ -583,12 +583,16 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="100%" valign="top" align="left" dir="ltr">
-    <p align="left" dir="ltr"> Thank you for 
-    installing PHPwnage!<br />
+    <p align="center">PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Site 
+    Information</p></td>
+  </tr>
+  <tr>
+    <td width="100%" valign="top" align="left" dir="ltr">
+    <p align="left" dir="ltr"> Thank you for installing PHPwnage!<br />
     You can access your site now, or continue with this tutorial which will show 
-    you how to work the administration panel.<br />
+    you how to work the <a href="admin.php">administration panel</a>.<br />
     To access your site <a href="index.php">Click Here</a><br />
-    To read the tutorial, click the button. Also, please be sure to delete this installer!
+    To read the tutorial, click the button.
     <div>
 	<input value="Show Tutorial" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide Tutorial'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show Tutorial'; }" type="button"></div>
 	<div class="alt2" style="border: 1px inset ; margin: 0px; padding: 6px;">
@@ -608,19 +612,17 @@ $print_what = <<<END
     add blocks, news topics, forums, user pages, and even review a security log. 
     Moderators can also view the Admin Panel, but have limited capabilities to 
     prevent them from overpowering administrators.<br />
+    As the root user, you can promote yourself in rank however you wish. No other
+    users will have this ability.<br />
     <b>Part 2</b><br />
     News Topics<br />
     With news topics, your site can be anything from a blog to a respectable 
     world news headquarters. To add a new news article, find the &quot;News&quot; section 
     on the Admin Panel. You will be directed to a page where you can add a new 
     article and edit previous articles. When adding a new article, content 
-    should be formatted in HTML. New lines are replaced with &lt;br&gt; line breaks 
-    (only in this article generator, not the editor, so that pure html can be 
-    pasted in while editing, but it is easy to add new articles) After you are done writing 
-    your article, press &quot;Add Article&quot;. If you wish to edit or change your 
-    article, you can do so by click on its name in the main page. If you are 
-    logged in to the Admin Panel, you will be shown not only the article, but a 
-    text box containing the HTML code for the article.<br />
+    should be formatted in bbCode, but you can also use HTML. Be warned, however,
+    as all line breaks will be replaced with &lt;br /&gt;, so if you have sensitve
+    multi-line code, edit it to fit on a single line.<br />
     <b>Part 3</b><br />
     Custom Pages<br />
     Custom Pages, or also referred to as User Pages, are places where site 
@@ -637,23 +639,28 @@ $print_what = <<<END
     either `true` or `false`. When set to true, the blocks on the left are 
     visible. When set to false, they are hidden. Moderators and administrators 
     have the ability to edit these pages and will be shown the HTML code for 
-    them when they are logged in.<b><br />
-    Part 4</b><br />
+    them when they are logged in.<br />
+    <b>Part 4</b><br />
     Site Information<br />
     Here you can change the information for your site, which you entered during 
     installation.<br />
     <b>Part 5</b><br />
-    Site Info -
-    The Security Log<br />
+    Security<br />
     Shown here is every failed attempt to access the administration panel, along 
     with the password that was tried and the IP address of the perpetrator. You 
     can clear this log by pressing &quot;Clear Security Log&quot;<br />
+    You can also set the CAPTCHA mode used for registration on the forum.
+    PHPwnage integrates ReCAPTCHA and we recommend that you use it.<br />
+    Finally, you can apply site-wide IP bans from the security panel.<br />
     <b>Part 6</b><br />
     Blocks<br />
     Here you can add new blocks to the side bar. As with news articles, these 
     use HTML code. If you wish to edit a block, find it on the left and edit it 
     appropriately. Note that HTML can also be used in the title. You can also 
     move and delete existing blocks as well.<br />
+    A listing of your currently used dynamic blocks is also shown. Dynamic blocks
+    are stored in the &quot;blocks&quot; directory as PHP scripts. You can use
+    the Calendar block as a starting point for making your own dynamic blocks.<br />
     <b>Part 7</b><br />
     Forums<br />
     PHPwnage's forum system is divided into categories, and categories are 
@@ -669,8 +676,7 @@ $print_what = <<<END
     to post new topics. Last is the `new reply` level. Set this to be the lowest 
     you want new posts to be at. A news forum, for example, can be set to 0, 2, 
     1, allowing guests to read the news, moderators and administrators to post 
-    new topics, and members to post comments. For your reference: 0 = Guest, 1 = 
-    Member, 2 = Moderator, 3 = Administrator<br />
+    new topics, and members to post comments.<br />
     <b>Part 8</b><br />
     The Forum<br />
     The Forum is a place where members can join your site for discussion on 
@@ -682,56 +688,33 @@ $print_what = <<<END
     the forum viewer will set all topics to &quot;read&quot;. Also new in 1.5 are private 
     messages. Each users is given a mailbox for messages that they can send to 
     other users.<br />
-    When logged into the administrator user, you will be able to edit and delete 
+    PHPwnage 1.8 has added a significant number new features to the forum that
+    are listed in the commit log on Launchpad.<br /> 
+    When logged in as a moderator, you will be able to edit and delete 
     posts on the forum. Regular users are given the option of editing their own 
     posts as well. Guests have no permissions for security reasons. Update: New 
     in PHPwnage $_PWNVERSION are categories and extended bbCode. Categories allow you to 
     divide your boards by relevance. The new bbCode insertion system is also 
     present in $_PWNVERSION. Also new is the ability to hide boards to certain user 
-    levels. 0 = Guest, 1 = Member, 2 = Moderator, 3 = Administrator. This allows 
-    private boards to be added.<br />
+    levels. This allows private boards to be added.<br />
     <b>Part 9</b><br />
     RSS and the Mobile Page<br />
     A key feature in PHPwnage is RSS. RSS, or &quot;Really Simple Syndication&quot;, 
     allows users to read news articles from other programs. The Mobile site has 
     been engineered specifically for use on mobile phones and the Sony 
-    PlayStation Portable. Both of these items can be accessed by links found at 
-    the bottom of the page.<br />
+    PlayStation Portable (hence its filename). Both of these items can 
+    be accessed by links found at the bottom of the page.<br />
 	<b>Part 10</b><br />
     Themes and Colors<br />
     Background colors have been in PHPwnage since version 1.3, but themes are a 
     new thing. With themes, you can define your own set up for the look of your 
-    site. This installation comes with a few to start you off: The classic theme 
-    (theme), the box theme (glassbox), Aero (aero), and a custom user theme 
-    (tom). To change theme, add ?theme={theme name} to the end of any URL on the 
-    site. Almost all themes support backgrounds because they are made using 
-    semi-transparent PNGs. To change the background color, add ?imageroot={color} 
-    to the end of any URL on the site. Here is a list of included colors and 
-    their codes:<br />
-    <font size="2">Light Blue - images<br />
-    Dark Blue - darkblue<br />
-    Green - green<br />
-    Dark Green - darkgreen<br />
-    Red - red<br />
-    Pink - fortheladies<br />
-    Black - black<br />
-    Slate - slate<br />
-    Entropy Caution Lines - classic<br /></font>
-    <b>Part 11</b><br />
-    Additions in PHPwnage 1.7<br />
-    With update to 1.7, tons of new features have been added to the CMS. The 
-    most prominent of these are the new forum upgrades and the administrative 
-    panel. As this release is centered around being an easy-to-use, yet 
-    extremely powerful system, the new administrative panel has been reworked 
-    with a new look and feel, while new features have been added that remove the 
-    need to use separate MySQL editors to fully utilize PHPwnage's other 
-    features. The new look also keeps the site fast by dividing the admin pages 
-    into sections. If you have any concerns with PHPwnage $_PWNVERSION, please contact
-    <a href="mailto:klange@oasis-games.com">
-    klange@oasis-games.com</a> for more information.<br />
+    site. This installation comes with two themes: Aeolus and Crystal.<br />
+    As of PHPwnage 1.8, theme settings are stored per-user in your profile.<br />    <br /><br />
+    If you have any concerns with PHPwnage $_PWNVERSION, please contact
+    <a href="mailto:klange@oasis-games.com">klange@oasis-games.com</a> for more information.<br />
     Thank you for choosing PHPwnage as your CMS. For more information, please 
-    visit our official site at <a href="http://oasis-games.com/home">
-    http://oasis-games.com/home</a>
+    visit our official site at <a href="http://oasis-games.com/home">http://oasis-games.com/</a>
+    and be sure to check out the <a href="https://launchpad.net/phpwnage">Launchpad project page</a>.
     </div>
 	</div>
 	</div>
