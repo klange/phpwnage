@@ -750,6 +750,18 @@ END;
     if ($total_posts > $page + $_THREADSPERPAGE) {
         $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page']);
     }
+    if ($total_posts > $_THREADSPERPAGE) {
+        $block_content = $block_content . "<td><b>{$_PWNDATA['forum']['goto']}</b>: ";
+        for ($i = 0; $i < $total_posts; $i = $i + $_THREADSPERPAGE) {
+            $pageNum = $i / $_THREADSPERPAGE + 1;
+            if ($i != $page) {
+                $block_content = $block_content . "<a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . $pageNum . "\">" . $pageNum . "</a> ";
+            } else {
+                $block_content = $block_content . "<b>" . $pageNum . "</b> ";
+            }
+        }
+        $block_content = $block_content . "&nbsp;</td>";
+    }
     $block_content = $block_content .   <<<END
 		</tr></table>
 		<table class="forum_base" width="100%">
