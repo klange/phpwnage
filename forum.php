@@ -1146,7 +1146,7 @@ END;
     if ((!($board['post_level'] > $user['level'])) and ($islocked == false)) {
         $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
     }
-    $block_content = $block_content . $PAGING . "</tr></table</td></tr>";
+    $block_content = $block_content . $PAGING . "</tr></table></td></tr>";
     $result = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' LIMIT $page, $_POSTSPERPAGE", $db);
     while ($row = mysql_fetch_array($result)) {
         $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $row['authorid'] . "'", $db);
