@@ -174,6 +174,14 @@ function bbCSharp($stuff) {
     $stuff = "<font style=\"font-family: monospaced;\"><b>C#:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
     return $stuff;
 }
+function makeURL($link, $title) {
+    $link = str_replace("&", "&amp;", $link);
+    return "<a href=\"$link\">$title</a>";
+}
+function makeIMG($link) {
+    $link = str_replace("&", "&amp;", $link);
+    return "<img alt=\"forum image\" border=\"0\" src=\"$link\" />";
+}
 function BBDecode($content,$allowhtml = false) {
     if (!$allowhtml) {
         $content = str_replace("<","&lt;",$content); // Kill HTML in posts
@@ -186,18 +194,18 @@ function BBDecode($content,$allowhtml = false) {
     $order   = array("\r\n", "\n", "\r");
     $content = str_replace($order,"<br />",$content); // line break
     // Standard bbCode replacements follow
-    $content = preg_replace("/(\[url\])(.+?)(\[\/\])(.+?)(\[\/url\])/si","<a href=\"$2\">$4</a>",$content);
-    $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/si","<a href=\"$2\">$4</a>",$content);
+    $content = preg_replace("/(\[url\])(.+?)(\[\/\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
+    $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[so\])(.+?)(\[\/so\])/si","<s>$2</s>",$content);
-    $content = preg_replace("/(\[urls\])(.+?)(\[\/urls\])/si","<a href=\"$2\"><b>$2</b></a>",$content);
+    $content = preg_replace("/(\[urls\])(.+?)(\[\/urls\])/si","makeURL('$2','<b>$2</b>')",$content);
     $content = preg_replace("/(\[u\])(.+?)(\[\/u\])/si","<u>$2</u>",$content);
     $content = preg_replace("/(\[i\])(.+?)(\[\/i\])/si","<i>$2</i>",$content);
     $content = preg_replace("/(\[b\])(.+?)(\[\/b\])/si","<strong>$2</strong>",$content);
     $content = preg_replace("/(\[java\])(.+?)(\[\/java\])/sie","bbJava('$2')",$content);
     $content = preg_replace("/(\[csharp\])(.+?)(\[\/csharp\])/sie","bbCSharp('$2')",$content);
-    $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/si","<a href=\"$2\">$4</a>",$content);
-    $content = preg_replace("/(\[url\])(.+?)(\[\/url\])/si","<a href=\"$2\">$2</a>",$content);
-    $content = preg_replace("/(\[img\])(.+?)(\[\/img\])/si","<img alt=\"forum image\" border=\"0\" src=\"$2\" />",$content);
+    $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
+    $content = preg_replace("/(\[url\])(.+?)(\[\/url\])/sie","makeURL('$2','$2')",$content);
+    $content = preg_replace("/(\[img\])(.+?)(\[\/img\])/sie","makeIMG('$2')",$content);
     $content = preg_replace("/(\[list\])(.+?)(\[\/list\])/si","<ul>$2</ul>",$content);
     $content = preg_replace("/(\[num\])(.+?)(\[\/num\])/si","<ol>$2</ol>",$content);
     $content = str_replace("[*]","<li>",$content); // A list item
