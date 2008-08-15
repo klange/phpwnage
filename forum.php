@@ -1114,6 +1114,33 @@ END;
         $last_rep_id = $temp_res['COUNT(*)'] - 1;
         $page = (floor($last_rep_id / $_POSTSPERPAGE)) * $_POSTSPERPAGE;
     }
+    $PAGING = "";
+    $temp_mysql = mysql_query("SELECT COUNT(*) FROM posts WHERE topicid='" . $topic['id'] . "'", $db);
+    $posts_counter = mysql_fetch_array($temp_mysql);
+    $posts_in_topic = $posts_counter['COUNT(*)'];
+    $pages = (floor(($posts_in_topic - 1) / $_POSTSPERPAGE));
+    $top_id = $topic['id'];
+    if ($pages > 0) {
+        $PAGING = $PAGING . "<td> &nbsp;&nbsp;&nbsp;{$_PWNDATA['forum']['goto']}: ";
+        for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
+            if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
+                $PAGING = $PAGING . "<a href=\"forum.php?do=viewtopic&amp;id=$top_id&amp;p=$page_count\">$page_count</a>"; 
+            } else {
+                $PAGING = $PAGING . "<strong>$page_count</strong>";
+            }
+            if ($page_count != $pages + 1) {
+                $PAGING = $PAGING . ", ";
+            }
+        }
+        $PAGING = $PAGING . "</td>";
+    }
+    $block_content = $block_content .  <<<END
+	<tr><td class="forum_topic_buttonbar" colspan="2"><table style="border: 0px" class="borderless_table"><tr>
+END;
+    if ((!($board['post_level'] > $user['level'])) and ($islocked == false)) {
+        $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
+    }
+    $block_content = $block_content . $PAGING . "</tr></table</td></tr>";
     $result = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' LIMIT $page, $_POSTSPERPAGE", $db);
     while ($row = mysql_fetch_array($result)) {
         $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $row['authorid'] . "'", $db);
@@ -1329,25 +1356,7 @@ END;
         }
         $block_content = $block_content . "</select>\n<input type=\"submit\" value=\"{$_PWNDATA['forum']['move_topic']}\" /></form></div></td>";
     }
-    $temp_mysql = mysql_query("SELECT COUNT(*) FROM posts WHERE topicid='" . $topic['id'] . "'", $db);
-    $posts_counter = mysql_fetch_array($temp_mysql);
-    $posts_in_topic = $posts_counter['COUNT(*)'];
-    $pages = (floor(($posts_in_topic - 1) / $_POSTSPERPAGE));
-    $top_id = $topic['id'];
-    if ($pages > 0) {
-        $block_content = $block_content . "<td> &nbsp;&nbsp;&nbsp;{$_PWNDATA['forum']['goto']}: ";
-        for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
-            if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
-                $block_content = $block_content . "<a href=\"forum.php?do=viewtopic&amp;id=$top_id&amp;p=$page_count\">$page_count</a>"; 
-            } else {
-                $block_content = $block_content . "<strong>$page_count</strong>";
-            }
-            if ($page_count != $pages + 1) {
-                $block_content = $block_content . ", ";
-            }
-        }
-        $block_content = $block_content . "</td>";
-    }
+    $block_content = $block_content . $PAGING;
     $block_content = $block_content .  <<<END
 	</tr></table></td></tr></table>
 END;
