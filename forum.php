@@ -1090,13 +1090,18 @@ END;
 	        $totalVotes = 1;
         }
         $widthOfBar = 300; // For easy changing
+        $img = 0;
         for ($i=0;$i<$poll_count;$i++) {
+            if ($img == 5) {
+                $img = 0;
+            }
 	        if ($hasVoted == false) {
 		        $bounce = "<input type=\"radio\" name=\"poll\" value=\"$i\" />";
 	        }
 	        $block_content = $block_content . "<tr><td class=\"forum_topic_poll_option\" align=\"right\">$bounce<font class=\"forum_body\">" . $poll_options[$i] . "</font></td>\n";
 	        $wid = ($poll_votes[$i] / $totalVotes) * $widthOfBar;
-	        $block_content = $block_content . "<td class=\"forum_topic_poll_votebar\" align=\"left\"><img src=\"smiles/poll_bars/$i/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$i/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$i/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . (int)$poll_votes[$i] . ") </font></td></tr>\n";
+	        $block_content = $block_content . "<td class=\"forum_topic_poll_votebar\" align=\"left\"><img src=\"smiles/poll_bars/$img/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$img/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$img/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . (int)$poll_votes[$i] . ") </font></td></tr>\n";
+	        $img++;
         }
         if ($hasVoted == false) {
 	        $submitPoll = "<input type=\"submit\" value=\"{$_PWNDATA['forum']['vote']}\" />";
