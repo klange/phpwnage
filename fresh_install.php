@@ -448,7 +448,7 @@ $query = <<<END
 CREATE TABLE  `polls` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
-  `op1_name` varchar(45) default NULL,
+  `op1_name` text,
   `op1_votes` text,
   `voters` text,
   PRIMARY KEY  (`id`)
