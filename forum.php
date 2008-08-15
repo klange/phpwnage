@@ -408,7 +408,7 @@ if ($_GET['do'] == "unsticktop") {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `topics` SET `stick` = 0 WHERE `topics`.`id`=" . $_GET['id']);
-	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unstickied'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unsticked'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
 // Lock a topic
