@@ -29,7 +29,9 @@ CHANGELOG:
  + Fixed RSS feeds with Firefox
  + Integrated ReCAPTCHA (optional)
  + Moved everything to XHTML
- NOT DONE
+ + So many things that they just don't all fit here in the changelog, please take a look at the
+   commit history on Launchpad for a complete listing of changes.
+ TODO
  + Added moderator tools: merge, split, bulk-delete (topics, posts)
  + New Image Gallery, integrated into forums
  + Moved some static HTML elements into includes.php to ease future theming adjustments

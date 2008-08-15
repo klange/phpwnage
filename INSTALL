@@ -13,11 +13,8 @@ your web browser and follow the instructions shown.
 
 Things to do after installing:
 1. Set up a forum. This is the real purpose of PHPwnage. You can do 
-   this in the admin control panel. (There is no default forum created 
-   by the installer, but one may be added in 1.8)
-2. Set up blocks. Primarily, a theme block, as one is not provided 
-   (1.8 will include a dynamic one that will search for .css style sheets 
-   and background images and print a nice little theme selector, but 
-   this is not yet included)
+   this in the admin control panel.
+2. Set up blocks.
 3. Add a favicon. Nothing improves the look of a site more than a 
    little definitive icon.
+4. Fill in your ReCAPTCHA keys to improve security on your forum.
