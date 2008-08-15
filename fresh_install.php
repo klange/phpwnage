@@ -27,10 +27,23 @@
 if(file_exists("installer.lock")) die("There is a lock on the installer. If you wish to do a reinstall, please delete the file 'installer.lock' and run this script again."); 
 
 print <<<END
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
 <title>PHPwnage Installer V. 4.0</title>
 <link rel="stylesheet" type="text/css" href="crystal.css" />
+<style type="text/css">
+.installer_table {
+    border: 1px #000000 solid;
+    border-collapse: collapse;
+}
+.installer_table td {
+    border: 1px #000000 solid;
+    border-collapse: collapse;
+    padding: 4px;
+}
+</style>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 </head>
 <body background="colors/crystal.gif">
 <table class="borderless_table" width="100%">
@@ -64,8 +77,7 @@ END;
 $output = $output . $name;
 $output = $output . <<<END
 	</font></td>
-        <td class="pan_um">
-        <p align="right"><font class="pan_title_text">
+        <td class="pan_um" align="right"><font class="pan_title_text">
 END;
 $output = $output . $right;
 $output = $output . <<<END
@@ -75,11 +87,9 @@ $output = $output . <<<END
       <tr>
         <td class="pan_ml">&nbsp;</td>
         <td class="pan_body" valign="top" colspan="2">
-		<font class="pan_body_text">
 END;
 $output = $output . $content;
 $output = $output . <<<END
-	</font>
 	</td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
@@ -108,7 +118,7 @@ die ("\n<br />Breaking installer...");
 
 if ($_GET['do'] == '') {
 $print_what = <<<END
-<table style="border-collapse: collapse" bordercolor="#6699FF" width="100%">
+<table style="border-collapse: collapse" width="100%">
   <tr>
     <td width="100%" valign="top" align="left">
     <p align="center">PHPwnage Version $_PWNVERSION - Installer - 
@@ -124,7 +134,6 @@ $print_what = <<<END
       under &quot;Manage SQL&quot;)</li>
       <li>Your SQL user name</li>
       <li>Your SQL password</li>
-      <li>The URL to your site (check the address bar)</li>
     </ul>
     <p>You may also wish to set up a blank SQL database 
     now. We can not guarantee that the installer will be able to make one for 
@@ -132,7 +141,7 @@ $print_what = <<<END
     not be able to undo what you do here until after you have finished. Please 
     keep this in mind.</p>
     <p align="center">&gt; <a href="fresh_install.php?do=page2">
-    Continue to the Next Step</a> &lt;</td>
+    Continue to the Next Step</a> &lt;</p></td>
   </tr>
   </table>
 END;
@@ -141,40 +150,40 @@ DrawBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
 
 if ($_GET['do'] == 'page2'){
 $print_what = <<<END
-<form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="set_config">
-<table width="100%">
+<form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="set_config" />
+<table width="100%" class="installer_table">
   <tr>
     <td width="100%" valign="top" align="left" colspan="2">
     <p align="center">PHPwnage Version $_PWNVERSION - Installer - Setting Up Your 
-    Configuration</td>
+    Configuration</p></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
     <p align="left">SQL Database Server Location<br />
-    <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></td>
+    <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></p></td>
     <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_server" style="width: 100%"></td>
+  <input type="text" name="sql_server" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
 SQL User Name <br />
     <font size="2">The user name you use to access your SQL server.</font></td>
     <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_user" style="width: 100%"></td>
+  <input type="text" name="sql_user" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
     SQL  Password<br />
     <font size="2">The password you use to access your SQL server. cAsE sEnSiTiVe</font></td>
     <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_password" style="width: 100%"></td>
+  <input type="text" name="sql_password" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
     SQL Database  Name<br />
     <font size="2">The name of the database in which PHPwnage will install. </font></td>
     <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_database" style="width: 100%"></td>
+  <input type="text" name="sql_database" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
@@ -182,12 +191,12 @@ SQL User Name <br />
     <font size="2">The email address you would like to display if an error is 
     encountered.</font></td>
     <td width="52%" valign="top" align="right">
-  <input type="text" name="admin_email" style="width: 100%"></td>
+  <input type="text" name="admin_email" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="100%" valign="top" align="center" colspan="2">
     &lt;  
-    <input type="submit" value="Continue to the Next Step" name="enter"> &gt;</td>
+    <input type="submit" value="Continue to the Next Step" name="enter" /> &gt;</td>
   </tr>
   </table>
 </form>
@@ -252,28 +261,28 @@ if ($_GET['do'] == 'page3')
 {
 $this_dir = getURL() . "/"; // Current running directory
 $print_what = <<<END
-<form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="install">
-<table width="100%">
+<form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="install" />
+<table width="100%" class="installer_table">
   <tr>
     <td width="100%" valign="top" align="left" colspan="2">
     <p align="center">PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Site 
-    Information</td>
+    Information</p></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
     <p align="left">Forum Title<br />
-    <font size="2">A short description for your site. Ex: Oasis-Games.com</font></td>
+    <font size="2">A short description for your site. Ex: Oasis-Games.com</font></p></td>
     <td width="50%" valign="top" align="right">
-  <input type="text" name="site_name" style="width: 100%"></td>
+  <input type="text" name="site_name" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
  
     Copyright Line<br />
-    <font size="2">A message displayed in the footer. Ex: (C) 2007 Oasis-Games</font></td>
+    <font size="2">A message displayed in the footer. Ex: (C) 2008 Oasis-Games</font></td>
     <td width="50%" valign="top" align="right">
  
-  <input type="text" name="site_copyright" style="width: 100%"></td>
+  <input type="text" name="site_copyright" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
@@ -281,16 +290,16 @@ $print_what = <<<END
     <font size="2">The URL for your site (including the /) Ex: http://oasis-games.com/home/</font></td>
     <td width="50%" valign="top" align="right">
  
-  <input type="text" value="$this_dir" name="site_url" style="width: 100%"></td>
+  <input type="text" value="$this_dir" name="site_url" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    Site Descri ption<br />
+    Site Description<br />
     <font size="2">A short piece of text to display in the right of the &quot;sub 
     header&quot;</font></td>
     <td width="50%" valign="top" align="right">
  
-  <input type="text" name="site_description" style="width: 100%"></td>
+  <input type="text" name="site_description" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
@@ -299,7 +308,7 @@ $print_what = <<<END
     Ex: Admin</font></td>
     <td width="50%" valign="top" align="right">
  
-  <input type="text" name="site_admin_name" style="width: 100%"></td>
+  <input type="text" name="site_admin_name" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
@@ -307,14 +316,13 @@ $print_what = <<<END
     <font size="2">The password you would like to use to log in to the admin 
     panel. cAsE sEnSiTiVe</font></td>
     <td width="50%" valign="top" align="right">
-  <input type="password" name="site_admin_pass" style="width: 100%"></td>
+  <input type="password" name="site_admin_pass" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="100%" valign="top" align="left" colspan="2">
     <p align="center">
- 
     &lt;  
-    <input type="submit" value="Continue to the Next Step" name="enter"> &gt;</td>
+    <input type="submit" value="Continue to the Next Step" name="enter" /> &gt;</p></td>
   </tr>
   </table>
 </form>
@@ -517,7 +525,7 @@ CREATE TABLE  `users` (
   `icq` varchar(40) collate latin1_general_ci NOT NULL default '',
   `xfire` varchar(50) collate latin1_general_ci NOT NULL default '',
   `live` varchar(50) collate latin1_general_ci NOT NULL default '',
-  `level` int(11) NOT NULL default '1' COMMENT '1=user,2=mod,3=admin',
+  `level` int(11) NOT NULL default '1',
   `sbonforum` int(11) NOT NULL default '1',
   `pand` varchar(50) collate latin1_general_ci NOT NULL default '',
   PRIMARY KEY `id` (`id`)
@@ -541,8 +549,7 @@ INSERT INTO `smileys` VALUES  (1,'[:(]','sad.png'),
  (5,'[:O]','ohmy.png'),
  (6,'[mc]','mc.png'),
  (7,'[:)]','happy.png'),
- (8,'[;)]','wink.png'),
- (9,'[pan]','pan.png');
+ (8,'[;)]','wink.png');
 END;
 mysql_query($query);
 $query = <<<END
@@ -565,7 +572,7 @@ print "Adding generic news item...<br />\n";
 $time = time();
 mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at <a href=\"http://oasis-games.com/\">our home page</a>. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
 print "Adding navigation block...<br />\n";
-mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\r\n<a href=\"admin.php\">Admin</a><br />\r\n<a href=\"psp.php\">Mobile</a><br />\r\n<a href=\"rss.php\">RSS</a><br />\r\n<a href=\"forum.php\">Forum</a><br />\r\n<a href=\"modules.php?m=members\">Member List</a>');");
+mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"psp.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a>');");
 print "Completed! Moving to next page...\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4\">";
 // Now that the core of the installation has completed, grab the $_POST data...
@@ -574,13 +581,7 @@ print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4
 if ($_GET['do'] == 'page4') {
 file_put_contents_debug("installer.lock","Installer is locked");
 $print_what = <<<END
-<table width="100%">
-  <tr>
-    <td width="100%" valign="top" align="left">
- 
-    <p align="center">PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Site 
-    Information</p></td>
-  </tr>
+<table width="100%" class="installer_table">
   <tr>
     <td width="100%" valign="top" align="left" dir="ltr">
     <p align="center">PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Site 
@@ -592,14 +593,13 @@ $print_what = <<<END
     You can access your site now, or continue with this tutorial which will show 
     you how to work the <a href="admin.php">administration panel</a>.<br />
     To access your site <a href="index.php">Click Here</a><br />
-    To read the tutorial, click the button.
+    To read the tutorial, click the button.</p>
     <div>
-	<input value="Show Tutorial" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide Tutorial'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show Tutorial'; }" type="button"></div>
+	<input value="Show Tutorial" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide Tutorial'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show Tutorial'; }" type="button" /></div>
 	<div class="alt2" style="border: 1px inset ; margin: 0px; padding: 6px;">
 	<div style="display: none;">
     <p align="center" dir="ltr">
-    <b>-- Welcome to the PHPwnage Administration Tutorial 
-    --</b><br />
+    <b>-- Welcome to the PHPwnage Administration Tutorial --</b><br />
     This tutorial will guide you through adding new news topics, creating 
     blocks, adding user pages, designing and installing modules, and using the 
     various site features, such as themes and background colors.<br />
@@ -715,8 +715,7 @@ $print_what = <<<END
     Thank you for choosing PHPwnage as your CMS. For more information, please 
     visit our official site at <a href="http://oasis-games.com/home">http://oasis-games.com/</a>
     and be sure to check out the <a href="https://launchpad.net/phpwnage">Launchpad project page</a>.
-    </div>
-	</div>
+    </p>
 	</div>
 	</div>
     </td>
