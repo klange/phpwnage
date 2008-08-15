@@ -18,6 +18,14 @@ ReCAPTCHA notice:
 PHPwnage comes packaged with the ReCAPTCHA PHP library. The license for the
 ReCaptcha license can be found in the file 'recaptchalib.php'.
 
+PHPwnage uses icons from the Tango Desktop Project. These icons are
+currently distributed under a Creative Commons Attribution Share-Alike
+license. There are plans in place for these icons to be released under
+the LGPL (GNU Lesser General Public License), but until that happens,
+attribution must be made to the Tango Desktop Project for the included icons.
+(For more information on the Tango Desktop Project, visit
+http://tango.freedesktop.org/Tango_Desktop_Project )
+
 CHANGELOG:
 1.8 - 
  + Moved all static text to a single file (lang/enUS.php)
