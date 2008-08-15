@@ -415,7 +415,12 @@ drawBlock("{$_PWNDATA['admin']['forms']['article_add']}","{$_PWNDATA['last_updat
 // View article, jump to edit
 $content = "<table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
-$result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC");
+if (!isset($_GET['nolimit'])) {
+    $result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC LIMIT 10");
+    $content = $content . "<tr><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['news_limit']} <a href=\"admin.php?view=news&amp;nolimit=1\">{$_PWNDATA['admin']['forms']['news_limit_all']}</a></td></tr>";
+} else {
+    $result = mysql_query("SELECT * FROM `news` ORDER BY `id` DESC");
+}
 while ($article = mysql_fetch_array($result))
 {
 $odd = 1 - $odd;

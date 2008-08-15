@@ -296,6 +296,8 @@ $_PWNDATA['admin']['forms']['sec_mod_c'] = "ReCAPTCHA";
 $_PWNDATA['admin']['forms']['recap_pub'] = "ReCAPTCHA Public Key";
 $_PWNDATA['admin']['forms']['recap_priv'] = "ReCAPTCHA Private Key";
 $_PWNDATA['admin']['forms']['sec_save'] = "Save CAPTCHA Settings";
+$_PWNDATA['admin']['forms']['news_limit'] = "Limiting to 10";
+$_PWNDATA['admin']['forms']['news_limit_all'] = "(Show all)";
 
 // Admin : Group titles
 $_PWNDATA['admin']['groups']['news'] = "News";
