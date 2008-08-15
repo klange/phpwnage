@@ -940,10 +940,10 @@ if ($_GET['do'] == "delpm") {
     }
     if ($_GET['id'] != "ALL") {
 	    mysql_query("DELETE FROM `pms` WHERE `pms`.`id` =" . $_GET['id']);
-	    messageRedirect($_PWNDATA['pm']['view'],$_PWNDATA['pm']['pm_deleted'],"forum.php?do=mbox");
+	    messageRedirect($_PWNDATA['pm']['view'],$_PWNDATA['pm']['pm_deleted'],"forum.php?do=pmbox");
     } else {
 	    mysql_query("DELETE FROM `pms` WHERE `to`=$tomustbe");
-	    messageRedirect($_PWNDATA['pm']['view'],$_PWNDATA['pm']['box_emptied'],"forum.php?do=mbox");
+	    messageRedirect($_PWNDATA['pm']['view'],$_PWNDATA['pm']['box_emptied'],"forum.php?do=pmbox");
     }
 }
 
