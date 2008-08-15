@@ -22,7 +22,7 @@ CHANGELOG:
 1.8 - 
  + Moved all static text to a single file (lang/enUS.php)
  + Moved all redirects and "Go Back" messages to a separate method, now with theming
- + Made polls systematic, they can no have as many options as you want (separated,with,commas)
+ + Made polls systematic, they can now have as many options as you want (separated,with,commas)
  + Fixed some bugs left over from 1.7.1
  + Made some improvements to the installer
  + New Crystal theme
