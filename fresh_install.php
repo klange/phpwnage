@@ -572,7 +572,7 @@ $adminpass = md5($_POST['site_admin_pass']);
 mysql_query("INSERT INTO `users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
 print "Adding generic news item...<br />\n";
 $time = time();
-mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at <a href=\"http://oasis-games.com/\">our home page</a>. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
+mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://oasis-games.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
 print "Adding navigation block...<br />\n";
 mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"psp.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a>');");
 print "Completed! Moving to next page...\n";
