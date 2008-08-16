@@ -58,16 +58,14 @@ messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calen
 
 function printDay($day, $content, $upper) {
 print <<<END
-<td style="border-width: 1px; border-color: #000000;">
-    <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; border-width: 0; border-color=#111111" width="100%">
+<td class="forum_topic_content">
+    <table class="borderless_table" width="100%">
       <tr>
-        <td width="76%" height="24" style="border-style: none; border-width: medium" align="center">
-        <font class="forum_body"><font size="2">$upper</font></font></td>
-        <td width="24%" height="24" style="border-style: none; border-width: medium" bgcolor="#C0C0C0" align="center">
-        <i><font class="forum_body"><font size="5">$day</font></font></i></td>
+        <td width="75%" height="24" style="border-style: none; border-width: 0px;" align="center">$upper</td>
+        <td width="25%" height="24" class="calendar_day" align="center">$day</td>
       </tr>
       <tr>
-        <td width="100%" colspan="2" height="59" style="border-style: none; border-width: medium; padding: 1px 1px 1px 1px" valign="top">$content</td>
+        <td width="100%" colspan="2" height="60" style="border-style: none; border-width: medium; padding: 1px 1px 1px 1px" valign="top">$content</td>
       </tr>
     </table>
 </td>
@@ -129,7 +127,7 @@ $year = $year - 100;
 }
 print "<p align=\"center\"><font size=\"4\">" . date("F, Y",$time_view) . "</font><br /><font size=\"2\"><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a> | <a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></font></p>\n";
 print "<table border=\"1\" style=\"border-collapse: collapse; border-width: 1; table-layout: fixed; border-color: #000000;\" width=\"100%\">\n";
-print "<tr><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['sunday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['monday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['tuesday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['wednesday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['thursday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['friday']}</font></td><td align=\"center\"><font class=\"forum_body\">{$_PWNDATA['cal']['saturday']}</font></td></tr>";
+print "<tr><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['sunday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['monday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['tuesday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['wednesday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['thursday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['friday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['saturday']}</td></tr>";
 $month_started = 0;
 $days_left = $days_in_month;
 for ( $week = 1; $week  <= 6; $week  += 1) {

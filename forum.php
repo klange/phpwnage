@@ -411,6 +411,24 @@ if ($_GET['do'] == "unsticktop") {
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_unsticked'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
 }
 
+// Sink a topic
+if ($_GET['do'] == "sinktop") {
+	if ($user['level'] < 2) {
+		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
+	}
+	mysql_query("UPDATE `topics` SET `stick` = -1 WHERE `topics`.`id`=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['sunk'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
+}
+
+// Unsink a topic
+if ($_GET['do'] == "unsinktop") {
+	if ($user['level'] < 2) {
+		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
+	}
+	mysql_query("UPDATE `topics` SET `stick` = 0 WHERE `topics`.`id`=" . $_GET['id']);
+	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['unsunk'],"forum.php?do=viewtopic&amp;id=" . $_GET['id']);
+}
+
 // Lock a topic
 if ($_GET['do'] == "locktop") {
 	if ($user['level'] < 2) {
@@ -800,40 +818,31 @@ END;
         $post_bb = str_replace("<","&lt;",$post_bb);
         $post_bb = str_replace(">","&gt;",$post_bb);
         $spazma = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
-        if ($readmb) {
-            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/>";
-        } else {
-            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/>";
+        $read_or_not = "<td rowspan=\"2\" height=\"48\" width=\"48\" class=\"forum_thread_icon\" style=\"background-image: url(smiles/read.png);\" valign=\"top\">";
+        $topic_type = "";
+        if (!$readmb) {
+            $read_or_not = $read_or_not . "<img src=\"smiles/new.png\" alt=\"*\" />";
         }
-        $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\">";
         if ($row['has_poll'] == 1) {
-	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/readp.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['poll']}\"/>";
-	        } else {
-	            $read_or_not = "<img src=\"smiles/unreadp.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['poll']}\"/>";
-	        }
-	        $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\"><font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['poll']}</b></font> ";
+	        $read_or_not = $read_or_not . "<img src=\"smiles/poll.png\" alt=\"P\" />";
+	        $topic_type = $topic_type . $_PWNDATA['forum']['poll'] . " ";
         }
         if ($row['locked'] == 1) {
-	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/lread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['locked']}\"/>";
-	        } else {
-	            $read_or_not = "<img src=\"smiles/lunread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['locked']}\"/>";
-	        }
-	        $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\"><font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['locked']}</b></font> ";
+	        $read_or_not = $read_or_not . "<img src=\"smiles/lock.png\" alt=\"L\" />";
+	        $topic_type = $topic_type . $_PWNDATA['forum']['locked'] . " ";
         }
         if ($row['stick'] == 1) {
-	        if ($readmb) {
-	            $read_or_not = "<img src=\"smiles/sread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['no_new_posts']}, {$_PWNDATA['forum']['sticky']}\"/>";
-	        } else {
-	            $read_or_not = "<img src=\"smiles/sunread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['new_posts']}, {$_PWNDATA['forum']['sticky']}\"/>";
-	        }
-	        $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\"><font class=\"forum_base_text\"><b>{$_PWNDATA['forum']['sticky']}</b></font> ";
+	        $read_or_not = $read_or_not . "<img src=\"smiles/sticky.png\" alt=\"S\" />";
+	        $topic_type = $topic_type . $_PWNDATA['forum']['sticky'] . " ";
+        } else if ($row['stick'] == -1) {
+            $read_or_not = $read_or_not . "<img src=\"smiles/sunk.png\" alt=\"D\" />";
+            $topic_type = $topic_type . $_PWNDATA['forum']['issunk'] . " ";
         }
+        $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\"><font class=\"forum_base_text\"><b>{$topic_type}</b></font> ";
         $diver = $row['id'];
         $block_content = $block_content .   <<<END
 	<tr>
-		<td rowspan="2" width="48" class="forum_thread_icon">$read_or_not<div id="title_$diver" style="display: inline;" $spazm><a href="forum.php?do=viewtopic&amp;id=
+		$read_or_not<div id="title_$diver" style="display: inline;" $spazm><a href="forum.php?do=viewtopic&amp;id=
 END;
         $block_content = $block_content .  $row['id'] . "\">" . $row['title'] . "</a>";
         $top_temp = $row['id'];
@@ -1316,8 +1325,11 @@ END;
         $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=deltop&amp;id=" . $topic['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['del_topic']);
         if ($topic['stick'] == 0) { // Stick
             $block_content = $block_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
-        } else { // Unstick
+            $block_content = $block_content . drawButton("forum.php?do=sinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['sink']);
+        } else if ($topic['stick'] == 1) { // Unstick
             $block_content = $block_content . drawButton("forum.php?do=unsticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unstick_topic']);
+        } else if ($topic['stick'] == -1) {
+            $block_content = $block_content . drawButton("forum.php?do=unsinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unsink']);
         }
         if ($topic['locked'] == 0) {
             $block_content = $block_content . drawButton("forum.php?do=locktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['lock_topic']);
@@ -1766,10 +1778,7 @@ $block_content = $block_content . "<table border=\"0px\" cellspacing=\"8px\" ali
 $block_content = $block_content . "<td align=\"center\"><img src=\"smiles/forum_unread.png\" alt=\"{$_PWNDATA['forum']['board_has_new']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_new']}</font></td>\n";
 $block_content = $block_content . "<td width=\"15\">&nbsp;</td>\n";
 $block_content = $block_content . "<td align=\"center\"><img src=\"smiles/read.png\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['no_new_posts']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/unread.png\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['new_posts']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/lread.png\" alt=\"{$_PWNDATA['forum']['locked']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['locked']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/readp.png\" alt=\"{$_PWNDATA['forum']['poll']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['poll']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/sread.png\" alt=\"{$_PWNDATA['forum']['sticky']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['sticky']}</font></td></tr></table>\n";
+$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/unread.png\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['new_posts']}</font></td></tr></table>\n";
 $block_content = $block_content . "{$_PWNDATA['forum']['there_are']}$num_posts{$_PWNDATA['forum']['posts_by']}$num_users{$_PWNDATA['forum']['members_in']}$num_topics{$_PWNDATA['forum']['_topics']}\n";
 $block_content = $block_content . "$num_sticks{$_PWNDATA['forum']['are_sticky']}\n";
 $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$last_member_id\">$last_member</a>\n<br />";

@@ -355,6 +355,13 @@ $_PWNDATA['forum']['login'] = "Log In";
 $_PWNDATA['forum']['register'] = "Register";
 $_PWNDATA['forum']['edit_profile'] = "Edit Profile";
 
+$_PWNDATA['forum']['sink'] = "Sink Topic";
+$_PWNDATA['forum']['unsink'] = "Unsink Topic";
+$_PWNDATA['forum']['sunk'] = "Topic sunk.";
+$_PWNDATA['forum']['unsunk'] = "Topic unsunk.";
+$_PWNDATA['forum']['unsink'] = "Unsink Topic";
+$_PWNDATA['forum']['issunk'] = "Sunk";
+
 $_PWNDATA['forum']['last'] = "Last";
 $_PWNDATA['forum']['by'] = "by";
 $_PWNDATA['forum']['topics'] = "Topics";

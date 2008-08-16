@@ -610,6 +610,14 @@
     background-color: #e4edf4;
 }
 
+.calendar_day {
+    background-color: #b6d0e0;
+    border: 0px #000000 none;
+    padding: 1px 1px 1px 1px;
+    font-size: 20px;
+    font-style: italic;
+}
+
 hr {
     color:  #555555;
     height:   1px;
