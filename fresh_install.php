@@ -528,6 +528,8 @@ CREATE TABLE  `users` (
   `level` int(11) NOT NULL default '1',
   `sbonforum` int(11) NOT NULL default '1',
   `pand` varchar(50) collate latin1_general_ci NOT NULL default '',
+  `color` varchar(50) collate latin1_general_ci NOT NULL default '',
+  `theme` varchar(50) collate latin1_general_ci NOT NULL default '',
   PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;

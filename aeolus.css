@@ -556,6 +556,14 @@
     padding: 2px;
 }
 
+.calendar_day {
+    background-color: #7f9ab5;
+    border: 0px #000000 none;
+    padding: 1px 1px 1px 1px;
+    font-size: 20px;
+    font-style: italic;
+}
+
 /*
 	PwnBuddy Enhancements
 */
