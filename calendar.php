@@ -177,22 +177,25 @@ $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval(
 print "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
 $day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $_GET['day'] . "'");
 $day_stuff = $_GET['day'];
-$zing = "";
+$zing = "<table class=\"forum_base\" width=\"100%\">";
+$num_results = 0;
 while ($query_row = mysql_fetch_array($day_results))
 {
+$num_results++;
 $resultb = mysql_query("SELECT * FROM users WHERE id=" .  $query_row['user']);
 $post_author = mysql_fetch_array($resultb);
 $uid = $query_row['user'];
 $uname = $post_author['name'];
-$zing = $zing . "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a><br />\n--- " . bbDecode($query_row['content']);
+$zing = $zing . "<tr><td colspan=\"2\" class=\"forum_thread_title\">";
+$zing = $zing . "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a></td></tr><tr><td class=\"forum_topic_content\">" . bbDecode($query_row['content']) . "</td><td class=\"forum_topic_content\" width=\"200\">";
 if ($user['level'] >= $site_info['mod_rank']) {
 	$zing = $zing . " [<a href=\"calendar.php?view=edit&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['edit']}</a>] [<a href=\"calendar.php?view=del_event&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]";
 }
-$zing = $zing . "<br />\n\n";
+$zing = $zing . "</td></tr>\n\n";
 }
-if ($zing == "") { $zing = "{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a>"; }
-print $zing;
-print "<br /><br /><br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
+if ($num_results == 0) { $zing = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_topic_content\">{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a></td></tr>"; }
+print $zing . "</table>";
+print "<br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
 }
 
 if ($mode == "add") {
@@ -204,14 +207,18 @@ print <<<END
 <input type="hidden" name="action" value="add_event" />
 <input type="hidden" name="day" value="$day" />
 <input type="hidden" name="user" value="$userid" />
-{$_PWNDATA['cal']['event_name']}: <br />
-<input type="text" name="subj" size="51" style="width:100%" /><br />
-{$_PWNDATA['cal']['event_desc']}:<br />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content">{$_PWNDATA['cal']['event_name']}</td>
+<td class="forum_topic_content"><input type="text" name="subj" size="51" style="width:100%" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
+<tr><td class="forum_topic_sig" colspan="2">
 END;
 print printPoster("content");
 print <<<END
-<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20"></textarea><br />
-<input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" />
+<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20"></textarea></td></tr>
+<tr><td class="forum_topic_sig" colspan="2">
+<input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" /></td></tr>
+</table>
 </form>
 END;
 }
@@ -229,14 +236,18 @@ print <<<END
 <input type="hidden" name="action" value="edit_event" />
 <input type="hidden" name="event" value="$eid" />
 <input type="hidden" name="date" value="$date" />
-{$_PWNDATA['cal']['event_name']}: <br />
-<input type="text" name="subj" value="$title" size="51" style="width:100%" /><br />
-{$_PWNDATA['cal']['event_desc']}:<br />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content">{$_PWNDATA['cal']['event_name']}</td>
+<td class="forum_topic_content"><input type="text" name="subj" value="$title" size="51" style="width:100%" /></td></tr>
+<tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
+<tr><td class="forum_topic_sig" colspan="2">
 END;
 print printPoster("content");
 print <<<END
-<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20">$content</textarea><br />
-<input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" />
+<textarea rows="11" name="content" id="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="20">$content</textarea></td></tr>
+<tr><td class="forum_topic_sig" colspan="2">
+<input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" /></td></tr>
+</table>
 </form>
 END;
 }
