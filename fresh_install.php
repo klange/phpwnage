@@ -544,14 +544,15 @@ CREATE TABLE  `smileys` (
 END;
 mysql_query($query);
 $query = <<<END
-INSERT INTO `smileys` VALUES  (1,'[:(]','sad.png'),
- (2,'[:P]','tongue.png'),
- (3,'[XD]','deadlaugh.png'),
- (4,'[:|]','blank.png'),
- (5,'[:O]','ohmy.png'),
- (6,'[mc]','mc.png'),
- (7,'[:)]','happy.png'),
- (8,'[;)]','wink.png');
+INSERT INTO `smileys` VALUES  
+ (1,'[:)]','happy.png'),
+ (2,'[:(]','sad.png'),
+ (3,'[:P]','tongue.png'),
+ (4,'[;)]','wink.png'),
+ (5,'[XD]','deadlaugh.png'),
+ (6,'[:|]','blank.png'),
+ (7,'[:O]','ohmy.png'),
+ (8,'[shades]','mc.png');
 END;
 mysql_query($query);
 $query = <<<END
