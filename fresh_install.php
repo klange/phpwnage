@@ -569,7 +569,7 @@ print "Primary site information added! Moving on to generic set up...<br />\n";
 print "Adding administrator forum user...<br />\n";
 $adminname = $_POST['site_admin_name'];
 $adminpass = md5($_POST['site_admin_pass']);
-mysql_query("INSERT INTO `users` (`name`, `password`, `level`)  VALUES ('$adminname', '$adminpass', 3);");
+mysql_query("INSERT INTO `users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
 print "Adding generic news item...<br />\n";
 $time = time();
 mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at <a href=\"http://oasis-games.com/\">our home page</a>. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");

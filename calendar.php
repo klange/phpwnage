@@ -80,7 +80,7 @@ print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">
       <tr>
-        <td width="100%">
+        <td width="100%"><div class="panel"
     <table class="borderless_table" width="100%">
       <tr>
         <td class="pan_ul">&nbsp;</td>
@@ -260,7 +260,7 @@ print <<<END
         <td class="pan_bm" colspan="2"></td>
         <td class="pan_br"></td>
       </tr>
-    </table>
+    </table></div>
         </td>
       </tr>
 END;
