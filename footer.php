@@ -25,7 +25,7 @@ print <<<END
 
     <td class="sub_mid" align="center"><font class="sub_body_text">
 END;
-print $site_info['copyright'] . " <a href=\"rss.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/rss20.png\" alt=\"[ RSS ]\"/></a><a href=\"psp.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/mobile.png\" alt=\"[ Mobile ]\" /></a><a href=\"https://launchpad.net/phpwnage\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/pwn.png\" alt=\"[ PHPwnage ]\" /></a><a href=\"http://php.net\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/php5.png\" alt=\"[ PHP 5 ]\"/></a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
+print $site_info['copyright'] . " <a href=\"rss.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/rss20.png\" alt=\"[ RSS ]\"/></a><a href=\"mobile.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/mobile.png\" alt=\"[ Mobile ]\" /></a><a href=\"https://launchpad.net/phpwnage\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/pwn.png\" alt=\"[ PHPwnage ]\" /></a><a href=\"http://php.net\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/php5.png\" alt=\"[ PHP 5 ]\"/></a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
 print <<<END
     </font></td>
     <td class="sub_right"></td>
