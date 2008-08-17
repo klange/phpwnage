@@ -665,18 +665,20 @@ $content = "";
 $content = $content . <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="add_board" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content" width="300">
 END;
 $newcat = $_GET['cat'];
 $neword = $_GET['last'] + 1;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"{$_PWNDATA['admin']['forms']['forum_board_name']}\" /><br />";
-$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\" cols=\"80\">{$_PWNDATA['admin']['forms']['forum_board_desc']}</textarea><br />\n";
+$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_name']}</td><td class=\"forum_topic_content\"><input name=\"title\" type=\"text\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><textarea rows=\"3\" name=\"content\" style=\"width:100%;\" cols=\"80\">{$_PWNDATA['admin']['forms']['forum_board_desc']}</textarea></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_read']}</td><td class=\"forum_topic_sig\"><input name=\"perma\" type=\"text\" value=\"0\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_write']}</td><td class=\"forum_topic_sig\"><input name=\"permb\" type=\"text\" value=\"1\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_post']}</td><td class=\"forum_topic_sig\"><input name=\"permc\" type=\"text\" value=\"1\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_url']}</td><td class=\"forum_topic_sig\"><input name=\"link\" type=\"text\" value=\"NONE\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td colspan=\"2\" class=\"forum_topic_sig\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_board']}\" /></td></tr></table>";
 $content = $content . "<input name=\"cat\" type=\"hidden\" value=\"$newcat\" />";
-$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neword\" />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"0\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"1\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"1\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_url']}: <input name=\"link\" type=\"text\" value=\"NONE\" /><br />";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_add_board']}\" /></form>";
+$content = $content . "<input name=\"order\" type=\"hidden\" value=\"$neword\" /></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_add_board'],"",$content);
 }
 
