@@ -34,59 +34,32 @@ print <<<END
 <meta http-equiv="Content-type" content="text/html;charset=windows-1252" />
 <style type="text/css">
 img {width:120;}
+body {font-family: sans; font-size: 12px;}
 </style>
 </head>
 
 <body>
-
-<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse">
-  <tr>
-    <td width="100%"  height="19"><center>
-END;
-print $site_info['name'];
-print <<<END
-</center></td>
-  </tr>
-  <tr>
-    <td width="100%" height="331" valign="top"><table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="100%">
+<b>{$site_info['name']}</b><br /><br />
 END;
 $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($result)) {
 print <<<END
-      <tr>
-        <td width="100%" bgcolor="#C0C0C0">
-END;
-print $row['title'];
-print <<<END
-	</td>
-      </tr>
-      <tr>
-        <td width="100%">
+<b>{$row['title']}</b><br />
 END;
 print BBDecode($row['content'],true);
-print "</td></tr>";
+print "<br /><br />";
 }
 print <<<END
-</table></td>
-  </tr>
-    <tr>
-        <td width="100%"><center>
+<i>{$site_info['copyright']}</i><br />
 END;
-print $site_info['copyright'];
-print <<<END
-	</center></td>
-      </tr>
-</table>
-END;
-   $mtime = microtime();
-   $mtime = explode(" ",$mtime);
-   $mtime = $mtime[1] + $mtime[0];
-   $endtime = $mtime;
-   $totaltime = ($endtime - $starttime); 
+$mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+$endtime = $mtime;
+$totaltime = ($endtime - $starttime); 
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
 print <<<END
 </body>
-
 </html>
 END;
 die('');
