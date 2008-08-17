@@ -1366,8 +1366,8 @@ END;
         $block_content = $block_content . "\n</td></tr><tr><td colspan=\"2\" class=\"forum_button_bar\" align=\"right\"><table class=\"borderless_table\"><tr>\n";
         // Is this the viewing member's post?
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
-            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_" . $row['id'] . "'); flipVisibility('post_edit_" . $row['id'] . "')",$_PWNDATA['forum']['qedit']);
-            $block_content = $block_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit']);
+            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_" . $row['id'] . "'); flipVisibility('post_edit_" . $row['id'] . "')",$_PWNDATA['forum']['qedit'],$_PWNICONS['buttons']['qedit']);
+            $block_content = $block_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit'],$_PWNICONS['buttons']['edit']);
         }
         // Moderation Tools 
         if ($user['level'] >= $site_info['mod_rank']) {
@@ -1390,17 +1390,17 @@ END;
     if ($user['level'] >= $site_info['mod_rank']) {
         $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=deltop&amp;id=" . $topic['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['del_topic'],$_PWNICONS['buttons']['del_topic']);
         if ($topic['stick'] == 0) { // Stick
-            $block_content = $block_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
-            $block_content = $block_content . drawButton("forum.php?do=sinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['sink']);
+            $block_content = $block_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic'],$_PWNICONS['buttons']['stick']);
+            $block_content = $block_content . drawButton("forum.php?do=sinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['sink'],$_PWNICONS['buttons']['sink']);
         } else if ($topic['stick'] == 1) { // Unstick
-            $block_content = $block_content . drawButton("forum.php?do=unsticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unstick_topic']);
+            $block_content = $block_content . drawButton("forum.php?do=unsticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unstick_topic'],$_PWNICONS['buttons']['unstick']);
         } else if ($topic['stick'] == -1) {
-            $block_content = $block_content . drawButton("forum.php?do=unsinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unsink']);
+            $block_content = $block_content . drawButton("forum.php?do=unsinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unsink'],$_PWNICONS['buttons']['unsink']);
         }
         if ($topic['locked'] == 0) {
-            $block_content = $block_content . drawButton("forum.php?do=locktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['lock_topic']);
+            $block_content = $block_content . drawButton("forum.php?do=locktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['lock_topic'],$_PWNICONS['buttons']['lock']);
         } else {
-            $block_content = $block_content . drawButton("forum.php?do=unlocktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic']);
+            $block_content = $block_content . drawButton("forum.php?do=unlocktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic'],$_PWNICONS['buttons']['unlock']);
         }
         // FIXME: Get this elsewhere! It's a button, make it one!
         $block_content = $block_content . <<<END

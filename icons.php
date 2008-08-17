@@ -20,7 +20,7 @@
 */
 
 function genI($url, $alt) {
-    return "<img src=\"$url\" alt=\"$alt\" style=\"vertical-align: text-bottom\"/>";
+    return "<img src=\"$url\" alt=\"$alt\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 }
 
 $_PWNICONS['buttons']['new_topic'] = genI("tango/new.png","");
@@ -30,11 +30,22 @@ $_PWNICONS['buttons']['pm_reply'] = genI("tango/reply-pm.png","");
 $_PWNICONS['buttons']['del_topic'] = genI("tango/delete.png","");
 $_PWNICONS['buttons']['del_reply'] = genI("tango/delete.png","");
 $_PWNICONS['buttons']['move'] = genI("tango/move.png","");
+$_PWNICONS['buttons']['stick'] = genI("tango/stick.png","");
+$_PWNICONS['buttons']['sink'] = genI("tango/go-down.png","");
+$_PWNICONS['buttons']['unsink'] = genI("tango/go-up.png","");
+$_PWNICONS['buttons']['unstick'] = genI("tango/go-down.png","");
+$_PWNICONS['buttons']['lock'] = genI("tango/lock.png","");
+$_PWNICONS['buttons']['unlock'] = genI("tango/lock.png","");
+
+$_PWNICONS['buttons']['edit'] = genI("tango/edit.png","");
+$_PWNICONS['buttons']['qedit'] = genI("tango/edit.png","");
 
 $_PWNICONS['buttons']['editor']['bold'] = genI("tango/bold.png","");
 $_PWNICONS['buttons']['editor']['italic'] = genI("tango/italic.png","");
 $_PWNICONS['buttons']['editor']['underline'] = genI("tango/underline.png","");
 $_PWNICONS['buttons']['editor']['strike'] = genI("tango/strike.png","");
-
+$_PWNICONS['buttons']['editor']['color'] = genI("tango/color.png","");
+$_PWNICONS['buttons']['editor']['link'] = genI("tango/link.png","");
+$_PWNICONS['buttons']['editor']['img'] = genI("tango/img.png","");
 
 ?>
