@@ -20,6 +20,7 @@
 */
 session_start(); // Always ensure a session.
 require "lang/enUS.php";
+require "icons.php"; // TODO: Move this to be theme-safe.
 
 $result = mysql_query("SELECT * FROM info", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
@@ -86,16 +87,15 @@ function setTheme()
 		$theme = $user['theme'];
 	}
 }
-function drawButton($dowhat, $title) {
-    $post_content = "";
-    $post_content = $post_content . <<<END
+function drawButton($dowhat, $title, $button = "") {
+    $post_content = <<<END
 <td style="border: 0px">
 	<table class="forum_button">
 	<tr>
     <td class="but_left"></td>
     <td class="but_mid"><font class="forum_button_text">
 END;
-    $post_content = $post_content . "<a href=\"$dowhat\">$title</a>";
+    $post_content = $post_content . "<a href=\"$dowhat\">$button$title</a>";
     $post_content = $post_content . <<<END
 </font></td>
     <td class="but_right"></td>
@@ -251,7 +251,7 @@ function postCount($userID) {
 }
 function printPoster($where) {
 	// Print the posting tool buttons
-    global $_PWNDATA;
+    global $_PWNDATA, $_PWNICONS;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -280,10 +280,10 @@ END;
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
+    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
     $return = $return . drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}") . "\n";
     $return = $return . drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}") . "\n";
     $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";
@@ -300,7 +300,7 @@ function getDay($timecode) {
 }
 function printPosterMini($where, $topID) {
 	// Print the posting tools in a smaller package.
-    global $_PWNDATA;
+    global $_PWNDATA, $_PWNICONS;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -323,10 +323,10 @@ END;
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
-    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
+    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
     $return = $return . drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}") . "\n";
     $return = $return . drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}") . "\n";
     $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";
@@ -339,7 +339,7 @@ END;
 function printPosterEditor($where, $pid) {
 	// Print the posting tools in a smaller package.
 	$what = "_" . $pid;
-    global $_PWNDATA;
+    global $_PWNDATA, $_PWNICONS;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -362,10 +362,10 @@ END;
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
     }
     $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode$what('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>") . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>") . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>") . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>") . "\n";
+        $return = $return . drawButton("javascript:addCode$what('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return = $return . drawButton("javascript:addCode$what('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
     $return = $return . drawButton("javascript:addCode$what('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}") . "\n";
     $return = $return . drawButton("javascript:addCode$what('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}") . "\n";
     $return = $return . drawButton("javascript:addCode$what('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}") . "\n";

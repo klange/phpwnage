@@ -778,7 +778,7 @@ if ($_GET['do'] == "viewforum") {
 	<table class="mod_set"><tr>
 END;
     if (!($board['top_level'] > $user['level'])) {
-        $block_content = $block_content . drawButton("forum.php?do=newtopic&amp;id=" . $board['id'], $_PWNDATA['forum']['new_topic']);
+        $block_content = $block_content . drawButton("forum.php?do=newtopic&amp;id=" . $board['id'], $_PWNDATA['forum']['new_topic'],$_PWNICONS['buttons']['new_topic']);
     }
     if (!isset($_GET['p'])) {
         $page = 0;
@@ -925,7 +925,7 @@ if ($_GET['do'] == "pmbox") {
 <table class="mod_set">
 <tr>
 END;
-        $block_content = $block_content . drawButton("forum.php?do=newpm",$_PWNDATA['pm']['new_pm']);
+        $block_content = $block_content . drawButton("forum.php?do=newpm",$_PWNDATA['pm']['new_pm'],$_PWNICONS['buttons']['new_pm']);
         $block_content = $block_content . drawButton("forum.php?do=delpm&amp;id=ALL",$_PWNDATA['pm']['empty_box']);
         $block_content = $block_content . <<<END
 </tr>
@@ -1224,7 +1224,7 @@ END;
 	<tr><td class="forum_topic_buttonbar" colspan="2"><table style="border: 0px" class="borderless_table"><tr>
 END;
     if ((!($board['post_level'] > $user['level'])) and ($islocked == false)) {
-        $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
+        $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply'],$_PWNICONS['buttons']['new_reply']);
     }
     $block_content = $block_content . $PAGING . "</tr></table></td></tr>";
     $result = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' LIMIT $page, $_POSTSPERPAGE", $db);
@@ -1374,7 +1374,7 @@ END;
             if ($user['level'] >= $site_info['admin_rank']) {
                 $block_content = $block_content . drawButton("javascript:buddyAlert('IP: " . $row['ip'] . "');",$_PWNDATA['forum']['ip']);
             } // Only administrators can view the IP of a post. This is to keep moderators from h4xing
-            $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=delete&amp;id=" . $row['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['delete']);
+            $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=delete&amp;id=" . $row['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['delete'],$_PWNICONS['buttons']['del_reply']);
         }
         if (($user['id'] != $post_author['id']) and (!($board['post_level'] > $user['level'])) and ($islocked == false)) {
             $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'] . "&amp;quote=" . $row['id'],$_PWNDATA['forum']['quote']);
@@ -1385,10 +1385,10 @@ END;
 	<tr><td class="forum_topic_buttonbar" colspan="2"><table style="border: 0px" class="borderless_table"><tr>
 END;
     if ((!($board['post_level'] > $user['level'])) and ($islocked == false)) {
-        $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply']);
+        $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply'],$_PWNICONS['buttons']['new_reply']);
     }
     if ($user['level'] >= $site_info['mod_rank']) {
-        $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=deltop&amp;id=" . $topic['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['del_topic']);
+        $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=deltop&amp;id=" . $topic['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['del_topic'],$_PWNICONS['buttons']['del_topic']);
         if ($topic['stick'] == 0) { // Stick
             $block_content = $block_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic']);
             $block_content = $block_content . drawButton("forum.php?do=sinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['sink']);
