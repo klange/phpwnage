@@ -1694,7 +1694,6 @@ if ($_GET['do'] == "viewprofile") {
     $umail = $vuser['email'];
     $uname = $vuser['name'];
     $sig = BBDecode($vuser['sig']);
-    $ava = $vuser['avatar'];
     $uyah = $vuser['yahoo'];
     $umsn = $vuser['msn'];
     $uicq = $vuser['icq'];
@@ -1709,12 +1708,12 @@ if ($_GET['do'] == "viewprofile") {
     $replyto = $vuser['id'];
     $posts = postCount($replyto);
     $modstatus = getRankName($vuser['level'],$site_info,$posts);
-    if ($ava != "") {
-        $post_content = $post_content . "<img src=\"$ava\" align=\"top\" />";
+    if ($vuser['avatar'] != "") {
+       $ava = "<img src=\"" . $vuser['avatar'] . "\" align=\"top\" />";
     }
     $block_content = $block_content . <<<END
     <table class="forum_base" width="100%">
-    <tr><td class="forum_profile_user" colspan="2">$uname</td></tr>
+    <tr><td class="forum_profile_user"><center>$ava</center></td><td class="forum_profile_user">$uname</td></tr>
     <tr><td class="forum_topic_sig" width="300">$modstatus</td>
     <td class="forum_topic_sig" rowspan="11" valign="top"><img src="smiles/quotea.png" align="top" alt="``"/>$sig<img src="smiles/quoteb.png" alt="''"/></td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
