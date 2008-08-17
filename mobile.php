@@ -41,7 +41,7 @@ body {font-family: sans; font-size: 12px;}
 <body>
 <b>{$site_info['name']}</b><br /><br />
 END;
-$result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
+$result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 5", $db);
 while ($row = mysql_fetch_array($result)) {
 print <<<END
 <b>{$row['title']}</b><br />
