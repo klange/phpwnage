@@ -24,7 +24,7 @@ require 'includes.php';
 
 standardHeaders($site_info['name'],true);
 
-drawSubbar("IMAGE GALLERY","IMAGE GALLERY");
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > IMAGE GALLERY","Gallery");
 
 require 'sidebar.php';
 
@@ -35,7 +35,7 @@ print <<<END
 END;
 
 
-drawBlock("IMAGE GALLERY", "RIGHT SIDE", "Image Gallery");
+drawBlock("Image Gallery", "Gallery Index", "Image Gallery");
 
 print <<<END
 	</table>
