@@ -288,6 +288,30 @@ if ($_POST['action'] == "move_topic") {
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&amp;id=" . $_POST['topid']);
 }
 
+// Topic is being split
+if ($_POST['action'] == "split_topic") {
+    // Author is whoever split the topic off in the first place, as a way to track it.
+    if (strlen($_POST['newtitle']) < 3) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['tooshort']);
+    }
+    mysql_query("INSERT INTO `topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mse($_POST['newtitle']) . "', 0, 0 );");
+    $result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
+    $topic = mysql_fetch_array($result);
+    $where = "WHERE `id`=";
+    while (list($key,$value) = each($_POST)) {
+        if (strstr($key,"post_")) {
+            if ($value == "on") {
+                $lastpost = str_replace("post_", "", $key);
+                $where = $where . $lastpost . " OR `id`=";
+            }
+        }
+    }
+    $where = $where . "0";
+    mysql_query("UPDATE `posts` SET `topicid`=" . $topic['id'] . " " . $where);
+    mysql_query("UPDATE `topics` SET `lastpost`=" . $lastpost . " WHERE `id`=" . $topic['id']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['topic_split'],"forum.php?do=viewforum&amp;id=" . $_POST['board']);    
+}
+
 // If an old post is being edited
 if ($_POST['action'] == "edit_profile") {
     $userid = $user['id'];
@@ -1032,6 +1056,48 @@ END;
     $post_content = makeBlock($_PWNDATA['pm']['composing'],"",$block_content);
 }
 
+// Split topic
+if ($_GET['do'] == "splittopic") {
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
+    }
+    $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
+    $topic = mysql_fetch_array($result);
+    $resultb = mysql_query("SELECT * FROM boards WHERE id='" . $topic['board'] . "'", $db);
+    $board = mysql_fetch_array($resultb);   
+    $post_title_add = " :: " . $_PWNDATA['forum']['modtools']['splittopic'];
+    $post_sub_add = " > " . $_PWNDATA['forum']['modtools']['splittopic'];
+    $post_sub_r = post_sub_r($user['id']);
+    $block_content = <<<END
+<form method="post" action="forum.php" name="form">
+<input type="hidden" name="action" value="split_topic" />
+<input type="hidden" name="topic" value="{$topic['id']}" />
+<input type="hidden" name="board" value="{$board['id']}" />
+<table class="forum_base" width="100%">
+<tr><td class="forum_topic_content" width="200" align="center">{$_PWNDATA['forum']['modtools']['new_title']}</td>
+<td colspan="2" class="forum_topic_content"><input type="text" style="width: 100%;" name="newtitle" /></td></tr>
+END;
+    $result = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "'", $db);
+    while ($row = mysql_fetch_array($result)) {
+        $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $row['authorid'] . "'", $db);
+        $post_author = mysql_fetch_array($resultb);
+        $block_content = $block_content . "<tr><td class=\"glow\">";
+        $block_content = $block_content . $post_author['name'];
+        $block_content = $block_content . "</td><td class=\"forum_topic_content\">";
+        $postbb = bbDecode(substr($row['content'],0,500));
+        $block_content = $block_content . $postbb . "</td><td class=\"forum_topic_content\" width=\"20\">";
+        $block_content = $block_content . "<input type=\"checkbox\" name=\"post_" . $row['id'] . "\" />";
+        $block_content = $block_content . "</td></tr>";
+    }
+    $block_content = $block_content . <<<END
+<tr><td colspan="3" class="forum_topic_sig">
+<input type="submit" value="{$_PWNDATA['forum']['modtools']['split']}" />
+</td></tr>
+END;
+    $block_content = $block_content . "</table></form>";
+    $post_content = makeBlock($_PWNDATA['forum']['modtools']['splittopic'],"",$block_content);
+}
+
 // Show the posts in this topic.
 if ($_GET['do'] == "viewtopic") {
     $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
@@ -1380,6 +1446,7 @@ END;
 	        $block_content = $block_content . "\n</optgroup>";
         }
         $block_content = $block_content . "</select>\n<input type=\"submit\" value=\"{$_PWNDATA['forum']['move_topic']}\" /></form></div></td>";
+        $block_content = $block_content . drawButton("forum.php?do=splittopic&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['splittopic']);
     }
     $block_content = $block_content . $PAGING;
     $block_content = $block_content .  <<<END

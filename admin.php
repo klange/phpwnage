@@ -695,14 +695,15 @@ $content = $content . <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="edit_board" />
 <input type="hidden" name="id" value="$brd_id" />
+<table class="forum_base" width="100%">
 END;
-$content = $content . "<input name=\"title\" type=\"text\" value=\"$brd_name\" /><br />";
-$content = $content . "<textarea rows=\"3\" name=\"content\" style=\"width:95%;\" cols=\"80\">$brd_desc</textarea><br />\n";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_read']}: <input name=\"perma\" type=\"text\" value=\"$brd_perma\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_write']}: <input name=\"permb\" type=\"text\" value=\"$brd_permb\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_post']}: <input name=\"permc\" type=\"text\" value=\"$brd_permc\" /><br />";
-$content = $content . "{$_PWNDATA['admin']['forms']['forum_board_url']}: <input name=\"link\" type=\"text\" value=\"$brd_lnk\"><br />";
-$content = $content . "<input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_board_save']}\" /></form>";
+$content = $content . "<tr><td class=\"forum_topic_content\" width=\"300\">{$_PWNDATA['admin']['forms']['forum_board_name']}</td><td class=\"forum_topic_content\"><input name=\"title\" type=\"text\" value=\"$brd_name\" style=\"width: 100%\"/></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><textarea rows=\"3\" name=\"content\" style=\"width:100%;\" cols=\"80\">$brd_desc</textarea></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_read']}</td><td class=\"forum_topic_sig\"><input name=\"perma\" type=\"text\" value=\"$brd_perma\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_write']}</td><td class=\"forum_topic_sig\"><input name=\"permb\" type=\"text\" value=\"$brd_permb\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_post']}</td><td class=\"forum_topic_sig\"><input name=\"permc\" type=\"text\" value=\"$brd_permc\" style=\"width: 100%\" /></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['forum_board_url']}</td><td class=\"forum_topic_sig\"><input name=\"link\" type=\"text\" value=\"$brd_lnk\" style=\"width: 100%\" ></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['forum_board_save']}\" /></td></tr></table></form>";
 drawBlock($_PWNDATA['admin']['forms']['forum_board_edit'],"",$content);
 }
 

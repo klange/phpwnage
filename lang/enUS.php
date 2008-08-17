@@ -442,6 +442,12 @@ $_PWNDATA['forum']['board_weblink'] = "Web Link";
 $_PWNDATA['forum']['secimg'] = "You must have images enabled to register.";
 $_PWNDATA['forum']['recaptchafail'] = "ReCAPTCHA response was incorrect. Try again.";
 
+$_PWNDATA['forum']['modtools']['splittopic'] = "Split Topic";
+$_PWNDATA['forum']['modtools']['new_title'] = "New Topic Title";
+$_PWNDATA['forum']['modtools']['split'] = "Split";
+$_PWNDATA['forum']['modtools']['topic_split'] = "Topic split";
+$_PWNDATA['forum']['modtools']['tooshort'] = "Topic title was too short. Use a longer title.";
+
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";
 $_PWNDATA['poster']['italic'] = "Italic";
