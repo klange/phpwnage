@@ -579,6 +579,103 @@ function messageBack($title, $message) {
 	$content = $message . "<br /><a href=\"javascript:history.back()\">" . $_PWNDATA['go_back'] . "</a>";
 	drawMessage($title, $content);
 }
+function messageRedirectLight($message,$redirect) {
+    global $_PWNDATA, $site_info;
+	$content = $message . "<meta http-equiv=\"Refresh\" content=\"1;url=" . $redirect . "\" /><br />" . $_PWNDATA['redirecting'] . "...";
+	$content = $content . "<br /><a href=\"$redirect\">{$_PWNDATA['click_to_continue']}</a>";
+	die("<div style=\"font-family: sans; font-size: 12px\">" . $content . "</div>");
+}
+function messageBackLight($title, $message) {
+	global $_PWNDATA, $site_info;
+	$content = $message . "<br /><a href=\"javascript:history.back()\">" . $_PWNDATA['go_back'] . "</a>";
+	die("<div style=\"font-family: sans; font-size: 12px\">" . $content . "</div>");
+}
+
+function check_read($id,$userid) {
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['readby'];
+    $split_list = explode(",",$read_list);
+    if (in_array($userid, $split_list)) {
+        $is_read = true;
+    } else {
+        $is_read = false;
+    }
+    return $is_read;
+}
+
+function findTopic($postnumber) {
+    $temp = mysql_query("SELECT `topicid` FROM `posts` WHERE `id`=" . $postnumber);
+    $post = mysql_fetch_array($temp);
+    $topic = $post['topicid'];
+    return $topic;
+}
+
+function findPage($postnumber, $topic = -1) {
+    global $_POSTSPERPAGE;
+    if ($topic == -1) {
+        $topic = findTopic($postnumber);
+    }
+    $temp_res = mysql_query("SELECT `id` FROM `posts` WHERE `topicid`=" . $topic);
+    $i = 0;
+    while ($post = mysql_fetch_array($temp_res)) {
+        $i++;
+        if ($post['id'] >= $postnumber)
+            break;
+    }
+    $page = (int)(($i - 1) / $_POSTSPERPAGE) + 1;
+    return $page;
+}
+
+function check_read_forum($id,$userid) {
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE board=$id");
+    $was_read = true;
+    while ($topic = mysql_fetch_array($temp_res)) {
+        if (!check_read($topic['id'],$userid)) { $was_read = false; }
+    }
+    return $was_read;
+}
+
+function set_read($id,$userid) {
+    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['readby'];
+    $split_list = explode(",",$read_list);
+    if (!in_array($userid, $split_list)) {
+        $read_list = $read_list . ",$userid";
+        mysql_query("UPDATE `topics` SET `readby` = '" . mse($read_list) . "' WHERE `topics`.`id` =" . $id);
+    }
+}
+
+function set_unread($id) {
+    mysql_query("UPDATE `topics` SET `readby` = '' WHERE `topics`.`id` =" . $id);
+}
+
+function check_voted($id,$userid) {
+    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['voters'];
+    $split_list = explode(",",$read_list);
+    if (in_array($userid, $split_list)) {
+        $is_read = true;
+    } else {
+        $is_read = false;
+    }
+    return $is_read;
+}
+
+function set_voted($id,$userid) {
+    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
+    $topic = mysql_fetch_array($temp_res);
+    $read_list = $topic['voters'];
+    $split_list = explode(",",$read_list);
+    if (!in_array($userid, $split_list)) {
+        $read_list = $read_list . ",$userid";
+        mysql_query("UPDATE `polls` SET `voters` = '" . mse($read_list) . "' WHERE `polls`.`id` =" . $id);
+    }
+}
+
+
 function drawSubbar($left, $right) {
     global $_PWNDATA, $site_info, $theme, $imageroot, $user;
     print <<<END

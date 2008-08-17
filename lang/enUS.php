@@ -39,12 +39,14 @@ $_PWNDATA['exec_a'] = "This page executed in ";
 $_PWNDATA['exec_b'] = " seconds.";
 $_PWNDATA['article'] = "Article";
 $_PWNDATA['failed_login'] = "Login failed. Username or password incorrect.";
+$_PWNDATA['click_to_continue'] = "(Or click here if you are not redirected)";
 
 // Page titles
 $_PWNDATA['admin_page_title'] = "Administration";
 $_PWNDATA['forum_page_title'] = "Forum";
 $_PWNDATA['calendar_page_title'] = "Calendar";
 $_PWNDATA['modules_page_title'] = "Modules";
+$_PWNDATA['news_page_title'] = "News";
 
 
 // Profiles

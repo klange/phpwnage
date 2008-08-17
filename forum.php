@@ -27,89 +27,6 @@ $_CHECKPANDEMIC = true; // Check Pandemic status?
 $CONFIG_MAIL = false;   // Should we send an email? This is buggy.
 require 'includes.php';
 
-function check_read($id,$userid) {
-    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['readby'];
-    $split_list = explode(",",$read_list);
-    if (in_array($userid, $split_list)) {
-        $is_read = true;
-    } else {
-        $is_read = false;
-    }
-    return $is_read;
-}
-
-function findTopic($postnumber) {
-    $temp = mysql_query("SELECT `topicid` FROM `posts` WHERE `id`=" . $postnumber);
-    $post = mysql_fetch_array($temp);
-    $topic = $post['topicid'];
-    return $topic;
-}
-
-function findPage($postnumber, $topic = -1) {
-    global $_POSTSPERPAGE;
-    if ($topic == -1) {
-        $topic = findTopic($postnumber);
-    }
-    $temp_res = mysql_query("SELECT `id` FROM `posts` WHERE `topicid`=" . $topic);
-    $i = 0;
-    while ($post = mysql_fetch_array($temp_res)) {
-        $i++;
-        if ($post['id'] >= $postnumber)
-            break;
-    }
-    $page = (int)(($i - 1) / $_POSTSPERPAGE) + 1;
-    return $page;
-}
-
-function check_read_forum($id,$userid) {
-    $temp_res = mysql_query("SELECT * FROM `topics` WHERE board=$id");
-    $was_read = true;
-    while ($topic = mysql_fetch_array($temp_res)) {
-        if (!check_read($topic['id'],$userid)) { $was_read = false; }
-    }
-    return $was_read;
-}
-
-function set_read($id,$userid) {
-    $temp_res = mysql_query("SELECT * FROM `topics` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['readby'];
-    $split_list = explode(",",$read_list);
-    if (!in_array($userid, $split_list)) {
-        $read_list = $read_list . ",$userid";
-        mysql_query("UPDATE `topics` SET `readby` = '" . mse($read_list) . "' WHERE `topics`.`id` =" . $id);
-    }
-}
-
-function set_unread($id) {
-    mysql_query("UPDATE `topics` SET `readby` = '' WHERE `topics`.`id` =" . $id);
-}
-
-function check_voted($id,$userid) {
-    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
-    $split_list = explode(",",$read_list);
-    if (in_array($userid, $split_list)) {
-        $is_read = true;
-    } else {
-        $is_read = false;
-    }
-    return $is_read;
-}
-
-function set_voted($id,$userid) {
-    $temp_res = mysql_query("SELECT * FROM `polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
-    $split_list = explode(",",$read_list);
-    if (!in_array($userid, $split_list)) {
-        $read_list = $read_list . ",$userid";
-        mysql_query("UPDATE `polls` SET `voters` = '" . mse($read_list) . "' WHERE `polls`.`id` =" . $id);
-    }
-}
 
 if ($_POST['action'] == "login") {
     $userresult = mysql_query("SELECT * FROM users WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);
@@ -132,8 +49,10 @@ if ($_POST['action'] == "login") {
         $user = mysql_fetch_array($result);
         mysql_query("DELETE FROM `sessions` WHERE `user`=" . $user['id'] . "");
         mysql_query("INSERT INTO `sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $user['id'] . ", " . $_SESSION['last_on'] . ");");
-        if ($_POST['admin']) {
+        if ($_POST['admin'] == "yes") {
             messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['signedin'],"admin.php");
+        } else if ($_POST['mobile'] == "yes") {
+            messageRedirectLight($_PWNDATA['signedin'],"mobile.php");
         } else {
             messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['signedin'],"forum.php");
         }
@@ -227,6 +146,9 @@ if ($_POST['action'] == "new_reply") {
     $reply = mysql_fetch_array($result);
     mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic);
     mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
+    if ($_POST['mobile'] == "yes") {
+        messageRedirectLight($_PWNDATA['forum']['new_reply_added'],"mobile.php?do=viewtopic&amp;id=" . $topic);
+    }
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['new_reply_added'],"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic);
 }
 
