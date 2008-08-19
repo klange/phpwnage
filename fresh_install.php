@@ -563,6 +563,34 @@ CREATE TABLE  `sessions` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
+$query = <<<END
+CREATE TABLE `galleries` (
+    `id`    int(11)         NOT NULL    auto_increment,
+    `name`  varchar(100)    NOT NULL    DEFAULT '',
+    `desc`  text                        DEFAULT '',
+    `view`  int(11)         NOT NULL    DEFAULT 0,
+    `upload` int(11)        NOT NULL    DEFAULT 1,
+    PRIMARY KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+END;
+mysql_query($query);
+$query = <<<END
+CREATE TABLE `images` (
+    `id`    int(11)         NOT NULL    auto_increment,
+    `name`  varchar(100)    NOT NULL    DEFAULT '',
+    `desc`  text                        DEFAULT '',
+    `uid`   int(11)         NOT NULL    DEFAULT 1,
+    `fname` varchar(200)    NOT NULL    DEFAULT '',
+    `gid`   int(11)         NOT NULL    DEFAULT 0,
+    `size`  int(11)         NOT NULL    DEFAULT 0,
+    `type`  varchar(50)     NOT NULL    DEFAULT '',
+    `publ`  int(11)         NOT NULL    DEFAULT 1,
+    `data`  mediumblob      NULL,
+    `thumb` mediumblob      NULL,
+    PRIMARY KEY `id` (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+END;
+mysql_query($query);
 print "Completed database setup. Moving on to data...<br />\n";
 $info = "INSERT INTO `info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2, 0, NULL, NULL);";
 $result = mysql_query($info);
