@@ -82,6 +82,7 @@ END;
    $endtime = $mtime;
    $totaltime = ($endtime - $starttime); 
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
+print "<br />{$_PWNDATA['tango']}";
 print <<<END
 </font></font></p>
 </body>

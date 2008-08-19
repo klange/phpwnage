@@ -40,6 +40,7 @@ $_PWNDATA['exec_b'] = " seconds.";
 $_PWNDATA['article'] = "Article";
 $_PWNDATA['failed_login'] = "Login failed. Username or password incorrect.";
 $_PWNDATA['click_to_continue'] = "(Or click here if you are not redirected)";
+$_PWNDATA['tango'] = "Icons by the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Project</a>";
 
 // Page titles
 $_PWNDATA['admin_page_title'] = "Administration";
