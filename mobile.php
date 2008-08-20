@@ -38,7 +38,6 @@ print <<<END
 </title>
 <meta http-equiv="Content-type" content="text/html;charset=windows-1252" />
 <style type="text/css">
-img {width:120;}
 body {font-family: sans; font-size: 12px;}
 </style>
 </head>
