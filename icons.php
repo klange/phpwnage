@@ -71,7 +71,7 @@ $_PWNICONS['forum']['icon_width'] = "width=\"48\"";
 $_PWNICONS['forum']['pollpath'] = "tango/poll_bars/"; // Path to bars
 $_PWNICONS['forum']['pollbars'] = 5;    // Number of bars to use before looping.
 
-$_PWNICONS['forum']['weblink'] = "<img src=\"smiles/globe.png\" alt=\"{$_PWNDATA['forum']['board_weblink']}\"/>";
+$_PWNICONS['forum']['weblink'] = "<img src=\"tango/forum/globe.png\" alt=\"{$_PWNDATA['forum']['board_weblink']}\"/>";
 
 $_PWNICONS['protocols']['msn'] = "<img src=\"tango/protocols/msn.png\" border=\"0\" alt=\"MSN\"/>";
 $_PWNICONS['protocols']['yahoo'] = "<img src=\"tango/protocols/yahoo.png\" border=\"0\" alt=\"Yahoo\"/>";

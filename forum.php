@@ -590,7 +590,7 @@ END;
                     // Has a link.
                     $link = $row['link'];
                     $block_content = $block_content .  <<<END
-	<tr><td rowspan="2" width="32" class="forum_board_linkicon"><img src="smiles/globe.png" alt="{$_PWNDATA['forum']['board_weblink']}"/></td>
+	<tr><td rowspan="2" {$_PWNICONS['forum']['icon_width']} class="forum_board_linkicon">{$_PWNICONS['forum']['weblink']}</td>
 END;
                     $block_content = $block_content . "<td class=\"forum_board_linktitle\"><a href=\"$link\">" . $row['title'];
                     $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\" class=\"forum_board_last\"></td>";
