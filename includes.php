@@ -93,7 +93,10 @@ function setTheme()
 	} else {
 		$icons = $themes[1];
 	}
-	require "icon_themes/$icons.php";
+	$theme_exists = @include "icon_themes/$icons.php";
+    if (!$theme_exists) {
+	    include "icon_themes/tango.php";
+	}
 }
 function drawButton($dowhat, $title, $button = "") {
     $post_content = <<<END
