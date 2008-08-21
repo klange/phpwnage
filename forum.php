@@ -1637,7 +1637,7 @@ if ($_GET['do'] == "viewprofile") {
     <table class="forum_base" width="100%">
     <tr><td class="forum_profile_user"><center>$ava</center></td><td class="forum_profile_user">$uname</td></tr>
     <tr><td class="forum_topic_sig" width="300">$modstatus</td>
-    <td class="forum_topic_sig" rowspan="11" valign="top"><img src="smiles/quotea.png" align="top" alt="``"/>$sig<img src="smiles/quoteb.png" alt="''"/></td></tr>
+    <td class="forum_topic_sig" rowspan="11" valign="top">{$_PWNICONS['profile']['quote_left']}$sig{$_PWNICONS['profile']['quote_right']}</td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
   <tr><td class="forum_thread_title"><strong>{$_PWNDATA['profile']['messaging']}:</strong></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['msn']} $umsn</td></tr>
