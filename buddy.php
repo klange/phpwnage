@@ -86,7 +86,7 @@ function shadeMe() {
 </script>
 <div id="buddy" style="width: 300px; border: 0px; position: absolute; top: 10px; left: 600px; $showme">
 <table class="borderless_table" width="100%">
-<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:shadeMe()">^</a><a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
+<tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:shadeMe()">^</a>&nbsp;<a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
 <tr><td class="block_ml">&nbsp;</td><td class="block_body" colspan="2"><div id="buddy_content">
 END;
 // PwnBuddy content
