@@ -1640,13 +1640,13 @@ if ($_GET['do'] == "viewprofile") {
     <td class="forum_topic_sig" rowspan="11" valign="top"><img src="smiles/quotea.png" align="top" alt="``"/>$sig<img src="smiles/quoteb.png" alt="''"/></td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
   <tr><td class="forum_thread_title"><strong>{$_PWNDATA['profile']['messaging']}:</strong></td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/msn.png" alt="*"/> $umsn</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/aim.png" alt="*"/> $uaim</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/yahoo.png" alt="*"/> $uyah</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/icq.png" alt="*"/> $uicq</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/xfire.png" alt="*"/> $uxfire</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/live.png" alt="*"/> $ulive</td></tr>
-  <tr><td class="forum_topic_sig"><img src="smiles/pan.png" alt="*"/> $pand</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['msn']} $umsn</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['aim']} $uaim</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['yahoo']} $uyah</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['icq']} $uicq</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['xfire']} $uxfire</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['live']} $ulive</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['pand_on']} $pand</td></tr>
   <tr><td class="forum_topic_sig"><a href="forum.php?do=newpm&amp;to=$replyto">{$_PWNDATA['pm']['send_a']}</a></td></tr>
   </table>
 END;
