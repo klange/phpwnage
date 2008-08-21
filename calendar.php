@@ -154,9 +154,9 @@ while ($query_row = mysql_fetch_array($day_results))
 	$zing = $zing . "- " . $query_row['title'] . "<br />\n";
 }
 if ($user['level'] >= $site_info['mod_rank']) {
-$top_cell = "<a href=\"calendar.php?view=add&amp;day=$today\"><img src=\"smiles/cal_add.png\" alt=\"Add\" /></a> <a href=\"calendar.php?view=date&amp;day=$today\"><img src=\"smiles/cal_view.png\" alt=\"View\" /></a>";
+$top_cell = "<a href=\"calendar.php?view=add&amp;day=$today\">{$_PWNICONS['calendar']['add']}</a> <a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
 } else {
-$top_cell = "<a href=\"calendar.php?view=date&amp;day=$today\"><img src=\"smiles/cal_view.png\" alt=\"View\" /></a>";
+$top_cell = "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
 }
 $days_left = $days_left - 1;
 if ($days_left <= 0) {

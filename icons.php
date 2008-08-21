@@ -93,6 +93,9 @@ $_PWNICONS['protocols']['icons']['pand'] = "tango/protocols/pan.png";
 $_PWNICONS['profile']['quote_left'] = "<img src=\"tango/forum/quotea.png\" align=\"top\" alt=\"``\"/>";
 $_PWNICONS['profile']['quote_right'] = "<img src=\"tango/forum/quoteb.png\" alt=\"''\"/>";
 
+$_PWNICONS['calendar']['add'] = "<img src=\"smiles/cal_add.png\" alt=\"Add\" />";
+$_PWNICONS['calendar']['view'] = "<img src=\"smiles/cal_view.png\" alt=\"View\" />";
+
 
 $_PWNICONS['protocols']['messaging'] = "tango/protocols/mess.png";
 
