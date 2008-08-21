@@ -20,7 +20,7 @@
 */
 session_start(); // Always ensure a session.
 require "lang/enUS.php";
-require "icons.php"; // TODO: Move this to be theme-safe.
+//require "icons.php"; // TODO: Move this to be theme-safe.
 
 $result = mysql_query("SELECT * FROM info", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
@@ -73,19 +73,27 @@ function getPostsInBoard($bid) {
 }
 function setTheme()
 {
-	global $user, $imageroot, $theme;
+	global $user, $imageroot, $theme, $_PWNICONS, $_PWNDATA;
 	if (!isset($user['color']) || $user['color'] == "")
 	{
 		$imageroot = "crystal"; // Default background.
 	} else {
 		$imageroot = $user['color'];
 	}
-	if (!isset($user['theme']) || $user['theme'] == "")
+	$themes = explode(",",$user['theme']);
+	if (!isset($themes[0]) || $themes[0] == "")
 	{
 		$theme = "crystal"; // Default theme.
 	} else {
-		$theme = $user['theme'];
+		$theme = $themes[0];
 	}
+	if (!isset($themes[1]) || $themes[1] == "")
+	{
+		$icons = "tango"; // Default theme.
+	} else {
+		$icons = $themes[1];
+	}
+	require "icon_themes/$icons.php";
 }
 function drawButton($dowhat, $title, $button = "") {
     $post_content = <<<END
@@ -389,6 +397,31 @@ function themeList($selected)
 		if (substr("$dirArray[$index]", 0, 1) != "."){
 			if (strstr($dirArray[$index],".css")) {
 				$themeName = str_replace(".css","",$dirArray[$index]);
+				if ($themeName == $selected) {
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+				} else {
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
+				}
+			}
+		}
+	}
+	$themeList = $themeList . "</select>";
+	return $themeList;
+}
+function iconsList($selected)
+{
+	$themeList = "<select name=\"icons\">";
+	$myDirectory = opendir("icon_themes"); // Open root
+	while($entryName = readdir($myDirectory)) {
+		$dirArray[] = $entryName; // Get our list of files
+	}
+	closedir($myDirectory); // Close the directory
+	sort($dirArray); // Sort the array
+	$indexCount	= count($dirArray); // Count...
+	for($index=0; $index < $indexCount; $index++) {
+		if (substr("$dirArray[$index]", 0, 1) != "."){
+			if (strstr($dirArray[$index],".php")) {
+				$themeName = str_replace(".php","",$dirArray[$index]);
 				if ($themeName == $selected) {
 					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {

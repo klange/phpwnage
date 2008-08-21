@@ -253,7 +253,7 @@ if ($_POST['action'] == "edit_profile") {
     mysql_query("UPDATE `users` SET `live` = '" . mse($_POST['live']) . "' WHERE `users`.`id` =" . $userid);
     mysql_query("UPDATE `users` SET `xfire` = '" . mse($_POST['xfire']) . "' WHERE `users`.`id` =" . $userid);
     mysql_query("UPDATE `users` SET `pand` = '" . mse($_POST['pand']) . "' WHERE `users`.`id` =" . $userid);
-    mysql_query("UPDATE `users` SET `theme` = '" . mse($_POST['theme']) . "' WHERE `users`.`id` =" . $userid);
+    mysql_query("UPDATE `users` SET `theme` = '" . mse($_POST['theme'] . "," . $_POST['icons']) . "' WHERE `users`.`id` =" . $userid);
     mysql_query("UPDATE `users` SET `color` = '" . mse($_POST['color']) . "' WHERE `users`.`id` =" . $userid);
     if ($_POST['sbonforum'] == "on") {
         $sbon = 1;
@@ -1561,7 +1561,9 @@ if ($_GET['do'] == "editprofile") {
     $ulive = $user['live'];
     $sbona = $user['sbonforum'];
     $pand = $user['pand'];
-    $u_theme = $user['theme'];
+    $themes = explode(",",$user['theme']);
+    $u_theme = $themes[0];
+    $u_icons = $themes[1];
     $u_color = $user['color'];
     if ($sbona == 1) {
         $sbon = "checked";
@@ -1570,6 +1572,7 @@ if ($_GET['do'] == "editprofile") {
     }
     $theme_list = themeList($u_theme);
     $color_list = colorList($u_color);
+    $icons_list = iconsList($u_icons);
     $block_content = $block_content . <<<END
 <form method="post" action="forum.php" name="form">
   <input type="hidden" name="action" value="edit_profile" />
@@ -1601,6 +1604,7 @@ END;
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['sidebar']}</td><td class="forum_topic_sig"><input name="sbonforum" type="checkbox" $sbon /> {$_PWNDATA['profile']['sidebar']}</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['theme']}</td><td class="forum_topic_sig">$theme_list</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['color']}</td><td class="forum_topic_sig">$color_list</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['icons']}</td><td class="forum_topic_sig">$icons_list</td></tr>
   <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['profile']['save']}" name="sub" /></td></tr>
   </table>
 	</form>	
