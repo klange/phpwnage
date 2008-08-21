@@ -23,29 +23,77 @@ function genI($url, $alt) {
     return "<img src=\"$url\" alt=\"$alt\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 }
 
-$_PWNICONS['buttons']['new_topic'] = genI("tango/new.png","");
-$_PWNICONS['buttons']['new_reply'] = genI("tango/new-reply.png","+");
-$_PWNICONS['buttons']['new_pm'] = genI("tango/new-pm.png","");
-$_PWNICONS['buttons']['pm_reply'] = genI("tango/reply-pm.png","");
-$_PWNICONS['buttons']['del_topic'] = genI("tango/delete.png","");
-$_PWNICONS['buttons']['del_reply'] = genI("tango/delete.png","");
-$_PWNICONS['buttons']['move'] = genI("tango/move.png","");
-$_PWNICONS['buttons']['stick'] = genI("tango/stick.png","");
-$_PWNICONS['buttons']['sink'] = genI("tango/go-down.png","");
-$_PWNICONS['buttons']['unsink'] = genI("tango/go-up.png","");
-$_PWNICONS['buttons']['unstick'] = genI("tango/go-down.png","");
-$_PWNICONS['buttons']['lock'] = genI("tango/lock.png","");
-$_PWNICONS['buttons']['unlock'] = genI("tango/lock.png","");
+$_PWNICONS['buttons']['new_topic'] = genI("tango/buttons/new.png","");
+$_PWNICONS['buttons']['new_reply'] = genI("tango/buttons/new-reply.png","+");
+$_PWNICONS['buttons']['new_pm'] = genI("tango/buttons/new-pm.png","");
+$_PWNICONS['buttons']['pm_reply'] = genI("tango/buttons/reply-pm.png","");
+$_PWNICONS['buttons']['del_topic'] = genI("tango/buttons/delete.png","");
+$_PWNICONS['buttons']['del_reply'] = genI("tango/buttons/delete.png","");
+$_PWNICONS['buttons']['move'] = genI("tango/buttons/move.png","");
+$_PWNICONS['buttons']['stick'] = genI("tango/buttons/stick.png","");
+$_PWNICONS['buttons']['sink'] = genI("tango/buttons/go-down.png","");
+$_PWNICONS['buttons']['unsink'] = genI("tango/buttons/go-up.png","");
+$_PWNICONS['buttons']['unstick'] = genI("tango/buttons/go-down.png","");
+$_PWNICONS['buttons']['lock'] = genI("tango/buttons/lock.png","");
+$_PWNICONS['buttons']['unlock'] = genI("tango/buttons/lock.png","");
 
-$_PWNICONS['buttons']['edit'] = genI("tango/edit.png","");
-$_PWNICONS['buttons']['qedit'] = genI("tango/edit.png","");
+$_PWNICONS['buttons']['edit'] = genI("tango/buttons/edit.png","");
+$_PWNICONS['buttons']['qedit'] = genI("tango/buttons/edit.png","");
 
-$_PWNICONS['buttons']['editor']['bold'] = genI("tango/bold.png","");
-$_PWNICONS['buttons']['editor']['italic'] = genI("tango/italic.png","");
-$_PWNICONS['buttons']['editor']['underline'] = genI("tango/underline.png","");
-$_PWNICONS['buttons']['editor']['strike'] = genI("tango/strike.png","");
-$_PWNICONS['buttons']['editor']['color'] = genI("tango/color.png","");
-$_PWNICONS['buttons']['editor']['link'] = genI("tango/link.png","");
-$_PWNICONS['buttons']['editor']['img'] = genI("tango/img.png","");
+$_PWNICONS['buttons']['editor']['bold'] = genI("tango/buttons/bold.png","");
+$_PWNICONS['buttons']['editor']['italic'] = genI("tango/buttons/italic.png","");
+$_PWNICONS['buttons']['editor']['underline'] = genI("tango/buttons/underline.png","");
+$_PWNICONS['buttons']['editor']['strike'] = genI("tango/buttons/strike.png","");
+$_PWNICONS['buttons']['editor']['color'] = genI("tango/buttons/color.png","");
+$_PWNICONS['buttons']['editor']['link'] = genI("tango/buttons/link.png","");
+$_PWNICONS['buttons']['editor']['img'] = genI("tango/buttons/img.png","");
+
+$_PWNICONS['admin']['news'] = "<img src=\"tango/admin/news.png\" alt=\"{$_PWNDATA['admin']['groups']['news']}\"/>";
+$_PWNICONS['admin']['forums'] = "<img src=\"tango/admin/forums.png\" alt=\"{$_PWNDATA['admin']['groups']['forums']}\"/>";
+$_PWNICONS['admin']['blocks'] = "<img src=\"tango/admin/blocks.png\" alt=\"{$_PWNDATA['admin']['groups']['blocks']}\"/>";
+$_PWNICONS['admin']['members'] = "<img src=\"tango/admin/members.png\" alt=\"{$_PWNDATA['admin']['groups']['members']}\"/>";
+$_PWNICONS['admin']['logout'] = "<img src=\"tango/admin/logout.png\" alt=\"{$_PWNDATA['admin']['groups']['logout']}\"/>";
+$_PWNICONS['admin']['pages'] = "<img src=\"tango/admin/pages.png\" alt=\"{$_PWNDATA['admin']['groups']['pages']}\"/>";
+$_PWNICONS['admin']['siteinfo'] = "<img src=\"tango/admin/site_info.png\" alt=\"{$_PWNDATA['admin']['groups']['site_info']}\"/>";
+$_PWNICONS['admin']['promos'] = "<img src=\"tango/admin/promos.png\" alt=\"{$_PWNDATA['admin']['groups']['promo']}\"/>";
+$_PWNICONS['admin']['security'] = "<img src=\"tango/admin/bans.png\" alt=\"{$_PWNDATA['admin']['groups']['bans']}\"/>";
+
+$_PWNICONS['forum']['board_read'] = "<img src=\"tango/forum/forum_read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/>";
+$_PWNICONS['forum']['board_new'] = "<img src=\"tango/forum/forum_unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_new']}\" />";
+$_PWNICONS['forum']['topic'] = "height=\"48\" width=\"48\" style=\"background-image: url(tango/forum/read.png);\" valign=\"top\"";
+$_PWNICONS['forum']['topic_read'] = "<img src=\"tango/forum/new.png\" alt=\"*\" />";
+$_PWNICONS['forum']['topic_poll'] = "<img src=\"tango/forum/poll.png\" alt=\"P\" />";
+$_PWNICONS['forum']['topic_lock'] = "<img src=\"tango/forum/lock.png\" alt=\"L\" />";
+$_PWNICONS['forum']['topic_stick'] = "<img src=\"tango/forum/sticky.png\" alt=\"S\" />";
+$_PWNICONS['forum']['topic_sink'] = "<img src=\"tango/forum/sunk.png\" alt=\"D\" />";
+
+$_PWNICONS['forum']['pm_read'] = "<img src=\"tango/forum/read.png\" align=\"left\" alt=\"\"/>";
+$_PWNCIONS['forum']['pm_new'] = "<img src=\"tango/forum/unread.png\" align=\"left\" alt=\"**\"/>";
+
+$_PWNICONS['forum']['icon_width'] = "width=\"48\"";
+$_PWNICONS['forum']['pollpath'] = "tango/poll_bars/"; // Path to bars
+$_PWNICONS['forum']['pollbars'] = 5;    // Number of bars to use before looping.
+
+$_PWNICONS['protocols']['msn'] = "<img src=\"tango/protocols/msn.png\" border=\"0\" alt=\"MSN\"/>";
+$_PWNICONS['protocols']['yahoo'] = "<img src=\"tango/protocols/yahoo.png\" border=\"0\" alt=\"Yahoo\"/>";
+$_PWNICONS['protocols']['aim'] = "<img src=\"tango/protocols/aim.png\" border=\"0\" alt=\"AIM\"/>";
+$_PWNICONS['protocols']['icq'] = "<img src=\"tango/protocols/icq.png\" border=\"0\" alt=\"ICQ\"/>";
+$_PWNICONS['protocols']['xfire'] = "<img src=\"tango/protocols/xfire.png\" border=\"0\" alt=\"xFire\"/>";
+$_PWNICONS['protocols']['live'] = "<img src=\"tango/protocols/live.png\" border=\"0\" alt=\"Live\"/>";
+$_PWNICONS['protocols']['pand_on'] = "<img src=\"tango/protocols/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+$_PWNICONS['protocols']['pand_off'] = "<img src=\"tango/protocols/panoff.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+
+$_PWNICONS['protocols']['icons']['msn'] = "tango/protocols/msn.png";
+$_PWNICONS['protocols']['icons']['yahoo'] = "tango/protocols/yahoo.png";
+$_PWNICONS['protocols']['icons']['aim'] = "tango/protocols/aim.png";
+$_PWNICONS['protocols']['icons']['icq'] = "tango/protocols/icq.png";
+$_PWNICONS['protocols']['icons']['xfire'] = "tango/protocols/xfire.png";
+$_PWNICONS['protocols']['icons']['live'] = "tango/protocols/live.png";
+$_PWNICONS['protocols']['icons']['pand'] = "tango/protocols/pan.png";
+
+
+$_PWNICONS['protocols']['messaging'] = "tango/protocols/mess.png";
+
+$_PWNICONS['notice'] = "Icons by the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Project</a>";
 
 ?>

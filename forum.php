@@ -550,12 +550,12 @@ END;
                     $readmb = check_read_forum($row['id'],$user['id']);
                     $idd = $row['id'];
                     if ($readmb) {
-                        $read_or_not = "<img src=\"smiles/forum_read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/>";
+                        $read_or_not = $_PWNICONS['forum']['board_read'];
                     } else {
-                        $read_or_not = "<a href=\"forum.php?do=setread&amp;id=$idd\"><img src=\"smiles/forum_unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_new']}\" /></a>";
+                        $read_or_not = "<a href=\"forum.php?do=setread&amp;id=$idd\">{$_PWNICONS['forum']['board_new']}</a>";
                     }
                     $block_content = $block_content .  <<<END
-	<tr><td rowspan="2" width="48" class="forum_board_readicon">$read_or_not</td>
+	<tr><td rowspan="2" {$_PWNICONS['forum']['icon_width']} class="forum_board_readicon">$read_or_not</td>
 		<td class="forum_board_title"><a href="forum.php?do=viewforum&amp;id=
 END;
                     $block_content = $block_content . $row['id'] . "\">" . $row['title'];
@@ -764,24 +764,24 @@ END;
         $post_bb = str_replace("<","&lt;",$post_bb);
         $post_bb = str_replace(">","&gt;",$post_bb);
         $spazma = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
-        $read_or_not = "<td rowspan=\"2\" height=\"48\" width=\"48\" class=\"forum_thread_icon\" style=\"background-image: url(smiles/read.png);\" valign=\"top\">";
+        $read_or_not = "<td rowspan=\"2\" class=\"forum_thread_icon\" {$_PWNICONS['forum']['topic']}>";
         $topic_type = "";
         if (!$readmb) {
-            $read_or_not = $read_or_not . "<img src=\"smiles/new.png\" alt=\"*\" />";
+            $read_or_not = $read_or_not . $_PWNICONS['forum']['topic_read'];
         }
         if ($row['has_poll'] == 1) {
-	        $read_or_not = $read_or_not . "<img src=\"smiles/poll.png\" alt=\"P\" />";
+	        $read_or_not = $read_or_not . $_PWNICONS['forum']['topic_poll'];
 	        $topic_type = $topic_type . $_PWNDATA['forum']['poll'] . " ";
         }
         if ($row['locked'] == 1) {
-	        $read_or_not = $read_or_not . "<img src=\"smiles/lock.png\" alt=\"L\" />";
+	        $read_or_not = $read_or_not . $_PWNICONS['forum']['topic_lock'];
 	        $topic_type = $topic_type . $_PWNDATA['forum']['locked'] . " ";
         }
         if ($row['stick'] == 1) {
-	        $read_or_not = $read_or_not . "<img src=\"smiles/sticky.png\" alt=\"S\" />";
+	        $read_or_not = $read_or_not . $_PWNICONS['forum']['topic_stick'];
 	        $topic_type = $topic_type . $_PWNDATA['forum']['sticky'] . " ";
         } else if ($row['stick'] == -1) {
-            $read_or_not = $read_or_not . "<img src=\"smiles/sunk.png\" alt=\"D\" />";
+            $read_or_not = $read_or_not . $_PWNICONS['forum']['topic_sink'];
             $topic_type = $topic_type . $_PWNDATA['forum']['issunk'] . " ";
         }
         $read_or_not = $read_or_not . "</td><td class=\"forum_thread_title\"><font class=\"forum_base_text\"><b>{$topic_type}</b></font> ";
@@ -862,13 +862,13 @@ END;
     while ($row = mysql_fetch_array($pmresult)) {
         $readmb = $row['read'];
         if ($readmb == 1) {
-            $read_or_not = "<img src=\"smiles/read.png\" align=\"left\" alt=\"\"/>";
+            $read_or_not = $_PWNICONS['forum']['pm_read'];
         } else {
-            $read_or_not = "<img src=\"smiles/unread.png\" align=\"left\" alt=\"**\"/>";
+            $read_or_not = $_PWNCIONS['forum']['pm_new'];
         }
         $block_content = $block_content .  <<<END
 	<tr>
-		<td width="48" class="forum_thread_icon" rowspan="2">$read_or_not</td><td class="forum_thread_title"><a href="forum.php?do=readpm&amp;id=
+		<td class="forum_thread_icon" {$_PWNICONS['forum']['icon_width']} rowspan="2">$read_or_not</td><td class="forum_thread_title"><a href="forum.php?do=readpm&amp;id=
 END;
 //"
         $resultb = mysql_query("SELECT * FROM users WHERE id='" . $row['from'] . "'" , $db);
@@ -1089,7 +1089,7 @@ END;
         $widthOfBar = 300; // For easy changing
         $img = 0;
         for ($i=0;$i<$poll_count;$i++) {
-            if ($img == 5) {
+            if ($img == $_PWNICONS['forum']['pollbars']) {
                 $img = 0;
             }
 	        if ($hasVoted == false) {
@@ -1097,7 +1097,7 @@ END;
 	        }
 	        $block_content = $block_content . "<tr><td class=\"forum_topic_poll_option\" align=\"right\">$bounce<font class=\"forum_body\">" . $poll_options[$i] . "</font></td>\n";
 	        $wid = ($poll_votes[$i] / $totalVotes) * $widthOfBar;
-	        $block_content = $block_content . "<td class=\"forum_topic_poll_votebar\" align=\"left\"><img src=\"smiles/poll_bars/$img/poll_left.png\" alt=\"[\"/><img src=\"smiles/poll_bars/$img/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"smiles/poll_bars/$img/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . (int)$poll_votes[$i] . ") </font></td></tr>\n";
+	        $block_content = $block_content . "<td class=\"forum_topic_poll_votebar\" align=\"left\"><img src=\"{$_PWNICONS['forum']['pollpath']}$img/poll_left.png\" alt=\"[\"/><img src=\"{$_PWNICONS['forum']['pollpath']}$img/poll_mid.png\" height=\"10\" width=\"$wid\" alt=\"$wid\"/><img src=\"{$_PWNICONS['forum']['pollpath']}$img/poll_right.png\" alt=\"]\"/><font size=\"1\"> (" . (int)$poll_votes[$i] . ") </font></td></tr>\n";
 	        $img++;
         }
         if ($hasVoted == false) {
@@ -1192,32 +1192,32 @@ END;
         if ($post_author['msn'] != "") {
             $has_messenger = true;
             $authmsn = $post_author['msn'];
-            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/msn.png\" border=\"0\" alt=\"MSN\"/></a>";
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\">{$_PWNICONS['protocols']['msn']}</a>";
         }
         if ($post_author['yahoo'] != "") {
             $has_messenger = true;
             $authyahoo = $post_author['yahoo'];
-            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/yahoo.png\" border=\"0\" alt=\"Yahoo\"/></a>";
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\">{$_PWNICONS['protocols']['yahoo']}</a>";
         }
         if ($post_author['aim'] != "") { // AIM we're actually going to do something usefull for...
             $has_messenger = true;
             $authaim = $post_author['aim'];
-            $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\"><img src=\"smiles/aim.png\" border=\"0\" alt=\"AIM\"/></a>";
+            $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\">{$_PWNICONS['protocols']['aim']}</a>";
         }
         if ($post_author['icq'] != "") { // ICQ as well...
             $has_messenger = true;
             $authicq = $post_author['icq'];
-            $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\"><img src=\"smiles/icq.png\" border=\"0\" alt=\"ICQ\"/></a>";
+            $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\">{$_PWNICONS['protocols']['icq']}</a>";
         }
         if ($post_author['xfire'] != "") { // xfire
             $has_messenger = true;
             $authxf = $post_author['xfire'];
-            $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\"><img src=\"smiles/xfire.png\" border=\"0\" alt=\"xFire\"/></a>";
+            $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\">{$_PWNICONS['protocols']['xfire']}</a>";
         }
         if ($post_author['live'] != "") { // xfire
             $has_messenger = true;
             $authlive = str_replace(" ","+",$post_author['live']);
-            $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\"><img src=\"smiles/live.png\" border=\"0\" alt=\"Live\"/></a>";
+            $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\">{$_PWNICONS['protocols']['live']}</a>";
         }
         if ($post_author['pand'] != "") { // Pandemic
             $has_messenger = true;
@@ -1236,16 +1236,16 @@ END;
 	            $userInfo = explode("|_|",$return);
 	            socket_close($sock);
 	            if ($userInfo[1] == "1") {
-	            $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
 	            } else {
-	            $auth_info = $auth_info . "<img src=\"smiles/panoff.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_off'];
 	            }
             } else {
-                $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
             }
         }
         if ($has_messenger) {
-            $messaging = "[b]" . $post_author['name'] . "[/b]\n[img]smiles/mess.png[/img]\n[img]smiles/aim.png[/img]: $authaim\n[img]smiles/msn.png[/img]: $authmsn\n[img]smiles/yahoo.png[/img]: $authyahoo\n[img]smiles/icq.png[/img]: $authicq\n[img]smiles/xfire.png[/img]: $authxf\n[img]smiles/live.png[/img]: $authlive\n[img]smiles/pan.png[/img]: $authpand\n";
+            $messaging = "[b]" . $post_author['name'] . "[/b]\n[img]{$_PWNICONS['protocols']['messaging']}[/img]\n[img]{$_PWNICONS['protocols']['icons']['msn']}[/img]: $authmsn\n[img]{$_PWNICONS['protocols']['icons']['yahoo']}[/img]: $authyahoo\n[img]{$_PWNICONS['protocols']['icons']['aim']}[/img]: $authaim\n[img]{$_PWNICONS['protocols']['icons']['icq']}[/img]: $authicq\n[img]{$_PWNICONS['protocols']['icons']['xfire']}[/img]: $authxf\n[img]{$_PWNICONS['protocols']['icons']['live']}[/img]: $authlive\n[img]{$_PWNICONS['protocols']['icons']['pand']}[/img]: $authpand\n";
             $post_bb = bbDecode($messaging);
             $post_bb = str_replace("'","\\'",$post_bb);
             $post_bb = str_replace("\"","&quot;",$post_bb);
@@ -1253,7 +1253,7 @@ END;
             $post_bb = str_replace("&gt;","&amp;gt;",$post_bb);
             $post_bb = str_replace("<","&lt;",$post_bb);
             $post_bb = str_replace(">","&gt;",$post_bb);
-            $auth_info = "<img src=\"smiles/mess.png\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb')\" alt=\"Messaging\"/><br />" . $auth_info;
+            $auth_info = "<img src=\"{$_PWNICONS['protocols']['messaging']}\" onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb')\" alt=\"Messaging\"/><br />" . $auth_info;
         }
         $postinfo = "";
         if ($user['level'] > 0) {
@@ -1581,13 +1581,13 @@ if ($_GET['do'] == "editprofile") {
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['password']}</td><td class="forum_topic_sig"><input type="password" name="apass" value="" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="password" name="cpass" value="" style="width: 100%" /></td></tr>
   <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['messaging']}</strong></td></tr>
-  <tr><td class="forum_topic_sig">MSN</td><td class="forum_topic_sig"><input type="text" name="msn" value="$umsn" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">AIM</td><td class="forum_topic_sig"><input type="text" name="aim" value="$uaim" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">Yahoo</td><td class="forum_topic_sig"><input type="text" name="yah" value="$uyah" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">ICQ</td><td class="forum_topic_sig"><input type="text" name="icq" value="$uicq" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">xFire</td><td class="forum_topic_sig"><input type="text" name="xfire" value="$uxfire" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">Gamertag</td><td class="forum_topic_sig"><input type="text" name="live" value="$ulive" style="width: 100%" /></td></tr>
-  <tr><td class="forum_topic_sig">Pandemic</td><td class="forum_topic_sig"><input type="text" name="pand" value="$pand" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['msn']} MSN</td><td class="forum_topic_sig"><input type="text" name="msn" value="$umsn" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['aim']} AIM</td><td class="forum_topic_sig"><input type="text" name="aim" value="$uaim" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['yahoo']} Yahoo</td><td class="forum_topic_sig"><input type="text" name="yah" value="$uyah" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['icq']} ICQ</td><td class="forum_topic_sig"><input type="text" name="icq" value="$uicq" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['xfire']} xFire</td><td class="forum_topic_sig"><input type="text" name="xfire" value="$uxfire" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['live']} Gamertag</td><td class="forum_topic_sig"><input type="text" name="live" value="$ulive" style="width: 100%" /></td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['pand_on']} Pandemic</td><td class="forum_topic_sig"><input type="text" name="pand" value="$pand" style="width: 100%" /></td></tr>
   <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['posting']}</strong></td></tr>
   <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['profile']['sig']}</td></tr>
   <tr><td class="forum_topic_sig" colspan="2">
@@ -1762,11 +1762,6 @@ $num_sticks = $stat_d['COUNT(*)'];
 $last_member = $stat_e['name'];
 $last_member_id = $stat_e['id'];
 $block_content = "<div style=\"text-align: center;\">";
-$block_content = $block_content . "<table border=\"0px\" cellspacing=\"8px\" align=\"center\"><tr><td align=\"center\"><img src=\"smiles/forum_read.png\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_no']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/forum_unread.png\" alt=\"{$_PWNDATA['forum']['board_has_new']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['board_has_new']}</font></td>\n";
-$block_content = $block_content . "<td width=\"15\">&nbsp;</td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/read.png\" alt=\"{$_PWNDATA['forum']['no_new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['no_new_posts']}</font></td>\n";
-$block_content = $block_content . "<td align=\"center\"><img src=\"smiles/unread.png\" alt=\"{$_PWNDATA['forum']['new_posts']}\"/><br /><font size=\"2\">{$_PWNDATA['forum']['new_posts']}</font></td></tr></table>\n";
 $block_content = $block_content . "{$_PWNDATA['forum']['there_are']}$num_posts{$_PWNDATA['forum']['posts_by']}$num_users{$_PWNDATA['forum']['members_in']}$num_topics{$_PWNDATA['forum']['_topics']}\n";
 $block_content = $block_content . "$num_sticks{$_PWNDATA['forum']['are_sticky']}\n";
 $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$last_member_id\">$last_member</a>\n<br />";

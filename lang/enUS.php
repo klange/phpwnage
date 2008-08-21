@@ -40,7 +40,6 @@ $_PWNDATA['exec_b'] = " seconds.";
 $_PWNDATA['article'] = "Article";
 $_PWNDATA['failed_login'] = "Login failed. Username or password incorrect.";
 $_PWNDATA['click_to_continue'] = "(Or click here if you are not redirected)";
-$_PWNDATA['tango'] = "Icons by the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Project</a>";
 
 // Page titles
 $_PWNDATA['admin_page_title'] = "Administration";
@@ -384,7 +383,7 @@ $_PWNDATA['forum']['there_are'] = "There are ";
 $_PWNDATA['forum']['posts_by'] = " posts by ";
 $_PWNDATA['forum']['members_in'] = " members in ";
 $_PWNDATA['forum']['_topics'] = " topics.";
-$_PWNDATA['forum']['are_sticky'] = " topics are stickies. The newest member is ";
+$_PWNDATA['forum']['are_sticky'] = " topics are stickies.<br />The newest member is ";
 $_PWNDATA['forum']['stats'] = "Forum Statistics";
 $_PWNDATA['forum']['at'] = "At";
 $_PWNDATA['forum']['ip'] = "IP";

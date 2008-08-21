@@ -1062,23 +1062,23 @@ $content = <<<END
 <table class="borderless_table" width="100%">
   <tr>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=news"><img src="admin/news.png" alt="{$_PWNDATA['admin']['groups']['news']}"/><br />
+    <a href="admin.php?view=news">{$_PWNICONS['admin']['news']}<br />
     {$_PWNDATA['admin']['groups']['news']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=forum"><img border="0" src="admin/forums.png" alt="{$_PWNDATA['admin']['groups']['forums']}" /><br />
+    <a href="admin.php?view=forum">{$_PWNICONS['admin']['forums']}<br />
     {$_PWNDATA['admin']['groups']['forums']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=blocks"><img src="admin/blocks.png" alt="{$_PWNDATA['admin']['groups']['blocks']}" /><br />
+    <a href="admin.php?view=blocks">{$_PWNICONS['admin']['blocks']}<br />
     {$_PWNDATA['admin']['groups']['blocks']}</a></td>
   </tr>
   <tr>
-    <td width="12%" height="1" align="center">    <a href="admin.php?view=members"><img src="admin/members.png" alt="{$_PWNDATA['admin']['groups']['members']}" /><br />
+    <td width="12%" height="1" align="center">    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}<br />
     {$_PWNDATA['admin']['groups']['members']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="forum.php?do=logoff"><img src="admin/logout.png" alt="{$_PWNDATA['admin']['groups']['logout']}" /><br />
+    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}<br />
     {$_PWNDATA['admin']['groups']['logout']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=pages"><img src="admin/pages.png" alt="{$_PWNDATA['admin']['groups']['pages']}" /><br />
+    <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}<br />
     {$_PWNDATA['admin']['groups']['pages']}</a></td>
   </tr>
 END;
@@ -1086,13 +1086,13 @@ if ($user['level'] >= $site_info['admin_rank']) {
 $content = $content . <<<END
   <tr>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=site_info"><img src="admin/site_info.png" alt="{$_PWNDATA['admin']['groups']['site_info']}" /><br />
+    <a href="admin.php?view=site_info">{$_PWNICONS['admin']['siteinfo']}<br />
     {$_PWNDATA['admin']['groups']['site_info']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=promo"><img src="admin/promos.png" alt="{$_PWNDATA['admin']['groups']['promo']}" /><br />
+    <a href="admin.php?view=promo">{$_PWNICONS['admin']['promos']}<br />
     {$_PWNDATA['admin']['groups']['promo']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=bans"><img src="admin/bans.png" alt="{$_PWNDATA['admin']['groups']['bans']}" /><br />
+    <a href="admin.php?view=bans">{$_PWNICONS['admin']['security']}<br />
     {$_PWNDATA['admin']['groups']['bans']}</a></td>
   </tr>
 END;
