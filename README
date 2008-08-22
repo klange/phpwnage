@@ -39,10 +39,11 @@ CHANGELOG:
  + Moved everything to XHTML
  + So many things that they just don't all fit here in the changelog, please take a look at the
    commit history on Launchpad for a complete listing of changes.
- TODO
- + Added moderator tools: merge, split, bulk-delete (topics, posts)
- + New Image Gallery, integrated into forums
+ + Added moderator tools: Split topics
  + Moved some static HTML elements into includes.php to ease future theming adjustments
+ TODO
+ + Added moderator tools: merge, bulk-delete (topics, posts)
+ + New Image Gallery, integrated into forums
 
 1.7.1 - Mar 25 2008
  + Replaced old icons for IM protocols, emoticons, and other interface elements with Tango icons for a much improved look.
