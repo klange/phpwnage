@@ -1271,7 +1271,7 @@ END;
             $post_bb = str_replace("<","&lt;",$post_bb);
             $post_bb = str_replace(">","&gt;",$post_bb);
             $block_content = $block_content . "</div><div style=\"display: none\" id=\"post_edit_" . $row['id'] . "\">";
-            $quick_editor = printPosterEditor('content',$row['id']) . <<<END
+            $block_content = $block_content . printPosterEditor('content',$row['id']) . <<<END
     <form action="forum.php" method="post" name="form_{$row['id']}">
         <input type="hidden" name="action" value="edit_reply" />
         <table class="forum_base" width="100%">
@@ -1282,19 +1282,13 @@ END;
         <input type="hidden" name="topic" value="{$row['topicid']}" />
     </form>
 END;
-            $post_bb = str_replace("\\","\\\\",$quick_editor);
-            $post_bb = str_replace("'","\\'",$post_bb);
-            $post_bb = str_replace("\"","&quot;",$post_bb);
-            $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
-            $post_bb = str_replace("&gt;","&amp;gt;",$post_bb);
-            $post_bb = str_replace("<","&lt;",$post_bb);
-            $post_bb = str_replace(">","&gt;",$post_bb);
         }
         $block_content = $block_content . "\n</div></td></tr><tr><td class=\"forum_topic_sig\">" . $contentb;
         $block_content = $block_content . "\n</td></tr><tr><td colspan=\"2\" class=\"forum_button_bar\" align=\"right\"><table class=\"borderless_table\"><tr>\n";
         // Is this the viewing member's post?
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
-            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_{$row['id']}'); flipVisibility('post_edit_{$row['id']}'); setContent('post_edit_{$row['id']}','$post_bb');",$_PWNDATA['forum']['qedit'],$_PWNICONS['buttons']['qedit']);
+            
+            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_{$row['id']}'); flipVisibility('post_edit_{$row['id']}');",$_PWNDATA['forum']['qedit'],$_PWNICONS['buttons']['qedit']);
             $block_content = $block_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit'],$_PWNICONS['buttons']['edit']);
         }
         // Moderation Tools 
