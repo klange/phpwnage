@@ -819,8 +819,7 @@ END;
 <input type="text" name="title" value="$toptitle" />
 <input type="submit" name="sub" value="{$_PWNDATA['forum']['edit_title']}" />
 </form>
-</div>
-<div class="forum_edit_title">&nbsp;<a href="javascript: flipVisibility('title_$diver'); flipVisibility('titleedit_$diver');"> {$_PWNDATA['forum']['edit_title']}</a></div>
+</div><div class="forum_edit_title">&nbsp;<a href="javascript: flipVisibility('title_$diver'); flipVisibility('titleedit_$diver');">{$_PWNDATA['forum']['edit_title']}</a></div>
 
 END;
         } else {
