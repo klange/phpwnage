@@ -267,12 +267,31 @@ function printPoster($where) {
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
+
 function addCode(code,codeclose) {
+var IE = document.all?true:false;
+if (IE) {
+    var element = document.form.$where;
+    if( document.selection ){
+	    // The current selection
+	    var range = document.selection.createRange();
+	    // We'll use this as a 'dummy'
+	    var stored_range = range.duplicate();
+	    // Select all text
+	    stored_range.moveToElementText( element );
+	    // Now move 'dummy' end point to end point of original range
+	    stored_range.setEndPoint( 'EndToEnd', range );
+	    // Now we can calculate start and end points
+	    element.selectionStart = stored_range.text.length - range.text.length;
+	    element.selectionEnd = element.selectionStart + range.text.length;
+    }
+}
+
 var Text = document.form.$where.value;
 var selectedText = Text.substring(document.form.$where.selectionStart, document.form.$where.selectionEnd);
 var beforeSelected = Text.substring(0,document.form.$where.selectionStart);
 var afterSelected = Text.substring(document.form.$where.selectionEnd,Text.length);
-document.form.$where.value = beforeSelected+code+selectedText+codeclose+afterSelected;
+document.form.$where.value = beforeSelected + code + selectedText + codeclose + afterSelected;
 }
 function setPreview() {
 var Text = document.form.$where.value;

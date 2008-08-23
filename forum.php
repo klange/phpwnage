@@ -1276,7 +1276,7 @@ END;
     <form action="forum.php" method="post" name="form_{$row['id']}">
         <input type="hidden" name="action" value="edit_reply" />
         <table class="forum_base" width="100%">
-            <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">{$post_bb}</textarea></td></tr>
+            <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">{$post_bb}</textarea></td></tr>
             <tr><td class="forum_topic_sig"><input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" /></td></tr>
         </table>
         <input type="hidden" name="id" value="{$row['id']}" />
@@ -1430,7 +1430,7 @@ if ($_GET['do'] == "newtopic") {
 <tr><td class="forum_topic_content" width="300">{$_PWNDATA['forum']['subject']}</td>
 <td class="forum_topic_content"><input type="text" name="subj" style="width:100%" /></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['forum']['body']}</td></tr>
-<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)"></textarea></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80"></textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" /></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
@@ -1484,7 +1484,7 @@ if ($_GET['do'] == "newreply") {
 <input type="hidden" name="action" value="new_reply" />
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_content">
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">$cont</textarea></td></tr>
+<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">$cont</textarea></td></tr>
 <tr><td class="forum_topic_sig">
 <input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" />
 </td></tr>
@@ -1530,7 +1530,7 @@ if ($_GET['do'] == "editreply") {
 <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="edit_reply" />
 <table class="forum_base" width="100%">
-<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
+<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">
 END;
     $post_bb = str_replace("\"","&quot;",$reply['content']);
     $post_bb = str_replace("<","&lt;",$post_bb);
