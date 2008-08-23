@@ -821,12 +821,12 @@ $post_content = $post_content . <<<END
 <input type="hidden" name="adm" value="true" />
 <input type="hidden" name="id" value="$uid" />
   <table class="forum_base" width="100%">
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['registration']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['registration']}</b></td></tr>
   <tr><td class="forum_topic_sig" width="300">{$_PWNDATA['profile']['username']}</td><td class="forum_topic_sig"><input type="text" name="name" value="$uname" style="width: 100%;" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['email']}</td><td class="forum_topic_sig"><input type="text" name="email" value="$umail" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['password']}</td><td class="forum_topic_sig"><input type="password" name="apass" value="" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="password" name="cpass" value="" style="width: 100%" /></td></tr>
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['messaging']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['messaging']}</b></td></tr>
   <tr><td class="forum_topic_sig">MSN</td><td class="forum_topic_sig"><input type="text" name="msn" value="$umsn" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">AIM</td><td class="forum_topic_sig"><input type="text" name="aim" value="$uaim" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">Yahoo</td><td class="forum_topic_sig"><input type="text" name="yah" value="$uyah" style="width: 100%" /></td></tr>
@@ -834,7 +834,7 @@ $post_content = $post_content . <<<END
   <tr><td class="forum_topic_sig">xFire</td><td class="forum_topic_sig"><input type="text" name="xfire" value="$uxfire" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">Gamertag</td><td class="forum_topic_sig"><input type="text" name="live" value="$ulive" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">Pandemic</td><td class="forum_topic_sig"><input type="text" name="pand" value="$pand" style="width: 100%" /></td></tr>
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['posting']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['posting']}</b></td></tr>
   <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['profile']['sig']}</td></tr>
   <tr><td class="forum_topic_sig" colspan="2"><textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['avatar']}</td>

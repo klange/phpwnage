@@ -582,7 +582,7 @@ END;
                     $post_bb = str_replace(">","&gt;",$post_bb);
                     $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
 
-                    $block_content = $block_content . "<center><font size=\"2\"><strong>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></strong><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></center></td>";
+                    $block_content = $block_content . "<center><font size=\"2\"><b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></center></td>";
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_topics\">$topics_in_board {$_PWNDATA['forum']['topics']}</td>";
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_posts\">" . getPostsInBoard($row['id']) . " {$_PWNDATA['forum']['posts']}</td></tr>";
                     $block_content = $block_content . "\n	<tr><td class=\"forum_board_desc\">" . $row['desc'] . "</td></tr>";
@@ -825,7 +825,7 @@ END;
         }
         $block_content = $block_content .  "</div>\n$edtitle</td><td rowspan=\"2\" width=\"30%\" class=\"forum_thread_last\">";
         $authid = $rowd['id'];
-        $block_content = $block_content .  "<center>\n<strong><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</strong> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</center></td></tr>";
+        $block_content = $block_content .  "<center>\n<b><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</b> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</center></td></tr>";
         $block_content = $block_content . "<tr><td class=\"forum_thread_author\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>$pagination</td></tr>";
     }
     $block_content = $block_content .   <<<END
@@ -1134,7 +1134,7 @@ END;
             if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
                 $PAGING = $PAGING . "<a href=\"forum.php?do=viewtopic&amp;id=$top_id&amp;p=$page_count\">$page_count</a>"; 
             } else {
-                $PAGING = $PAGING . "<strong>$page_count</strong>";
+                $PAGING = $PAGING . "<b>$page_count</b>";
             }
             if ($page_count != $pages + 1) {
                 $PAGING = $PAGING . ", ";
@@ -1578,12 +1578,12 @@ if ($_GET['do'] == "editprofile") {
   <input type="hidden" name="action" value="edit_profile" />
   <input type="hidden" name="id" value="$uid" />
   <table class="forum_base" width="100%">
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['registration']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['registration']}</b></td></tr>
   <tr><td class="forum_topic_sig" width="300">{$_PWNDATA['profile']['username']}</td><td class="forum_topic_sig">$uname <input type="hidden" name="name" value="$uname" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['email']}</td><td class="forum_topic_sig"><input type="text" name="email" value="$umail" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['password']}</td><td class="forum_topic_sig"><input type="password" name="apass" value="" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="password" name="cpass" value="" style="width: 100%" /></td></tr>
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['messaging']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['messaging']}</b></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['msn']} MSN</td><td class="forum_topic_sig"><input type="text" name="msn" value="$umsn" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['aim']} AIM</td><td class="forum_topic_sig"><input type="text" name="aim" value="$uaim" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['yahoo']} Yahoo</td><td class="forum_topic_sig"><input type="text" name="yah" value="$uyah" style="width: 100%" /></td></tr>
@@ -1591,7 +1591,7 @@ if ($_GET['do'] == "editprofile") {
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['xfire']} xFire</td><td class="forum_topic_sig"><input type="text" name="xfire" value="$uxfire" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['live']} Gamertag</td><td class="forum_topic_sig"><input type="text" name="live" value="$ulive" style="width: 100%" /></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['pand_on']} Pandemic</td><td class="forum_topic_sig"><input type="text" name="pand" value="$pand" style="width: 100%" /></td></tr>
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['posting']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['posting']}</b></td></tr>
   <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['profile']['sig']}</td></tr>
   <tr><td class="forum_topic_sig" colspan="2">
 END;
@@ -1600,7 +1600,7 @@ END;
   <tr><td class="forum_topic_sig" colspan="2"><textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['avatar']}</td>
   <td class="forum_topic_sig"><input type="text" name="avatar" value="$ava" style="width: 100%" /></td></tr>
-  <tr><td class="forum_thread_title" colspan="2"><strong>{$_PWNDATA['profile']['settings']}</strong></td></tr>
+  <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['settings']}</b></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['sidebar']}</td><td class="forum_topic_sig"><input name="sbonforum" type="checkbox" $sbon /> {$_PWNDATA['profile']['sidebar']}</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['theme']}</td><td class="forum_topic_sig">$theme_list</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['color']}</td><td class="forum_topic_sig">$color_list</td></tr>
@@ -1643,7 +1643,7 @@ if ($_GET['do'] == "viewprofile") {
     <tr><td class="forum_topic_sig" width="300">$modstatus</td>
     <td class="forum_topic_sig" rowspan="11" valign="top">{$_PWNICONS['profile']['quote_left']}$sig{$_PWNICONS['profile']['quote_right']}</td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
-  <tr><td class="forum_thread_title"><strong>{$_PWNDATA['profile']['messaging']}:</strong></td></tr>
+  <tr><td class="forum_thread_title"><b>{$_PWNDATA['profile']['messaging']}:</b></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['msn']} $umsn</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['aim']} $uaim</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNICONS['protocols']['yahoo']} $uyah</td></tr>
@@ -1770,7 +1770,7 @@ $block_content = $block_content . "{$_PWNDATA['forum']['there_are']}$num_posts{$
 $block_content = $block_content . "$num_sticks{$_PWNDATA['forum']['are_sticky']}\n";
 $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$last_member_id\">$last_member</a>\n<br />";
 
-$block_content = $block_content . "<strong>{$_PWNDATA['forum']['members_online']}</strong>: ";
+$block_content = $block_content . "<b>{$_PWNDATA['forum']['members_online']}</b>: ";
 $sql_temp = mysql_query("SELECT * FROM `sessions` ORDER BY `user`");
 while ($on_session = mysql_fetch_array($sql_temp)) {
 $on_temp = mysql_query("SELECT * FROM `users` WHERE `id`=" . $on_session['user']);

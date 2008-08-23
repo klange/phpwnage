@@ -212,7 +212,7 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[urls\])(.+?)(\[\/urls\])/si","makeURL('$2','<b>$2</b>')",$content);
     $content = preg_replace("/(\[u\])(.+?)(\[\/u\])/si","<u>$2</u>",$content);
     $content = preg_replace("/(\[i\])(.+?)(\[\/i\])/si","<i>$2</i>",$content);
-    $content = preg_replace("/(\[b\])(.+?)(\[\/b\])/si","<strong>$2</strong>",$content);
+    $content = preg_replace("/(\[b\])(.+?)(\[\/b\])/si","<b>$2</b>",$content);
     $content = preg_replace("/(\[java\])(.+?)(\[\/java\])/sie","bbJava('$2')",$content);
     $content = preg_replace("/(\[csharp\])(.+?)(\[\/csharp\])/sie","bbCSharp('$2')",$content);
     $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
