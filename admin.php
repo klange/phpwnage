@@ -730,15 +730,24 @@ while($entryName = readdir($myDirectory)) {
 closedir($myDirectory); // Close the directory
 sort($dirArray); // Sort the array (names should be changed for order, adding 01, etc)
 $indexCount	= count($dirArray); // Count...
+$odd = 1;
+$content = $content . "<table class=\"forum_base\" width=\"100%\">";
 for($index=0; $index < $indexCount; $index++) {
-        if (substr("$dirArray[$index]", 0, 1) != "."){ // don't list hidden files
+    if (substr("$dirArray[$index]", 0, 1) != "."){ // don't list hidden files
 		if (substr("$dirArray[$index]", strlen($dirArray[$index]) - 4, 4) == ".php") {
+            $odd = 1 - $odd;
+            if ($odd == 1) {
+                $back = "class=\"forum_odd_row\"";
+            } else {
+                $back = "class=\"forum_topic_sig\" ";
+            }
 			$block_title = "";
 			require "blocks/" . $dirArray[$index];
-			$content = $content . $block_title . " - " . $dirArray[$index] . "<br />";
+			$content = $content . "<tr><td $back>" . $block_title . " - " . $dirArray[$index] . "</td></tr>\n";
 		}
 	}
 }
+$content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['blocks_ext'], "", $content);
 
 $content = "<table class=\"borderless_table\" width=\"100%\">";
