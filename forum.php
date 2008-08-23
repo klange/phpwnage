@@ -574,6 +574,7 @@ END;
 
                     $post_bb = "[b]Posted by:[/b] " . $poster['name'] . "\n" . substr($post['content'],0,500);
                     $post_bb = bbDecode($post_bb);
+                    $post_bb = str_replace("\\","\\\\",$post_bb);
                     $post_bb = str_replace("'","\\'",$post_bb);
                     $post_bb = str_replace("\"","&quot;",$post_bb);
                     $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
@@ -748,6 +749,7 @@ END;
         $post_bb = "[b]Posted by:[/b] " . $rowb['name'] . "\n" . substr($firstpost['content'],0,500);
         $post_time = date("M jS, g:i a", $rowc['time']);
         $post_bb = bbDecode($post_bb);
+        $post_bb = str_replace("\\","\\\\",$post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
         $post_bb = str_replace("\"","&quot;",$post_bb); 
         $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
@@ -757,6 +759,7 @@ END;
         $spazm = "onmousemove=\"blam=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";
         $post_bb = "[b]Posted by:[/b] " . $rowd['name'] . "\n" . substr($rowc['content'],0,500);
         $post_bb = bbDecode($post_bb);
+        $post_bb = str_replace("\\","\\\\",$post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
         $post_bb = str_replace("\"","&quot;",$post_bb);
         $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
@@ -1247,6 +1250,7 @@ END;
         if ($has_messenger) {
             $messaging = "[b]" . $post_author['name'] . "[/b]\n[img]{$_PWNICONS['protocols']['messaging']}[/img]\n[img]{$_PWNICONS['protocols']['icons']['msn']}[/img]: $authmsn\n[img]{$_PWNICONS['protocols']['icons']['yahoo']}[/img]: $authyahoo\n[img]{$_PWNICONS['protocols']['icons']['aim']}[/img]: $authaim\n[img]{$_PWNICONS['protocols']['icons']['icq']}[/img]: $authicq\n[img]{$_PWNICONS['protocols']['icons']['xfire']}[/img]: $authxf\n[img]{$_PWNICONS['protocols']['icons']['live']}[/img]: $authlive\n[img]{$_PWNICONS['protocols']['icons']['pand']}[/img]: $authpand\n";
             $post_bb = bbDecode($messaging);
+            $post_bb = str_replace("\\","\\\\",$post_bb);
             $post_bb = str_replace("'","\\'",$post_bb);
             $post_bb = str_replace("\"","&quot;",$post_bb);
             $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
@@ -1279,7 +1283,8 @@ END;
         <input type="hidden" name="topic" value="{$row['topicid']}" />
     </form>
 END;
-            $post_bb = str_replace("'","\\'",$quick_editor);
+            $post_bb = str_replace("\\","\\\\",$quick_editor);
+            $post_bb = str_replace("'","\\'",$post_bb);
             $post_bb = str_replace("\"","&quot;",$post_bb);
             $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
             $post_bb = str_replace("&gt;","&amp;gt;",$post_bb);
