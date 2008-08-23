@@ -398,7 +398,9 @@ while ($cat = mysql_fetch_array($result))
     $catid = $cat['id'];
     $resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
     while ($board = mysql_fetch_array($resultb)) {
-        $content = $content . "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
+        if ($board['link'] == "NONE") {
+            $content = $content . "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
+        }
     }
     $content = $content . "\n</optgroup>";
 }
