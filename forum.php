@@ -559,7 +559,7 @@ END;
 		<td class="forum_board_title"><a href="forum.php?do=viewforum&amp;id=
 END;
                     $block_content = $block_content . $row['id'] . "\">" . $row['title'];
-                    $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\" class=\"forum_board_last\">";
+                    $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\" class=\"forum_board_last\" align=\"center\">";
                     $resulta = mysql_query("SELECT * FROM topics WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
                     $topic = mysql_fetch_array($resulta);
                     $resulta = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' ORDER BY id DESC LIMIT 1", $db);
@@ -582,7 +582,7 @@ END;
                     $post_bb = str_replace(">","&gt;",$post_bb);
                     $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
 
-                    $block_content = $block_content . "<center><font size=\"2\"><b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></center></td>";
+                    $block_content = $block_content . "<font size=\"2\"><b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></td>";
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_topics\">$topics_in_board {$_PWNDATA['forum']['topics']}</td>";
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_posts\">" . getPostsInBoard($row['id']) . " {$_PWNDATA['forum']['posts']}</td></tr>";
                     $block_content = $block_content . "\n	<tr><td class=\"forum_board_desc\">" . $row['desc'] . "</td></tr>";
@@ -823,9 +823,9 @@ END;
         } else {
             $edtitle = " ";
         }
-        $block_content = $block_content .  "</div>\n$edtitle</td><td rowspan=\"2\" width=\"30%\" class=\"forum_thread_last\">";
+        $block_content = $block_content .  "</div>\n$edtitle</td><td rowspan=\"2\" width=\"30%\" class=\"forum_thread_last\" align=\"center\">";
         $authid = $rowd['id'];
-        $block_content = $block_content .  "<center>\n<b><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</b> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</center></td></tr>";
+        $block_content = $block_content .  "\n<b><a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;last=1\" $spazma>{$_PWNDATA['forum']['last_post']}</a> {$_PWNDATA['forum']['by']}:</b> <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $rowd['name'] . "</a><br />{$_PWNDATA['forum']['at']}: $post_time</td></tr>";
         $block_content = $block_content . "<tr><td class=\"forum_thread_author\">\n{$_PWNDATA['forum']['author']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a>$pagination</td></tr>";
     }
     $block_content = $block_content .   <<<END
@@ -1483,7 +1483,7 @@ END;
     $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
     $block_content = $block_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" /></form>";
     $resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
-    $block_content = $block_content . "<tr><td class=\"forum_topic_sig\"><center><b>{$_PWNDATA['forum']['recent']}</b></center></td></tr></table><table class=\"forum_base\" width=\"100%\">\n";
+    $block_content = $block_content . "<tr><td class=\"forum_topic_sig\" align=\"center\"><b>{$_PWNDATA['forum']['recent']}</b></td></tr></table><table class=\"forum_base\" width=\"100%\">\n";
     while ($rowz = mysql_fetch_array($resultz)) {
         $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
@@ -1639,7 +1639,7 @@ if ($_GET['do'] == "viewprofile") {
     }
     $block_content = $block_content . <<<END
     <table class="forum_base" width="100%">
-    <tr><td class="forum_profile_user"><center>$ava</center></td><td class="forum_profile_user">$uname</td></tr>
+    <tr><td class="forum_profile_user" align="center">$ava</td><td class="forum_profile_user">$uname</td></tr>
     <tr><td class="forum_topic_sig" width="300">$modstatus</td>
     <td class="forum_topic_sig" rowspan="11" valign="top">{$_PWNICONS['profile']['quote_left']}$sig{$_PWNICONS['profile']['quote_right']}</td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
