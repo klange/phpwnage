@@ -1268,27 +1268,29 @@ END;
             $post_bb = str_replace("<","&lt;",$post_bb);
             $post_bb = str_replace(">","&gt;",$post_bb);
             $block_content = $block_content . "</div><div style=\"display: none\" id=\"post_edit_" . $row['id'] . "\">";
-                $block_content = $block_content . printPosterEditor('content',$row['id']) . <<<END
-            <form action="forum.php" method="post" name="form_{$row['id']}">
-<input type="hidden" name="action" value="edit_reply" />
-<table class="forum_base" width="100%">
-<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">
+            $quick_editor = printPosterEditor('content',$row['id']) . <<<END
+    <form action="forum.php" method="post" name="form_{$row['id']}">
+        <input type="hidden" name="action" value="edit_reply" />
+        <table class="forum_base" width="100%">
+            <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" onselect="copySelection(this)">{$post_bb}</textarea></td></tr>
+            <tr><td class="forum_topic_sig"><input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" /></td></tr>
+        </table>
+        <input type="hidden" name="id" value="{$row['id']}" />
+        <input type="hidden" name="topic" value="{$row['topicid']}" />
+    </form>
 END;
-    $block_content = $block_content . $post_bb;
-    $block_content = $block_content . <<<END
-</textarea></td></tr>
-<tr><td class="forum_topic_sig">
-<input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" /></td></tr>
-</table>
-END;
-    $block_content = $block_content . "<input type=\"hidden\" name=\"id\" value=\"" . $row['id'] . "\" />";
-    $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $row['topicid'] . "\" /></form>";
+            $post_bb = str_replace("'","\\'",$quick_editor);
+            $post_bb = str_replace("\"","&quot;",$post_bb);
+            $post_bb = str_replace("&lt;","&amp;lt;",$post_bb);
+            $post_bb = str_replace("&gt;","&amp;gt;",$post_bb);
+            $post_bb = str_replace("<","&lt;",$post_bb);
+            $post_bb = str_replace(">","&gt;",$post_bb);
         }
         $block_content = $block_content . "\n</div></td></tr><tr><td class=\"forum_topic_sig\">" . $contentb;
         $block_content = $block_content . "\n</td></tr><tr><td colspan=\"2\" class=\"forum_button_bar\" align=\"right\"><table class=\"borderless_table\"><tr>\n";
         // Is this the viewing member's post?
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
-            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_" . $row['id'] . "'); flipVisibility('post_edit_" . $row['id'] . "')",$_PWNDATA['forum']['qedit'],$_PWNICONS['buttons']['qedit']);
+            $block_content = $block_content . drawButton("javascript:flipVisibility('post_content_{$row['id']}'); flipVisibility('post_edit_{$row['id']}'); setContent('post_edit_{$row['id']}','$post_bb');",$_PWNDATA['forum']['qedit'],$_PWNICONS['buttons']['qedit']);
             $block_content = $block_content . drawButton("forum.php?do=editreply&amp;id=" . $row['id'],$_PWNDATA['forum']['edit'],$_PWNICONS['buttons']['edit']);
         }
         // Moderation Tools 
@@ -1725,6 +1727,9 @@ function flipVisibility(what) {
     } else {
         document.getElementById(what).style.display = "inline"
     }
+}
+function setContent(what, content) {
+    document.getElementById(what).innerHTML = content;
 }
     //]]>
     </script>
