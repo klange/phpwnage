@@ -458,20 +458,20 @@ END;
 drawBlock("{$_PWNDATA['admin']['forms']['page_add']}","",$content);
 
 // View, edit, and delete the existing pages
-$content = "<table class=\"borderless_table\" width=\"100%\">";
+$content = "<table class=\"forum_base\" width=\"100%\">";
 $odd = 1;
 $result = mysql_query("SELECT * FROM `pages` ORDER BY `display_name` DESC");
 while ($page = mysql_fetch_array($result))
 {
 $odd = 1 - $odd;
 if ($odd == 1) {
-$back = "class=\"odd_cell\"";
+$back = "class=\"forum_odd_row\"";
 } else {
-$back = "";
+$back = "class=\"forum_topic_sig\" ";
 }
 $content = $content . "<tr><td $back>";
 $content = $content . $page['display_name'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=del_page&amp;page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"pages.php?page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
+$content = $content . "<td $back width=\"200\"><a href=\"admin.php?do=del_page&amp;page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a></td><td $back width=\"200\"><a href=\"pages.php?page=" . $page['name'] . "\">{$_PWNDATA['admin']['forms']['view']} / {$_PWNDATA['admin']['forms']['edit']}</a></td>";
 $content = $content . "</tr>";
 
 }
