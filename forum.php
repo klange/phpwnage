@@ -446,8 +446,8 @@ var blama = false;
 var magicnumber = 0;
 function getMouseXY(e) {
     if (IE) {
-        tempX = event.clientX + document.body.scrollLeft;
-        tempY = event.clientY + document.body.scrollTop;
+        tempX = event.clientX + document.documentElement.scrollLeft;
+        tempY = event.clientY + document.documentElement.scrollTop;
     } else {
         tempX = e.pageX;
         tempY = e.pageY;
