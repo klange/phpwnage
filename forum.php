@@ -1357,13 +1357,15 @@ END;
 	        $catid = $cat['id'];
 	        $resultb = mysql_query("SELECT * FROM `boards` WHERE `catid`=$catid ORDER BY `orderid`");
 	        while ($board = mysql_fetch_array($resultb)) {
-		        if ($user['level'] >= $board['vis_level']) {
-		            if ($topic['board'] == $board['id']) {
-		            $block_content = $block_content . "\n<option selected=\"selected\" label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
-		            } else {
-		            $block_content = $block_content . "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
+	            if ($board['link'] == "NONE") {
+		            if ($user['level'] >= $board['vis_level']) {
+		                if ($topic['board'] == $board['id']) {
+		                $block_content = $block_content . "\n<option selected=\"selected\" label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
+		                } else {
+		                $block_content = $block_content . "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
+		                }
 		            }
-		        }	
+		        }
 	        }
 	        $block_content = $block_content . "\n</optgroup>";
         }
