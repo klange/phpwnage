@@ -273,15 +273,10 @@ var IE = document.all?true:false;
 if (IE) {
     var element = document.form.$where;
     if( document.selection ){
-	    // The current selection
 	    var range = document.selection.createRange();
-	    // We'll use this as a 'dummy'
 	    var stored_range = range.duplicate();
-	    // Select all text
 	    stored_range.moveToElementText( element );
-	    // Now move 'dummy' end point to end point of original range
 	    stored_range.setEndPoint( 'EndToEnd', range );
-	    // Now we can calculate start and end points
 	    element.selectionStart = stored_range.text.length - range.text.length;
 	    element.selectionEnd = element.selectionStart + range.text.length;
     }
@@ -336,6 +331,18 @@ function printPosterMini($where, $topID) {
 <script type="text/javascript">
 //<![CDATA[
 function addCode(code,codeclose) {
+var IE = document.all?true:false;
+if (IE) {
+    var element = document.form.$where;
+    if( document.selection ){
+	    var range = document.selection.createRange();
+	    var stored_range = range.duplicate();
+	    stored_range.moveToElementText( element );
+	    stored_range.setEndPoint( 'EndToEnd', range );
+	    element.selectionStart = stored_range.text.length - range.text.length;
+	    element.selectionEnd = element.selectionStart + range.text.length;
+    }
+}
 var Text = document.form.$where.value;
 var selectedText = Text.substring(document.form.$where.selectionStart, document.form.$where.selectionEnd);
 var beforeSelected = Text.substring(0,document.form.$where.selectionStart);
@@ -375,6 +382,18 @@ function printPosterEditor($where, $pid) {
 <script type="text/javascript">
 //<![CDATA[
 function addCode$what(code,codeclose) {
+var IE = document.all?true:false;
+if (IE) {
+    var element = document.form.$where;
+    if( document.selection ){
+	    var range = document.selection.createRange();
+	    var stored_range = range.duplicate();
+	    stored_range.moveToElementText( element );
+	    stored_range.setEndPoint( 'EndToEnd', range );
+	    element.selectionStart = stored_range.text.length - range.text.length;
+	    element.selectionEnd = element.selectionStart + range.text.length;
+    }
+}
 var Text = document.form$what.$where.value;
 var selectedText = Text.substring(document.form$what.$where.selectionStart, document.form$what.$where.selectionEnd);
 var beforeSelected = Text.substring(0,document.form$what.$where.selectionStart);
