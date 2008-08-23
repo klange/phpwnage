@@ -205,6 +205,7 @@ function BBDecode($content,$allowhtml = false) {
     $order   = array("\r\n", "\n", "\r");
     $content = str_replace($order,"<br />",$content); // line break
     // Standard bbCode replacements follow
+    $content = str_replace("[site_url]",$site_info['url'],$content);
     $content = preg_replace("/(\[url\])(.+?)(\[\/\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[so\])(.+?)(\[\/so\])/si","<s>$2</s>",$content);
