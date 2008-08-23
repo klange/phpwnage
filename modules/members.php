@@ -23,6 +23,7 @@ $mod['right'] = "Viewing List";
 $mod['right_inner'] = "Members of " . $site_info['name'];
 function mod_print()
 {
+global $_PWNDATA, $_PWNICONS;
 $content = "<table class=\"forum_base\" width=\"100%\">";
 $content = $content . "<tr><td class=\"forum_thread_title\" width=\"20\"><a href=\"modules.php?m=members&o=uid\">#</a></td><td class=\"forum_thread_title\"><a href=\"modules.php?m=members&o=uname\">Username</a></td><td class=\"forum_thread_title\" width=\"100\">PM</td><td class=\"forum_thread_title\" width=\"120\">Messaging</td><td class=\"forum_thread_title\" width=\"30\"><a href=\"modules.php?m=members&o=posts\">Posts</a></td></tr>\n";
 $odd = 0;
@@ -81,61 +82,61 @@ $authicq = "";
 $authlive = "";
 $authxf = "";
 $authid = $post_author['id'];
-if ($post_author['msn'] != "") {
-    $has_messenger = true;
-    $authmsn = $post_author['msn'];
-    $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/msn.png\" border=\"0\" alt=\"MSN\"/></a>";
-}
-if ($post_author['yahoo'] != "") {
-    $has_messenger = true;
-    $authyahoo = $post_author['yahoo'];
-    $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\"><img src=\"smiles/yahoo.png\" border=\"0\" alt=\"Yahoo\"/></a>";
-}
-if ($post_author['aim'] != "") { // AIM we're actually going to do something usefull for...
-    $has_messenger = true;
-    $authaim = $post_author['aim'];
-    $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\"><img src=\"smiles/aim.png\" border=\"0\" alt=\"AIM\"/></a>";
-}
-if ($post_author['icq'] != "") { // ICQ as well...
-    $has_messenger = true;
-    $authicq = $post_author['icq'];
-    $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\"><img src=\"smiles/icq.png\" border=\"0\" alt=\"ICQ\"/></a>";
-}
-if ($post_author['xfire'] != "") { // xfire
-    $has_messenger = true;
-    $authxf = $post_author['xfire'];
-    $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\"><img src=\"smiles/xfire.png\" border=\"0\" alt=\"xFire\"/></a>";
-}
-if ($post_author['live'] != "") { // xfire
-    $has_messenger = true;
-    $authlive = str_replace(" ","+",$post_author['live']);
-    $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\"><img src=\"smiles/live.png\" border=\"0\" alt=\"Live\"/></a>";
-}
-if ($post_author['pand'] != "") { // Pandemic
-    $has_messenger = true;
-    $authpand = $post_author['pand']; // We assume we're using the default server from this point on.
-    $auth_info = $auth_info . "<a href=\"pandemic://sendmessage.$authpand\">";
-    if ($_CHECKPANDEMIC) { // If we're going to look...
-        $sock = socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
-        socket_connect($sock,"76.189.178.118",60009); // If you run a custom server, change this!
-        socket_send($sock,"10",strlen("10"),0);
-        $return = socket_read($sock,1024);
-        $return = socket_read($sock,1024);
-        $serverInfo = explode("|_|",$return);
-        socket_send($sock,"3|_|" . $authpand,strlen("3|_|" . $authpand),0);
-        $return = socket_read($sock,1024);
-        $return = socket_read($sock,1024);
-        $userInfo = explode("|_|",$return);
-        socket_close($sock);
-        if ($userInfo[1] == "1") {
-        $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
-        } else {
-        $auth_info = $auth_info . "<img src=\"smiles/panoff.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+        if ($post_author['msn'] != "") {
+            $has_messenger = true;
+            $authmsn = $post_author['msn'];
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\">{$_PWNICONS['protocols']['msn']}</a>";
         }
-    } else {
-        $auth_info = $auth_info . "<img src=\"smiles/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
-    }
-}
+        if ($post_author['yahoo'] != "") {
+            $has_messenger = true;
+            $authyahoo = $post_author['yahoo'];
+            $auth_info = $auth_info . "<a href=\"forum.php?do=viewprofile&amp;id=$authid\">{$_PWNICONS['protocols']['yahoo']}</a>";
+        }
+        if ($post_author['aim'] != "") { // AIM we're actually going to do something usefull for...
+            $has_messenger = true;
+            $authaim = $post_author['aim'];
+            $auth_info = $auth_info . "<a href=\"aim:goim?screenname=$authaim&amp;message=Hello+Are+you+there?\">{$_PWNICONS['protocols']['aim']}</a>";
+        }
+        if ($post_author['icq'] != "") { // ICQ as well...
+            $has_messenger = true;
+            $authicq = $post_author['icq'];
+            $auth_info = $auth_info . "<a href=\"http://wwp.icq.com/scripts/search.dll?to=$authicq\">{$_PWNICONS['protocols']['icq']}</a>";
+        }
+        if ($post_author['xfire'] != "") { // xfire
+            $has_messenger = true;
+            $authxf = $post_author['xfire'];
+            $auth_info = $auth_info . "<a href=\"http://www.xfire.com/profile/$authxf\">{$_PWNICONS['protocols']['xfire']}</a>";
+        }
+        if ($post_author['live'] != "") { // xfire
+            $has_messenger = true;
+            $authlive = str_replace(" ","+",$post_author['live']);
+            $auth_info = $auth_info . "<a href=\"http://live.xbox.com/en-US/profile/profile.aspx?pp=0&amp;GamerTag=$authlive\">{$_PWNICONS['protocols']['live']}</a>";
+        }
+        if ($post_author['pand'] != "") { // Pandemic
+            $has_messenger = true;
+            $authpand = $post_author['pand']; // We assume we're using the default server from this point on.
+            $auth_info = $auth_info . "<a href=\"pandemic://sendmessage.$authpand\">";
+            if ($_CHECKPANDEMIC) { // If we're going to look...
+	            $sock = socket_create(AF_INET,SOCK_DGRAM,SOL_UDP);
+	            socket_connect($sock,"76.189.178.118",60009); // If you run a custom server, change this!
+	            socket_send($sock,"10",strlen("10"),0);
+	            $return = socket_read($sock,1024);
+	            $return = socket_read($sock,1024);
+	            $serverInfo = explode("|_|",$return);
+	            socket_send($sock,"3|_|" . $authpand,strlen("3|_|" . $authpand),0);
+	            $return = socket_read($sock,1024);
+	            $return = socket_read($sock,1024);
+	            $userInfo = explode("|_|",$return);
+	            socket_close($sock);
+	            if ($userInfo[1] == "1") {
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
+	            } else {
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_off'];
+	            }
+            } else {
+                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
+            }
+        }
 $content = $content . "</td><td $back><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">Send a PM</a></td><td $back>$auth_info</td><td $back>$post_count</td></tr>";
 }
 $content = $content . "</table>";
