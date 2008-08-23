@@ -1073,38 +1073,38 @@ $content = <<<END
 <table class="borderless_table" width="100%">
   <tr>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=news">{$_PWNICONS['admin']['news']}<br />
-    {$_PWNDATA['admin']['groups']['news']}</a></td>
+    <a href="admin.php?view=news">{$_PWNICONS['admin']['news']}</a><br />
+    <a href="admin.php?view=news">{$_PWNDATA['admin']['groups']['news']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=forum">{$_PWNICONS['admin']['forums']}<br />
-    {$_PWNDATA['admin']['groups']['forums']}</a></td>
+    <a href="admin.php?view=forum">{$_PWNICONS['admin']['forums']}</a><br />
+    <a href="admin.php?view=forum">{$_PWNDATA['admin']['groups']['forums']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=blocks">{$_PWNICONS['admin']['blocks']}<br />
-    {$_PWNDATA['admin']['groups']['blocks']}</a></td>
+    <a href="admin.php?view=blocks">{$_PWNICONS['admin']['blocks']}</a><br />
+    <a href="admin.php?view=blocks">{$_PWNDATA['admin']['groups']['blocks']}</a></td>
   </tr>
   <tr>
-    <td width="12%" height="1" align="center">    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}<br />
-    {$_PWNDATA['admin']['groups']['members']}</a></td>
+    <td width="12%" height="1" align="center">    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}</a><br />
+    <a href="admin.php?view=members">{$_PWNDATA['admin']['groups']['members']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}<br />
-    {$_PWNDATA['admin']['groups']['logout']}</a></td>
+    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}</a><br />
+    <a href="forum.php?do=logoff">{$_PWNDATA['admin']['groups']['logout']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}<br />
-    {$_PWNDATA['admin']['groups']['pages']}</a></td>
+    <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}</a><br />
+    <a href="admin.php?view=pages">{$_PWNDATA['admin']['groups']['pages']}</a></td>
   </tr>
 END;
 if ($user['level'] >= $site_info['admin_rank']) {
 $content = $content . <<<END
   <tr>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=site_info">{$_PWNICONS['admin']['siteinfo']}<br />
-    {$_PWNDATA['admin']['groups']['site_info']}</a></td>
+    <a href="admin.php?view=site_info">{$_PWNICONS['admin']['siteinfo']}</a><br />
+    <a href="admin.php?view=site_info">{$_PWNDATA['admin']['groups']['site_info']}</a></td>
     <td width="13%" height="1" align="center">
-    <a href="admin.php?view=promo">{$_PWNICONS['admin']['promos']}<br />
-    {$_PWNDATA['admin']['groups']['promo']}</a></td>
+    <a href="admin.php?view=promo">{$_PWNICONS['admin']['promos']}</a><br />
+    <a href="admin.php?view=promo">{$_PWNDATA['admin']['groups']['promo']}</a></td>
     <td width="12%" height="1" align="center">
-    <a href="admin.php?view=bans">{$_PWNICONS['admin']['security']}<br />
-    {$_PWNDATA['admin']['groups']['bans']}</a></td>
+    <a href="admin.php?view=bans">{$_PWNICONS['admin']['security']}</a><br />
+    <a href="admin.php?view=bans">{$_PWNDATA['admin']['groups']['bans']}</a></td>
   </tr>
 END;
 }
