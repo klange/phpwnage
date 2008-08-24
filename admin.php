@@ -1015,7 +1015,7 @@ drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
 $content = "";
 $content = $content . "<table class=\"forum_base\" width=\"100%\">";
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- {$_PWNDATA['admin']['forms']['ranks_users']} --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"><b>{$_PWNDATA['admin']['forms']['ranks_users']}</b></td></tr>";
 $odd = 1;
 while ($member = mysql_fetch_array($members_result))
 {
@@ -1037,7 +1037,7 @@ $content = $content . "</tr>";
 }
 $odd = 1;
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- <font class='mod_name'>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</font> --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"><font class='mod_name'><b>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</b></font></td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
@@ -1053,7 +1053,7 @@ $content = $content . "</tr>";
 }
 $odd = 1;
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- <font class='adm_name'>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</font> --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"><font class='adm_name'><b>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</b></font></td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
