@@ -451,6 +451,12 @@ $_PWNDATA['forum']['modtools']['split'] = "Split";
 $_PWNDATA['forum']['modtools']['topic_split'] = "Topic split";
 $_PWNDATA['forum']['modtools']['tooshort'] = "Topic title was too short. Use a longer title.";
 
+$_PWNDATA['forum']['modtools']['mergetopic'] = "Merge Topic";
+$_PWNDATA['forum']['modtools']['merging'] = "Merging ";
+$_PWNDATA['forum']['modtools']['merge'] = "Merge";
+$_PWNDATA['forum']['modtools']['nonespecified'] = "No topic specified to merge into.";
+$_PWNDATA['forum']['modtools']['merged'] = "Topics merged";
+
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";
 $_PWNDATA['poster']['italic'] = "Italic";

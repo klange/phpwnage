@@ -234,6 +234,26 @@ if ($_POST['action'] == "split_topic") {
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['topic_split'],"forum.php?do=viewforum&amp;id=" . $_POST['board']);    
 }
 
+if ($_POST['action'] == "merge_topics") {
+    $mergeid = "NONE";
+    while (list($key,$value) = each($_POST)) {
+        if (strstr($key,"topic_")) {
+            if ($value == "on") {
+                $mergeid = str_replace("topic_","",$key);
+            }
+        }
+    }
+    if ($mergeid == "NONE") {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['nonespecified']);
+    }
+    $result = mysql_query("SELECT * FROM `posts` WHERE `topicid`={$_POST['topic']}");
+    while ($post = mysql_fetch_array($result)) {
+        mysql_query("UPDATE `posts` SET `topicid`={$mergeid} WHERE `id`={$post['id']}");
+    }
+    mysql_query("DELETE FROM `topics` WHERE `topics`.`id` =" . $_POST['topic']);
+    messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['merged'],"forum.php?do=viewforum&amp;id=" . $_POST['board']);
+}
+
 // If an old post is being edited
 if ($_POST['action'] == "edit_profile") {
     $userid = $user['id'];
@@ -1022,6 +1042,47 @@ END;
     $post_content = makeBlock($_PWNDATA['forum']['modtools']['splittopic'],"",$block_content);
 }
 
+if ($_GET['do'] == "mergetopics") {
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
+    }
+    $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
+    $topic = mysql_fetch_array($result);
+    $resultb = mysql_query("SELECT * FROM boards WHERE id='" . $topic['board'] . "'", $db);
+    $board = mysql_fetch_array($resultb);   
+    $post_title_add = " :: " . $_PWNDATA['forum']['modtools']['mergetopic'];
+    $post_sub_add = " > " . $_PWNDATA['forum']['modtools']['mergetopic'];
+        $post_sub_r = post_sub_r($user['id']);
+    $block_content = <<<END
+<form method="post" action="forum.php" name="form">
+<input type="hidden" name="action" value="merge_topics" />
+<input type="hidden" name="topic" value="{$topic['id']}" />
+<input type="hidden" name="board" value="{$board['id']}" />
+<table class="forum_base" width="100%">
+<tr><td colspan="3" class="forum_topic_content">{$_PWNDATA['forum']['modtools']['merging']}<a href="forum.php?do=viewtopic&amp;id={$topic['id']}">{$topic['title']}</a></td></tr>
+END;
+    $result = mysql_query("SELECT * FROM `topics` WHERE `board`={$board['id']}", $db);
+    while ($row = mysql_fetch_array($result)) {
+        if ($row['id'] != $topic['id']) {
+            $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $row['authorid'] . "'", $db);
+            $post_author = mysql_fetch_array($resultb);
+            $block_content = $block_content . "<tr><td class=\"glow\" width=\"150\">";
+            $block_content = $block_content . $post_author['name'];
+            $block_content = $block_content . "</td><td class=\"forum_topic_content\">";
+            $block_content = $block_content . $row['title'] . "</td><td class=\"forum_topic_content\" width=\"20\">";
+            $block_content = $block_content . "<input type=\"radio\" name=\"topic_" . $row['id'] . "\" />";
+            $block_content = $block_content . "</td></tr>";
+        }
+    }
+    $block_content = $block_content . <<<END
+<tr><td colspan="3" class="forum_topic_sig">
+<input type="submit" value="{$_PWNDATA['forum']['modtools']['merge']}" />
+</td></tr>
+END;
+    $block_content = $block_content . "</table></form>";
+    $post_content = makeBlock($_PWNDATA['forum']['modtools']['splittopic'],"",$block_content);
+}
+
 // Show the posts in this topic.
 if ($_GET['do'] == "viewtopic") {
     $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
@@ -1371,6 +1432,7 @@ END;
         }
         $block_content = $block_content . "</select>\n<input type=\"submit\" value=\"{$_PWNDATA['forum']['move_topic']}\" /></form></div></td>";
         $block_content = $block_content . drawButton("forum.php?do=splittopic&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['splittopic']);
+        $block_content = $block_content . drawButton("forum.php?do=mergetopics&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['mergetopic']);
     }
     $block_content = $block_content . $PAGING;
     $block_content = $block_content .  <<<END

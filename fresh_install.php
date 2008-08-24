@@ -471,7 +471,7 @@ CREATE TABLE  `posts` (
   `content` text collate latin1_general_ci NOT NULL,
   `time` varchar(100) collate latin1_general_ci NOT NULL default '',
   `ip` varchar(50) collate latin1_general_ci NOT NULL default '',
-  KEY `id` (`id`),
+  PRIMARY KEY `id` (`id`),
   FULLTEXT KEY `search` (`content`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
