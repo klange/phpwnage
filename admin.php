@@ -798,9 +798,9 @@ $back = "class=\"forum_odd_row\"";
 $back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td>\n";
-$content = $content . "<td $back><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_pm']}</a></td>\n";
-$content = $content . "<td $back><a href=\"admin.php?do=edit_prof&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_edit']}</a></td>\n";
-$content = $content . "<td $back><a href=\"admin.php?do=del_user&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_delete']}</a></td>\n";
+$content = $content . "<td $back width=\"150\"><a href=\"forum.php?do=newpm&amp;to=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_pm']}</a></td>\n";
+$content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=edit_prof&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_edit']}</a></td>\n";
+$content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=del_user&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['members_delete']}</a></td>\n";
 $content = $content . "</tr>";
 }
 $content = $content . "</table>";
