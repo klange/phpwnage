@@ -313,6 +313,9 @@ $_PWNDATA['admin']['groups']['site_info'] = "Site Info";
 $_PWNDATA['admin']['groups']['promo'] = "User Promotions";
 $_PWNDATA['admin']['groups']['bans'] = "Security";
 
+$_PWNDATA['admin']['og_updates'] = "PHPwnage Updates";
+$_PWNDATA['admin']['update_failed'] = "Failed to retreive update data from Oasis-Games.com";
+
 
 $_PWNDATA['forum']['invalid_board'] = "Invalid board specified.";
 $_PWNDATA['forum']['improper_permission'] = "You do not have the proper permissions to view this board.";

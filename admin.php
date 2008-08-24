@@ -1066,8 +1066,22 @@ $content = $content . "</table>";
 drawBlock($_PWNDATA['admin']['forms']['members'],"",$content);
 }
 
-
-
+// Retreive update information from O-G
+// This is a short bit of text.
+if (!isset($_GET['do']) || $_GET['do'] == "") {
+    $pwnversion = $_PWNVERSION['major'] . "_" . $_PWNVERSION['minor'] . $_PWNVERSION['extra'];
+    $update_data = file_get_contents("http://oasis-games.com/pwn/updates_{$pwnversion}");
+    // Make sure this is valid. If it has <body, it's not, because it's either
+    // O-G's 404 page or someone else with a man-in-the-middle (Not necessarily intentional
+    // it could be a proxy page for an internet access registration or something)
+    if ($update_data && !stristr($update_data,"<body")) {
+        $content = $update_data;
+    } else {
+        // In which case, we just give the dump message.
+        $content = $_PWNDATA['admin']['update_failed'];
+    }
+    drawBlock($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['og_updates'],$content);
+}
 
 $content = <<<END
 <table class="borderless_table" width="100%">

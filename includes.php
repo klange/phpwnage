@@ -22,6 +22,10 @@ session_start(); // Always ensure a session.
 require "lang/enUS.php";
 //require "icons.php"; // TODO: Move this to be theme-safe.
 
+$_PWNVERSION['major'] = 1;
+$_PWNVERSION['minor'] = 8;
+$_PWNVERSION['extra'] = "b3";
+
 $result = mysql_query("SELECT * FROM info", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
 function mse($source) {
