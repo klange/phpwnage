@@ -1029,7 +1029,7 @@ if ($member['level'] < 1) {
 $add = " {$_PWNDATA['admin']['forms']['ranks_banned']}";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . $add . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
@@ -1044,7 +1044,7 @@ $back = "class=\"forum_odd_row\"";
 $back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
@@ -1059,7 +1059,7 @@ $back = "class=\"forum_odd_row\"";
 $back = "class=\"forum_topic_sig\"";
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
-$content = $content . "<td $back><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
+$content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $content = $content . "</table>";
