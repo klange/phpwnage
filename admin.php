@@ -1014,7 +1014,7 @@ drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
 $content = "";
 $content = $content . "<table class=\"forum_base\" width=\"100%\">";
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- {$_PWNDATA['admin']['forms']['ranks_users']} --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- {$_PWNDATA['admin']['forms']['ranks_users']} --- </td></tr>";
 $odd = 1;
 while ($member = mysql_fetch_array($members_result))
 {
@@ -1028,13 +1028,13 @@ $add = "";
 if ($member['level'] < 1) {
 $add = " {$_PWNDATA['admin']['forms']['ranks_banned']}";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . $add . "</td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . " $add</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- <font class='mod_name'>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</font> --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- <font class='mod_name'>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</font> --- </td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
@@ -1043,13 +1043,13 @@ $back = "class=\"forum_odd_row\"";
 } else {
 $back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . "</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
 $odd = 1;
 $members_result = mysql_query("SELECT * FROM `users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `level`, `name`");
-$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"> --- <font class='adm_name'>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</font> --- </td></tr>";
+$content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"> --- <font class='adm_name'>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</font> --- </td></tr>";
 while ($member = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
@@ -1058,7 +1058,7 @@ $back = "class=\"forum_odd_row\"";
 } else {
 $back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a> - " . $member['level'] . "</td>";
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . "</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
