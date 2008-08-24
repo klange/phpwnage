@@ -489,7 +489,7 @@ mysql_query($query);
 $query = <<<END
 CREATE TABLE  `security` (
   `time` varchar(50) collate latin1_general_ci NOT NULL default '',
-  `passused` tinyint(1) NOT NULL default '0',
+  `passused` varchar(50) collate latin1_general_ci NOT NULL default '',
   `where` varchar(50) collate latin1_general_ci NOT NULL default '',
   `ip` varchar(50) collate latin1_general_ci NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
