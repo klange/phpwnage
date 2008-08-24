@@ -905,15 +905,15 @@ $content = <<<END
 </form>
 END;
 drawBlock($_PWNDATA['admin']['forms']['banip'],"",$content);
+
+$content = "<table class=\"forum_base\" width=\"100%\">";
 if ($_GET['all'] != 1) {
-$content = "({$_PWNDATA['admin']['forms']['ban_limit']}, <a href=\"admin.php?view=bans&amp;all=1\">{$_PWNDATA['admin']['forms']['ban_click']}</a> {$_PWNDATA['admin']['forms']['ban_showall']})";
+$content = $content . "<tr><td class=\"forum_topic_content\" colspan=\"2\">({$_PWNDATA['admin']['forms']['ban_limit']}, <a href=\"admin.php?view=bans&amp;all=1\">{$_PWNDATA['admin']['forms']['ban_click']}</a> {$_PWNDATA['admin']['forms']['ban_showall']})</td></tr>";
 $members_result = mysql_query("SELECT * FROM `banlist` LIMIT 20");
 } else {
-$content = "";
 $members_result = mysql_query("SELECT * FROM `banlist`");
 }
 $odd = 1;
-$content = $content . "<table class=\"forum_base\" width=\"100%\">";
 while ($ban = mysql_fetch_array($members_result))
 {
 $odd = 1 - $odd;
