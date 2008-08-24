@@ -25,7 +25,7 @@ print <<<END
 
     <td class="sub_mid" align="center"><font class="sub_body_text">
 END;
-print $site_info['copyright'] . " <a href=\"rss.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/rss20.png\" alt=\"[ RSS ]\"/></a><a href=\"mobile.php\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/mobile.png\" alt=\"[ Mobile ]\" /></a><a href=\"https://launchpad.net/phpwnage\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/pwn.png\" alt=\"[ PHPwnage ]\" /></a><a href=\"http://php.net\"><img style=\"vertical-align: text-bottom\" border=\"0\" src=\"smiles/php5.png\" alt=\"[ PHP 5 ]\"/></a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
+print $site_info['copyright'] . " <a href=\"rss.php\">{$_PWNICONS['tags']['rss']}</a><a href=\"mobile.php\">{$_PWNICONS['tags']['mobile']}</a><a href=\"https://launchpad.net/phpwnage\">{$_PWNICONS['tags']['phpwnage']}</a><a href=\"http://php.net\">{$_PWNICONS['tags']['php']}</a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
 print <<<END
     </font></td>
     <td class="sub_right"></td>
