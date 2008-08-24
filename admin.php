@@ -1084,9 +1084,6 @@ $content = <<<END
     <td width="10%" height="1" align="center">    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}</a><br />
     <a href="admin.php?view=members">{$_PWNDATA['admin']['groups']['members']}</a></td>
     <td width="10%" height="1" align="center">
-    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}</a><br />
-    <a href="forum.php?do=logoff">{$_PWNDATA['admin']['groups']['logout']}</a></td>
-    <td width="10%" height="1" align="center">
     <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}</a><br />
     <a href="admin.php?view=pages">{$_PWNDATA['admin']['groups']['pages']}</a></td>
 END;
@@ -1104,6 +1101,9 @@ $content = $content . <<<END
 END;
 }
 $content = $content . <<<END
+    <td width="10%" height="1" align="center">
+    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}</a><br />
+    <a href="forum.php?do=logoff">{$_PWNDATA['admin']['groups']['logout']}</a></td>
 </tr></table>
 END;
 drawBlock($_PWNDATA['admin_page_title'],"",$content);
