@@ -979,10 +979,11 @@ drawBlock($_PWNDATA['admin']['forms']['si_log'],"",$content);
 if ($_GET['view'] == "promo") {
 if ($user['level'] < $site_info['admin_rank']) { messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_promote']); }
 $content = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_thread_title\" colspan=\"4\"><b>{$_PWNDATA['admin']['forms']['ranks_custom']}:</b></td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_name']}</td><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_level']}</td><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_posts']}</td><td class=\"forum_topic_content\">&nbsp;</td></tr>";
 // List ranks
 $results = mysql_query("SELECT * FROM `ranks` ORDER BY `value`, `posts`");
 while ($rank = mysql_fetch_array($results)) {
-$content = $content . "<tr><td class=\"forum_topic_sig\">" . $rank['name'] . "</td><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['ranks_level']}: " . $rank['value'] . "</td><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['ranks_posts']}: " . $rank['posts'] . "</td><td class=\"forum_topic_sig\">[<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]</td></tr>";
+$content = $content . "<tr><td class=\"forum_topic_sig\">" . $rank['name'] . "</td><td class=\"forum_topic_sig\">" . $rank['value'] . "</td><td class=\"forum_topic_sig\">" . $rank['posts'] . "</td><td class=\"forum_topic_sig\">[<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]</td></tr>";
 }
 $content = $content . "</table>";
 $modrank = $site_info['mod_rank'];
