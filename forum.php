@@ -59,7 +59,7 @@ if ($_POST['action'] == "login") {
     } else {
         $ip = $_SERVER['REMOTE_ADDR'];
         $name = $_POST['uname'];
-        mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . $_POST['upass'] . "', 'Forum, $name', '" . $ip . "' );");
+        mysql_query("INSERT INTO `security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_POST['upass']) . "', 'Forum, $name', '" . $ip . "' );");
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['failed_login']);
     }
 }
