@@ -1068,7 +1068,7 @@ drawBlock($_PWNDATA['admin']['forms']['members'],"",$content);
 
 // Retreive update information from O-G
 // This is a short bit of text.
-if (!isset($_GET['do']) || $_GET['do'] == "") {
+if (!isset($_GET['view']) || $_GET['view'] == "") {
     $pwnversion = $_PWNVERSION['major'] . "_" . $_PWNVERSION['minor'] . $_PWNVERSION['extra'];
     $update_data = file_get_contents("http://oasis-games.com/pwn/updates_{$pwnversion}");
     // Make sure this is valid. If it has <body, it's not, because it's either
