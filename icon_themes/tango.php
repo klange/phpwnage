@@ -101,4 +101,9 @@ $_PWNICONS['protocols']['messaging'] = "tango/protocols/mess.png";
 
 $_PWNICONS['notice'] = "Icons by the <a href=\"http://tango.freedesktop.org/Tango_Desktop_Project\">Tango Desktop Project</a>";
 
+$_PWNICONS['tags']['rss'] = "<img style=\"vertical-align: text-bottom\" border=\"0\" src=\"tango/tags/rss20.png\" alt=\"[ RSS ]\"/>";
+$_PWNICONS['tags']['mobile'] = "<img style=\"vertical-align: text-bottom\" border=\"0\" src=\"tango/tags/mobile.png\" alt=\"[ Mobile ]\" />";
+$_PWNICONS['tags']['phpwnage'] = "<img style=\"vertical-align: text-bottom\" border=\"0\" src=\"tango/tags/pwn.png\" alt=\"[ PHPwnage ]\" />";
+$_PWNICONS['tags']['php'] = "<img style=\"vertical-align: text-bottom\" border=\"0\" src=\"tango/tags/php5.png\" alt=\"[ PHP 5 ]\"/>";
+
 ?>
