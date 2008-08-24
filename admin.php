@@ -1027,6 +1027,8 @@ $back = "class=\"forum_topic_sig\"";
 $add = "";
 if ($member['level'] < 1) {
 $add = " {$_PWNDATA['admin']['forms']['ranks_banned']}";
+} else {
+$add = getRankName($member['level'],$site_info,postCount($member['id']));
 }
 $content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . " $add</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
@@ -1043,7 +1045,8 @@ $back = "class=\"forum_odd_row\"";
 } else {
 $back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . "</td>";
+$add = getRankName($member['level'],$site_info,postCount($member['id']));
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . " $add</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
@@ -1058,7 +1061,8 @@ $back = "class=\"forum_odd_row\"";
 } else {
 $back = "class=\"forum_topic_sig\"";
 }
-$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . "</td>";
+$add = getRankName($member['level'],$site_info,postCount($member['id']));
+$content = $content . "<tr><td $back><a href=\"forum.php?do=viewprofile&amp;id=" . $member['id'] . "\">" . $member['name'] . "</a></td><td $back width=\"150\">" . $member['level'] . " $add</td>";
 $content = $content . "<td $back width=\"150\"><a href=\"admin.php?do=promote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_promote']}</a> | <a href=\"admin.php?do=demote&amp;id=" . $member['id'] . "\">{$_PWNDATA['admin']['forms']['ranks_demote']}</a></td>";
 $content = $content . "</tr>";
 }
