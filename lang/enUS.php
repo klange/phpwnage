@@ -47,7 +47,31 @@ $_PWNDATA['forum_page_title'] = "Forum";
 $_PWNDATA['calendar_page_title'] = "Calendar";
 $_PWNDATA['modules_page_title'] = "Modules";
 $_PWNDATA['news_page_title'] = "News";
+$_PWNDATA['gallery_page_title'] = "Image Gallery";
 
+$_PWNDATA['gallery']['upload_failed'] = "Upload failed. File may be too large or of an unknown type.";
+$_PWNDATA['gallery']['image_uploaded'] = "Image uploaded!";
+$_PWNDATA['gallery']['no_image_specified'] = "No image specified";
+$_PWNDATA['gallery']['not_yours_edit'] = "This is not your image, only moderators can edit other users' images.";
+$_PWNDATA['gallery']['image_edited'] = "Image edited.";
+$_PWNDATA['gallery']['only_mods_move'] = "Only moderators can move images.";
+$_PWNDATA['gallery']['image_moved'] = "Image moved.";
+$_PWNDATA['gallery']['gallery_index'] = "Gallery Index";
+$_PWNDATA['gallery']['can_not_upload'] = "You can not upload to this gallery.";
+$_PWNDATA['gallery']['image_name'] = "Name";
+$_PWNDATA['gallery']['image_file'] = "Image";
+$_PWNDATA['gallery']['upload_button'] = "Upload";
+$_PWNDATA['gallery']['upload_panel'] = "Upload Image";
+$_PWNDATA['gallery']['can_not_view'] = "You can not view this gallery.";
+$_PWNDATA['gallery']['uploaded_by'] = "Uploaded by ";
+$_PWNDATA['gallery']['viewing_gallery'] = "Viewing Gallery";
+$_PWNDATA['gallery']['cannot_view_image'] = "You can not view this image's details because it is in a gallery you are not permitted to view.";
+$_PWNDATA['gallery']['delete'] = "Delete";
+$_PWNDATA['gallery']['edit'] = "Edit";
+$_PWNDATA['gallery']['move_image'] = "Move Image";
+$_PWNDATA['gallery']['not_yours_delete'] = "This is not your image, only moderators can delete other users' images.";
+$_PWNDATA['gallery']['save_image'] = "Save";
+$_PWNDATA['gallery']['editing'] = "Editing ";
 
 // Profiles
 $_PWNDATA['profile']['username'] = "Username";
@@ -316,6 +340,21 @@ $_PWNDATA['admin']['groups']['site_info'] = "Site Info";
 $_PWNDATA['admin']['groups']['promo'] = "User Promotions";
 $_PWNDATA['admin']['groups']['bans'] = "Security";
 $_PWNDATA['admin']['groups']['images'] = "Image Gallery";
+
+
+$_PWNDATA['admin']['gallery']['edited'] = "Gallery edited.";
+$_PWNDATA['admin']['gallery']['added'] = "Gallery added.";
+$_PWNDATA['admin']['gallery']['edit'] = "Edit";
+$_PWNDATA['admin']['gallery']['delete_everything'] = "Delete gallery and images";
+$_PWNDATA['admin']['gallery']['name'] = "Name";
+$_PWNDATA['admin']['gallery']['desc'] = "Description";
+$_PWNDATA['admin']['gallery']['view_level'] = "View Level";
+$_PWNDATA['admin']['gallery']['upload_level'] = "Upload Level";
+$_PWNDATA['admin']['gallery']['thumb'] = "Image for Thumbnail";
+$_PWNDATA['admin']['gallery']['create'] = "Create Gallery";
+$_PWNDATA['admin']['gallery']['save'] = "Save Gallery";
+$_PWNDATA['admin']['gallery']['deleted'] = "Gallery and images deleted.";
+
 
 $_PWNDATA['admin']['og_updates'] = "PHPwnage Updates";
 $_PWNDATA['admin']['update_failed'] = "Failed to retreive update data from Oasis-Games.com";

@@ -68,7 +68,7 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == "upload") {
         if (isset($_FILES['image'])) {
             if (!generateThumbnail($_FILES['image']['tmp_name'],$_FILES['image']['type'])) {
-                messageBack("Image Gallery","Upload failed. File may be too large or of an unknown type.");    
+                messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['upload_failed']);    
             }
             $fname = $_FILES['image']['tmp_name'];
             $file = fopen($fname,"rb");
@@ -87,28 +87,28 @@ END;
             $newimage = mysql_fetch_array($result);
             unlink($_FILES['image']['tmp_name']);
             unlink($_FILES['image']['tmp_name'] . "_th");
-            messageRedirect("Image Gallery","Image uploaded!","gallery.php?do=image&amp;id={$newimage['id']}");
+            messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_uploaded'],"gallery.php?do=image&amp;id={$newimage['id']}");
         } else {
-            messageBack("Image Gallery","No image specified");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
     } elseif ($_POST['action'] == "edit_image") {
         $request = mysql_query("SELECT `id`,`uid` FROM `images` WHERE `id`={$_POST['id']}");
         $image = mysql_fetch_array($request);
         if (!$image) {
-            messageBack("Image Gallery","Invalid image specified.");
+            messageBack($_PWNDATA['gallery_page_title'],"Invalid image specified.");
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
-            messageBack("Image Gallery","This is not your image, only moderators can edit other users' images.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_edit']);
         }
         mysql_query("UPDATE `images` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
         mysql_query("UPDATE `images` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
-        messageRedirect("Image Gallery","Image edited.","gallery.php?do=image&amp;id={$image['id']}");
+        messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_edited'],"gallery.php?do=image&amp;id={$image['id']}");
     } elseif ($_POST['action'] == "move_image") {
         if ($user['level'] < $site_info['mod_rank']) {
-            messageBack("Image Gallery","Only moderators can move images.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['only_mods_move']);
         }
         mysql_query("UPDATE `images` SET `gid`={$_POST['gallery']} WHERE `id`={$_POST['id']}");
-        messageRedirect("Image Gallery","Image moved.","gallery.php?do=image&amp;id={$_POST['id']}");
+        messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_moved'],"gallery.php?do=image&amp;id={$_POST['id']}");
     }
 }
 
@@ -130,14 +130,14 @@ if ($_GET['do'] != "img") {
             }
         }
         $content = $content . "</table>";
-        $page_contents = makeBlock("Image Gallery", "Gallery Index", $content);
-        $page_location = "<a href=\"gallery.php\">Image Gallery</a>";
-        $page_loctitle = " :: Index";
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'], $_PWNDATA['gallery']['gallery_index'], $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a>";
+        $page_loctitle = " :: {$_PWNDATA['gallery']['gallery_index']}";
     } elseif ($_GET['do'] == "upload_form") {
         $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
         $gal = mysql_fetch_array($request);
         if ($gal['upload'] > $user['level']) {
-            messageBack("Image Gallery","You can not upload to this gallery.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
         }
         $poster = printPoster('desc');
         $content = <<<END
@@ -146,25 +146,25 @@ if ($_GET['do'] != "img") {
             <input type="hidden" name="gallery" value="{$_GET['gal']}" />
             <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
             <table class="forum_base" width="100%">
-                <tr><td class="forum_topic_content" width="200">Name</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td></tr>
+                <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td></tr>
                 <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80"></textarea></td></tr>
-                <tr><td class="forum_topic_sig">Image</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
-                <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Upload" /></td></tr>
+                <tr><td class="forum_topic_sig">{$_PWNDATA['gallery']['image_file']}</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
+                <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['upload_button']}" /></td></tr>
             </table>
         </form>
 END;
-        $page_contents = makeBlock("Image Gallery", "Upload Image", $content);
-        $page_location = "<a href=\"gallery.php\">Image Gallery</a> > Upload Image";
-        $page_loctitle = " :: Upload Image";
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'], $_PWNDATA['gallery']['upload_panel'], $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['upload_panel']}";
+        $page_loctitle = " :: {$_PWNDATA['gallery']['upload_panel']}";
     } elseif ($_GET['do'] == "view") {
         $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
         $gal = mysql_fetch_array($request);
         if ($gal['view'] > $user['level']) {
-            messageBack("Image Gallery","You can not view this gallery.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_view']);
         }
         $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $gal['upload']) {
-            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}","Upload");
+            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button']);
         }
         $content = $content . "</tr></table>";
         $content = $content . "<table class=\"forum_base\" width=\"100%\">";
@@ -174,13 +174,13 @@ END;
             $content = $content . "<td class=\"forum_topic_content\"><b><a href=\"gallery.php?do=image&amp;id={$image['id']}\">{$image['name']}</a></b></td>";
             $results = mysql_query("SELECT `name` FROM `users` WHERE `id`={$image['uid']}");
             $uploader = mysql_fetch_array($results);
-            $content = $content . "<td class=\"forum_topic_content\" width=\"200\">Uploaded by <a href=\"forum.php?do=viewprofile&amp;id={$image['uid']}\">{$uploader['name']}</a></td>";
+            $content = $content . "<td class=\"forum_topic_content\" width=\"200\">{$_PWNDATA['gallery']['uploaded_by']}<a href=\"forum.php?do=viewprofile&amp;id={$image['uid']}\">{$uploader['name']}</a></td>";
             $description = bbDecode($image['desc']);
             $content = $content . "</tr><tr><td class=\"forum_topic_sig\" colspan=\"2\">{$description}</td></tr>";
         }
         $content = $content . "</table>";
-        $page_contents = makeBlock("Image Gallery","Viewing Gallery", $content);
-        $page_location = "<a href=\"gallery.php\">Image Gallery</a> > " . $gal['name'];
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['viewing_gallery'], $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > " . $gal['name'];
         $page_loctitle = " :: " . $gal['name'];
     } elseif ($_GET['do'] == "image") {
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
@@ -191,16 +191,16 @@ END;
         $gal = mysql_fetch_array($results);
         $extra = "";
         if ($gal['view'] > $user['level']) {
-            messageBack("Image Gallery","You can not view this image's details because it is in a gallery you are not permitted to view.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['cannot_view_image']);
         }
         $desc = bbDecode($image['desc']);
         $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
-            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}","Delete");
-            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}","Edit");
+            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}",$_PWNDATA['gallery']['delete']);
+            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}",$_PWNDATA['gallery']['edit']);
         }
         if ($user['level'] >= $site_info['mod_rank']) {
-            $content = $content . drawButton("javascript:flipVisibility('movebox');","Move Image");
+            $content = $content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['gallery']['move_image']);
             $extra = <<<END
     <script type="text/javascript">
     //<![CDATA[
@@ -227,7 +227,7 @@ END;
             }
             $content = $content . <<<END
 </select>
-<input type="submit" value="Move" />
+<input type="submit" value="{$_PWNDATA['gallery']['move_image']}" />
 </form></div></td>
 END;
         }
@@ -236,33 +236,33 @@ END;
         $content = $content . <<<END
 <table class="forum_base" width="100%">        
 <tr><td class="forum_topic_content" align="center"><b>{$image['name']}</b></td></tr>
-<tr><td class="forum_topic_sig" align="center">Uploaded by <a href="forum.php?do=viewprofile&amp;id={$uploader['id']}">{$uploader['name']}</a></td></tr>
+<tr><td class="forum_topic_sig" align="center">{$_PWNDATA['gallery']['uploaded_by']}<a href="forum.php?do=viewprofile&amp;id={$uploader['id']}">{$uploader['name']}</a></td></tr>
 <tr><td class="forum_topic_sig" align="center"><img src="gallery.php?do=img&amp;i={$_GET['id']}" alt="{$image['name']}" /></tr></td>
 <tr><td class="forum_topic_sig" align="center">{$desc}</td></tr>
 </table>
 END;
-        $page_contents = makeBlock("Image Gallery",$image['name'], $extra . $content);
-        $page_location = "<a href=\"gallery.php\">Image Gallery</a> > <a href=\"gallery.php?do=view&amp;id={$gal['id']}\">" . $gal['name'] . "</a> > " . $image['name'];
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$image['name'], $extra . $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > <a href=\"gallery.php?do=view&amp;id={$gal['id']}\">" . $gal['name'] . "</a> > " . $image['name'];
         $page_loctitle = " :: " . $gal['name'] . " :: " . $image['name'];
     } elseif ($_GET['do'] == "delete_image") {
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
         if (!$image) {
-            messageBack("Image Gallery","Invalid image specified.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
-            messageBack("Image Gallery","This is not your image, only moderators can delete other users' images.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_delete']);
         }
         mysql_query("DELETE FROM `images` WHERE `id`={$_GET['id']}");
-        messageRedirect("Image Gallery","Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
+        messageRedirect($_PWNDATA['gallery_page_title'],"Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
     } elseif ($_GET['do'] == "edit_image") {
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
         if (!$image) {
-            messageBack("Image Gallery","Invalid image specified.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
-            messageBack("Image Gallery","This is not your image, only moderators can edit other users' images.");
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_edit']);
         }
         $poster = printPoster('desc');
         $content = <<<END
@@ -270,21 +270,21 @@ END;
     <input type="hidden" name="action" value="edit_image" />
     <input type="hidden" name="id" value="{$image['id']}" />
     <table class="forum_base" width="100%">
-        <tr><td class="forum_topic_content" width="200">Name</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" value="{$image['name']}"/></td></tr>
+        <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" value="{$image['name']}"/></td></tr>
         <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80">{$image['desc']}</textarea></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Save" /></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['save_image']}" /></td></tr>
     </table>
 </form>
 END;
-        $page_contents = makeBlock("Image Gallery","Editing " . $image['name'], $content);
-        $page_location = "<a href=\"gallery.php\">Image Gallery</a> > Editing '" . $image['name'] . "'";
-        $page_loctitle = " :: Editing '" . $image['name'] . "'";
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['editing'] . $image['name'], $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['editing']}'" . $image['name'] . "'";
+        $page_loctitle = " :: {$_PWNDATA['gallery']['editing']}'" . $image['name'] . "'";
     }
 
 
 
-    standardHeaders($site_info['name'] . " :: " . "Image Gallery" . $page_loctitle,true);
-    drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > $page_location","Gallery");
+    standardHeaders($site_info['name'] . " :: " . $_PWNDATA['gallery_page_title'] . $page_loctitle,true);
+    drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > $page_location",$_PWNDATA['gallery_page_title']);
     require 'sidebar.php';    print <<<END
         <td valign="top">
             <table class="borderless_table" width="100%">

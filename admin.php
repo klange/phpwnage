@@ -188,18 +188,20 @@ if ($_POST['action'] == "addsmiley") {
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_added'],"admin.php?view=forum");
 }
 
+// Add gallery
 if ($_POST['action'] == "add_gallery") {
     mysql_query("INSERT INTO `galleries` VALUES (NULL, '{$_POST['name']}', '{$_POST['desc']}', {$_POST['view']}, {$_POST['upload']}, {$_POST['thumb']})");
-    messageRedirect($_PWNDATA['admin_page_title'],"Gallery added.","admin.php?view=images");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['added'],"admin.php?view=images");
 }
 
+// Edit gallery
 if ($_POST['action'] == "edit_gallery") {
     mysql_query("UPDATE `galleries` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
     mysql_query("UPDATE `galleries` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
     mysql_query("UPDATE `galleries` SET `view`={$_POST['view']} WHERE `id`={$_POST['id']}");
     mysql_query("UPDATE `galleries` SET `upload`={$_POST['upload']} WHERE `id`={$_POST['id']}");
     mysql_query("UPDATE `galleries` SET `thumb`={$_POST['thumb']} WHERE `id`={$_POST['id']}");
-    messageRedirect($_PWNDATA['admin_page_title'],"Gallery edited.","admin.php?view=images");
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['edited'],"admin.php?view=images");
 }
 
 // Delete existing smiley
@@ -1096,7 +1098,7 @@ if ($_GET['view'] == "images") {
             } else {
                 $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
             }
-            $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" align=\"center\" valign=\"middle\">{$gal_thumb}</td><td class=\"forum_topic_content\"><b>{$gal['name']}</b> [<a href=\"admin.php?view=images&amp;do=edit&amp;id={$gal['id']}\">Edit</a>]<br />{$gal['desc']}</td><td class=\"forum_topic_content\" width=\"200\"><a href=\"admin.php?view=images&amp;do=delete_gallery&amp;id={$gal['id']}\">Delete gallery and images</a></td></tr>\n";
+            $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" align=\"center\" valign=\"middle\">{$gal_thumb}</td><td class=\"forum_topic_content\"><b>{$gal['name']}</b> [<a href=\"admin.php?view=images&amp;do=edit&amp;id={$gal['id']}\">{$_PWNDATA['admin']['gallery']['edit']}</a>]<br />{$gal['desc']}</td><td class=\"forum_topic_content\" width=\"200\"><a href=\"admin.php?view=images&amp;do=delete_gallery&amp;id={$gal['id']}\">{$_PWNDATA['admin']['gallery']['delete_everything']}</a></td></tr>\n";
         }
         $content = $content . "</table>";
         drawBlock($_PWNDATA['admin']['groups']['images'],"",$content);
@@ -1104,21 +1106,21 @@ if ($_GET['view'] == "images") {
 <form action="admin.php" name="form" method="post">
     <input type="hidden" name="action" value="add_gallery" />
     <table class="forum_base" width="100%">
-        <tr><td class="forum_topic_content" width="200">Name</td>
+        <tr><td class="forum_topic_content" width="200">{$_PWNDATA['admin']['gallery']['name']}</td>
             <td class="forum_topic_content"><input type="text" name="name" style="width: 100%;" /></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2">Description</td></tr>
+        <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['admin']['gallery']['desc']}</td></tr>
         <tr><td class="forum_topic_sig" colspan="2"><textarea style="width: 100%;" name="desc" rows="5" cols="80"></textarea></td></tr>
-        <tr><td class="forum_topic_sig">View Level</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['view_level']}</td>
             <td class="forum_topic_sig"><input type="text" name="view" style="width: 100%;" value="0" /></td></tr>
-        <tr><td class="forum_topic_sig">Upload Level</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['upload_level']}</td>
             <td class="forum_topic_sig"><input type="text" name="upload" style="width: 100%;" value="1" /></td></tr>
-        <tr><td class="forum_topic_sig">Image for Thumbnail</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['thumb']}</td>
             <td class="forum_topic_sig"><input type="text" name="thumb" style="width: 100%;" value="0" /></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Create Gallery" /></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['gallery']['create']}" /></td></tr>
     </table>
 </form>
 END;
-        drawBlock("Create Gallery","",$content);
+        drawBlock($_PWNDATA['admin']['gallery']['create'],"",$content);
     } elseif ($_GET['do'] == "edit") {
         $results = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
         $gal = mysql_fetch_array($results);
@@ -1127,17 +1129,17 @@ END;
     <input type="hidden" name="action" value="edit_gallery" />
     <input type="hidden" name="id" value="{$gal['id']}" />
     <table class="forum_base" width="100%">
-        <tr><td class="forum_topic_content" width="200">Name</td>
+        <tr><td class="forum_topic_content" width="200">{$_PWNDATA['admin']['gallery']['name']}</td>
             <td class="forum_topic_content"><input type="text" name="name" style="width: 100%;" value="{$gal['name']}" /></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2">Description</td></tr>
+        <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['admin']['gallery']['desc']}</td></tr>
         <tr><td class="forum_topic_sig" colspan="2"><textarea style="width: 100%;" name="desc" rows="5" cols="80">{$gal['desc']}</textarea></td></tr>
-        <tr><td class="forum_topic_sig">View Level</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['view_level']}</td>
             <td class="forum_topic_sig"><input type="text" name="view" style="width: 100%;" value="{$gal['view']}" /></td></tr>
-        <tr><td class="forum_topic_sig">Upload Level</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['upload_level']}</td>
             <td class="forum_topic_sig"><input type="text" name="upload" style="width: 100%;" value="{$gal['upload']}" /></td></tr>
-        <tr><td class="forum_topic_sig">Image for Thumbnail</td>
+        <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['gallery']['thumb']}</td>
             <td class="forum_topic_sig"><input type="text" name="thumb" style="width: 100%;" value="{$gal['thumb']}" /></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Save" /></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['admin']['gallery']['save']}" /></td></tr>
     </table>
 </form>
 END;
@@ -1145,7 +1147,7 @@ END;
     } elseif ($_GET['do'] == "delete_gallery") {
         mysql_query("DELETE FROM `images` WHERE `gid`={$_GET['id']}");
         mysql_query("DELETE FROM `galleries` WHERE `id`={$_GET['id']}");
-        messageRedirect($_PWNDATA['admin_page_title'],"Gallery and images deleted.","admin.php?view=images");
+        messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['deleted'],"admin.php?view=images");
     }
 }
 
