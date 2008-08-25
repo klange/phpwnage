@@ -159,8 +159,8 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="48%" valign="top" align="left">
-    <p align="left">SQL Database Server Location<br />
-    <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></p></td>
+SQL Database Server Location<br />
+    <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></td>
     <td width="52%" valign="top" align="right">
   <input type="text" name="sql_server" style="width: 100%" /></td>
   </tr>
@@ -270,8 +270,8 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="50%" valign="top" align="left">
-    <p align="left">Forum Title<br />
-    <font size="2">A short description for your site. Ex: Oasis-Games.com</font></p></td>
+    Forum Title<br />
+    <font size="2">A short description for your site. Ex: Oasis-Games.com</font></td>
     <td width="50%" valign="top" align="right">
   <input type="text" name="site_name" style="width: 100%" /></td>
   </tr>
@@ -621,11 +621,11 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="100%" valign="top" align="left" dir="ltr">
-    <p align="left" dir="ltr"> Thank you for installing PHPwnage!<br />
+    Thank you for installing PHPwnage!<br />
     You can access your site now, or continue with this tutorial which will show 
     you how to work the <a href="admin.php">administration panel</a>.<br />
     To access your site <a href="index.php">Click Here</a><br />
-    To read the tutorial, click the button.</p>
+    To read the tutorial, click the button.
     <div>
 	<input value="Show Tutorial" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide Tutorial'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show Tutorial'; }" type="button" /></div>
 	<div class="alt2" style="border: 1px inset ; margin: 0px; padding: 6px;">
