@@ -103,6 +103,12 @@ END;
         mysql_query("UPDATE `images` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
         mysql_query("UPDATE `images` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
         messageRedirect("Image Gallery","Image edited.","gallery.php?do=image&amp;id={$image['id']}");
+    } elseif ($_POST['action'] == "move_image") {
+        if ($user['level'] < $site_info['mod_rank']) {
+            messageBack("Image Gallery","Only moderators can move images.");
+        }
+        mysql_query("UPDATE `images` SET `gid`={$_POST['gallery']} WHERE `id`={$_POST['id']}");
+        messageRedirect("Image Gallery","Image moved.","gallery.php?do=image&amp;id={$_POST['id']}");
     }
 }
 
@@ -118,8 +124,8 @@ if ($_GET['do'] != "img") {
                 } else {
                     $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
                 }
-                $request = mysql_query("SELECT COUNT(*) FROM `images` WHERE `gid`={$gal['id']}");
-                $count = mysql_fetch_array($request);
+                $results = mysql_query("SELECT COUNT(*) FROM `images` WHERE `gid`={$gal['id']}");
+                $count = mysql_fetch_array($results);
                 $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td><td width=\"50\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\">{$count['COUNT(*)']}</td></tr>\n";
             }
         }
@@ -156,11 +162,11 @@ END;
         if ($gal['view'] > $user['level']) {
             messageBack("Image Gallery","You can not view this gallery.");
         }
-        $content = "<table class=\"mod_set\">";
+        $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $gal['upload']) {
             $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}","Upload");
         }
-        $content = $content . "</table>";
+        $content = $content . "</tr></table>";
         $content = $content . "<table class=\"forum_base\" width=\"100%\">";
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC");
         while ($image = mysql_fetch_array($request)) {
@@ -183,16 +189,50 @@ END;
         $uploader = mysql_fetch_array($results);
         $results = mysql_query("SELECT * FROM `galleries` WHERE `id`={$image['gid']}");
         $gal = mysql_fetch_array($results);
+        $extra = "";
         if ($gal['view'] > $user['level']) {
             messageBack("Image Gallery","You can not view this image's details because it is in a gallery you are not permitted to view.");
         }
         $desc = bbDecode($image['desc']);
-        $content = "<table class=\"mod_set\">";
+        $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
             $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}","Delete");
             $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}","Edit");
         }
-        $content = $content . "</table>";
+        if ($user['level'] >= $site_info['mod_rank']) {
+            $content = $content . drawButton("javascript:flipVisibility('movebox');","Move Image");
+            $extra = <<<END
+    <script type="text/javascript">
+    //<![CDATA[
+function flipVisibility(what) {
+    if (document.getElementById(what).style.display != "none") {
+        document.getElementById(what).style.display = "none"
+    } else {
+        document.getElementById(what).style.display = "inline"
+    }
+}
+    //]]>
+    </script>
+END;
+            $content = $content . <<<END
+<td style="border: 0px"><div id="movebox" style="display:none;">
+<form action="gallery.php" method="post" style="display:inline;">
+<input type="hidden" name="action" value="move_image" />
+<input type="hidden" name="id" value="{$image['id']}" />
+<select name="gallery">
+END;
+            $request = mysql_query("SELECT `id`,`name` FROM `galleries`");
+            while ($gallery = mysql_fetch_array($request)) {
+                $content = $content . "<option label=\"{$gallery['name']}\" value=\"{$gallery['id']}\">{$gallery['name']}</option>\n";
+            }
+            $content = $content . <<<END
+</select>
+<input type="submit" value="Move" />
+</form></div></td>
+END;
+        }
+        
+        $content = $content . "</tr></table>";
         $content = $content . <<<END
 <table class="forum_base" width="100%">        
 <tr><td class="forum_topic_content" align="center"><b>{$image['name']}</b></td></tr>
@@ -201,7 +241,7 @@ END;
 <tr><td class="forum_topic_sig" align="center">{$desc}</td></tr>
 </table>
 END;
-        $page_contents = makeBlock("Image Gallery",$image['name'], $content);
+        $page_contents = makeBlock("Image Gallery",$image['name'], $extra . $content);
         $page_location = "<a href=\"gallery.php\">Image Gallery</a> > <a href=\"gallery.php?do=view&amp;id={$gal['id']}\">" . $gal['name'] . "</a> > " . $image['name'];
         $page_loctitle = " :: " . $gal['name'] . " :: " . $image['name'];
     } elseif ($_GET['do'] == "delete_image") {
