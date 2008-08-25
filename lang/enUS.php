@@ -315,6 +315,7 @@ $_PWNDATA['admin']['groups']['pages'] = "Pages";
 $_PWNDATA['admin']['groups']['site_info'] = "Site Info";
 $_PWNDATA['admin']['groups']['promo'] = "User Promotions";
 $_PWNDATA['admin']['groups']['bans'] = "Security";
+$_PWNDATA['admin']['groups']['images'] = "Image Gallery";
 
 $_PWNDATA['admin']['og_updates'] = "PHPwnage Updates";
 $_PWNDATA['admin']['update_failed'] = "Failed to retreive update data from Oasis-Games.com";

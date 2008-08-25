@@ -1105,6 +1105,9 @@ $content = <<<END
     <td width="10%" height="1" align="center">
     <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}</a><br />
     <a href="admin.php?view=pages">{$_PWNDATA['admin']['groups']['pages']}</a></td>
+    <td width="10%" height="1" align="center">
+    <a href="admin.php?view=images">{$_PWNICONS['admin']['images']}</a><br />
+    <a href="admin.php?view=images">{$_PWNDATA['admin']['groups']['images']}</a></td>
 END;
 if ($user['level'] >= $site_info['admin_rank']) {
 $content = $content . <<<END

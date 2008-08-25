@@ -54,6 +54,7 @@ $_PWNICONS['admin']['pages'] = "<img src=\"tango/admin/pages.png\" alt=\"{$_PWND
 $_PWNICONS['admin']['siteinfo'] = "<img src=\"tango/admin/site_info.png\" alt=\"{$_PWNDATA['admin']['groups']['site_info']}\"/>";
 $_PWNICONS['admin']['promos'] = "<img src=\"tango/admin/promos.png\" alt=\"{$_PWNDATA['admin']['groups']['promo']}\"/>";
 $_PWNICONS['admin']['security'] = "<img src=\"tango/admin/bans.png\" alt=\"{$_PWNDATA['admin']['groups']['bans']}\"/>";
+$_PWNICONS['admin']['images'] = "<img src=\"tango/admin/images.png\" alt=\"{$_PWNDATA['admin']['groups']['images']}\"/>";
 
 $_PWNICONS['forum']['board_read'] = "<img src=\"tango/forum/forum_read.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_no']}\"/>";
 $_PWNICONS['forum']['board_new'] = "<img src=\"tango/forum/forum_unread.png\" align=\"left\" alt=\"{$_PWNDATA['forum']['board_has_new']}\" />";
