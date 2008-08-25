@@ -118,7 +118,9 @@ if ($_GET['do'] != "img") {
                 } else {
                     $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
                 }
-                $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td></tr>\n";
+                $request = mysql_query("SELECT COUNT(*) FROM `images` WHERE `gid`={$gal['id']}");
+                $count = mysql_fetch_array($request);
+                $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td><td width=\"50\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\">{$count['COUNT(*)']}</td></tr>\n";
             }
         }
         $content = $content . "</table>";
