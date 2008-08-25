@@ -237,7 +237,7 @@ END;
 <table class="forum_base" width="100%">        
 <tr><td class="forum_topic_content" align="center"><b>{$image['name']}</b></td></tr>
 <tr><td class="forum_topic_sig" align="center">{$_PWNDATA['gallery']['uploaded_by']}<a href="forum.php?do=viewprofile&amp;id={$uploader['id']}">{$uploader['name']}</a></td></tr>
-<tr><td class="forum_topic_sig" align="center"><img src="gallery.php?do=img&amp;i={$_GET['id']}" alt="{$image['name']}" /></tr></td>
+<tr><td class="forum_topic_sig" align="center"><img src="gallery.php?do=img&amp;i={$_GET['id']}" alt="{$image['name']}" /></td></tr>
 <tr><td class="forum_topic_sig" align="center">{$desc}</td></tr>
 </table>
 END;
