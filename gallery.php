@@ -91,6 +91,18 @@ END;
         } else {
             messageBack("Image Gallery","No image specified");
         }
+    } elseif ($_POST['action'] == "edit_image") {
+        $request = mysql_query("SELECT `id`,`uid` FROM `images` WHERE `id`={$_POST['id']}");
+        $image = mysql_fetch_array($request);
+        if (!$image) {
+            messageBack("Image Gallery","Invalid image specified.");
+        }
+        if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
+            messageBack("Image Gallery","This is not your image, only moderators can edit other users' images.");
+        }
+        mysql_query("UPDATE `images` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
+        mysql_query("UPDATE `images` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
+        messageRedirect("Image Gallery","Image edited.","gallery.php?do=image&amp;id={$image['id']}");
     }
 }
 
@@ -175,7 +187,8 @@ END;
         $desc = bbDecode($image['desc']);
         $content = "<table class=\"mod_set\">";
         if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
-            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}","Delete Image");
+            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}","Delete");
+            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}","Edit");
         }
         $content = $content . "</table>";
         $content = $content . <<<END
@@ -200,6 +213,30 @@ END;
         }
         mysql_query("DELETE FROM `images` WHERE `id`={$_GET['id']}");
         messageRedirect("Image Gallery","Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
+    } elseif ($_GET['do'] == "edit_image") {
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
+        $image = mysql_fetch_array($request);
+        if (!$image) {
+            messageBack("Image Gallery","Invalid image specified.");
+        }
+        if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
+            messageBack("Image Gallery","This is not your image, only moderators can edit other users' images.");
+        }
+        $poster = printPoster('desc');
+        $content = <<<END
+<form action="gallery.php" name="form" method="post">
+    <input type="hidden" name="action" value="edit_image" />
+    <input type="hidden" name="id" value="{$image['id']}" />
+    <table class="forum_base" width="100%">
+        <tr><td class="forum_topic_content" width="200">Name</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" value="{$image['name']}"/></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80">{$image['desc']}</textarea></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="Save" /></td></tr>
+    </table>
+</form>
+END;
+        $page_contents = makeBlock("Image Gallery","Editing " . $image['name'], $content);
+        $page_location = "<a href=\"gallery.php\">Image Gallery</a> > Editing '" . $image['name'] . "'";
+        $page_loctitle = " :: Editing '" . $image['name'] . "'";
     }
 
 
