@@ -89,7 +89,7 @@ $content = $content . <<<END
 <tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">
 END;
 $content = $content . str_replace(">","&gt;",str_replace("<","&lt;",$row['content']));
-$content = $content . "</textarea></td></tr><tr><td class=\"forum_topic_sig\"><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" /><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></td></tr></table></form>";
+$content = $content . "</textarea></td></tr><tr><td class=\"forum_topic_sig\"><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" style=\"width: 100%\"/></td></tr><tr><td class=\"forum_topic_sig\"><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></td></tr></table></form>";
 drawBlock("{$_PWNDATA['articles']['edita']} " . $row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'], $content);
 }
 print <<<END
