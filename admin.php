@@ -1120,9 +1120,6 @@ $content = $content . <<<END
 END;
 }
 $content = $content . <<<END
-    <td width="10%" height="1" align="center">
-    <a href="forum.php?do=logoff">{$_PWNICONS['admin']['logout']}</a><br />
-    <a href="forum.php?do=logoff">{$_PWNDATA['admin']['groups']['logout']}</a></td>
 </tr></table>
 END;
 drawBlock($_PWNDATA['admin_page_title'],"",$content);
