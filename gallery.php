@@ -134,7 +134,7 @@ if ($_GET['do'] != "img") {
         $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a>";
         $page_loctitle = " :: {$_PWNDATA['gallery']['gallery_index']}";
     } elseif ($_GET['do'] == "upload_form") {
-        $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
+        $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['gal']}");
         $gal = mysql_fetch_array($request);
         if ($gal['upload'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
