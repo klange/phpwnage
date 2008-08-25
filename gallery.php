@@ -164,7 +164,7 @@ END;
         }
         $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $gal['upload']) {
-            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button']);
+            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button'],$_PWNICONS['buttons']['img_upload']);
         }
         $content = $content . "</tr></table>";
         $content = $content . "<table class=\"forum_base\" width=\"100%\">";
@@ -196,8 +196,8 @@ END;
         $desc = bbDecode($image['desc']);
         $content = "<table class=\"mod_set\"><tr>";
         if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
-            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}",$_PWNDATA['gallery']['delete']);
-            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}",$_PWNDATA['gallery']['edit']);
+            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}",$_PWNDATA['gallery']['delete'],$_PWNICONS['buttons']['del_img']);
+            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}",$_PWNDATA['gallery']['edit'],$_PWNICONS['buttons']['edit_img']);
         }
         if ($user['level'] >= $site_info['mod_rank']) {
             $content = $content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['gallery']['move_image']);
