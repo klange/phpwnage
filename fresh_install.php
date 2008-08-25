@@ -567,7 +567,7 @@ $query = <<<END
 CREATE TABLE `galleries` (
     `id`    int(11)         NOT NULL    auto_increment,
     `name`  varchar(100)    NOT NULL    DEFAULT '',
-    `desc`  text                        DEFAULT '',
+    `desc`  text,
     `view`  int(11)         NOT NULL    DEFAULT 0,
     `upload` int(11)        NOT NULL    DEFAULT 1,
     PRIMARY KEY `id` (`id`)
@@ -578,7 +578,7 @@ $query = <<<END
 CREATE TABLE `images` (
     `id`    int(11)         NOT NULL    auto_increment,
     `name`  varchar(100)    NOT NULL    DEFAULT '',
-    `desc`  text                        DEFAULT '',
+    `desc`  text,
     `uid`   int(11)         NOT NULL    DEFAULT 1,
     `fname` varchar(200)    NOT NULL    DEFAULT '',
     `gid`   int(11)         NOT NULL    DEFAULT 0,
