@@ -1385,25 +1385,7 @@ END;
         } else {
             $block_content = $block_content . drawButton("forum.php?do=unlocktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic'],$_PWNICONS['buttons']['unlock']);
         }
-        // FIXME: Get this elsewhere! It's a button, make it one!
-        $block_content = $block_content . <<<END
-<td style="border: 0px">
-<div id="movebutton" style="display:inline;">
-	<table class="forum_button">
-	<tr>
-    <td class="but_left"></td>
-    <td class="but_mid">
-    <font class="forum_button_text">
-END;
-        $block_content = $block_content . "<a href=\"javascript:flipVisibility('movebutton'); flipVisibility('movebox');\">{$_PWNDATA['forum']['move_topic']}</a>";
-        $block_content = $block_content . <<<END
-	</font></td>
-    <td class="but_right"></td>
-  </tr>
-</table>
-</div>
-</td>
-END;
+        $block_content = $block_content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['forum']['move_topic']);
         $top_id = $topic['id'];
         $block_content = $block_content . <<<END
 <td  style="border: 0px"><div id="movebox" style="display:none;">
