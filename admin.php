@@ -57,7 +57,7 @@ NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . 
         mysql_query("UPDATE `topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `topics`.`id` =" . $topic['id']);
         mysql_query("ALTER TABLE `posts`  ORDER BY `id`");
         mysql_query("ALTER TABLE `topics`  ORDER BY `id`");
-        $newcontenta = $newcontent . "\n\n\n[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].";
+        $newcontenta = $newcontent . "\n\n\n[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].\n([pcount]" . $topic['id'] . "[/pcount])";
         mysql_query("UPDATE `news` SET `content` = '" . $newcontenta . "' WHERE `news`.`id` =" . $article_id);
         mysql_query("UPDATE `news` SET `topicid` = " . $topic['id'] . " WHERE `news`.`id` =" . $article_id);
         $message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";

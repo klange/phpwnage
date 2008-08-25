@@ -197,6 +197,19 @@ function makeIMG($link) {
     $link = str_replace("&", "&amp;", $link);
     return "<img alt=\"forum image\" border=\"0\" src=\"$link\" />";
 }
+function pCount($topic) {
+    global $_PWNDATA;
+    $results = mysql_query("SELECT COUNT(*) FROM `posts` WHERE `topicid`=" . $topic);
+    $res = mysql_fetch_array($results);
+    $comments = $res['COUNT(*)'] - 1;
+    if ($comments == 0) {
+        return $_PWNDATA['articles']['no_comments'];
+    } else if ($comments == 1) {
+        return $_PWNDATA['articles']['one_comment'];
+    } else {
+        return $comments . " " . $_PWNDATA['articles']['comment_count'];
+    }
+}
 function BBDecode($content,$allowhtml = false) {
     if (!$allowhtml) {
         $content = str_replace("<","&lt;",$content); // Kill HTML in posts
@@ -213,7 +226,8 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[url\])(.+?)(\[\/\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[so\])(.+?)(\[\/so\])/si","<s>$2</s>",$content);
-    $content = preg_replace("/(\[urls\])(.+?)(\[\/urls\])/si","makeURL('$2','<b>$2</b>')",$content);
+    $content = preg_replace("/(\[urls\])(.+?)(\[\/urls\])/sie","makeURL('$2','<b>$2</b>')",$content);
+    $content = preg_replace("/(\[pcount\])(.+?)(\[\/pcount\])/sie","pCount($2)",$content);
     $content = preg_replace("/(\[u\])(.+?)(\[\/u\])/si","<u>$2</u>",$content);
     $content = preg_replace("/(\[i\])(.+?)(\[\/i\])/si","<i>$2</i>",$content);
     $content = preg_replace("/(\[b\])(.+?)(\[\/b\])/si","<b>$2</b>",$content);
