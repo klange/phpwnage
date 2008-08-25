@@ -140,7 +140,7 @@ END;
         $content = $content . "<table class=\"forum_base\" width=\"100%\">";
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC");
         while ($image = mysql_fetch_array($request)) {
-            $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" rowspan=\"2\" align=\"center\" valign=\"middle\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$image['id']}\" alt=\"\" /></td>";
+            $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" rowspan=\"2\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=image&amp;id={$image['id']}\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$image['id']}\" alt=\"\" /></a></td>";
             $content = $content . "<td class=\"forum_topic_content\"><b><a href=\"gallery.php?do=image&amp;id={$image['id']}\">{$image['name']}</a></b></td>";
             $results = mysql_query("SELECT `name` FROM `users` WHERE `id`={$image['uid']}");
             $uploader = mysql_fetch_array($results);
