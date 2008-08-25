@@ -100,18 +100,25 @@ if ($_GET['do'] != "img") {
         $content = "<table class=\"forum_base\" width=\"100%\">";
         $request = mysql_query("SELECT * FROM `galleries`");
         while ($gal = mysql_fetch_array($request)) {
-            if ($gal['thumb'] != 0) {
-                $gal_thumb = "<img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$gal['thumb']}\" alt=\"\" />";
-            } else {
-                $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
+            if ($gal['view'] <= $user['level']) {
+                if ($gal['thumb'] != 0) {
+                    $gal_thumb = "<img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$gal['thumb']}\" alt=\"\" />";
+                } else {
+                    $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
+                }
+                $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td></tr>\n";
             }
-            $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td></tr>\n";
         }
         $content = $content . "</table>";
         $page_contents = makeBlock("Image Gallery", "Gallery Index", $content);
         $page_location = "<a href=\"gallery.php\">Image Gallery</a>";
         $page_loctitle = " :: Index";
     } elseif ($_GET['do'] == "upload_form") {
+        $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
+        $gal = mysql_fetch_array($request);
+        if ($gal['upload'] > $user['level']) {
+            messageBack("Image Gallery","You can not upload to this gallery.");
+        }
         $poster = printPoster('desc');
         $content = <<<END
         <form enctype="multipart/form-data" action="gallery.php" name="form" method="post">
@@ -132,6 +139,9 @@ END;
     } elseif ($_GET['do'] == "view") {
         $request = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_GET['id']}");
         $gal = mysql_fetch_array($request);
+        if ($gal['view'] > $user['level']) {
+            messageBack("Image Gallery","You can not view this gallery.");
+        }
         $content = "<table class=\"mod_set\">";
         if ($user['level'] >= $gal['upload']) {
             $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}","Upload");
@@ -149,20 +159,26 @@ END;
             $content = $content . "</tr><tr><td class=\"forum_topic_sig\" colspan=\"2\">{$description}</td></tr>";
         }
         $content = $content . "</table>";
-        
-        
         $page_contents = makeBlock("Image Gallery","Viewing Gallery", $content);
         $page_location = "<a href=\"gallery.php\">Image Gallery</a> > " . $gal['name'];
         $page_loctitle = " :: " . $gal['name'];
     } elseif ($_GET['do'] == "image") {
-        $request = mysql_query("SELECT `name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
         $results = mysql_query("SELECT `id`, `name` FROM `users` WHERE `id`={$image['uid']}");
         $uploader = mysql_fetch_array($results);
         $results = mysql_query("SELECT * FROM `galleries` WHERE `id`={$image['gid']}");
         $gal = mysql_fetch_array($results);
+        if ($gal['view'] > $user['level']) {
+            messageBack("Image Gallery","You can not view this image's details because it is in a gallery you are not permitted to view.");
+        }
         $desc = bbDecode($image['desc']);
-        $content = <<<END
+        $content = "<table class=\"mod_set\">";
+        if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
+            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}","Delete Image");
+        }
+        $content = $content . "</table>";
+        $content = $content . <<<END
 <table class="forum_base" width="100%">        
 <tr><td class="forum_topic_content" align="center"><b>{$image['name']}</b></td></tr>
 <tr><td class="forum_topic_sig" align="center">Uploaded by <a href="forum.php?do=viewprofile&amp;id={$uploader['id']}">{$uploader['name']}</a></td></tr>
@@ -173,6 +189,17 @@ END;
         $page_contents = makeBlock("Image Gallery",$image['name'], $content);
         $page_location = "<a href=\"gallery.php\">Image Gallery</a> > <a href=\"gallery.php?do=view&amp;id={$gal['id']}\">" . $gal['name'] . "</a> > " . $image['name'];
         $page_loctitle = " :: " . $gal['name'] . " :: " . $image['name'];
+    } elseif ($_GET['do'] == "delete_image") {
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
+        $image = mysql_fetch_array($request);
+        if (!$image) {
+            messageBack("Image Gallery","Invalid image specified.");
+        }
+        if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
+            messageBack("Image Gallery","This is not your image, only moderators can delete other users' images.");
+        }
+        mysql_query("DELETE FROM `images` WHERE `id`={$_GET['id']}");
+        messageRedirect("Image Gallery","Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
     }
 
 
