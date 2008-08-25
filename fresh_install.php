@@ -570,6 +570,7 @@ CREATE TABLE `galleries` (
     `desc`  text,
     `view`  int(11)         NOT NULL    DEFAULT 0,
     `upload` int(11)        NOT NULL    DEFAULT 1,
+    `thumb` int(11)         NOT NULL    DEFAULT 0,
     PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
@@ -603,7 +604,7 @@ print "Adding generic news item...<br />\n";
 $time = time();
 mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://oasis-games.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
 print "Adding navigation block...<br />\n";
-mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a>');");
+mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
 print "Completed! Moving to next page...\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4\">";
 // Now that the core of the installation has completed, grab the $_POST data...
