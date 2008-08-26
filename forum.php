@@ -1360,7 +1360,7 @@ END;
             $block_content = $block_content . drawButton("javascript:buddyAlert('" . $_PWNDATA['forum']['delete_confirm'] . " &lt;a href=\\'forum.php?do=delete&amp;id=" . $row['id'] . "\\'&gt;" . $_PWNDATA['forum']['delete_confirm_accept'] . "&lt;/a&gt;');", $_PWNDATA['forum']['delete'],$_PWNICONS['buttons']['del_reply']);
         }
         if (($user['id'] != $post_author['id']) and (!($board['post_level'] > $user['level'])) and ($islocked == false)) {
-            $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'] . "&amp;quote=" . $row['id'],$_PWNDATA['forum']['quote']);
+            $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'] . "&amp;quote=" . $row['id'],$_PWNDATA['forum']['quote'],$_PWNICONS['buttons']['quote']);
         }
         $block_content = $block_content . "</tr></table></td></tr>";
     }

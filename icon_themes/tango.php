@@ -53,6 +53,7 @@ $_PWNICONS['buttons']['previous'] = "<img src=\"tango/buttons/go-previous.png\" 
 
 $_PWNICONS['buttons']['merge'] = "<img src=\"tango/buttons/merge.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 $_PWNICONS['buttons']['split'] = "<img src=\"tango/buttons/split.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
+$_PWNICONS['buttons']['quote'] = "<img src=\"tango/buttons/quote.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 
 
 $_PWNICONS['admin']['news'] = "<img src=\"tango/admin/news.png\" alt=\"{$_PWNDATA['admin']['groups']['news']}\"/>";
