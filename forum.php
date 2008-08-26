@@ -1385,7 +1385,7 @@ END;
         } else {
             $block_content = $block_content . drawButton("forum.php?do=unlocktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['unlock_topic'],$_PWNICONS['buttons']['unlock']);
         }
-        $block_content = $block_content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['forum']['move_topic']);
+        $block_content = $block_content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['forum']['move_topic'],$_PWNICONS['buttons']['move']);
         $top_id = $topic['id'];
         $block_content = $block_content . <<<END
 <td  style="border: 0px"><div id="movebox" style="display:none;">

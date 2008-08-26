@@ -200,7 +200,7 @@ END;
             $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}",$_PWNDATA['gallery']['edit'],$_PWNICONS['buttons']['edit_img']);
         }
         if ($user['level'] >= $site_info['mod_rank']) {
-            $content = $content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['gallery']['move_image']);
+            $content = $content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['gallery']['move_image'],$_PWNICONS['buttons']['move']);
             $extra = <<<END
     <script type="text/javascript">
     //<![CDATA[
