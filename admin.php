@@ -892,6 +892,7 @@ if ($site_info['security_mode'] == 0) {
     $sel_b = "";
     $sel_c = "selected=\"selected\"";
 }
+//    <option value="1" $sel_b>{$_PWNDATA['admin']['forms']['sec_mod_b']}</option>
 $content = <<<END
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="captcha" />
@@ -900,7 +901,6 @@ $content = <<<END
 <td class="forum_topic_content">
 <select name="sec_mode">
     <option value="0" $sel_a>{$_PWNDATA['admin']['forms']['sec_mod_a']}</option>
-    <option value="1" $sel_b>{$_PWNDATA['admin']['forms']['sec_mod_b']}</option>
     <option value="2" $sel_c>{$_PWNDATA['admin']['forms']['sec_mod_c']}</option>
 </select></td></tr>
 <tr><td class="forum_topic_sig">{$_PWNDATA['admin']['forms']['recap_pub']}</td><td class="forum_topic_sig"><input type="text" name="recap_pub" value="{$site_info['recap_pub']}" style="width: 100%;" /></td></tr>
