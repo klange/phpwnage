@@ -34,7 +34,7 @@ $_PWNICONS['buttons']['lock'] = "<img src=\"tango/buttons/lock.png\" alt=\"\" st
 $_PWNICONS['buttons']['unlock'] = "<img src=\"tango/buttons/lock.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 
 $_PWNICONS['buttons']['edit'] = "<img src=\"tango/buttons/edit.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
-$_PWNICONS['buttons']['qedit'] = "<img src=\"tango/buttons/edit.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
+$_PWNICONS['buttons']['qedit'] = "<img src=\"tango/buttons/qedit.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 
 $_PWNICONS['buttons']['editor']['bold'] = "<img src=\"tango/buttons/bold.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 $_PWNICONS['buttons']['editor']['italic'] = "<img src=\"tango/buttons/italic.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
