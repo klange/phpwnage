@@ -189,6 +189,11 @@ function bbCSharp($stuff) {
     $stuff = "<font style=\"font-family: monospaced;\"><b>C#:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
     return $stuff;
 }
+function genericCode($stuff) {
+    $stuff = str_replace("<br />","\n",$stuff);
+    $stuff = "<font style=\"font-family: monospaced;\"><b>Code:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    return $stuff;
+}
 function makeURL($link, $title) {
     $link = str_replace("&", "&amp;", $link);
     return "<a href=\"$link\">$title</a>";
@@ -233,6 +238,7 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[b\])(.+?)(\[\/b\])/si","<b>$2</b>",$content);
     $content = preg_replace("/(\[java\])(.+?)(\[\/java\])/sie","bbJava('$2')",$content);
     $content = preg_replace("/(\[csharp\])(.+?)(\[\/csharp\])/sie","bbCSharp('$2')",$content);
+    $content = preg_replace("/(\[code\])(.+?)(\[\/code\])/sie","genericCode('$2')",$content);
     $content = preg_replace("/(\[url=)(.+?)(\])(.+?)(\[\/url\])/sie","makeURL('$2','$4')",$content);
     $content = preg_replace("/(\[url\])(.+?)(\[\/url\])/sie","makeURL('$2','$2')",$content);
     $content = preg_replace("/(\[img\])(.+?)(\[\/img\])/sie","makeIMG('$2')",$content);
