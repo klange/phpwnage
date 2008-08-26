@@ -1304,7 +1304,7 @@ END;
 	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_off'] . "</a>";
 	            }
             } else {
-                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'] . "</a>;
+                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'] . "</a>";
             }
         }
         if ($has_messenger) {
