@@ -569,8 +569,6 @@ while ($smile = mysql_fetch_array($smilesSet)) {
 $content = $content . "<a href=\"admin.php?do=editsmiley&amp;id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" /></a>";
 }
 $smileyList = "<select name=\"smileys\">";
-// The following will never validate, but we honestly don't care.
-$smileyStyle = "<style type=\"text/css\">";
 $myDirectory = opendir("smiles"); // Open smiles directory
 while($entryName = readdir($myDirectory)) {
 	$dirArray[] = $entryName; // Get our list of files
@@ -585,19 +583,16 @@ if (substr("$dirArray[$index]", 0, 1) != "."){
 if (strstr($dirArray[$index],".")) {
 	$heightArray = getimagesize("smiles/" . $dirArray[$index]);
 	$height = $heightArray[1];
-	$smileyStyle = $smileyStyle . "\n.smiley" . $index . " { height: $height; background: url(\"smiles/" . $dirArray[$index] . "\"); background-repeat: no-repeat; }";
-	$smileyList = $smileyList . "\n<option class=\"smiley" . $index . "\" value=\"" . $dirArray[$index] . "\">" . $dirArray[$index] . "</option>";
+	$smileyList = $smileyList . "\n<option style=\"height: $height; background: url('smiles/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $dirArray[$index] . "\">" . $dirArray[$index] . "</option>";
 }
 }
 }
 $smileyList = $smileyList . "</select>";
-$smileyStyle = $smileyStyle . "\nselect { height: 3ex }\n</style>";
 $content = $content . "<br />" . <<<END
 <br />
 <form action="admin.php" method="post">
 <input type="hidden" name="action" value="addsmiley" />
 {$_PWNDATA['admin']['forms']['forum_smileys_code']}: <input type="text" name="code" value="" />
-$smileyStyle
 $smileyList<br />
 <input type="submit" value="{$_PWNDATA['admin']['forms']['forum_smileys_add']}" /></form>
 END;
