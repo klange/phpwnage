@@ -1413,8 +1413,8 @@ END;
 	        $block_content = $block_content . "\n</optgroup>";
         }
         $block_content = $block_content . "</select>\n<input type=\"submit\" value=\"{$_PWNDATA['forum']['move_topic']}\" /></form></div></td>";
-        $block_content = $block_content . drawButton("forum.php?do=splittopic&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['splittopic']);
-        $block_content = $block_content . drawButton("forum.php?do=mergetopics&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['mergetopic']);
+        $block_content = $block_content . drawButton("forum.php?do=splittopic&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['splittopic'],$_PWNICONS['buttons']['split']);
+        $block_content = $block_content . drawButton("forum.php?do=mergetopics&amp;id=" . $topic['id'],$_PWNDATA['forum']['modtools']['mergetopic'],$_PWNICONS['buttons']['merge']);
     }
     $block_content = $block_content . $PAGING;
     $block_content = $block_content .  <<<END

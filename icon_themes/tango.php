@@ -51,6 +51,9 @@ $_PWNICONS['buttons']['edit_img'] = "<img src=\"tango/buttons/edit.png\" alt=\"\
 $_PWNICONS['buttons']['next'] = "<img src=\"tango/buttons/go-next.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 $_PWNICONS['buttons']['previous'] = "<img src=\"tango/buttons/go-previous.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
 
+$_PWNICONS['buttons']['merge'] = "<img src=\"tango/buttons/merge.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
+$_PWNICONS['buttons']['split'] = "<img src=\"tango/buttons/split.png\" alt=\"\" style=\"vertical-align: text-bottom; padding-right: 2px;\"/>";
+
 
 $_PWNICONS['admin']['news'] = "<img src=\"tango/admin/news.png\" alt=\"{$_PWNDATA['admin']['groups']['news']}\"/>";
 $_PWNICONS['admin']['forums'] = "<img src=\"tango/admin/forums.png\" alt=\"{$_PWNDATA['admin']['groups']['forums']}\"/>";
