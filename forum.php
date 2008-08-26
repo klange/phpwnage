@@ -729,13 +729,13 @@ END;
         $page = ($_GET['p'] - 1) * $_THREADSPERPAGE;
     }
     if ($page > 0) {
-        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE), $_PWNDATA['forum']['previous_page']);
+        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE), $_PWNDATA['forum']['previous_page'],$_PWNICONS['buttons']['previous']);
     }
     $temp_mysql = mysql_query("SELECT COUNT(*) FROM topics WHERE board='" . $board['id'] . "'", $db);
     $temp_res = mysql_fetch_array($temp_mysql);
     $total_posts = $temp_res['COUNT(*)'];
     if ($total_posts > $page + $_THREADSPERPAGE) {
-        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page']);
+        $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page'],$_PWNICONS['buttons']['next']);
     }
     if ($total_posts > $_THREADSPERPAGE) {
         $block_content = $block_content . "<td><b>{$_PWNDATA['forum']['goto']}</b>: ";
