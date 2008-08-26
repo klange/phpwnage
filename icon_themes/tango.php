@@ -84,8 +84,8 @@ $_PWNICONS['protocols']['aim'] = "<img src=\"tango/protocols/aim.png\" border=\"
 $_PWNICONS['protocols']['icq'] = "<img src=\"tango/protocols/icq.png\" border=\"0\" alt=\"ICQ\"/>";
 $_PWNICONS['protocols']['xfire'] = "<img src=\"tango/protocols/xfire.png\" border=\"0\" alt=\"xFire\"/>";
 $_PWNICONS['protocols']['live'] = "<img src=\"tango/protocols/live.png\" border=\"0\" alt=\"Live\"/>";
-$_PWNICONS['protocols']['pand_on'] = "<img src=\"tango/protocols/pan.png\" border=\"0\" alt=\"Pandemic\" /></a>";
-$_PWNICONS['protocols']['pand_off'] = "<img src=\"tango/protocols/panoff.png\" border=\"0\" alt=\"Pandemic\" /></a>";
+$_PWNICONS['protocols']['pand_on'] = "<img src=\"tango/protocols/pan.png\" border=\"0\" alt=\"Pandemic\" />";
+$_PWNICONS['protocols']['pand_off'] = "<img src=\"tango/protocols/panoff.png\" border=\"0\" alt=\"Pandemic\" />";
 
 $_PWNICONS['protocols']['icons']['msn'] = "tango/protocols/msn.png";
 $_PWNICONS['protocols']['icons']['yahoo'] = "tango/protocols/yahoo.png";

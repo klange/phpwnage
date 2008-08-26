@@ -1299,12 +1299,12 @@ END;
 	            $userInfo = explode("|_|",$return);
 	            socket_close($sock);
 	            if ($userInfo[1] == "1") {
-	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'] . "</a>";
 	            } else {
-	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_off'];
+	            $auth_info = $auth_info . $_PWNICONS['protocols']['pand_off'] . "</a>";
 	            }
             } else {
-                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'];
+                $auth_info = $auth_info . $_PWNICONS['protocols']['pand_on'] . "</a>;
             }
         }
         if ($has_messenger) {
