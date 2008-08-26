@@ -503,8 +503,7 @@ function iconsList($selected)
 }
 function colorList($selected)
 {
-	$themeList = "<select name=\"color\">";
-	$themeStyle = "<style type=\"text/css\">";
+	$themeList = "<select name=\"color\" style=\"height: 3ex\">";
 	$myDirectory = opendir("colors"); // Open colors folder
 	while($entryName = readdir($myDirectory)) {
 		$dirArray[] = $entryName; // Get our list of files
@@ -516,18 +515,16 @@ function colorList($selected)
 		if (substr("$dirArray[$index]", 0, 1) != "."){
 			if (strstr($dirArray[$index],".gif")) {
 				$themeName = str_replace(".gif","",$dirArray[$index]);
-				$themeStyle = $themeStyle . "\n.back" . $index . " { height: 30; background: url(\"colors/" . $dirArray[$index] . "\"); background-repeat: no-repeat; }";
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option class=\"back" . $index . "\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList = $themeList . "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option class=\"back" . $index . "\" value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList = $themeList . "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\">" . $themeName . "</option>";
 				}
 			}
 		}
 	}
 	$themeList = $themeList . "</select>";
-	$themeStyle = $themeStyle . "\nselect { height: 3ex }\n</style>";
-	return $themeStyle . $themeList;
+	return $themeList;
 }
 
 function drawBlock($functitle, $funcright, $funccont) {
