@@ -792,7 +792,7 @@ $content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['fo
 $content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['si_copy']}</td><td class=\"forum_topic_sig\"><input name=\"copyright\" type=\"text\" value=\"" . $site_info['copyright'] . "\" style=\"width:100%;\" /></td></tr>\n";
 $rd = str_replace("<","&lt;",$site_info['right_data']);
 $rd = str_replace(">","&gt;",$rd);
-$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\">{$_PWNDATA['admin']['forms']['si_rightbar']}</td></tr><tr><td class=\"forum_topic_sig\" colspan=\"2\"><textarea rows=\"1\" name=\"right_data\" style=\"width:100%;\"  cols=\"80\" >" . $rd . "</textarea></td></tr>\n";
+$content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\">{$_PWNDATA['admin']['forms']['si_rightbar']}</td></tr><tr><td class=\"forum_topic_sig\" colspan=\"2\"><textarea rows=\"5\" name=\"right_data\" style=\"width:100%;\"  cols=\"80\" >" . $rd . "</textarea></td></tr>\n";
 $content = $content . "<tr><td class=\"forum_topic_sig\">{$_PWNDATA['admin']['forms']['si_header']}</td><td class=\"forum_topic_sig\"><input name=\"pheader\" type=\"text\" value=\"" . $site_info['pheader'] . "\" style=\"width:100%;\" /></td></tr>\n";
 $content = $content . "<tr><td class=\"forum_topic_sig\" colspan=\"2\"><input type=\"submit\" value=\"{$_PWNDATA['admin']['forms']['si_save']}\" /></td></tr></table></form>";
 drawBlock($_PWNDATA['admin']['forms']['si'],"",$content);
