@@ -191,6 +191,7 @@ function bbCSharp($stuff) {
 }
 function genericCode($stuff) {
     $stuff = str_replace("<br />","\n",$stuff);
+    $stuff = str_replace("\\\"", "\"",$stuff);
     $stuff = "<font style=\"font-family: monospaced;\"><b>Code:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
     return $stuff;
 }
