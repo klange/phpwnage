@@ -39,6 +39,7 @@ print <<<END
 <meta http-equiv="Content-type" content="text/html;charset=windows-1252" />
 <style type="text/css">
 body {font-family: sans; font-size: 12px;}
+.quote {border: 1px dashed black; padding: 2px;}
 </style>
 </head>
 

@@ -359,6 +359,7 @@
     background-repeat: no-repeat;
     border: 1px dashed black;
     padding: 5px;
+    padding-top: 18px;
 } /* post quote */
 
 .forum_button_text {
