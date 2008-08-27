@@ -631,6 +631,12 @@ function iconsList($selected) {
 function langList($selected)
 {
     global $language;
+    $language_list = file("lang/languages.txt");
+    while ($l = each(&$language_list)) {
+        $lan = rtrim($l['value']);
+        $temp = explode(",",$lan);
+        $languages["{$temp[0]}"] = "{$temp[1]}";
+    }
 	$themeList = "<select name=\"lang\">";
 	$myDirectory = opendir("lang"); // Open root
 	while($entryName = readdir($myDirectory)) {
@@ -647,9 +653,9 @@ function langList($selected)
 			if (strstr($dirArray[$index],".php")) {
 				$themeName = str_replace(".php","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $languages[$themeName] . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $languages[$themeName] . "</option>";
 				}
 			}
 		}
