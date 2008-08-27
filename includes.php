@@ -19,8 +19,7 @@
 
 */
 session_start(); // Always ensure a session.
-require "lang/enUS.php";
-//require "icons.php"; // TODO: Move this to be theme-safe.
+require "lang/enUS.php"; // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
 $_PWNVERSION['minor'] = 8;
@@ -75,9 +74,10 @@ function getPostsInBoard($bid) {
 	}
 	return $total;
 }
+// Not just themes. All things user-selectable are here.
 function setTheme()
 {
-	global $user, $imageroot, $theme, $_PWNICONS, $_PWNDATA;
+	global $user, $imageroot, $theme, $icons, $language, $_PWNICONS, $_PWNDATA;
 	if (!isset($user['color']) || $user['color'] == "")
 	{
 		$imageroot = "crystal"; // Default background.
@@ -101,6 +101,13 @@ function setTheme()
     if (!$theme_exists) {
 	    include "icon_themes/tango.php";
 	}
+	if (!isset($themes[2]) || $themes[2] == "") {
+	    // We've already req'd enUS (or other default language)
+	    $language = "enUS";
+    } else {
+        require_once "lang/{$themes[2]}.php";
+        $language = $themes[2];
+    }
 }
 function drawButton($dowhat, $title, $button = "") {
     $post_content = <<<END
@@ -565,8 +572,8 @@ END;
     $return = $return . "</tr></table>";
     return $return;
 }
-function themeList($selected)
-{
+function themeList($selected) {
+    global $theme;
 	$themeList = "<select name=\"theme\">";
 	$myDirectory = opendir("."); // Open root
 	while($entryName = readdir($myDirectory)) {
@@ -575,6 +582,9 @@ function themeList($selected)
 	closedir($myDirectory); // Close the directory
 	sort($dirArray); // Sort the array
 	$indexCount	= count($dirArray); // Count...
+	if (!isset($selected) || $selected == "") {
+	    $selected = $theme;
+    }
 	for($index=0; $index < $indexCount; $index++) {
 		if (substr("$dirArray[$index]", 0, 1) != "."){
 			if (strstr($dirArray[$index],".css")) {
@@ -590,8 +600,8 @@ function themeList($selected)
 	$themeList = $themeList . "</select>";
 	return $themeList;
 }
-function iconsList($selected)
-{
+function iconsList($selected) {
+    global $icons;
 	$themeList = "<select name=\"icons\">";
 	$myDirectory = opendir("icon_themes"); // Open root
 	while($entryName = readdir($myDirectory)) {
@@ -600,6 +610,9 @@ function iconsList($selected)
 	closedir($myDirectory); // Close the directory
 	sort($dirArray); // Sort the array
 	$indexCount	= count($dirArray); // Count...
+	if (!isset($selected) || $selected == "") {
+	    $selected = $icons;
+    }
 	for($index=0; $index < $indexCount; $index++) {
 		if (substr("$dirArray[$index]", 0, 1) != "."){
 			if (strstr($dirArray[$index],".php")) {
@@ -615,8 +628,37 @@ function iconsList($selected)
 	$themeList = $themeList . "</select>";
 	return $themeList;
 }
-function colorList($selected)
+function langList($selected)
 {
+    global $language;
+	$themeList = "<select name=\"lang\">";
+	$myDirectory = opendir("lang"); // Open root
+	while($entryName = readdir($myDirectory)) {
+		$dirArray[] = $entryName; // Get our list of files
+	}
+	closedir($myDirectory); // Close the directory
+	sort($dirArray); // Sort the array
+	$indexCount	= count($dirArray); // Count...
+	if (!isset($selected) || $selected == "") {
+	    $selected = $language;
+    }
+	for($index=0; $index < $indexCount; $index++) {
+		if (substr("$dirArray[$index]", 0, 1) != "."){
+			if (strstr($dirArray[$index],".php")) {
+				$themeName = str_replace(".php","",$dirArray[$index]);
+				if ($themeName == $selected) {
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+				} else {
+					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
+				}
+			}
+		}
+	}
+	$themeList = $themeList . "</select>";
+	return $themeList;
+}
+function colorList($selected) {
+    global $imageroot;
 	$themeList = "<select name=\"color\" style=\"height: 3ex\">";
 	$myDirectory = opendir("colors"); // Open colors folder
 	while($entryName = readdir($myDirectory)) {
@@ -625,6 +667,9 @@ function colorList($selected)
 	closedir($myDirectory); // Close the directory
 	sort($dirArray); // Sort the array
 	$indexCount	= count($dirArray); // Count...
+	if (!isset($selected) || $selected == "") {
+	    $selected = $imageroot;
+    }
 	for($index=0; $index < $indexCount; $index++) {
 		if (substr("$dirArray[$index]", 0, 1) != "."){
 			if (strstr($dirArray[$index],".gif")) {

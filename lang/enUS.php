@@ -93,6 +93,7 @@ $_PWNDATA['profile']['possessive_profile'] = "'s Profile";
 $_PWNDATA['profile']['theme'] = "Theme";
 $_PWNDATA['profile']['color'] = "Background";
 $_PWNDATA['profile']['icons'] = "Icon Theme";
+$_PWNDATA['profile']['language'] = "Language";
 
 // Article editing
 $_PWNDATA['articles']['edit'] = "Article Edited Successfully";
