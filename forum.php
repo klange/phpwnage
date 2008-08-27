@@ -734,7 +734,9 @@ END;
     $temp_mysql = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}topics` WHERE board='" . $board['id'] . "'", $db);
     $temp_res = mysql_fetch_array($temp_mysql);
     $total_posts = $temp_res['COUNT(*)'];
-    $block_content = $block_content . printPager("forum.php?do=viewforum&amp;id={$board['id']}&amp;p=",(int)($page / $_THREADSPERPAGE + 1),(int)(($total_posts - 1) / $_THREADSPERPAGE + 1));
+    if ((int)(($total_posts - 1) / $_THREADSPERPAGE + 1) > 1) {
+        $block_content = $block_content . printPager("forum.php?do=viewforum&amp;id={$board['id']}&amp;p=",(int)($page / $_THREADSPERPAGE + 1),(int)(($total_posts - 1) / $_THREADSPERPAGE + 1));
+    }
     if ($total_posts > $page + $_THREADSPERPAGE) {
         $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page'],$_PWNICONS['buttons']['next']);
     }

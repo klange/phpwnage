@@ -21,6 +21,7 @@
 
 require 'config.php';
 require 'includes.php';
+$_IMAGESPERPAGE = 10;
 
 function generateThumbnail($file, $type) {
     $_SIZE = 120;
@@ -166,9 +167,29 @@ END;
         if ($user['level'] >= $gal['upload']) {
             $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button'],$_PWNICONS['buttons']['img_upload']);
         }
+        if (!isset($_GET['p'])) {
+            $start = 0;
+            $page = 1;
+        } else {
+            $start = ($_GET['p'] - 1) * $_IMAGESPERPAGE;
+            $page = $_GET['p'];
+        }
+        $request = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
+        $temp = mysql_fetch_array($request);
+        $totalImages = $temp['COUNT(*)'];
+        $totalPages = (int)(($totalImages - 1) / $_IMAGESPERPAGE + 1);
+        if ($page > 1) {
+            $content = $content . drawButton("gallery.php?do=view&amp;id={$gal['id']}&amp;p=" . ($page - 1), $_PWNDATA['forum']['previous_page'],$_PWNICONS['buttons']['previous']);
+        }
+        if ($totalPages > 1) {
+            $content = $content . printPager("gallery.php?do=view&amp;id={$gal['id']}&amp;p=",$page,$totalPages);
+        }
+        if ($page < $totalPages) {
+            $content = $content . drawButton("gallery.php?do=view&amp;id={$gal['id']}&amp;p=" . ($page + 1), $_PWNDATA['forum']['next_page'],$_PWNICONS['buttons']['next']);
+        }
         $content = $content . "</tr></table>";
         $content = $content . "<table class=\"forum_base\" width=\"100%\">";
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC");
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC LIMIT {$start}, {$_IMAGESPERPAGE}");
         while ($image = mysql_fetch_array($request)) {
             $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" rowspan=\"2\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=image&amp;id={$image['id']}\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$image['id']}\" alt=\"\" /></a></td>";
             $content = $content . "<td class=\"forum_topic_content\"><b><a href=\"gallery.php?do=image&amp;id={$image['id']}\">{$image['name']}</a></b></td>";
