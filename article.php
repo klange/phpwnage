@@ -27,8 +27,8 @@ $row = mysql_fetch_array($result);
 
 if ($_POST[action]){
 $id = $_GET['id'];
-mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `news`.`id`='" . $id . "'", $db);
-mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `news`.`id`='" . $id . "'", $db);
+mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
+mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
 messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
