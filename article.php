@@ -22,13 +22,13 @@
 require 'config.php';
 require 'includes.php';
 
-$result = mysql_query("SELECT * FROM news WHERE id='" . $_GET['id'] . "'", $db);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);
 
 if ($_POST[action]){
 $id = $_GET['id'];
-mysql_query("UPDATE `news` SET `content` = '" . $_POST['content'] . "' WHERE `news`.`id`='" . $id . "'", $db);
-mysql_query("UPDATE `news` SET `title` = '" . $_POST['title'] . "' WHERE `news`.`id`='" . $id . "'", $db);
+mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `news`.`id`='" . $id . "'", $db);
+mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `news`.`id`='" . $id . "'", $db);
 messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
@@ -36,7 +36,7 @@ standardHeaders($site_info['name'] . " :: Article #" . $_GET['id'] . " - " . $ro
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
 require 'sidebar.php';
 
-$result = mysql_query("SELECT * FROM news WHERE id='" . $_GET['id'] . "'", $db);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);
 print <<<END
 <td valign="top">
@@ -48,7 +48,7 @@ END;
 drawBlock($row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), BBDecode($row['content'],true));
 
 if ($row['topicid'] != 0){
-$results = mysql_query("SELECT * FROM `topics` WHERE `id`=" . $row['topicid']);
+$results = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `id`=" . $row['topicid']);
 $topic = mysql_fetch_array($results);
 if (isWriteable($user['level'], $topic['board'])) {
 $content = printPosterMini('content', $topic['id']) . <<<END
@@ -66,10 +66,10 @@ $content = $content . <<<END
 </form>
 END;
 }
-$resultz = mysql_query("SELECT * FROM posts WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC LIMIT 10", $db);
+$resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $row['topicid'] . "' ORDER BY `id` DESC LIMIT 10", $db);
 $content = $content . "<table class=\"forum_base\" width=\"100%\">\n";
 while ($rowz = mysql_fetch_array($resultz)) {
-$resultb = mysql_query("SELECT * FROM users WHERE id='" .  $rowz['authorid'] . "'", $db);
+$resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
 $post_author = mysql_fetch_array($resultb);
 $auth_name = $post_author['name'];
 $dec_post = BBDecode($rowz['content']);

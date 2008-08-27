@@ -135,7 +135,7 @@ document.getElementById('sel_' + tabname).className = "tab_head_on"
 <div id="tab1" class="tab_contents">
 END;
 $userid = $user['id'];
-$unread_temp = mysql_query("SELECT `pms`.*, COUNT(`read`) FROM `pms` WHERE `to`=$userid AND `read`=0 GROUP BY `read` ");
+$unread_temp = mysql_query("SELECT `{$_PREFIX}pms`.*, COUNT(`read`) FROM `{$_PREFIX}pms` WHERE `to`=$userid AND `read`=0 GROUP BY `read` ");
 $num_unread_t = mysql_fetch_array($unread_temp);
 $num_unread = $num_unread_t['COUNT(`read`)'];
 if ($num_unread == 0) {
@@ -145,9 +145,9 @@ print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {
 else {
 print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['some_new']}</a>"; }
 print "<br />";
-$pmresult = mysql_query("SELECT * FROM pms WHERE `to`=" . $user['id'] . " ORDER BY id DESC LIMIT 10", $db);
+$pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `to`=" . $user['id'] . " ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($pmresult)) {
-$resultb = mysql_query("SELECT * FROM users WHERE id='" . $row['from'] . "'" , $db);
+$resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $row['from'] . "'" , $db);
 $rowb = mysql_fetch_array($resultb);
 $author = $rowb['name'];
 $authid = $rowb['id'];
@@ -160,7 +160,7 @@ print <<<END
 <div id="tab2" class="tab_contents" style="display: none;">
 <b>{$_PWNDATA['buddy']['recent']}</b><br />
 END;
-$post_results = mysql_query("SELECT * FROM `topics` ORDER BY `lastpost` DESC LIMIT 5");
+$post_results = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `lastpost` DESC LIMIT 5");
 while ($topic = mysql_fetch_array($post_results)) {
 if (isReadable($user['level'],$topic['board'])) {
 if (substr($topic['title'], 0, 20) != $topic['title']) {
@@ -184,21 +184,21 @@ $day = date("j",$view_date); // The current day of the month.
 $today = getDay(mktime(0,0,0,intval($month),intval($day),intval($year)));
 $tomorrow = getDay(mktime(0,0,0,intval($month),intval($day)+1,intval($year)));
 $dayafter = getDay(mktime(0,0,0,intval($month),intval($day)+2,intval($year)));
-$day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $today . "'");
+$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 print "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNDATA['cal']['today']}</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $tomorrow . "'");
+$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $tomorrow . "'");
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 print "<a href=\"calendar.php?view=date&amp;day=$tomorrow\">{$_PWNDATA['cal']['tomorrow']}</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $dayafter . "'");
+$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter . "'");
 $events = "";
 while ($query_row = mysql_fetch_array($day_results))
 {

@@ -194,6 +194,11 @@ SQL User Name <br />
   <input type="text" name="admin_email" style="width: 100%" /></td>
   </tr>
   <tr>
+    <td width="48%" valign="top" align="left">Table Prefix <br />
+    <font size="2">ie, &quot;pwn_&quot;</font></td>
+    <td width="52%" valign="top" align="right"><input type="text" name="prefix" style="width: 100%" /></td>
+  </tr>
+  <tr>
     <td width="100%" valign="top" align="center" colspan="2">
     &lt;  
     <input type="submit" value="Continue to the Next Step" name="enter" /> &gt;</td>
@@ -214,6 +219,7 @@ $SQL_USER = $_POST['sql_user'];
 $SQL_PASSWORD = $_POST['sql_password'];
 $SQL_DATABASE = $_POST['sql_database'];
 $ADMIN_EMAIL = $_POST['admin_email'];
+$PREFIX = $_POST['prefix'];
 
 $data = "<?php
 // PHPwnage Automatically Generated Configuration Page
@@ -225,7 +231,8 @@ $data = $data . "\$conf_server = \"$SQL_SERVER\";
 \$conf_user = \"$SQL_USER\";
 \$conf_password = \"$SQL_PASSWORD\";
 \$conf_database = \"$SQL_DATABASE\";
-\$conf_email = \"$ADMIN_EMAIL\";";
+\$conf_email = \"$ADMIN_EMAIL\";
+\$_PREFIX = \"$PREFIX\";";
 $data = $data . <<<END
 // DO NOT EDIT ANYTHING BELOW THIS LINE
 // ------------------------------------------------------------------------------------------------------------
@@ -348,13 +355,13 @@ mysql_select_db($conf_database, $db);
     here for more information on what to do with your tables.
 */
 $query = <<<END
-CREATE TABLE  `banlist` (
+CREATE TABLE  `{$_PREFIX}banlist` (
   `ip` varchar(50) collate latin1_general_ci NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `blocks` (
+CREATE TABLE  `{$_PREFIX}blocks` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(40) collate latin1_general_ci default NULL,
   `content` text collate latin1_general_ci,
@@ -363,7 +370,7 @@ CREATE TABLE  `blocks` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `boards` (
+CREATE TABLE  `{$_PREFIX}boards` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(100) collate latin1_general_ci NOT NULL default '',
   `desc` text collate latin1_general_ci NOT NULL,
@@ -378,7 +385,7 @@ CREATE TABLE  `boards` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `calendar` (
+CREATE TABLE  `{$_PREFIX}calendar` (
   `id` int(11) NOT NULL auto_increment,
   `day` varchar(10) collate latin1_general_ci NOT NULL default '',
   `title` varchar(100) collate latin1_general_ci NOT NULL default '',
@@ -389,7 +396,7 @@ CREATE TABLE  `calendar` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `categories` (
+CREATE TABLE  `{$_PREFIX}categories` (
   `id` int(11) NOT NULL auto_increment,
   `orderid` int(11) NOT NULL default '0',
   `name` varchar(200) collate latin1_general_ci NOT NULL default '',
@@ -398,7 +405,7 @@ CREATE TABLE  `categories` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `info` (
+CREATE TABLE  `{$_PREFIX}info` (
   `id` int(11) NOT NULL default '1',
   `name` varchar(40) collate latin1_general_ci default NULL,
   `copyright` varchar(40) collate latin1_general_ci default NULL,
@@ -416,7 +423,7 @@ CREATE TABLE  `info` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `news` (
+CREATE TABLE  `{$_PREFIX}news` (
   `id` int(11) NOT NULL auto_increment,
   `title` varchar(200) collate latin1_general_ci default NULL,
   `content` text collate latin1_general_ci,
@@ -428,7 +435,7 @@ CREATE TABLE  `news` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `pages` (
+CREATE TABLE  `{$_PREFIX}pages` (
   `name` varchar(20) collate latin1_general_ci NOT NULL default '',
   `display_name` varchar(100) collate latin1_general_ci NOT NULL default '',
   `content` text collate latin1_general_ci NOT NULL,
@@ -440,7 +447,7 @@ CREATE TABLE  `pages` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `pms` (
+CREATE TABLE  `{$_PREFIX}pms` (
   `id` int(11) NOT NULL auto_increment,
   `to` int(11) NOT NULL default '0',
   `from` int(11) NOT NULL default '0',
@@ -453,7 +460,7 @@ CREATE TABLE  `pms` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `polls` (
+CREATE TABLE  `{$_PREFIX}polls` (
   `id` int(10) unsigned NOT NULL auto_increment,
   `title` varchar(100) NOT NULL default '',
   `op1_name` text,
@@ -464,7 +471,7 @@ CREATE TABLE  `polls` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `posts` (
+CREATE TABLE  `{$_PREFIX}posts` (
   `id` int(11) NOT NULL auto_increment,
   `topicid` int(11) NOT NULL default '0',
   `authorid` int(11) NOT NULL default '0',
@@ -477,7 +484,7 @@ CREATE TABLE  `posts` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `ranks` (
+CREATE TABLE  `{$_PREFIX}ranks` (
   `id` int(11) NOT NULL auto_increment,
   `value` int(11) NOT NULL default '1',
   `name` varchar(40) NOT NULL,
@@ -487,7 +494,7 @@ CREATE TABLE  `ranks` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `security` (
+CREATE TABLE  `{$_PREFIX}security` (
   `time` varchar(50) collate latin1_general_ci NOT NULL default '',
   `passused` varchar(50) collate latin1_general_ci NOT NULL default '',
   `where` varchar(50) collate latin1_general_ci NOT NULL default '',
@@ -496,7 +503,7 @@ CREATE TABLE  `security` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `topics` (
+CREATE TABLE  `{$_PREFIX}topics` (
   `id` int(11) NOT NULL auto_increment,
   `authorid` int(11) NOT NULL default '0',
   `board` int(11) NOT NULL default '0',
@@ -512,7 +519,7 @@ CREATE TABLE  `topics` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `users` (
+CREATE TABLE  `{$_PREFIX}users` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(50) collate latin1_general_ci NOT NULL default '',
   `email` varchar(50) collate latin1_general_ci NOT NULL default '',
@@ -535,7 +542,7 @@ CREATE TABLE  `users` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `smileys` (
+CREATE TABLE  `{$_PREFIX}smileys` (
   `id` int(11) NOT NULL auto_increment,
   `code` varchar(20) NOT NULL,
   `image` varchar(100) NOT NULL,
@@ -544,7 +551,7 @@ CREATE TABLE  `smileys` (
 END;
 mysql_query($query);
 $query = <<<END
-INSERT INTO `smileys` VALUES  
+INSERT INTO `{$_PREFIX}smileys` VALUES  
  (1,'[:)]','happy.png'),
  (2,'[:(]','sad.png'),
  (3,'[:P]','tongue.png'),
@@ -556,7 +563,7 @@ INSERT INTO `smileys` VALUES
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE  `sessions` (
+CREATE TABLE  `{$_PREFIX}sessions` (
   `id` int(11) NOT NULL default '0' COMMENT 'Session ID',
   `user` int(11) NOT NULL default '0' COMMENT 'userid',
   `last` int(11) NOT NULL default '0'
@@ -564,7 +571,7 @@ CREATE TABLE  `sessions` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE `galleries` (
+CREATE TABLE `{$_PREFIX}galleries` (
     `id`    int(11)         NOT NULL    auto_increment,
     `name`  varchar(100)    NOT NULL    DEFAULT '',
     `desc`  text,
@@ -576,7 +583,7 @@ CREATE TABLE `galleries` (
 END;
 mysql_query($query);
 $query = <<<END
-CREATE TABLE `images` (
+CREATE TABLE `{$_PREFIX}images` (
     `id`    int(11)         NOT NULL    auto_increment,
     `name`  varchar(100)    NOT NULL    DEFAULT '',
     `desc`  text,
@@ -593,18 +600,18 @@ CREATE TABLE `images` (
 END;
 mysql_query($query);
 print "Completed database setup. Moving on to data...<br />\n";
-$info = "INSERT INTO `info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2, 0, NULL, NULL);";
+$info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2, 0, NULL, NULL);";
 $result = mysql_query($info);
 print "Primary site information added! Moving on to generic set up...<br />\n";
 print "Adding administrator forum user...<br />\n";
 $adminname = $_POST['site_admin_name'];
 $adminpass = md5($_POST['site_admin_pass']);
-mysql_query("INSERT INTO `users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
+mysql_query("INSERT INTO `{$_PREFIX}users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
 print "Adding generic news item...<br />\n";
 $time = time();
-mysql_query("INSERT INTO `news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://oasis-games.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
+mysql_query("INSERT INTO `{$_PREFIX}news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://oasis-games.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
 print "Adding navigation block...<br />\n";
-mysql_query("INSERT INTO `blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
+mysql_query("INSERT INTO `{$_PREFIX}blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
 print "Completed! Moving to next page...\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4\">";
 // Now that the core of the installation has completed, grab the $_POST data...

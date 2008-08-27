@@ -32,7 +32,7 @@ $date = $_POST['day'];
 $topic = $_POST['subj'];
 $content = $_POST['content'];
 $uid = $_POST['user'];
-mysql_query("INSERT INTO `calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
+mysql_query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
 messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&amp;day=$date");
 }
 if ($_POST['action'] == "edit_event") // If an event is being edited
@@ -44,15 +44,15 @@ $date = $_POST['date'];
 $eid = $_POST['event'];
 $title = $_POST['subj'];
 $content = $_POST['content'];
-mysql_query("UPDATE `calendar` SET `title`='$title' WHERE `id`=$eid");
-mysql_query("UPDATE `calendar` SET `content`='$content' WHERE `id`=$eid");
+mysql_query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
+mysql_query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
 messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&amp;day=$date");
 }
 if ($_GET['view'] == "del_event") {
 if ($user['level'] < $site_info['mod_rank']) {
 messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
 }
-mysql_query("DELETE FROM `calendar` WHERE `id`=" . $_GET['e']);
+mysql_query("DELETE FROM `{$_PREFIX}calendar` WHERE `id`=" . $_GET['e']);
 messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&amp;day=$date");
 }
 
@@ -147,7 +147,7 @@ $zing = "<a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) 
 if ($month_started == 1) {
 $zinga = $days_in_month - $days_left + 1; // The current day of the month.
 $today = getDay(mktime(0,0,0,intval($month),$zinga,intval($year)));
-$day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $today . "'");
+$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
 $zing = "";
 while ($query_row = mysql_fetch_array($day_results))
 {
@@ -175,7 +175,7 @@ if ($mode == "date") // View a particular day
 $date_info = split(",", $_GET['day']);
 $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval($date_info[2]));
 print "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
-$day_results = mysql_query("SELECT * FROM `calendar` WHERE `day`='" . $_GET['day'] . "'");
+$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $_GET['day'] . "'");
 $day_stuff = $_GET['day'];
 $zing = "<table class=\"forum_base\" width=\"100%\">";
 $num_results = 0;
@@ -226,7 +226,7 @@ if ($mode == "edit") {
 $eid = $_GET['e'];
 if ($user['level'] < $site_info['mod_rank']) { messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']); }
 $userid = $user['id'];
-$results = mysql_query("SELECT * FROM `calendar` WHERE `id`=$eid");
+$results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
 $event = mysql_fetch_array($results);
 $title = $event['title'];
 $content = $event['content'];

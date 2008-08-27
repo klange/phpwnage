@@ -29,7 +29,7 @@ print "<channel>\n";
 print " <title>" . $site_info['name'] . "</title>\n";
 print " <description>Powered by PHPwnage</description>\n";
 print " <link>" . $site_info['url'] . "</link>\n";
-$result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY id DESC LIMIT 10", $db);
 while ($row = mysql_fetch_array($result)) {
 print " <item>\n  <title>" . htmlspecialchars($row['title']) . "</title>\n";
 print "  <pubDate>" . date("D, d M Y H:i:s T", $row['time_code']) . "</pubDate>\n";

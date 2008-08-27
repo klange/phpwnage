@@ -23,10 +23,10 @@ require 'includes.php';
 
 if ($_POST[action]){
 $pagename = $_GET['page'];
-mysql_query("UPDATE `pages` SET `content` = '" . $_POST['content'] . "' WHERE `pages`.`name`='" . $pagename . "'", $db);
+mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
 messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
 }
-$result = mysql_query("SELECT * FROM pages WHERE name='" . $_GET['page'] . "'", $db);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='" . $_GET['page'] . "'", $db);
 $page = mysql_fetch_array($result);
 
 standardHeaders($site_info['name'] . " :: " . $page['display_name'],true);

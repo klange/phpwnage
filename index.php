@@ -45,9 +45,9 @@ print <<<END
 END;
 
 if ($_GET['show'] == 'all') { 
-    $result = mysql_query("SELECT * FROM news ORDER BY id DESC", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY id DESC", $db);
 } else {
-    $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 10", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY id DESC LIMIT 10", $db);
 }
 while ($row = mysql_fetch_array($result)) {
 	// News article

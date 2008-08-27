@@ -51,7 +51,7 @@ if (!isset($_GET['do'])) {
     $_GET['do'] = "news";
 }
 if ($_GET['do'] == "news") {
-    $result = mysql_query("SELECT * FROM news ORDER BY id DESC LIMIT 5", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY id DESC LIMIT 5", $db);
     while ($row = mysql_fetch_array($result)) {
         $posted = date("F j, Y (g:ia T)", $row['time_code']) . " " . $_PWNDATA['posted_by'] . " " . $row['user'];
         print <<<END
@@ -61,7 +61,7 @@ END;
         print "<br /><br />";
     }
 } else if ($_GET['do'] == "forum") {
-    $post_results = mysql_query("SELECT * FROM `topics` ORDER BY `lastpost` DESC LIMIT 5");
+    $post_results = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `lastpost` DESC LIMIT 5");
     while ($topic = mysql_fetch_array($post_results)) {
         if (isReadable($user['level'],$topic['board'])) {
             if (substr($topic['title'], 0, 20) != $topic['title']) {
@@ -89,9 +89,9 @@ END;
     </form>
 END;
 } else if ($_GET['do'] == "viewtopic") {
-    $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
-    $resultb = mysql_query("SELECT * FROM boards WHERE id='" . $topic['board'] . "'", $db);
+    $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($resultb);
     if ($board['vis_level'] > $user['level']) {
         messageBackLight($_PWNDATA['forum']['not_permitted_topic']);
@@ -102,9 +102,9 @@ END;
         print "<a href=\"mobile.php?do=reply&id={$topic['id']}\">{$_PWNDATA['forum']['add_reply']}</a><br />";
     }
     print "<br />";
-    $result = mysql_query("SELECT * FROM posts WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
     while ($row = mysql_fetch_array($result)) {
-        $resultb = mysql_query("SELECT * FROM users WHERE id='" .  $row['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         print "<b>" . $post_author['name'] . ":</b><br />";
         print "<i>" . date("F j, Y (g:ia T)", $row['time']) ."</i><br />";
@@ -112,9 +112,9 @@ END;
         print "<br /><br />";
     }
 } else if ($_GET['do'] == "reply") {
-    $result = mysql_query("SELECT * FROM topics WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
-    $result = mysql_query("SELECT * FROM boards WHERE id='" . $topic['board'] . "'", $db);
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($result);
     if ($board['post_level'] > $user['level']) {
         messageBackLight($_PWNDATA['forum']['not_permitted_reply']);

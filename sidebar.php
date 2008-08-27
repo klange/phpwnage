@@ -35,7 +35,7 @@ document.getElementById('sb').style.width = "0"
     <table class="borderless_table" width="100%">
 END;
 
-$result = mysql_query("SELECT * FROM blocks ORDER BY `id`", $db);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
 while ($row = mysql_fetch_array($result)) {
 // one particular side bar
 print makeBlockTrue($row['title'],$row['content']);
