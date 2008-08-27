@@ -48,7 +48,7 @@ NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . 
     if ($_POST['add_to_forum'] == true) {
         $content = "[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['read_article_here'] . "[/url]";
         mysql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mysql_real_escape_string($_POST['title']) . "');");
-        $result = mysql_query("SELECT * FROM `topics` ORDER BY `id` DESC LIMIT 1");
+        $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
         $topic = mysql_fetch_array($result);
         $ip=$_SERVER['REMOTE_ADDR'];
         mysql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip` ) VALUES ( NULL , " . $topic['id'] . " , " . $user['id'] . " , '" . mysql_real_escape_string($content) . "' , " . time() . " , '" . $ip . "' );");
