@@ -25,52 +25,13 @@ print <<<END
 
     <td class="sub_mid" align="center"><font class="sub_body_text">
 END;
-print $site_info['copyright'] . " <a href=\"rss.php\">{$_PWNICONS['tags']['rss']}</a><a href=\"mobile.php\">{$_PWNICONS['tags']['mobile']}</a><a href=\"https://launchpad.net/phpwnage\">{$_PWNICONS['tags']['phpwnage']}</a><a href=\"http://php.net\">{$_PWNICONS['tags']['php']}</a> <a href=\"javascript:MinimumFontSize()\">{$_PWNDATA['increase_font']}</a>";
+print $site_info['copyright'] . " <a href=\"rss.php\">{$_PWNICONS['tags']['rss']}</a><a href=\"mobile.php\">{$_PWNICONS['tags']['mobile']}</a><a href=\"https://launchpad.net/phpwnage\">{$_PWNICONS['tags']['phpwnage']}</a><a href=\"http://php.net\">{$_PWNICONS['tags']['php']}</a>";
 print <<<END
     </font></td>
     <td class="sub_right"></td>
   </tr>
   
 </table>
-<script type="text/javascript">
-//<![CDATA[
-function MinimumFontSize() {
-tags = new Array ('body', 'div', 'a', 'td', 'th', 'p', 'span', 'h1', 'h2', 'h3', 'font', 'tr', 'table');
-for (j = 0; j < tags.length; j ++) {
-for (i = 0; i < document.getElementsByTagName(tags[j]).length - 1; i ++) {
-var getbody = document.getElementsByTagName(tags[j]).item(i);
-if (getbody) {
-var fsize = getbody.style.fontSize.substr(0,getbody.style.fontSize.length-2);
-if (fsize == "") {
-fsize = "12pt";
-} else {
-var tempsize = parseInt(fsize) + 1;
-fsize = tempsize.toString() + "pt";
-}
-getbody.style.fontSize = fsize;
-}
-}
-}
-}
-function FWithEverything() {
-tags = new Array ('body', 'div', 'a', 'td', 'th', 'p', 'span', 'h1', 'h2', 'h3', 'font', 'tr', 'table');
-var itemcount = 0;
-for (j = 0; j < tags.length; j ++) {
-for (i = 0; i < document.getElementsByTagName(tags[j]).length - 1; i ++) {
-var getbody = document.getElementsByTagName(tags[j]).item(i);
-if (getbody) {
-getbody.style.position = "fixed";
-getbody.style.width = "10";
-getbody.style.height = "10";
-getbody.style.left = i * 10;
-getbody.style.top = j * 20;
-itemcount = itemcount + 1;
-}
-}
-}
-}
-//]]>
-</script>
 END;
 require 'buddy.php';
 print <<<END
