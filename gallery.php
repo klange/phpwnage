@@ -256,7 +256,7 @@ END;
         mysql_query("DELETE FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
         messageRedirect($_PWNDATA['gallery_page_title'],"Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
     } elseif ($_GET['do'] == "edit_image") {
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `images` WHERE `id`={$_GET['id']}");
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
         if (!$image) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
@@ -298,12 +298,12 @@ END;
 } else {
     // We're procesing image requests here.
     if (!isset($_GET['type']) || $_GET['type'] == "img") {
-        $results = mysql_query("SELECT `type`, `data` FROM `images` WHERE `id`={$_GET['i']}");
+        $results = mysql_query("SELECT `type`, `data` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
         $image = mysql_fetch_array($results);
         header("Content-type: " . $image['type']);
         die($image['data']);
     } elseif ($_GET['type'] == "thumb") {
-        $results = mysql_query("SELECT `thumb` FROM `images` WHERE `id`={$_GET['i']}");
+        $results = mysql_query("SELECT `thumb` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
         $image = mysql_fetch_array($results);
         header("Content-type: image/png");
         die($image['thumb']);
