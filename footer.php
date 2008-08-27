@@ -35,7 +35,7 @@ print <<<END
 END;
 require 'buddy.php';
 print <<<END
-<p align="center"><font class="sub_body_text"><font size="1">
+<div class="sub_body_text" style="font-size: 8px;" align="center">
 END;
    $mtime = microtime();
    $mtime = explode(" ",$mtime);
@@ -44,8 +44,9 @@ END;
    $totaltime = ($endtime - $starttime); 
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
 print "<br />{$_PWNICONS['notice']}";
+print $_TRACKER;
 print <<<END
-</font></font></p>
+</div>
 </body>
 </html>
 END;

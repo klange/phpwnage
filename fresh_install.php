@@ -232,6 +232,7 @@ $data = $data . "\$conf_server = \"$SQL_SERVER\";
 \$conf_password = \"$SQL_PASSWORD\";
 \$conf_database = \"$SQL_DATABASE\";
 \$conf_email = \"$ADMIN_EMAIL\";
+\$_TRACKER = \"\"; // Add your analytics tracking here
 \$_PREFIX = \"$PREFIX\";";
 $data = $data . <<<END
 // DO NOT EDIT ANYTHING BELOW THIS LINE
