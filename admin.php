@@ -30,7 +30,7 @@ if (isset($_SESSION['sess_id'])) {
     $ip = $_SERVER['REMOTE_ADDR'];
     $name = $_SESSION['user_name'];
     mysql_query("INSERT INTO `{$_PREFIX}security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_SESSION['user_pass']) . "', 'Admin, $name', '" . $ip . "' );");
-    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;amp;admin=yes"); 
+    messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;admin=yes"); 
 }
 
 // XXX: Begin POST functions
