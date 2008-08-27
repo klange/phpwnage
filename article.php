@@ -39,7 +39,7 @@ require 'sidebar.php';
 $result = mysql_query("SELECT * FROM news WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);
 print <<<END
-<td height="269" valign="top">
+<td valign="top">
 <table class="borderless_table" width="100%">
 END;
 

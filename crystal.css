@@ -611,6 +611,39 @@
     background-color: #e4edf4;
 }
 
+
+.forum_page {
+    height: 14px;
+    border: 1px solid #707070;
+    background-color: #b6d0e0;
+    padding: 2px;
+}
+
+.page_spacer {
+    padding: 2px;
+}
+
+.page_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 10px;
+    color: #000000;
+}
+
+.page_text :link {
+    color: #000000;
+    text-decoration: none;
+}
+
+.page_text :visited {
+    color: #000000;
+    text-decoration: none;
+}
+
+.page_text :hover {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
 .calendar_day {
     background-color: #b6d0e0;
     border: 0px #000000 none;

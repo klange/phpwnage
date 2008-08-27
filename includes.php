@@ -120,6 +120,69 @@ END;
 END;
     return $post_content;
 }
+// Print a paging device (use everywhere!)
+function printPager($url,$page,$total) {
+    // Magic number 7: First, last, current, plus two on each side = 7 total
+    /*  1 2 3 4 5 6 7
+    
+    */
+    $unlink = "\">";
+    $return = "";
+    if ($total < 8) {
+        for ($i = 1; $i <= $total; $i++) {
+            if ($i == $page) {
+                $return = $return . drawPage("","<b>$i</b>");
+            } else {
+                $return = $return . drawPage("{$url}$i",$i);
+            }
+        }
+    } else {
+        if ($page < 5) {
+            for ($i = 1; $i <= $page + 2; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPage("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPage("{$url}$i",$i);
+                }
+            }
+            $return = $return . drawPage("#","...") . drawPage("{$url}$total",$total);
+        } else if ($page > $total - 4) {
+            $return = $return . drawPage("{$url}1",1) . drawPage("#","...");
+            for ($i = $page - 2; $i <= $total; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPage("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPage("{$url}$i",$i);
+                }
+            }
+        } else {
+            $return = $return . drawPage("{$url}1",1) . drawPage("#","...");
+            for ($i = $page - 2; $i <= $page + 2; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPage("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPage("{$url}$i",$i);
+                }
+            }
+            $return = $return . drawPage("#","...") . drawPage("{$url}$total",$total);
+        }
+    }
+    return $return;
+}
+
+function drawPage($link,$text) {
+    $post_content = <<<END
+<td>
+    <div class="page_spacer">
+        <div class="forum_page">
+            <span class="page_text"><a href="$link">$text</a></span>
+        </div>
+    </div>
+</td>
+END;
+    return $post_content;
+}
+
 function getRankName($level,$site_info,$posts) {
 	// First we'll check if there is a custom rank available.
     $results = mysql_query("SELECT * FROM `ranks` WHERE `value`=$level AND `posts`=-1");

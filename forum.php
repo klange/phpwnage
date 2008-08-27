@@ -734,20 +734,9 @@ END;
     $temp_mysql = mysql_query("SELECT COUNT(*) FROM topics WHERE board='" . $board['id'] . "'", $db);
     $temp_res = mysql_fetch_array($temp_mysql);
     $total_posts = $temp_res['COUNT(*)'];
+    $block_content = $block_content . printPager("forum.php?do=viewforum&amp;id={$board['id']}&amp;p=",(int)($page / $_THREADSPERPAGE + 1),(int)(($total_posts - 1) / $_THREADSPERPAGE + 1));
     if ($total_posts > $page + $_THREADSPERPAGE) {
         $block_content = $block_content . drawButton("forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . ($page / $_THREADSPERPAGE + 2), $_PWNDATA['forum']['next_page'],$_PWNICONS['buttons']['next']);
-    }
-    if ($total_posts > $_THREADSPERPAGE) {
-        $block_content = $block_content . "<td><b>{$_PWNDATA['forum']['goto']}</b>: ";
-        for ($i = 0; $i < $total_posts; $i = $i + $_THREADSPERPAGE) {
-            $pageNum = $i / $_THREADSPERPAGE + 1;
-            if ($i != $page) {
-                $block_content = $block_content . "<a href=\"forum.php?do=viewforum&amp;id=" . $board['id'] . "&amp;p=" . $pageNum . "\">" . $pageNum . "</a> ";
-            } else {
-                $block_content = $block_content . "<b>" . $pageNum . "</b> ";
-            }
-        }
-        $block_content = $block_content . "&nbsp;</td>";
     }
     $block_content = $block_content .   <<<END
 		</tr></table>
@@ -1192,6 +1181,9 @@ END;
     $pages = (floor(($posts_in_topic - 1) / $_POSTSPERPAGE));
     $top_id = $topic['id'];
     if ($pages > 0) {
+        $PAGING = printPager("forum.php?do=viewtopic&amp;id=$top_id&amp;p=",(floor($page / $_POSTSPERPAGE)) + 1,$pages+1);
+    }
+    /*if ($pages > 0) {
         $PAGING = $PAGING . "<td> &nbsp;&nbsp;&nbsp;{$_PWNDATA['forum']['goto']}: ";
         for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
             if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
@@ -1204,7 +1196,7 @@ END;
             }
         }
         $PAGING = $PAGING . "</td>";
-    }
+    }*/
     $block_content = $block_content .  <<<END
 	<tr><td class="forum_topic_buttonbar" colspan="2"><table style="border: 0px" class="borderless_table"><tr>
 END;
