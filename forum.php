@@ -810,13 +810,7 @@ END;
         $pages = (floor(($posts_in_topic - 1) / $_POSTSPERPAGE));
         $pagination = "";
         if ($pages > 0) {
-            $pagination = " &nbsp;&nbsp;&nbsp;" . $_PWNDATA['forum']['goto'] . ": ";
-            for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
-                $pagination = $pagination . "<a href=\"forum.php?do=viewtopic&amp;id=$top_temp&amp;p=$page_count\">$page_count</a>";
-                if ($page_count != $pages + 1) {
-                    $pagination = $pagination . ", ";
-                }
-            }
+            $pagination = printPagerNonTabular("forum.php?do=viewtopic&amp;id=$top_temp&amp;p=",0,$pages + 1);
         }
         $toptitle = $row['title'];
         if ($user['level'] >= $site_info['mod_rank']) {

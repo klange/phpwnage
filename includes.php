@@ -169,16 +169,67 @@ function printPager($url,$page,$total) {
     }
     return $return;
 }
+function printPagerNonTabular($url,$page,$total) {
+    $unlink = "\">";
+    $return = "";
+    if ($total < 8) {
+        for ($i = 1; $i <= $total; $i++) {
+            if ($i == $page) {
+                $return = $return . drawPageB("","<b>$i</b>");
+            } else {
+                $return = $return . drawPageB("{$url}$i",$i);
+            }
+        }
+    } else {
+        if ($page < 5) {
+            for ($i = 1; $i <= $page + 2; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPageB("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPageB("{$url}$i",$i);
+                }
+            }
+            $return = $return . drawPageB("#","...") . drawPageB("{$url}$total",$total);
+        } else if ($page > $total - 4) {
+            $return = $return . drawPageB("{$url}1",1) . drawPageB("#","...");
+            for ($i = $page - 2; $i <= $total; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPageB("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPageB("{$url}$i",$i);
+                }
+            }
+        } else {
+            $return = $return . drawPageB("{$url}1",1) . drawPageB("#","...");
+            for ($i = $page - 2; $i <= $page + 2; $i++) {
+                if ($i == $page) {
+                    $return = $return . drawPageB("","<b>$i</b>");
+                } else {
+                    $return = $return . drawPageB("{$url}$i",$i);
+                }
+            }
+            $return = $return . drawPageB("#","...") . drawPageB("{$url}$total",$total);
+        }
+    }
+    return $return;
+}
 
 function drawPage($link,$text) {
     $post_content = <<<END
 <td>
     <div class="page_spacer">
-        <div class="forum_page">
-            <span class="page_text"><a href="$link">$text</a></span>
-        </div>
+        <div class="forum_page"><span class="page_text"><a href="$link">$text</a></span></div>
     </div>
 </td>
+END;
+    return $post_content;
+}
+
+function drawPageB($link,$text) {
+    $post_content = <<<END
+    <div class="page_spacer" style="display:inline;">
+        <div class="forum_page" style="display:inline;"><span class="page_text"><a href="$link">$text</a></span></div>
+    </div>
 END;
     return $post_content;
 }
