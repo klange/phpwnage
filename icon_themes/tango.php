@@ -77,7 +77,7 @@ $_PWNICONS['forum']['topic_stick'] = "<img src=\"tango/forum/sticky.png\" alt=\"
 $_PWNICONS['forum']['topic_sink'] = "<img src=\"tango/forum/sunk.png\" alt=\"D\" />";
 
 $_PWNICONS['forum']['pm_read'] = "<img src=\"tango/forum/read.png\" align=\"left\" alt=\"\"/>";
-$_PWNCIONS['forum']['pm_new'] = "<img src=\"tango/forum/unread.png\" align=\"left\" alt=\"**\"/>";
+$_PWNICONS['forum']['pm_new'] = "<img src=\"tango/forum/unread.png\" align=\"left\" alt=\"**\"/>";
 
 $_PWNICONS['forum']['icon_width'] = "width=\"48\"";
 $_PWNICONS['forum']['pollpath'] = "tango/poll_bars/"; // Path to bars
