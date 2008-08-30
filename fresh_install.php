@@ -278,7 +278,16 @@ $data = "<?php// PHPwnage Automatically Generated Configuration Page
 // fresh_install.php is administered (the GNU General Public
 // License, version 3)\n";$data = $data . "\$conf_server = \"$SQL_SERVER\";\$conf_user = \"$SQL_USER\";\$conf_password = \"$SQL_PASSWORD\";\$conf_database = \"$SQL_DATABASE\";\$conf_email = \"$ADMIN_EMAIL\";
 \$_TRACKER = \"\"; // Add your analytics tracking here
-\$_PREFIX = \"$PREFIX\";";$data = $data . <<<END// DO NOT EDIT ANYTHING BELOW THIS LINE// ------------------------------------------------------------------------------------------------------------\$mtime = microtime();
+\$_PREFIX = \"$PREFIX\";";$data = $data . <<<END
+\$_POSTSPERPAGE = 10;    // Number of posts per page. This should move to a User Option!
+\$_THREADSPERPAGE = 10;  // Same. Threads per page in viewforum (new in 1.8)
+\$_CHECKPANDEMIC = false; // Check Pandemic status?
+\$_CONFIG_MAIL = false;   // Should we send an email? This is buggy.
+\$_IMAGESPERPAGE = 10;  // Images per page on the gallery
+\$_DEFAULT_THEME = "crystal"; // Default theme
+\$_DEFAULT_ICONS = "tango"; // Icons
+\$_DEFAULT_COLOR = "crystal"; // Background
+\$_DEFAULT_LANG = "enUS"; // Language;// DO NOT EDIT ANYTHING BELOW THIS LINE// ------------------------------------------------------------------------------------------------------------\$mtime = microtime();
 \$mtime = explode(" ",\$mtime);\$mtime = \$mtime[1] + \$mtime[0];\$starttime = \$mtime; // Meh, calculate the generation time...\$db_fail = false;\$db = mysql_connect(\$conf_server,\$conf_user,\$conf_password) or die ("<font face=\"Tahoma\">We've experienced an internal error. Please contact " . \$conf_email . ".<br />\nError Code 001: Failed to connect to SQL server.</font>"); mysql_select_db(\$conf_database, \$db) or \$db_fail = true; putenv("TZ=America/New_York"); // Set the time zone to EST// IP ban detection\$banlist = mysql_query("SELECT * FROM banlist");while (\$ban = mysql_fetch_array(\$banlist)) {if (\$_SERVER['REMOTE_ADDR'] == \$ban['ip'])	{
 die ("<font face=\"Tahoma\">You do not have permission to access this site.</font>");
 }}?>

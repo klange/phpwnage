@@ -19,7 +19,7 @@
 
 */
 session_start(); // Always ensure a session.
-require "lang/enUS.php"; // Default language before we've processed users.
+require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
 $_PWNVERSION['minor'] = 8;
@@ -77,33 +77,33 @@ function getPostsInBoard($bid) {
 // Not just themes. All things user-selectable are here.
 function setTheme()
 {
-	global $user, $imageroot, $theme, $icons, $language, $_PWNICONS, $_PWNDATA;
+	global $user, $imageroot, $theme, $icons, $language, $_PWNICONS, $_PWNDATA,
+	       $_DEFAULT_THEME, $_DEFAULT_ICONS, $_DEFAULT_COLOR, $_DEFAULT_LANG;
 	if (!isset($user['color']) || $user['color'] == "")
 	{
-		$imageroot = "crystal"; // Default background.
+		$imageroot = $_DEFAULT_COLOR; // Default background.
 	} else {
 		$imageroot = $user['color'];
 	}
 	$themes = explode(",",$user['theme']);
 	if (!isset($themes[0]) || $themes[0] == "")
 	{
-		$theme = "crystal"; // Default theme.
+		$theme = $_DEFAULT_THEME;
 	} else {
 		$theme = $themes[0];
 	}
 	if (!isset($themes[1]) || $themes[1] == "")
 	{
-		$icons = "tango"; // Default theme.
+		$icons = $_DEFAULT_ICONS;
 	} else {
 		$icons = $themes[1];
 	}
 	$theme_exists = @include "icon_themes/$icons.php";
     if (!$theme_exists) {
-	    include "icon_themes/tango.php";
+	    include "icon_themes/{$_DEFAULT_ICONS}.php";
 	}
 	if (!isset($themes[2]) || $themes[2] == "") {
-	    // We've already req'd enUS (or other default language)
-	    $language = "enUS";
+	    $language = $_DEFAULT_LANG;
     } else {
         require_once "lang/{$themes[2]}.php";
         $language = $themes[2];

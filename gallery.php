@@ -21,7 +21,6 @@
 
 require 'config.php';
 require 'includes.php';
-$_IMAGESPERPAGE = 10;
 
 function generateThumbnail($file, $type) {
     $_SIZE = 120;

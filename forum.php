@@ -21,10 +21,6 @@
 
 // error_reporting(6143); // Error reporting for debugging purposes.
 require 'config.php';
-$_POSTSPERPAGE = 10;    // Number of posts per page. This should move to a User Option!
-$_THREADSPERPAGE = 10;  // Same. Threads per page in viewforum (new in 1.8)
-$_CHECKPANDEMIC = true; // Check Pandemic status?
-$CONFIG_MAIL = false;   // Should we send an email? This is buggy.
 require 'includes.php';
 
 
@@ -325,7 +321,7 @@ if ($_POST['action'] == "newuser") {
     }
     // If we get to this point, then the user's registration checks out. We'll start by sending the email.
     $message = "";
-    if ($CONFIG_MAIL) {
+    if ($_CONFIG_MAIL) {
         $body = $_PWNDATA['forum']['confirm_email'][1] . $site_info['name'] . ".\n";
         $body = $body . $_PWNDATA['forum']['confirm_email'][2] . "'$name' with the password '$pass'.\n";
         $body = $body . $_PWNDATA['forum']['confirm_email'][3] . $conf_email . ".";
