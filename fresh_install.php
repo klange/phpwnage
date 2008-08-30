@@ -111,7 +111,7 @@ print $output;
 }
 
 function FileFault($file) {
-print "An error occurred while trying to create your configuration file. This file is crucial to the operation of PHPwnage. You must create the file manually by viewing the source of this web page and copying the text between &quot;&lt;!-- BEGIN CONFIG.PHP&quot; and &quot;END CONFIG.PHP--&gt;&quot; and placing it into a file named 'config.php' in your PHPwnage installation directory."
+print "An error occurred while trying to create your configuration file. This file is crucial to the operation of PHPwnage. You must create the file manually by viewing the source of this web page and copying the text between &quot;&lt;!-- BEGIN CONFIG.PHP&quot; and &quot;END CONFIG.PHP--&gt;&quot; and placing it into a file named 'config.php' in your PHPwnage installation directory.";
 print "<!-- BEGIN CONFIG.PHP\n";
 print $file;
 print "\nEND CONFIG.PHP-->\n\n";
