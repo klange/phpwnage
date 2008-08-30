@@ -873,7 +873,7 @@ END;
         if ($readmb == 1) {
             $read_or_not = $_PWNICONS['forum']['pm_read'];
         } else {
-            $read_or_not = $_PWNCIONS['forum']['pm_new'];
+            $read_or_not = $_PWNICONS['forum']['pm_new'];
         }
         $block_content = $block_content .  <<<END
 	<tr>
