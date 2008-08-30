@@ -37,11 +37,11 @@ print <<<END
 <link rel="icon" type="image/png" href="favicon.ico" />
 <style type="text/css">
 .installer_table {
-    border: 1px #000000 solid;
+    border: 0px #000000 none;
     border-collapse: collapse;
 }
 .installer_table td {
-    border: 1px #000000 solid;
+    border: 0px #000000 none;
     border-collapse: collapse;
     padding: 4px;
 }
@@ -135,31 +135,37 @@ die ("");
 
 if ($_GET['do'] == '') {
 $print_what = <<<END
+<form action="fresh_install.php?do=page2" method="post">
 <table style="border-collapse: collapse" width="100%">
   <tr>
     <td width="100%" valign="top" align="left">
     <p align="center"><b>PHPwnage Version $_PWNVERSION - Installer - Welcome!</b></p></td>
   </tr>
   <tr>
-    <td width="100%" valign="top" align="left">
-    Welcome to PHPwnage, the all-in-one news site and 
-    forum! This installer will guide you through the process of setting up your 
-    new site with PHPwnage! If you have not already done so, please gather the 
+    <td width="100%" valign="top" align="center">
+    Welcome to PHPwnage, an open-source and completely free forum, calendar, 
+    image gallery, and more!<br />
+    This installer will guide you through the process of setting up your 
+    new site with PHPwnage! <br />
+    If you have not already done so, please gather the 
     following information about your site:<ul>
       <li>Your SQL server (if you have a CPanel, check 
       under &quot;Manage SQL&quot;)</li>
       <li>Your SQL user name</li>
       <li>Your SQL password</li>
     </ul>
-    <p>You may also wish to set up a blank SQL database 
+    <b>Important Notes</b><br />You may wish to set up a blank SQL database 
     now. We can not guarantee that the installer will be able to make one for 
-    you as creation permissions are often limited by web hosts. Also, you will 
+    you as creation permissions are often limited by web hosts.<br />
+    If you do not have write access to your PHPwnage
+    directory, you will be asked to create a configuration file after the
+    first step of the installer.<br />You will 
     not be able to undo what you do here until after you have finished. Please 
-    keep this in mind.</p>
-    <p align="center">&gt; <a href="fresh_install.php?do=page2">
-    Continue to the Next Step</a> &lt;</p></td>
+    keep this in mind.
+    <p align="center"><input type="submit" value="Continue to the Next Step" /></p></td>
   </tr>
   </table>
+  </form>
 END;
 DrawBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
 }
@@ -173,50 +179,38 @@ $print_what = <<<END
     <p align="center"><b>PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Configuration</b></p></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">
-SQL Database Server Location<br />
+    <td width="48%" valign="middle" align="right"><b>SQL Database Server Location</b><br />
     <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></td>
-    <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_server" style="width: 100%" /></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="sql_server" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">
-SQL User Name <br />
+    <td width="48%" valign="middle" align="right"><b>SQL User Name</b><br />
     <font size="2">The user name you use to access your SQL server.</font></td>
-    <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_user" style="width: 100%" /></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="sql_user" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">
-    SQL  Password<br />
+    <td width="48%" valign="middle" align="right"><b>SQL User Password</b><br />
     <font size="2">The password you use to access your SQL server. cAsE sEnSiTiVe</font></td>
-    <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_password" style="width: 100%" /></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="sql_password" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">
-    SQL Database  Name<br />
-    <font size="2">The name of the database in which PHPwnage will install. </font></td>
-    <td width="52%" valign="top" align="right">
-  <input type="text" name="sql_database" style="width: 100%" /></td>
+    <td width="48%" valign="middle" align="right"><b>SQL Database Name</b><br />
+    <font size="2">The name of the database in which PHPwnage will install.</font></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="sql_database" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">
-    Administrator Email <br />
-    <font size="2">The email address you would like to display if an error is 
-    encountered.</font></td>
-    <td width="52%" valign="top" align="right">
-  <input type="text" name="admin_email" style="width: 100%" /></td>
+    <td width="48%" valign="middle" align="right"><b>Administrator Email</b><br />
+    <font size="2">The email address you would like to display if an error is encountered.</font></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="admin_email" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="top" align="left">Table Prefix <br />
+    <td width="48%" valign="middle" align="right"><b>Table Prefix</b><br />
     <font size="2">ie, &quot;pwn_&quot;</font></td>
-    <td width="52%" valign="top" align="right"><input type="text" name="prefix" style="width: 100%" /></td>
+    <td width="52%" valign="middle" align="right"><input type="text" name="prefix" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="100%" valign="top" align="center" colspan="2">
-    &lt;  
-    <input type="submit" value="Continue to the Next Step" name="enter" /> &gt;</td>
+    <td width="100%" valign="top" align="center" colspan="2">  
+    <input type="submit" value="Continue to the Next Step" name="enter" /></td>
   </tr>
   </table>
 </form>
@@ -264,60 +258,38 @@ $print_what = <<<END
     <p align="center"><b>PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Site Information</b></p></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
-    Forum Title<br />
+    <td width="50%" valign="middle" align="right"><b>Forum Title</b><br />
     <font size="2">A short description for your site. Ex: Oasis-Games.com</font></td>
-    <td width="50%" valign="top" align="right">
-  <input type="text" name="site_name" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="site_name" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
- 
-    Copyright Line<br />
+    <td width="50%" valign="middle" align="right"><b>Copyright Line</b><br />
     <font size="2">A message displayed in the footer. Ex: (C) 2008 Oasis-Games</font></td>
-    <td width="50%" valign="top" align="right">
- 
-  <input type="text" name="site_copyright" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="site_copyright" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
-    Installation URL <br />
+    <td width="50%" valign="middle" align="right"><b>Installation URL</b><br />
     <font size="2">The URL for your site (including the /) Ex: http://oasis-games.com/home/</font></td>
-    <td width="50%" valign="top" align="right">
- 
-  <input type="text" value="$this_dir" name="site_url" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" value="$this_dir" name="site_url" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
-    Site Description<br />
-    <font size="2">A short piece of text to display in the right of the &quot;sub 
-    header&quot;</font></td>
-    <td width="50%" valign="top" align="right">
- 
-  <input type="text" name="site_description" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><b>Site Description</b><br />
+    <font size="2">A short piece of text to display in the right of the &quot;sub header&quot;</font></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="site_description" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
-    Administrator User Name <br />
-    <font size="2">The name you would like to use to log in to the admin panel. 
-    Ex: Admin</font></td>
-    <td width="50%" valign="top" align="right">
- 
-  <input type="text" name="site_admin_name" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><b>Administrator User Name</b><br />
+    <font size="2">The name you would like to use to log in to your account. Ex: Admin</font></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="site_admin_name" style="width: 100%" value="" /></td>
   </tr>
   <tr>
-    <td width="50%" valign="top" align="left">
-    Administrator Password <br />
-    <font size="2">The password you would like to use to log in to the admin 
-    panel. cAsE sEnSiTiVe</font></td>
-    <td width="50%" valign="top" align="right">
-  <input type="password" name="site_admin_pass" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><b>Administrator Password</b><br />
+    <font size="2">The password you would like to use to log in to your account. cAsE sEnSiTiVe</font></td>
+    <td width="50%" valign="middle" align="right"><input type="password" name="site_admin_pass" style="width: 100%" value="" /></td>
   </tr>
   <tr>
-    <td width="100%" valign="top" align="left" colspan="2">
-    <p align="center">
-    &lt;  
-    <input type="submit" value="Continue to the Next Step" name="enter" /> &gt;</p></td>
+    <td width="100%" valign="top" colspan="2" align="center">
+    <input type="submit" value="Continue to the Next Step" name="enter" /></td>
   </tr>
   </table>
 </form>
