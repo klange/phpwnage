@@ -31,6 +31,12 @@ http://tango.freedesktop.org/Tango_Desktop_Project ). If you do not agree
 with these terms, remove the directory "tango/" and the file
 "icons_themes/tango.php" from your installation.
 
+CONTRIBUTORS:
+Kevin Lange - Pretty much everything
+Daniel Soirchetti - Installer improvements
+TJ Fadness - The original logo design
+Joe Averett - Incomplete work on a new admin panel you'll see in 1.9
+
 CHANGELOG:
 1.8 - September 2008
  + Moved all static text to a single file (lang/enUS.php)
