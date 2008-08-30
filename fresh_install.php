@@ -215,34 +215,34 @@ $print_what = <<<END
     <p align="center"><b>PHPwnage Version $_PWNVERSION - Installer - Setting Up Your Configuration</b></p></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>SQL Database Server Location</b><br />
+    <td width="50%" valign="middle" align="right"><b>SQL Database Server Location</b><br />
     <font size="2">The URL to your SQL server. Ex: localhost OR sql1.phpnet.us</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="sql_server" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="sql_server" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>SQL User Name</b><br />
+    <td width="50%" valign="middle" align="right"><b>SQL User Name</b><br />
     <font size="2">The user name you use to access your SQL server.</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="sql_user" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="sql_user" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>SQL User Password</b><br />
+    <td width="50%" valign="middle" align="right"><b>SQL User Password</b><br />
     <font size="2">The password you use to access your SQL server. cAsE sEnSiTiVe</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="sql_password" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="sql_password" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>SQL Database Name</b><br />
+    <td width="50%" valign="middle" align="right"><b>SQL Database Name</b><br />
     <font size="2">The name of the database in which PHPwnage will install.</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="sql_database" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="sql_database" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>Administrator Email</b><br />
+    <td width="50%" valign="middle" align="right"><b>Administrator Email</b><br />
     <font size="2">The email address you would like to display if an error is encountered.</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="admin_email" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="admin_email" style="width: 100%" /></td>
   </tr>
   <tr>
-    <td width="48%" valign="middle" align="right"><b>Table Prefix</b><br />
+    <td width="50%" valign="middle" align="right"><b>Table Prefix</b><br />
     <font size="2">ie, &quot;pwn_&quot;</font></td>
-    <td width="52%" valign="middle" align="right"><input type="text" name="prefix" style="width: 100%" /></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="prefix" style="width: 100%" /></td>
   </tr>
   <tr>
     <td width="100%" valign="top" align="center" colspan="2">  
