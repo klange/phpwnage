@@ -486,6 +486,7 @@ $_PWNDATA['forum']['search_link'] = "Search";
 $_PWNDATA['forum']['searching_for'] = "Searching for";
 $_PWNDATA['forum']['search_results'] = "Search results for";
 $_PWNDATA['forum']['search_resultsb'] = "Search Results";
+$_PWNDATA['forum']['search_author'] = "Posted by";
 $_PWNDATA['forum']['posted_in'] = "Posted in";
 $_PWNDATA['forum']['delete_confirm'] = "Are you sure?";
 $_PWNDATA['forum']['delete_confirm_accept'] = "Delete";

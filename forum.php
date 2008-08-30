@@ -1704,9 +1704,13 @@ if ($_GET['do'] == "search_form") {
     $post_sub_add = " > " . $_PWNDATA['forum']['search'];
     $post_sub_r = post_sub_r($user['id']);
     $block_content = <<<END
-		<form action="forum.php?do=search" method="post" name="form">
-		{$_PWNDATA['forum']['search_terms']}: <input type="text" name="q" />
-		<input type="submit" value="{$_PWNDATA['forum']['search_submit']}" name="sub" /></form>
+<form action="forum.php?do=search" method="post" name="form">
+	<table class="forum_base" width="100%">
+		<tr><td class="forum_topic_content" width="200">{$_PWNDATA['forum']['search_terms']}</td><td class="forum_topic_content"><input type="text" name="q" /></td></tr>
+		<tr><td class="forum_topic_sig">{$_PWNDATA['forum']['search_author']}</td><td class="forum_topic_sig"><input type="text" name="a" /></td></tr>
+		<tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['forum']['search_submit']}" name="sub" /></td></tr>
+	</table>
+</form>
 END;
 $post_content = makeBlock($_PWNDATA['forum']['search'],"",$block_content);
     
@@ -1715,11 +1719,24 @@ $post_content = makeBlock($_PWNDATA['forum']['search'],"",$block_content);
 // Search results
 if ($_GET['do'] == "search") {
     // XXX: SELECT * FROM posts WHERE MATCH (content) AGAINST ('hmmm')
-    $search = $_POST['q'];
+    $search = mse($_POST['q']);
+    $auth = mse($_POST['a']);
     $post_title_add = " :: {$_PWNDATA['forum']['searching_for']} '$search'";
     $post_sub_add = " > {$_PWNDATA['forum']['searching_for']} '$search'";
     $post_sub_r = post_sub_r($user['id']);
-    $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE MATCH (content) AGAINST ('$search')", $db);
+    if ($auth == "") {
+        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE MATCH (content) AGAINST ('$search')", $db);
+    } else if ($search == "" && $auth != "") {
+        $auth_result = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('{$auth}')");
+        $temp = mysql_fetch_array($auth_result);
+        $authid = $temp['id'];
+        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE `authorid`=$authid ORDER BY `id` DESC", $db);
+    } else {
+        $auth_result = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('{$auth}')");
+        $temp = mysql_fetch_array($auth_result);
+        $authid = $temp['id'];
+        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE MATCH (content) AGAINST ('$search') AND `authorid`=$authid", $db);
+    }
     $block_content =  "<table class=\"forum_base\" width=\"100%\">\n";
     $block_content = $block_content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"><b>{$_PWNDATA['forum']['search_resultsb']}:</b></td></tr>";
     $results_count = 0;
