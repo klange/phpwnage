@@ -689,7 +689,7 @@ END;
         $SECURITY = "(Your registration will automatically fail as this CAPTCHA mode is invalid)<br />";
     } else if ($site_info['security_mode'] == 2) {
         require_once('recaptchalib.php');
-        $SECURITY = "<tr><td class=\"forum_topic_sig\">" . recaptcha_get_html($site_info['recap_pub']) . "</td></tr>";
+        $SECURITY = "<tr><td class=\"forum_topic_sig\" colspan=\"2\">" . recaptcha_get_html($site_info['recap_pub']) . "</td></tr>";
     }
     $block_content = <<<END
 		<form method="post" action="forum.php">
