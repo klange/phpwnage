@@ -32,7 +32,7 @@ print <<<END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
-<title>PHPwnage Installer V. 5.0</title>
+<title>PHPwnage Installer</title>
 <link rel="stylesheet" type="text/css" href="crystal.css" />
 <link rel="icon" type="image/png" href="favicon.ico" />
 <style type="text/css">
@@ -616,9 +616,8 @@ print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\
 mysql_query("INSERT INTO `{$_PREFIX}blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Installation complete! Moving to last page...</div>\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page4\">";
-// Now that the core of the installation has completed, grab the $_POST data...
 }
-// XXX: This tutorial is *very* old and needs to be updated.
+
 if ($_GET['do'] == 'page4') {
 $locked = lock_installer("installer.lock","Installer is locked");
 if ($locked == 1) {

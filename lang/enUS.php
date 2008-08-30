@@ -482,6 +482,7 @@ $_PWNDATA['forum']['save_changes'] = "Save Changes";
 $_PWNDATA['forum']['search'] = "Search the Forum";
 $_PWNDATA['forum']['search_terms'] = "Search Terms";
 $_PWNDATA['forum']['search_submit'] = "Search";
+$_PWNDATA['forum']['search_link'] = "Search";
 $_PWNDATA['forum']['searching_for'] = "Searching for";
 $_PWNDATA['forum']['search_results'] = "Search results for";
 $_PWNDATA['forum']['search_resultsb'] = "Search Results";

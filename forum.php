@@ -433,6 +433,7 @@ function post_sub_r($userid) {
     } else {
         $post_sub_r = "<a href=\"forum.php?do=login\">{$_PWNDATA['forum']['login']}</a> or <a href=\"forum.php?do=newuser\">{$_PWNDATA['forum']['register']}</a>";
     }
+    $post_sub_r = $post_sub_r . " | <a href=\"forum.php?do=search_form\">{$_PWNDATA['forum']['search_link']}</a>";
     return $post_sub_r;
 }
 
