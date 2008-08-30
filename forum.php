@@ -682,25 +682,27 @@ if ($_GET['do'] == "newuser") {
     $post_sub_add = "";
     if ($site_info['security_mode'] == 0) {
     $SECURITY = <<<END
-              <img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}" /><br />
-              {$_PWNDATA['forum']['sec_code']}: <input type="text" name="code" size="20" /><br />
+<tr><td class="forum_topic_sig" colspan="2"><img src="forum.php?do=secimg" alt="{$_PWNDATA['forum']['secimg']}" /></td></tr>
+<tr><td class="forum_topic_sig">{$_PWNDATA['forum']['sec_code']}</td><td class="forum_topic_sig"><input type="text" name="code" size="20" style="width: 100%" /></td></tr>
 END;
     } else if ($site_info['security_mode'] == 1) {
         $SECURITY = "(Your registration will automatically fail as this CAPTCHA mode is invalid)<br />";
     } else if ($site_info['security_mode'] == 2) {
         require_once('recaptchalib.php');
-        $SECURITY = recaptcha_get_html($site_info['recap_pub']) . "<br />";
+        $SECURITY = "<tr><td class=\"forum_topic_sig\">" . recaptcha_get_html($site_info['recap_pub']) . "</td></tr>";
     }
     $block_content = <<<END
 		<form method="post" action="forum.php">
               <input type="hidden" name="action" value="newuser" />
-              {$_PWNDATA['profile']['username']}: <input type="text" name="name" size="20" /><br />
-              {$_PWNDATA['profile']['email']}: <input type="text" name="email" size="20" /><br />
-              {$_PWNDATA['profile']['confirm']}: <input type="text" name="cemail" size="20" /><br />
-              {$_PWNDATA['profile']['password']}: <input type="password" name="pass" size="20" /><br />
-              {$_PWNDATA['profile']['confirm']}: <input type="password" name="cpass" size="20" /><br />
+              <table class="forum_base" width="100%">
+              <tr><td class="forum_topic_sig" width="200">{$_PWNDATA['profile']['username']}</td><td class="forum_topic_sig"><input type="text" name="name" size="20" style="width: 100%" /></td></tr>
+              <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['email']}</td><td class="forum_topic_sig"><input type="text" name="email" size="20" style="width: 100%" /></td></tr>
+              <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="text" name="cemail" size="20" style="width: 100%" /></td></tr>
+              <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['password']}</td><td class="forum_topic_sig"><input type="password" name="pass" size="20" style="width: 100%" /></td></tr>
+              <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['confirm']}</td><td class="forum_topic_sig"><input type="password" name="cpass" size="20" style="width: 100%" /></td></tr>
               $SECURITY
-              <input type="submit" value="{$_PWNDATA['forum']['register']}" />
+              <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['forum']['register']}" /></td></tr>
+              </table>
             </form>
 END;
     $post_content = makeBlock($_PWNDATA['forum']['register'],"&nbsp;",$block_content);
