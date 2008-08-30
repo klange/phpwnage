@@ -1,4 +1,5 @@
-Installation instructions for PHPwnage News, Forum and Calendar
+Installation instructions for PHPwnage 1.8
+
 PHPwnage requires that you have a working MySQL server and at least one 
 available database. If the database you select does not exist, PHPwnage 
 will attempt to create it, but will most likely fail. Your server must 

@@ -2,6 +2,8 @@ PHPwnage News, Forum, and Calendar
 by Kevin Lange <klange@oasis-games.com>
 (Released under the GNU General Public License, version 3)
 
+Version 1.8
+
 Welcome to PHPwnage, a light, powerful, customizable, and open source 
 forum, blog, and calendar for PHP! Please take the time to read INSTALL 
 for instructions on installing PHPwnage. PHPwnage started out as a 
@@ -10,7 +12,7 @@ expanded to add more features common in other forums. It is easy to
 install and use (as well as customize!), and you are free to make any 
 modifications you wish under the GPL.
 
-This is release version 1.8 (UNRELEASED, 2008). It is the first 
+This is release version 1.8 (September, 2008). It is the first 
 official GPL release and contains tons of new improvements over 1.7 
 and other previous versions.
 
@@ -18,16 +20,19 @@ ReCAPTCHA notice:
 PHPwnage comes packaged with the ReCAPTCHA PHP library. The license for the
 ReCaptcha license can be found in the file 'recaptchalib.php'.
 
+Tango notice:
 PHPwnage uses icons from the Tango Desktop Project. These icons are
 currently distributed under a Creative Commons Attribution Share-Alike
 license. There are plans in place for these icons to be released under
 the LGPL (GNU Lesser General Public License), but until that happens,
 attribution must be made to the Tango Desktop Project for the included icons.
 (For more information on the Tango Desktop Project, visit
-http://tango.freedesktop.org/Tango_Desktop_Project )
+http://tango.freedesktop.org/Tango_Desktop_Project ). If you do not agree
+with these terms, remove the directory "tango/" and the file
+"icons_themes/tango.php" from your installation.
 
 CHANGELOG:
-1.8 - 
+1.8 - September 2008
  + Moved all static text to a single file (lang/enUS.php)
  + Moved all redirects and "Go Back" messages to a separate method, now with theming
  + Made polls systematic, they can now have as many options as you want (separated,with,commas)
@@ -39,11 +44,13 @@ CHANGELOG:
  + Moved everything to XHTML
  + So many things that they just don't all fit here in the changelog, please take a look at the
    commit history on Launchpad for a complete listing of changes.
- + Added moderator tools: Split topics
- + Moved some static HTML elements into includes.php to ease future theming adjustments
- TODO
- + Added moderator tools: merge, bulk-delete (topics, posts)
- + New Image Gallery, integrated into forums
+ + Added moderator tools: Split and merge topics
+ + Moved HTML segments for blocks, panels and buttons to includes.php
+ + New Image Gallery allows users to upload images to your MySQL server
+ + New paging system provides improved navigation between forums and threads
+ + Icon themes allow further customization of your PHPwnage installation
+ + User-selectable languages allow easy translation and accessibility
+ + A lot more - I seriously forgot some things.
 
 1.7.1 - Mar 25 2008
  + Replaced old icons for IM protocols, emoticons, and other interface elements with Tango icons for a much improved look.
