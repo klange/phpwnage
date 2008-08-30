@@ -178,11 +178,16 @@ DrawBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
 
 if ($_GET['do'] == "page1"){
 $print_what = <<<END
-<div align="center">
+<table width="100%" class="installer_table">
+  <tr>
+    <td width="100%" valign="top" align="left" dir="ltr">
+    <p align="center"><b>PHPwnage Version $_PWNVERSION - Installer - License and Terms of Use</b></p></td>
+  </tr>
+  <tr>
+    <td width="100%" valign="top" align="left" dir="ltr"><div align="center">
 <form action="fresh_install.php?do=page2" method="post">
 PHPwnage is licensed under the GNU General Public License version 3.<br />
 A copy of this license can be obtained <a href="LICENSE">here</a>.<br />
-<br />
 PHPwnage also contains elements under other licenses which you must agree to:<br /><br />
 <b>Tango Icon Set</b><br />
 The Tango icon theme included with PHPwnage contains icons from the
@@ -200,7 +205,8 @@ This library is provided <i>as-is</i> directly from the ReCAPTCHA web site.<br /
 <br />
 By pressing "Continue", you agree to and accept these licenses.
 <p align="center"><input type="submit" value="Continue" /></p>
-</div>
+</div></td></tr>
+</table>
 END;
 DrawBlock("License and Terms of Use","V. $_PWNVERSION",$print_what);
 
@@ -285,7 +291,7 @@ print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page3
 
 if ($_GET['do'] == 'page3')
 {
-$this_dir = getURL() . "/"; // Current running directory
+$this_dir = str_replace("//","/", getURL() . "/"); // Current running directory
 $print_what = <<<END
 <form action="fresh_install.php?do=submit" method="post"><input type="hidden" name="do" value="install" />
 <table width="100%" class="installer_table">
