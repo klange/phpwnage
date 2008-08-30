@@ -30,7 +30,7 @@ print <<<END
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
-<title>PHPwnage Installer V. 4.0</title>
+<title>PHPwnage Installer V. 5.0</title>
 <link rel="stylesheet" type="text/css" href="crystal.css" />
 <style type="text/css">
 .installer_table {
@@ -58,7 +58,7 @@ $_PWNVERSION = "1.8";
 
 // Our replacement to file_put_contents so that PHPwnage works with PHP 4.
 function file_put_contents_debug($file_name, $content) {
-$ourFileHandle = fopen($file_name, 'w') or die("Error creating $file_name! You must create the file manually!");
+$ourFileHandle = fopen($file_name, 'w') or FileFault($content);
 fwrite($ourFileHandle,$content);
 fclose($ourFileHandle);
 }
@@ -110,13 +110,11 @@ END;
 print $output;
 }
 
-function FileFault($file)
-{
-print "Could not write file. Printing instead...<br /><br />\n\n";
+function FileFault($file) {
+print "An error occurred while trying to create your configuration file. This file is crucial to the operation of PHPwnage. You must create the file manually by viewing the source of this web page and copying the text between &quot;&lt;!-- BEGIN CONFIG.PHP&quot; and &quot;END CONFIG.PHP--&gt;&quot; and placing it into a file named 'config.php' in your PHPwnage installation directory."
 print "<!-- BEGIN CONFIG.PHP\n";
 print $file;
 print "\nEND CONFIG.PHP-->\n\n";
-print "View the source for this page and save everything between BEGIN CONFIG.PHP and END CONFIG.PHP to a file named 'config.php' and place it in your PHPwnage root directory.\n";
 print "When you have uploaded the file to your webserver, continue to the next page by clicking <a href=\"fresh_install.php?do=page3\">here</a>";
 die ("\n<br />Breaking installer...");
 }
@@ -265,7 +263,6 @@ die ("<font face=\"Tahoma\">You do not have permission to access this site.</fon
 END;
 // <?
 file_put_contents_debug("config.php",$data);
-// FileFault($date); // XXX: Create_File_Failed, replace the above with this line.
 print "<br />Success! Moving to next page...";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php?do=page3\">";
 }
