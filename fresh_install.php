@@ -601,7 +601,7 @@ CREATE TABLE `{$_PREFIX}images` (
 END;
 mysql_query($query);
 print "Completed database setup. Moving on to data...<br />\n";
-$info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', '', 3, 2, 0, NULL, NULL);";
+$info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', 'logo.png', 3, 2, 0, NULL, NULL);";
 $result = mysql_query($info);
 print "Primary site information added! Moving on to generic set up...<br />\n";
 print "Adding administrator forum user...<br />\n";
