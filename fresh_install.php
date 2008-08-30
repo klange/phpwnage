@@ -47,7 +47,13 @@ print <<<END
 }
 body {
     font-family: Verdana, Tahoma, sans;
-    font-size: 12px;
+    font-size: 14px;
+}
+input {
+    font-size: 16px;
+}
+.pan_body {
+    font-size: 14px;
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
@@ -124,7 +130,7 @@ print $output;
 }
 
 function FileFault($file) {
-print "<br /><br /><div align=\"center\"><span style=\"font-size: 18px; color: #881111;\">Could Not Write config.php</span><br /><span style=\"font-size: 14px;\">(This is not entirely fatal)</span></div><br />";
+print "<br /><br /><div align=\"center\"><span style=\"font-size: 18px; color: #881111;\">Could Not Write config.php</span><br /><span>(This is not entirely fatal)</span></div><br />";
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">An error occurred while trying to create your configuration file, which means that PHP may not have the appropriate permissions to create files. This file is crucial to the operation of PHPwnage, so you'll have to make it yourself. View the source of this web page and copy the text between &quot;&lt;!-- BEGIN CONFIG.PHP&quot; and &quot;END CONFIG.PHP--&gt;&quot; and place it into a file named 'config.php' in your PHPwnage installation directory. When you have uploaded the file to your webserver, continue to the next page by clicking <a href=\"fresh_install.php?do=page3\">here</a>.</div></div>";
 print "\n\n<!-- BEGIN CONFIG.PHP\n";
 print $file;
@@ -135,7 +141,7 @@ die ("");
 
 if ($_GET['do'] == '') {
 $print_what = <<<END
-<form action="fresh_install.php?do=page2" method="post">
+<form action="fresh_install.php?do=page1" method="post">
 <table style="border-collapse: collapse" width="100%">
   <tr>
     <td width="100%" valign="top" align="left">
@@ -155,19 +161,49 @@ $print_what = <<<END
       <li>Your SQL password</li>
     </ul>
     <b>Important Notes</b><br />You may wish to set up a blank SQL database 
-    now. We can not guarantee that the installer will be able to make one for 
+    now.<br />We can not guarantee that the installer will be able to make one for 
     you as creation permissions are often limited by web hosts.<br />
     If you do not have write access to your PHPwnage
     directory, you will be asked to create a configuration file after the
     first step of the installer.<br />You will 
     not be able to undo what you do here until after you have finished. Please 
     keep this in mind.
-    <p align="center"><input type="submit" value="Continue to the Next Step" /></p></td>
+    <p align="center"><input type="submit" value="Continue" /></p></td>
   </tr>
   </table>
   </form>
 END;
 DrawBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
+}
+
+if ($_GET['do'] == "page1"){
+$print_what = <<<END
+<div align="center">
+<form action="fresh_install.php?do=page2" method="post">
+PHPwnage is licensed under the GNU General Public License version 3.<br />
+A copy of this license can be obtained <a href="LICENSE">here</a>.<br />
+<br />
+PHPwnage also contains elements under other licenses which you must agree to:<br /><br />
+<b>Tango Icon Set</b><br />
+The Tango icon theme included with PHPwnage contains icons from the
+<a href="http://tango.freedesktop.org/Tango_Desktop_Project">Tango Desktop Project</a>.<br />
+These icons are released under the <a href="http://creativecommons.org/licenses/by-sa/2.5/">Creative Commons Attribution Share-Alike</a> license,<br />
+meaning you must attribute all derivative works to the original creator <br />
+and all derivatives must be released under the same or a similar license.<br />
+All modified icons included with PHPwnage retain their "by-sa" status.<br />
+<br />
+<b>ReCAPTCHA PHP Client Library</b><br />
+PHPwnage comes with the <a href="http://recaptcha.net/">ReCAPTCHA</a> PHP client
+library, which is open-source<br />
+under a specific license which can be found in the file 'recaptchalib.php'.<br />
+This library is provided <i>as-is</i> directly from the ReCAPTCHA web site.<br />
+<br />
+By pressing "Continue", you agree to and accept these licenses.
+<p align="center"><input type="submit" value="Continue" /></p>
+</div>
+END;
+DrawBlock("License and Terms of Use","V. $_PWNVERSION",$print_what);
+
 }
 
 if ($_GET['do'] == 'page2'){
@@ -210,7 +246,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="100%" valign="top" align="center" colspan="2">  
-    <input type="submit" value="Continue to the Next Step" name="enter" /></td>
+    <input type="submit" value="Continue" name="enter" /></td>
   </tr>
   </table>
 </form>
@@ -289,7 +325,7 @@ $print_what = <<<END
   </tr>
   <tr>
     <td width="100%" valign="top" colspan="2" align="center">
-    <input type="submit" value="Continue to the Next Step" name="enter" /></td>
+    <input type="submit" value="Continue" name="enter" /></td>
   </tr>
   </table>
 </form>
@@ -299,7 +335,7 @@ DrawBlock("Setting up the Site Information","V. $_PWNVERSION",$print_what);
 }
 
 function databaseFault() {
-print "<br /><br /><div align=\"center\"><span style=\"font-size: 18px; color: #881111;\">Database Does Not Exist and Could Not Be Created</span><br /><span style=\"font-size: 14px;\">(This is not entirely fatal)</span></div><br />";
+print "<br /><br /><div align=\"center\"><span style=\"font-size: 18px; color: #881111;\">Database Does Not Exist and Could Not Be Created</span><br /><span>(This is not entirely fatal)</span></div><br />";
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">PHPwnage failed to connect to the database you specified and was unable to create the database for you. To fix this problem, create the database manually and then refresh this page or run through the installer again.</div></div>";
 die();
 }
