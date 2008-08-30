@@ -1719,25 +1719,47 @@ $post_content = makeBlock($_PWNDATA['forum']['search'],"",$block_content);
 // Search results
 if ($_GET['do'] == "search") {
     // XXX: SELECT * FROM posts WHERE MATCH (content) AGAINST ('hmmm')
-    $search = mse($_POST['q']);
-    $auth = mse($_POST['a']);
+    if (!isset($_POST['q']) && !isset($_POST['a'])) {
+        $search = $_SESSION['search_'  . $_GET['sid'] . '_search'];
+        $auth = $_SESSION['search_' . $_GET['sid'] . '_auth'];
+        if (!isset($_GET['p'])) {
+            $page = 0;
+        } else {
+            $page = (int)(($_GET['p'] - 1) * $_POSTSPERPAGE);
+        }
+        $sid = (int)$_GET['sid'];
+    } else {
+        $search = mse($_POST['q']);
+        $auth = mse($_POST['a']);
+        $sid = time();
+        $_SESSION['search_' . $sid . '_search'] = $search;
+        $_SESSION['search_' . $sid . '_auth'] = $auth;
+        $page = 0;
+    }
     $post_title_add = " :: {$_PWNDATA['forum']['searching_for']} '$search'";
     $post_sub_add = " > {$_PWNDATA['forum']['searching_for']} '$search'";
     $post_sub_r = post_sub_r($user['id']);
     if ($auth == "") {
-        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE MATCH (content) AGAINST ('$search')", $db);
+        $Query = "MATCH (content) AGAINST ('$search')";
     } else if ($search == "" && $auth != "") {
         $auth_result = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('{$auth}')");
         $temp = mysql_fetch_array($auth_result);
         $authid = $temp['id'];
-        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE `authorid`=$authid ORDER BY `id` DESC", $db);
+        $Query = "`authorid`=$authid ORDER BY `id` DESC";
     } else {
         $auth_result = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('{$auth}')");
         $temp = mysql_fetch_array($auth_result);
         $authid = $temp['id'];
-        $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE MATCH (content) AGAINST ('$search') AND `authorid`=$authid", $db);
+        $Query = "MATCH (content) AGAINST ('$search') AND `authorid`=$authid";
     }
-    $block_content =  "<table class=\"forum_base\" width=\"100%\">\n";
+    $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE $Query", $db);
+    $page_array = mysql_fetch_array($temp);
+    $total_pages = $page_array['COUNT(*)'];
+    $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE $Query LIMIT $page,$_POSTSPERPAGE", $db);
+    if ($total_pages > 1) {
+        $block_content = $block_content . "<table class=\"mod_set\"><tr>" . printPager("forum.php?do=search&amp;sid={$sid}&amp;p=",(int)($page / $_POSTSPERPAGE + 1),(int)(($total_pages - 1) / $_POSTSPERPAGE + 1)) . "</tr></table>";
+    }
+    $block_content = $block_content . "<table class=\"forum_base\" width=\"100%\">\n";
     $block_content = $block_content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"><b>{$_PWNDATA['forum']['search_resultsb']}:</b></td></tr>";
     $results_count = 0;
     while ($rowz = mysql_fetch_array($resultz)) {
