@@ -40,6 +40,11 @@
     font-size: 10px;
 }
 
+.footer_body_text {
+    font-family: Verdana, Tahoma, sans;
+    color: #000000;
+}
+
  /* text in the title of a panel */
 .pan_title_text {
     font-family: Verdana, Tahoma, sans;

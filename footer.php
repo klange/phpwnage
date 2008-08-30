@@ -35,7 +35,7 @@ print <<<END
 END;
 require 'buddy.php';
 print <<<END
-<div class="sub_body_text" style="font-size: 10px;" align="center">
+<div class="footer_body_text" style="font-size: 10px;" align="center">
 END;
    $mtime = microtime();
    $mtime = explode(" ",$mtime);

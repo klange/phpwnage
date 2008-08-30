@@ -43,6 +43,11 @@
     color: #204a87;
 }
 
+.footer_body_text {
+    font-family: Verdana, Tahoma, sans;
+    color: #000000;
+}
+
 .block_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;

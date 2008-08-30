@@ -48,6 +48,11 @@
     font-size: 12px;
 }
 
+.footer_body_text {
+    font-family: Verdana, Tahoma, sans;
+    color: #000000;
+}
+
 .block_title_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
