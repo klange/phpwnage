@@ -42,10 +42,15 @@ print <<<END
     border-collapse: collapse;
     padding: 4px;
 }
+body {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 </head>
 <body background="colors/crystal.gif">
+<div align="center"><img src="logo.png" alt="PHPwnage" /></div>
 <table class="borderless_table" width="100%">
 END;
 
