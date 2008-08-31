@@ -22,9 +22,9 @@ require 'config.php';
 require 'includes.php';
 
 if ($_POST[action]){
-$pagename = $_GET['page'];
-mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
-messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
+    $pagename = $_GET['page'];
+    mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
+    messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
 }
 $result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='" . $_GET['page'] . "'", $db);
 $page = mysql_fetch_array($result);
@@ -44,14 +44,14 @@ print <<<END
 END;
 drawBlock($page['display_name'],$page['author'],$page['content']);
 if ($user['level'] >= $site_info['mod_rank']) {
-$content_temp = str_replace(">","&gt;",str_replace("<","&lt;",$page['content']));
-$content = <<<END
+    $content_temp = str_replace(">","&gt;",str_replace("<","&lt;",$page['content']));
+    $content = <<<END
 <form action="pages.php?page={$page['name']}" method="post">
 <input type="hidden" name="action" value="true" />
 <textarea rows="8" name="content" style="width:100%;" cols="80">$content_temp</textarea>
 <br /><input type="submit" value="{$_PWNDATA['articles']['save_page']}" /></form>
 END;
-drawBlock("{$_PWNDATA['articles']['edita']} " . $page['title'], $page['author'], $content);
+    drawBlock("{$_PWNDATA['articles']['edita']} " . $page['title'], $page['author'], $content);
 }
 
 
