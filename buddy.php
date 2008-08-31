@@ -99,7 +99,7 @@ END;
         print $_PWNDATA['buddy']['evening'] . ", " . $user['name'] . "!";
     }
     print "<br />";
-/   / Tabs, make use of custom visibilty javascript.
+// Tabs, make use of custom visibilty javascript.
     print <<<END
 <script type="text/javascript">
 //<![CDATA[
