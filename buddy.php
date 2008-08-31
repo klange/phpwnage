@@ -21,8 +21,7 @@
 
 if ($user['level'] > 0) {
 // TODO: $showme = "display: none;" when we don't want to display normally.
-print <<<END
-
+    print <<<END
 
 <!-- PwnBuddy -->
 <script type="text/javascript">
@@ -89,19 +88,19 @@ function shadeMe() {
 <tr><td class="block_ul">&nbsp;</td><td class="block_um"><font class="block_title_text">{$_PWNDATA['buddy']['name']}</font></td><td class="block_um" align="right"><font class="block_title_text"><a href="javascript:shadeMe()">^</a>&nbsp;<a href="javascript:hideMe()">X</a></font></td><td class="block_ur">&nbsp;</td></tr>
 <tr><td class="block_ml">&nbsp;</td><td class="block_body" colspan="2"><div id="buddy_content">
 END;
-// PwnBuddy content
-// Welcome message
-$current_time = date("G");
-if (intval($current_time) < 12) {
-print $_PWNDATA['buddy']['morning'] . ", " . $user['name'] . "!";
-} elseif ((intval($current_time) > 11) and (intval($current_time) < 20)) {
-print $_PWNDATA['buddy']['afternoon'] . ", " . $user['name'] . "!";
-} elseif (intval($current_time) > 19) {
-print $_PWNDATA['buddy']['evening'] . ", " . $user['name'] . "!";
-}
-print "<br />";
-// Tabs, make use of custom visibilty javascript.
-print <<<END
+    // PwnBuddy content
+    // Welcome message
+    $current_time = date("G");
+    if (intval($current_time) < 12) {
+        print $_PWNDATA['buddy']['morning'] . ", " . $user['name'] . "!";
+    } elseif ((intval($current_time) > 11) and (intval($current_time) < 20)) {
+        print $_PWNDATA['buddy']['afternoon'] . ", " . $user['name'] . "!";
+    } elseif (intval($current_time) > 19) {
+        print $_PWNDATA['buddy']['evening'] . ", " . $user['name'] . "!";
+    }
+    print "<br />";
+/   / Tabs, make use of custom visibilty javascript.
+    print <<<END
 <script type="text/javascript">
 //<![CDATA[
 function changeTab(tabname) {
@@ -134,89 +133,87 @@ document.getElementById('sel_' + tabname).className = "tab_head_on"
 </ul>
 <div id="tab1" class="tab_contents">
 END;
-$userid = $user['id'];
-$unread_temp = mysql_query("SELECT `{$_PREFIX}pms`.*, COUNT(`read`) FROM `{$_PREFIX}pms` WHERE `to`=$userid AND `read`=0 GROUP BY `read` ");
-$num_unread_t = mysql_fetch_array($unread_temp);
-$num_unread = $num_unread_t['COUNT(`read`)'];
-if ($num_unread == 0) {
-print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}{$_PWNDATA['pm']['no_new']}</a>"; }
-elseif ($num_unread == 1){
-print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['one_new']}</a>"; }
-else {
-print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['some_new']}</a>"; }
-print "<br />";
-$pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `to`=" . $user['id'] . " ORDER BY id DESC LIMIT 10", $db);
-while ($row = mysql_fetch_array($pmresult)) {
-$resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $row['from'] . "'" , $db);
-$rowb = mysql_fetch_array($resultb);
-$author = $rowb['name'];
-$authid = $rowb['id'];
-if ($row['read'] == 0)
-	print "{$_PWNDATA['buddy']['new']} ";
-print "<a href=\"forum.php?do=readpm&amp;id=" . $row['id'] . "\"><b>" . $row['title'] . "</b></a> {$_PWNDATA['buddy']['from']} <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a><br />";
-}
-print <<<END
+    $userid = $user['id'];
+    $unread_temp = mysql_query("SELECT `{$_PREFIX}pms`.*, COUNT(`read`) FROM `{$_PREFIX}pms` WHERE `to`=$userid AND `read`=0 GROUP BY `read` ");
+    $num_unread_t = mysql_fetch_array($unread_temp);
+    $num_unread = $num_unread_t['COUNT(`read`)'];
+    if ($num_unread == 0) {
+        print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}{$_PWNDATA['pm']['no_new']}</a>";
+    } elseif ($num_unread == 1){
+        print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['one_new']}</a>";
+    } else {
+        print "<a href=\"forum.php?do=pmbox\">{$_PWNDATA['pm']['you_have']}$num_unread {$_PWNDATA['pm']['some_new']}</a>";
+    }
+    print "<br />";
+    $pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `to`=" . $user['id'] . " ORDER BY id DESC LIMIT 10", $db);
+    while ($row = mysql_fetch_array($pmresult)) {
+        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $row['from'] . "'" , $db);
+        $rowb = mysql_fetch_array($resultb);
+        $author = $rowb['name'];
+        $authid = $rowb['id'];
+        if ($row['read'] == 0) {
+	        print "{$_PWNDATA['buddy']['new']} ";
+	    }
+        print "<a href=\"forum.php?do=readpm&amp;id=" . $row['id'] . "\"><b>" . $row['title'] . "</b></a> {$_PWNDATA['buddy']['from']} <a href=\"forum.php?do=viewprofile&amp;id=$authid\">$author</a><br />";
+    }
+    print <<<END
 </div>
 <div id="tab2" class="tab_contents" style="display: none;">
 <b>{$_PWNDATA['buddy']['recent']}</b><br />
 END;
-$post_results = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `lastpost` DESC LIMIT 5");
-while ($topic = mysql_fetch_array($post_results)) {
-if (isReadable($user['level'],$topic['board'])) {
-if (substr($topic['title'], 0, 20) != $topic['title']) {
-$topicName = substr($topic['title'],0,20) . "...";
-} else {
-$topicName = $topic['title'];
-}
-print "<a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topicName . "</a> {$_PWNDATA['buddy']['in']} " . getBoardName($topic['board']) . "<br />";
-}
-}
-print <<<END
+    $post_results = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `lastpost` DESC LIMIT 5");
+    while ($topic = mysql_fetch_array($post_results)) {
+        if (isReadable($user['level'],$topic['board'])) {
+            if (substr($topic['title'], 0, 20) != $topic['title']) {
+                $topicName = substr($topic['title'],0,20) . "...";
+            } else {
+            $topicName = $topic['title'];
+            }
+            print "<a href=\"forum.php?do=viewtopic&amp;id=" . $topic['id'] . "\">" . $topicName . "</a> {$_PWNDATA['buddy']['in']} " . getBoardName($topic['board']) . "<br />";
+        }
+    }
+    print <<<END
 </div>
 <div id="tab3" class="tab_contents" style="display: none;">
 <b>{$_PWNDATA['cal']['upcoming']}</b><br />
 END;
-print "\n";
-$view_date = time();
-$month = date("m",$view_date);
-$year = date("y",$view_date);
-$day = date("j",$view_date); // The current day of the month.
-$today = getDay(mktime(0,0,0,intval($month),intval($day),intval($year)));
-$tomorrow = getDay(mktime(0,0,0,intval($month),intval($day)+1,intval($year)));
-$dayafter = getDay(mktime(0,0,0,intval($month),intval($day)+2,intval($year)));
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
-$events = "";
-while ($query_row = mysql_fetch_array($day_results))
-{
-	$events = $events . "- " . $query_row['title'] . "<br />\n";
-}
-print "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNDATA['cal']['today']}</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $tomorrow . "'");
-$events = "";
-while ($query_row = mysql_fetch_array($day_results))
-{
-	$events = $events . "- " . $query_row['title'] . "<br />\n";
-}
-print "<a href=\"calendar.php?view=date&amp;day=$tomorrow\">{$_PWNDATA['cal']['tomorrow']}</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter . "'");
-$events = "";
-while ($query_row = mysql_fetch_array($day_results))
-{
-	$events = $events . "- " . $query_row['title'] . "<br />\n";
-}
-print "<a href=\"calendar.php?view=date&amp;day=$dayafter\">{$_PWNDATA['cal']['day_after']}</a>:<br />$events";
-print <<<END
+    print "\n";
+    $view_date = time();
+    $month = date("m",$view_date);
+    $year = date("y",$view_date);
+    $day = date("j",$view_date); // The current day of the month.
+    $today = getDay(mktime(0,0,0,intval($month),intval($day),intval($year)));
+    $tomorrow = getDay(mktime(0,0,0,intval($month),intval($day)+1,intval($year)));
+    $dayafter = getDay(mktime(0,0,0,intval($month),intval($day)+2,intval($year)));
+    $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
+    $events = "";
+    while ($query_row = mysql_fetch_array($day_results)) {
+        $events = $events . "- " . $query_row['title'] . "<br />\n";
+    }
+    print "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNDATA['cal']['today']}</a>:<br />$events";
+    $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $tomorrow . "'");
+    $events = "";
+    while ($query_row = mysql_fetch_array($day_results)) {
+        $events = $events . "- " . $query_row['title'] . "<br />\n";
+    }
+    print "<a href=\"calendar.php?view=date&amp;day=$tomorrow\">{$_PWNDATA['cal']['tomorrow']}</a>:<br />$events";
+    $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter . "'");
+    $events = "";
+    while ($query_row = mysql_fetch_array($day_results)) {        $events = $events . "- " . $query_row['title'] . "<br />\n";
+    }
+    print "<a href=\"calendar.php?view=date&amp;day=$dayafter\">{$_PWNDATA['cal']['day_after']}</a>:<br />$events";
+    print <<<END
 </div>
 <div id="tab4" class="tab_contents" style="display: none;">
 {$_PWNDATA['buddy']['help_message']}
 END;
-print <<<END
+    print <<<END
 </div>
 <div id="tab5" class="tab_contents" style="display:none;">
 {$_PWNDATA['buddy']['none']}
 </div>
 END;
-print <<<END
+    print <<<END
 </div></td><td class="block_mr">&nbsp;</td></tr>
 <tr><td class="block_bl"></td><td class="block_bm" colspan="2"></td><td class="block_br"></td></tr>
 </table>
