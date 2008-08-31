@@ -248,23 +248,32 @@ END;
 function getRankName($level,$site_info,$posts) {
     global $_PREFIX;
 	// First we'll check if there is a custom rank available.
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1");
-    if ($rank = mysql_fetch_array($results)) {
-	    return $rank['name'];
-    } else {
-	    // Then, if our user has a post count within a specific range, use it.
-	    $results2 = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts);
-	    if ($rank = mysql_fetch_array($results2)) {
-	    return $rank['name'];
+	$level = (int)$level;
+	$posts = (int)$posts;
+    $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1");
+    $temp = mysql_fetch_array($temp);
+    if ((int)$temp['COUNT(*)'] < 1) {
+        // Then, if our user has a post count within a specific range, use it.
+        $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=$posts");
+        $temp = mysql_fetch_array($temp);
+        if ((int)$temp['COUNT(*)'] < 1) {
+            // Otherwise, just use the standard title for their rank.
+            if ($level < $site_info['mod_rank']) {
+	            return "User";
+	        } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
+	            return "Moderator";
+	        } else if ($level >= $site_info['admin_rank']) {
+	            return "Admin";
+	        }
 	    } else {
-	    // Otherwise, just use the standard title for their rank.
-	    if ($level < $site_info['mod_rank']) {
-		    return "User"; }
-	    if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
-		    return "Moderator"; }
-	    if ($level >= $site_info['admin_rank']) {
-		    return "Admin"; }
-	    }
+	        $results2 = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
+            $rank = mysql_fetch_array($results2);
+            return $rank['name'];
+        }
+    } else {
+        $results = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
+        $rank = mysql_fetch_array($results);
+        return $rank['name'];
     }
 }
 function bbJava($stuff) {
@@ -412,8 +421,12 @@ function postCount($userID) {
     global $_PREFIX;
 	// Get a user's post count by ID.
 	$results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `authorid`=" . $userID);
-	$counter = mysql_fetch_array($results);
-	return $counter['COUNT(*)'];
+	if (!$results) {
+	    return 0;
+    } else {
+	    $counter = mysql_fetch_array($results);
+	    return $counter['COUNT(*)'];
+	}
 }
 function printPoster($where) {
 	// Print the posting tool buttons
