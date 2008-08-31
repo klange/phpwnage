@@ -37,11 +37,11 @@ require 'buddy.php';
 print <<<END
 <div class="footer_body_text" style="font-size: 10px;" align="center">
 END;
-   $mtime = microtime();
-   $mtime = explode(" ",$mtime);
-   $mtime = $mtime[1] + $mtime[0];
-   $endtime = $mtime;
-   $totaltime = ($endtime - $starttime); 
+$mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+$endtime = $mtime;
+$totaltime = ($endtime - $starttime); 
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
 print "<br />{$_PWNICONS['notice']}";
 print $_TRACKER;
