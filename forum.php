@@ -1491,8 +1491,12 @@ if ($_GET['do'] == "newreply") {
     if ($_GET['quote'] != 0) {
 	    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE id='" . $_GET['quote'] . "'", $db);
 	    $quoted = mysql_fetch_array($result);
-	    $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $quoted['authorid'] . "'", $db);
-	    $quotedauthor = mysql_fetch_array($result);
+	    if ($quoted['authorid'] == 0) {
+	        $quotedauthor['name'] = "Guest";
+        } else {
+	        $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $quoted['authorid'] . "'", $db);
+	        $quotedauthor = mysql_fetch_array($result);
+	    }
 	    $postquoted = preg_replace("/(\[quote\])(.+?)(\[\/quote\])/si","",$quoted['content']);
 	    $cont = "[quote][b]{$_PWNDATA['forum']['original']}[/b] " . $quotedauthor['name'] . "\n" . $postquoted . "[/quote]";
     }
