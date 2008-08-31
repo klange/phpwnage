@@ -222,7 +222,7 @@ $_PWNDATA['admin']['category_moved'] = "Category moved.";
 $_PWNDATA['admin']['user_posts_deleted'] = "User and posts deleted.";
 $_PWNDATA['admin']['rank_deleted'] = "Rank deleted.";
 $_PWNDATA['admin']['user_promoted'] = "User promoted.";
-$_PWNDATA['admin']['user_promoted'] = "User demoted.";
+$_PWNDATA['admin']['user_demoted'] = "User demoted.";
 $_PWNDATA['admin']['captcha_updated'] = "CAPTCHA settings updated.";
 
 // Admin : Form parts
