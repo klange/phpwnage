@@ -1,0 +1,813 @@
+/*
+	This file is part of PHPwnage (Pristine theme)
+
+	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+
+	PHPwnage is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	PHPwnage is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
+
+*/
+
+.borderless_table {
+    border-width: 0px;
+    border-spacing: 0px;
+    border-style: none none none none;
+    border-collapse: collapse;
+    margin: 0px 0px 0px 0px;
+}
+
+.sub_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+.footer_body_text {
+    font-family: Verdana, Tahoma, sans;
+    color: #000000;
+}
+
+.pan_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+}
+
+.pan_title_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+.pan_um a:visited {
+    color: #FFFFFF;
+}
+
+.pan_um a:link {
+    color: #FFFFFF;
+}
+
+.block_um a:visited {
+    color: #FFFFFF;
+}
+
+.block_um a:link {
+    color: #FFFFFF;
+}
+
+.sub_mid a:link {
+    color: #FFFFFF;
+}
+
+.sub_mid a:visited {
+    color: #FFFFFF;
+}
+
+.block_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+}
+
+.block_title_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
+.head_left {
+    height:110px;
+    width:500px;
+}
+
+.head_mid {
+    height:110px;
+}
+
+.head_right {
+    height:110px;
+    width:10px;
+}
+
+.sub_left {
+    background-color: #222222;
+    height: 20px;
+    width: 4px;
+    border-left: 1px solid #222222;
+}
+
+.sub_mid {
+    background-color: #222222;
+    height: 20px;
+    vertical-align: top;
+    padding: 0px 0px 0px 0px;
+}
+
+.sub_right {
+    background-color: #222222;
+    height: 20px;
+    width: 4px;
+    border-right: 1px solid #222222;
+}
+
+.but_left {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    height: 18px;
+    width: 4px;
+}
+
+.but_mid {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    height: 18px;
+    vertical-align: top;
+    padding: 0px 0px 0px 0px;
+}
+
+.but_right {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    height: 18px;
+    width: 4px;
+}
+
+.pan_ul {
+    background-color: #222222;
+    height: 20px;
+    border-left: 1px solid #222222;
+    border-top: 1px solid #222222;
+    width: 1px;
+}
+
+.pan_um {
+    background-color: #222222;
+    height: 20px;
+    border-top: 1px solid #222222;
+}
+
+.pan_ur {
+    background-color: #222222;
+    height: 20px;
+    width: 1px;
+    border-right: 1px solid #222222;
+    border-top: 1px solid #222222;
+}
+
+.pan_ml {
+    background-color: #EEEEEE;
+    border-left: 1px solid #222222;
+    width: 1px;
+}
+
+.pan_body {
+    padding: 3px 3px 3px 3px;
+    font-family: Verdana, Tahoma, sans;
+    background-color: #EEEEEE;
+    font-size: 12px;
+}
+.pan_mr {
+    background-color: #EEEEEE;
+    border-right: 1px solid #222222;
+    width: 1px;
+}
+
+.pan_bl {
+    background-color: #EEEEEE;
+    height: 1px;
+    width: 1px;
+    border-left: 1px solid #222222;
+    border-bottom: 1px solid #222222;
+}
+
+.pan_bm {
+    background-color: #EEEEEE;
+    height: 1px;
+    border-bottom: 1px solid #222222;
+}
+
+.pan_br {
+    background-color: #EEEEEE;
+    height: 1px;
+    width: 1px;
+    border-right: 1px solid #222222;
+    border-bottom: 1px solid #222222;
+}
+
+/* Block */
+.block_ul {
+    background-color: #222222;
+    height: 20px;
+    border-left: 1px solid #222222;
+    border-top: 1px solid #222222;
+    width: 1px;
+}
+
+.block_um {
+    background-color: #222222;
+    height: 20px;
+    border-top: 1px solid #222222;
+}
+
+.block_ur {
+    background-color: #222222;
+    height: 20px;
+    width: 1px;
+    border-right: 1px solid #222222;
+    border-top: 1px solid #222222;
+}
+
+.block_ml {
+    background-color: #EEEEEE;
+    border-left: 1px solid #222222;
+    width: 1px;
+}
+
+.block_body {
+    padding: 3px 3px 3px 3px;
+    font-family: Verdana, Tahoma, sans;
+    background-color: #EEEEEE;
+    font-size: 12px;
+}
+.block_mr {
+    background-color: #EEEEEE;
+    border-right: 1px solid #222222;
+    width: 1px;
+}
+
+.block_bl {
+    background-color: #EEEEEE;
+    height: 1px;
+    width: 1px;
+    border-left: 1px solid #222222;
+    border-bottom: 1px solid #222222;
+}
+
+.block_bm {
+    background-color: #EEEEEE;
+    height: 1px;
+    border-bottom: 1px solid #222222;
+}
+
+.block_br {
+    background-color: #EEEEEE;
+    height: 1px;
+    width: 1px;
+    border-right: 1px solid #222222;
+    border-bottom: 1px solid #222222;
+}
+
+/*
+	Forum
+*/
+/* Base Forum Table */
+.forum_base {
+    border: 1px #222222 solid;
+    border-collapse: collapse;
+}
+
+.forum_board_readicon {
+    background-color: #222222;
+    border: 0px #000000 none;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_board_linkicon {
+    background-color: #222222;
+    border: 0px #000000 none;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_board_title {
+    background-color: #222222;
+    border: 0px #000000 none;
+    padding: 1px 1px 1px 1px;
+    vertical-align: bottom;
+}
+
+.forum_board_title a:link {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_board_title a:visited {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_board_linktitle a:link {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_board_linktitle a:visited {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_board_linktitle {
+    background-color: #222222;
+    border: 0px #000000 none;
+    padding: 1px 1px 1px 1px;
+    vertical-align: bottom;
+}
+
+.forum_board_linkdesc {
+    background-color: #EEEEEE;
+    border: 0px #000000 none;
+    font-size: 12px;
+    border-bottom: 1px #222222 solid;
+    vertical-align: top;
+}
+
+.forum_board_desc {
+    background-color: #EEEEEE;
+    border: 0px #000000 none;
+    font-size: 12px;
+    border-bottom: 1px #222222 solid;
+    vertical-align: top;
+}
+
+.forum_board_last {
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+}
+
+.forum_board_topics {
+    background-color: #EEEEEE;
+    border: 0px #000000 none;
+    font-size: 12px;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_board_posts {
+    background-color: #EEEEEE;
+    border: 0px #000000 none;
+    font-size: 12px;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_edit_title {
+    display: inline;
+    font-size: 10px;
+}
+
+.forum_thread_title {
+    background-color: #222222;
+    border: 0px #000000 none;
+    color: #FFFFFF;
+    padding: 1px 1px 1px 1px;
+    vertical-align: bottom;
+}
+
+.forum_thread_title a:link {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_thread_title a:visited {
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.forum_thread_icon {
+    background-color: #222222;
+    border: 0px #000000 none;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_thread_last {
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+}
+
+.forum_thread_author {
+    background-color: #EEEEEE;
+    border: 0px #000000 none;
+    vertical-align: top;
+    border-bottom: 1px #222222 solid;
+}
+
+.forum_topic_poll_title {
+    background-color: #222222;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 1px 1px 1px 1px;
+}
+
+.forum_topic_poll {
+    background-color: #EEEEEE;
+    padding: 4px;
+}
+
+.forum_topic_poll_option {
+    background-color: #EEEEEE;
+    padding: 1px 1px 1px 1px;
+}
+
+.forum_topic_poll_votebar {
+    background-color: #EEEEEE;
+}
+
+.forum_poll_table {
+    border: 1px #222222 solid;
+    border-collapse: collapse;
+}
+
+/* The set of buttons to edit a post, quote it, view the ip, etc. */
+.mod_set {
+    border: 0px #FFFFFF none;
+    border-collapse: collapse;
+}
+
+.mod_set td {
+	border: 0px #000000 none;
+	padding: 0px 2px 0px 2px;
+	background-color: #EEEEEE;
+}
+
+/* Said button  */
+.forum_button {
+    border: 1px solid #222222;
+    border-spacing: 1px;
+    background-color: #222222;
+    padding: 3px;
+    border-collapse: collapse;
+}
+
+/* cell thing, keeps everything in line */
+.forum_button td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	background-color: #222222;
+}
+
+.quote {
+    background-image: url(crystal/quote.png);
+    background-repeat: no-repeat;
+    border: 1px dashed black;
+    padding: 5px;
+    padding-top: 18px;
+} /* post quote */
+
+.forum_button_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 10px;
+    color: #FFFFFF;
+} /* button text */
+
+.forum_button_text :link {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.forum_button_text :visited {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.forum_button_text :hover {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
+.forum_base_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 8px;
+    color: #FFFFFF;
+} /* panel text in the forum */
+
+.forum_user {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    font-weight: bold;
+} /* user name in post */
+
+.forum_body {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #000000;
+} /* post body */
+
+.forum_time {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 10px;
+} /* time code */
+
+.forum_quote {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+} /* quoted text  */
+
+.mod_name {
+    color: #73d216;
+}
+.adm_name {
+    color: #f57900;
+}
+
+.glow {
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+    text-align: center;
+}
+
+.glow_admin {
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+    text-align: center;
+}
+
+.glow_mod {
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+    text-align: center;
+}
+
+.forum_topic_content {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #000000;
+    background-color: #EEEEEE;
+    border: 1px #222222 solid;
+    height: auto;
+    padding: 4px;
+}
+
+.forum_topic_sig {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #000000;
+    background-color: #EEEEEE;
+    border: 1px #222222 solid;
+    padding: 4px;
+    height: 1px;
+}
+
+.forum_odd_row {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #000000;
+    background-color: #CCCCCC;
+    border: 1px #222222 solid;
+    padding: 4px;
+    height: 1px;
+}
+
+.forum_profile_user {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 24px;
+    color: #FFFFFF;
+    background-color: #222222;
+    border: 1px #222222 solid;
+    height: auto;
+    padding: 4px;
+}
+
+.forum_button_bar {
+    padding: 0px;
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+    margin: 0px;
+    height: 1px;
+}
+
+.forum_button_bar td {
+    padding-left: 4px;
+}
+
+.forum_topic_buttonbar td {
+    padding-right: 4px;
+}
+
+.forum_topic_buttonbar {
+    padding: 0px;
+    background-color: #DDDDDD;
+    border: 1px #222222 solid;
+}
+
+.forum_quickreply {
+    border: 1px #222222 solid;
+    border-collapse: collapse;
+}
+
+.forum_quickreply_box {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #000000;
+    background-color: #EEEEEE;
+    border: 1px #222222 solid;
+    padding: 4px;
+}
+
+.forum_quickreply_title {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #222222;
+    border: 1px #222222 solid;
+    padding: 2px;
+}
+
+.forum_quickreply_title a:link {
+    color: #FFFFFF;
+}
+
+.forum_quickreply_title a:visited {
+    color: #FFFFFF;
+}
+
+/*
+	PwnBuddy Enhancements
+*/
+.tab_head_off a {
+    text-decoration : none;
+    border : 1px solid #222222;
+    background-color: #222222;
+    color: #FFFFFF;
+    float : left;
+    margin-right : 4px;
+    line-height: 13px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 10px;
+}
+
+.tab_head_off a:hover {
+    background-color: #FFFFFF;
+}
+
+.tab_head_on a {
+    text-decoration : none;
+    border : 1px solid #000;
+    background-color: #F0F0F0;
+    color: #222222;
+    border-bottom: 1px solid #F0F0F0;
+    margin-right : 4px;
+    float : left;
+    font-size: 10px;
+    line-height: 13px;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.tab_head_on {
+    font-family: sans-serif, Tahoma;
+    display : inline;
+    list-style: none;
+    margin: 0;
+}
+
+.tab_head_off {
+    font-family: sans-serif, Tahoma;
+    display : inline;
+    list-style: none;
+    margin: 0;
+}
+
+.tab_contents {
+    clear : both;
+    background-color: #F0F0F0;
+    border: 1px #222222 solid;
+    border-top: 0;
+    font-family: sans-serif, Tahoma;
+    font-size: 12px;
+    padding-left: 2px;
+}
+
+.menu {
+    border-bottom: 1px #000 solid;
+    margin: 0;
+    padding-left: 2px;
+    padding-bottom: 14px;
+}
+
+.tab {
+    border-width: 1px 1px 1px 1px;
+    border-color: #000000;
+    width: 100%;
+}
+
+.sidebar {
+    padding-right: 4px;
+}
+
+.panel {
+    padding-top: 4px;
+    padding-bottom: 2px;
+}
+
+.block {
+    padding-top: 4px;
+    padding-bottom: 2px;
+}
+
+.odd_cell {
+    background-color: #DDDDDD;
+}
+
+
+.forum_page {
+    height: 12px;
+    border: 1px solid #222222;
+    background-color: #222222;
+    padding: 2px;
+}
+
+.page_spacer {
+    padding: 2px;
+}
+
+.page_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 10px;
+    color: #FFFFFF;
+}
+
+.page_text :link {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.page_text :visited {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.page_text :hover {
+    color: #CCCCCC;
+    text-decoration: none;
+}
+
+.calendar_day {
+    background-color: #222222;
+    border: 0px #222222 none;
+    padding: 1px 1px 1px 1px;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-style: italic;
+}
+
+hr {
+    color:  #555555;
+    height:   1px;
+    width:  50%;
+}
+
+/*
+	Basic pieces, very important.
+*/
+/* These better be self explanatory... */
+th {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+}
+
+td {
+	border-width: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border-style: none none none none;
+	border-color: gray gray gray gray;
+}
+
+textarea {
+    font-family: Tahoma, sans;
+    font-size: 10pt;
+}
+
+body font {
+    color: #000000;
+}
+:link {
+    color: #555555;
+    text-decoration: none;
+}
+:visited {
+    color: #555555;
+    text-decoration: none;
+}
+a:hover {
+    color: #777777;
+    text-decoration: underline;
+}
+
+a:link img, a:visited img {
+    border-style: none;
+}
