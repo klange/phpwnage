@@ -598,8 +598,11 @@ END;
                     $post_bb = str_replace("<","&lt;",$post_bb);
                     $post_bb = str_replace(">","&gt;",$post_bb);
                     $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
-
-                    $block_content = $block_content . "<font size=\"2\"><b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</font></td>";
+                    if ($topics_in_board > 0) {
+                        $block_content = $block_content . "<b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</td>";
+                    } else {
+                        $block_content = $block_content . "<b>{$_PWNDATA['forum']['noposts']}</b></td>";
+                    }
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_topics\">$topics_in_board {$_PWNDATA['forum']['topics']}</td>";
                     $block_content = $block_content . "<td rowspan=\"2\" align=\"center\" width=\"70\" class=\"forum_board_posts\">" . getPostsInBoard($row['id']) . " {$_PWNDATA['forum']['posts']}</td></tr>";
                     $block_content = $block_content . "\n	<tr><td class=\"forum_board_desc\">" . $row['desc'] . "</td></tr>";

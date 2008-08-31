@@ -399,6 +399,7 @@ $_PWNDATA['forum']['not_authorized_lock_topic'] = "You are not authorized to loc
 $_PWNDATA['forum']['not_authorized_unlock_topic'] = "You are not authorized to unlock this topic.";
 $_PWNDATA['forum']['topic_locked'] = "Topic locked.";
 $_PWNDATA['forum']['topic_unlocked'] = "Topic unlocked.";
+$_PWNDATA['forum']['noposts'] = "Board has no Posts";
 
 $_PWNDATA['forum']['logout'] = "Log Out";
 $_PWNDATA['forum']['login'] = "Log In";
