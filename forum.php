@@ -1837,14 +1837,18 @@ $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$la
 $block_content = $block_content . "<b>{$_PWNDATA['forum']['members_online']}</b>: ";
 $sql_temp = mysql_query("SELECT * FROM `{$_PREFIX}sessions` ORDER BY `user`");
 while ($on_session = mysql_fetch_array($sql_temp)) {
-$on_temp = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $on_session['user']);
-$on_user = mysql_fetch_array($on_temp);
-$on_id = $on_session['user'];
-$block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$on_id\">";
-if ($on_user['level'] < $site_info['mod_rank']) { $block_content = $block_content . $on_user['name']; }
-if (($on_user['level'] >= $site_info['mod_rank']) and ($on_user['level'] < $site_info['admin_rank'])) { $block_content = $block_content . "<font class='mod_name'>" . $on_user['name'] . "</font>"; }
-if ($on_user['level'] >= $site_info['admin_rank']) { $block_content = $block_content . "<font class='adm_name'>" . $on_user['name'] . "</font>"; }
-$block_content = $block_content . "</a> ";
+    $on_temp = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $on_session['user']);
+    $on_user = mysql_fetch_array($on_temp);
+    $on_id = $on_session['user'];
+    $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$on_id\">";
+    if ($on_user['level'] < $site_info['mod_rank']) {
+        $block_content = $block_content . $on_user['name'];
+    } else if (($on_user['level'] >= $site_info['mod_rank']) and ($on_user['level'] < $site_info['admin_rank'])) {
+        $block_content = $block_content . "<font class='mod_name'>" . $on_user['name'] . "</font>";
+    } else if ($on_user['level'] >= $site_info['admin_rank']) {
+        $block_content = $block_content . "<font class='adm_name'>" . $on_user['name'] . "</font>";
+    }
+    $block_content = $block_content . "</a> ";
 }
 $block_content = $block_content .  <<<END
 	<br /><font size="1">({$_PWNDATA['forum']['user']} <font class='mod_name'>{$_PWNDATA['forum']['moderator']}</font> <font class='adm_name'>{$_PWNDATA['forum']['admin']}</font>)</font></div>
