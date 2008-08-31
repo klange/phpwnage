@@ -33,6 +33,7 @@ function mse($source) {
 	return $source;
 }
 function isReadable($userLevel, $board) {
+    global $_PREFIX;
 	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['vis_level']) {
@@ -42,6 +43,7 @@ function isReadable($userLevel, $board) {
 	}
 }
 function isWriteableTopic($userLevel, $board) {
+    global $_PREFIX;
 	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['topic_level']) {
@@ -51,6 +53,7 @@ function isWriteableTopic($userLevel, $board) {
 	}
 }
 function isWriteable($userLevel, $board) {
+    global $_PREFIX;
 	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['post_level']) {
@@ -60,11 +63,13 @@ function isWriteable($userLevel, $board) {
 	}
 }
 function getBoardName($bid) {
+    global $_PREFIX;
 	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
 	$brd = mysql_fetch_array($result);
 	return $brd['title'];
 }
 function getPostsInBoard($bid) {
+    global $_PREFIX;
 	$result = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE `board`=" .  $bid);
 	$total = 0;
 	while ($top = mysql_fetch_array($result)) {
@@ -242,6 +247,7 @@ END;
 }
 
 function getRankName($level,$site_info,$posts) {
+    global $_PREFIX;
 	// First we'll check if there is a custom rank available.
     $results = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1");
     if ($rank = mysql_fetch_array($results)) {
@@ -325,7 +331,7 @@ function makeIMG($link) {
     return "<img alt=\"forum image\" border=\"0\" src=\"$link\" />";
 }
 function pCount($topic) {
-    global $_PWNDATA;
+    global $_PWNDATA, $_PREFIX;
     $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" . $topic);
     $res = mysql_fetch_array($results);
     $comments = $res['COUNT(*)'] - 1;
@@ -338,6 +344,7 @@ function pCount($topic) {
     }
 }
 function BBDecode($content,$allowhtml = false) {
+    global $_PREFIX;
     if (!$allowhtml) {
         $content = str_replace("<","&lt;",$content); // Kill HTML in posts
         $content = str_replace(">","&gt;",$content);
@@ -390,9 +397,9 @@ function BBDecode($content,$allowhtml = false) {
     // Edit this to censor other words. Uses a fairly nice system to ensure words like bass, etc aren't censored.
     // However, things like "---hole" won't be censored. If you really care, add these words.
     foreach ($censor_list as $cen) {
-        $content = sim_rep($cen,"-censored-",$content);
-        $content = sim_rep($cen . "es","-censored-",$content); // Plural forms (I have no experience in regular expressions
-        $content = sim_rep($cen . "s","-censored-",$content); // So we'll do this the old fashioned way...
+        $content = sim_rep($cen,"****",$content);
+        $content = sim_rep($cen . "es","****",$content); // Plural forms (I have no experience in regular expressions
+        $content = sim_rep($cen . "s","****",$content); // So we'll do this the old fashioned way...
     }
     return $content;
 }
@@ -403,6 +410,7 @@ function sim_rep2($search, $replace, $subject) {
     return preg_replace('/[a-zA-Z]+/e', '\'\0\' == \'' . $search . '\' ? \'' . $replace . '\' : \'\0\';', $subject);
 }
 function postCount($userID) {
+    global $_PREFIX;
 	// Get a user's post count by ID.
 	$results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `authorid`=" . $userID);
 	$counter = mysql_fetch_array($results);
@@ -410,7 +418,7 @@ function postCount($userID) {
 }
 function printPoster($where) {
 	// Print the posting tool buttons
-    global $_PWNDATA, $_PWNICONS;
+    global $_PWNDATA, $_PWNICONS, $_PREFIX;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -473,7 +481,7 @@ function getDay($timecode) {
 }
 function printPosterMini($where, $topID) {
 	// Print the posting tools in a smaller package.
-    global $_PWNDATA, $_PWNICONS;
+    global $_PWNDATA, $_PWNICONS, $_PREFIX;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -524,7 +532,7 @@ END;
 function printPosterEditor($where, $pid) {
 	// Print the posting tools in a smaller package.
 	$what = "_" . $pid;
-    global $_PWNDATA, $_PWNICONS;
+    global $_PWNDATA, $_PWNICONS, $_PREFIX;
     $return = <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -855,6 +863,7 @@ function messageBackLight($title, $message) {
 }
 
 function check_read($id,$userid) {
+    global $_PREFIX;
     $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
@@ -868,6 +877,7 @@ function check_read($id,$userid) {
 }
 
 function findTopic($postnumber) {
+    global $_PREFIX;
     $temp = mysql_query("SELECT `topicid` FROM `{$_PREFIX}posts` WHERE `id`=" . $postnumber);
     $post = mysql_fetch_array($temp);
     $topic = $post['topicid'];
@@ -875,7 +885,7 @@ function findTopic($postnumber) {
 }
 
 function findPage($postnumber, $topic = -1) {
-    global $_POSTSPERPAGE;
+    global $_POSTSPERPAGE, $_PREFIX;
     if ($topic == -1) {
         $topic = findTopic($postnumber);
     }
@@ -891,6 +901,7 @@ function findPage($postnumber, $topic = -1) {
 }
 
 function check_read_forum($id,$userid) {
+    global $_PREFIX;
     $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board=$id");
     $was_read = true;
     while ($topic = mysql_fetch_array($temp_res)) {
@@ -900,6 +911,7 @@ function check_read_forum($id,$userid) {
 }
 
 function set_read($id,$userid) {
+    global $_PREFIX;
     $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
@@ -911,10 +923,12 @@ function set_read($id,$userid) {
 }
 
 function set_unread($id) {
+    global $_PREFIX;
     mysql_query("UPDATE `{$_PREFIX}topics` SET `readby` = '' WHERE `{$_PREFIX}topics`.`id` =" . $id);
 }
 
 function check_voted($id,$userid) {
+    global $_PREFIX;
     $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['voters'];
@@ -928,6 +942,7 @@ function check_voted($id,$userid) {
 }
 
 function set_voted($id,$userid) {
+    global $_PREFIX;
     $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['voters'];
@@ -940,7 +955,6 @@ function set_voted($id,$userid) {
 
 
 function drawSubbar($left, $right) {
-    global $_PWNDATA, $site_info, $theme, $imageroot, $user;
     print <<<END
 <table class="borderless_table" width="100%">
   <tr>
