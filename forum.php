@@ -1188,6 +1188,10 @@ END;
     while ($row = mysql_fetch_array($result)) {
         $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
+        if (!$post_author) {
+            $post_author['name'] = "Guest";
+            $post_author['level'] = "0";
+        }
         $topglow = "class=\"glow\"";
         if ($post_author['level'] >= $site_info['mod_rank']) {
             $topglow = "class=\"glow_mod\"";
@@ -1296,7 +1300,11 @@ END;
 	        // Yes, this can exclude some members, but we don't really care because they're BANNED. (Level = 0)
 	        $postinfo = "<br />$pCount posts";
         }
-        $block_content = $block_content . "<font class=\"forum_user\"><a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $post_author['name'] . "</a><br />" . $ava . $auth_info . $postinfo . "</font>";
+        if (!$post_author['level'] < 1) {
+            $block_content = $block_content . "<font class=\"forum_user\"><a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $post_author['name'] . "</a><br />" . $ava . $auth_info . $postinfo . "</font>";
+        } else {
+            $block_content = $block_content . "<font class=\"forum_user\">" . $post_author['name'] . "<br />" . $ava . $auth_info . $postinfo . "</font>";
+        }
         $block_content = $block_content . "</td>\n<td valign=\"top\" class=\"forum_topic_content\"><div align=\"right\" class=\"forum_time\">{$_PWNDATA['forum']['posted_at']} " . date("F j, Y (g:ia T)", $row['time']) . "</div>\n<div id=\"post_content_" . $row['id'] . "\">";
         $block_content = $block_content . "\n" . $contenta;
         if (($user['id'] == $post_author['id']) or ($user['level'] >= $site_info['mod_rank'])) {
