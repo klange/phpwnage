@@ -293,7 +293,7 @@ $data = "<?php// PHPwnage Automatically Generated Configuration Page
 \$mtime = microtime();
 \$mtime = explode(" ",\$mtime);\$mtime = \$mtime[1] + \$mtime[0];\$starttime = \$mtime;
 \$db_fail = false;\$db = mysql_connect(\$conf_server,\$conf_user,\$conf_password) or die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">We've experienced an internal error. Please contact " . \$conf_email . ".<br />\n(Failed to connect to SQL server.)</span>"); mysql_select_db(\$conf_database, \$db) or \$db_fail = true; putenv("TZ=America/New_York");
-\$banlist = mysql_query("SELECT * FROM banlist");while (\$ban = mysql_fetch_array(\$banlist)) {if (\$_SERVER['REMOTE_ADDR'] == \$ban['ip']) {
+\$banlist = mysql_query("SELECT * FROM `{\$_PREFIX}banlist`");while (\$ban = mysql_fetch_array(\$banlist)) {if (\$_SERVER['REMOTE_ADDR'] == \$ban['ip']) {
 die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
 }}?>
 END;
