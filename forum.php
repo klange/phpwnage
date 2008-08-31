@@ -33,12 +33,12 @@ if ($_POST['action'] == "login") {
         $_SESSION['sess_id'] = time();
         $_SESSION['last_on'] = time();
         if ($_POST['remember'] == "ON") {
-            setcookie("rem_user", $tempuser['name'], time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
-            setcookie("rem_pass", md5($_POST['upass']), time()+60*60*24*365*10); // lol
+            setcookie("rem_user", $tempuser['name'], time()+60*60*24*365*10);
+            setcookie("rem_pass", md5($_POST['upass']), time()+60*60*24*365*10);
             setcookie("rem_yes", "yes", time()+60*60*24*365*10);
         } else {
-            setcookie("rem_user", "", time()+60*60*24*365*10); // Hehehe, a cookie that'll expire in 10 years!
-            setcookie("rem_pass", "", time()+60*60*24*365*10); // lol
+            setcookie("rem_user", "", time()+60*60*24*365*10);
+            setcookie("rem_pass", "", time()+60*60*24*365*10);
             setcookie("rem_yes", "no", time()+60*60*24*365*10);
         }
         $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_SESSION['user_name'] . "')", $db);
