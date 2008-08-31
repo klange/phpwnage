@@ -19,7 +19,6 @@
 
 */
 
-// error_reporting(6143); // Error reporting for debugging purposes.
 require 'config.php';
 require 'includes.php';
 
