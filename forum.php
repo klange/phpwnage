@@ -413,7 +413,7 @@ if ($_GET['do'] == "unlocktop") {
 
 // Return the display for the right side of the subbar
 function post_sub_r($userid) {
-    global $_PWNDATA;
+    global $_PWNDATA, $_PREFIX;
     if (isset($_SESSION['sess_id'])){
         $post_sub_r = "<a href=\"forum.php?do=logoff\">{$_PWNDATA['forum']['logout']}</a> | <a href=\"forum.php?do=editprofile\">{$_PWNDATA['forum']['edit_profile']}</a> | ";
         $unread_temp = mysql_query("SELECT `{$_PREFIX}pms`.*, COUNT(`read`) FROM `{$_PREFIX}pms` WHERE `to`=$userid AND `read`=0 GROUP BY `read` ");

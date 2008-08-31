@@ -80,8 +80,7 @@ function getPostsInBoard($bid) {
 	return $total;
 }
 // Not just themes. All things user-selectable are here.
-function setTheme()
-{
+function setTheme() {
 	global $user, $imageroot, $theme, $icons, $language, $_PWNICONS, $_PWNDATA,
 	       $_DEFAULT_THEME, $_DEFAULT_ICONS, $_DEFAULT_COLOR, $_DEFAULT_LANG;
 	if (!isset($user['color']) || $user['color'] == "")
