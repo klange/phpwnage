@@ -1808,9 +1808,10 @@ print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">
 END;
-// CONTENT OF FORUM PAGE GOES HERE!!
+
 print $post_content;
-// Print the board statistics -----------------------------------------------------------------------------
+
+// Print the board statistics
 
 $sql_temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}users`");
 $stat_a = mysql_fetch_array($sql_temp);
@@ -1849,7 +1850,7 @@ $block_content = $block_content .  <<<END
 	<br /><font size="1">({$_PWNDATA['forum']['user']} <font class='mod_name'>{$_PWNDATA['forum']['moderator']}</font> <font class='adm_name'>{$_PWNDATA['forum']['admin']}</font>)</font></div>
 END;
 print makeBlock($_PWNDATA['forum']['stats'],$_PWNDATA['forum']['at'] . " " . $site_info['name'],$block_content);
-// End         --------------------------------------------------------------------------
+// End
 
 print <<<END
 	</table>
