@@ -1177,20 +1177,6 @@ END;
     if ($pages > 0) {
         $PAGING = printPager("forum.php?do=viewtopic&amp;id=$top_id&amp;p=",(floor($page / $_POSTSPERPAGE)) + 1,$pages+1);
     }
-    /*if ($pages > 0) {
-        $PAGING = $PAGING . "<td> &nbsp;&nbsp;&nbsp;{$_PWNDATA['forum']['goto']}: ";
-        for ($page_count = 1; $page_count <= $pages + 1; $page_count += 1) {
-            if ($page_count != (floor($page / $_POSTSPERPAGE)) + 1) {
-                $PAGING = $PAGING . "<a href=\"forum.php?do=viewtopic&amp;id=$top_id&amp;p=$page_count\">$page_count</a>"; 
-            } else {
-                $PAGING = $PAGING . "<b>$page_count</b>";
-            }
-            if ($page_count != $pages + 1) {
-                $PAGING = $PAGING . ", ";
-            }
-        }
-        $PAGING = $PAGING . "</td>";
-    }*/
     $block_content = $block_content .  <<<END
 	<tr><td class="forum_topic_buttonbar" colspan="2"><table style="border: 0px" class="borderless_table"><tr>
 END;
