@@ -1142,7 +1142,7 @@ END;
 if ((!isset($_GET['view']) || $_GET['view'] == "") && 
    (!isset($_GET['do']) || $_GET['do'] == ""))  {
     $pwnversion = $_PWNVERSION['major'] . "_" . $_PWNVERSION['minor'] . $_PWNVERSION['extra'];
-    $update_data = file_get_contents("http://oasis-games.com/pwn/updates_{$pwnversion}");
+    $update_data = file_get_contents("http://updates.phpwnage.com/updates_{$pwnversion}");
     // Make sure this is valid. If it has <body, it's not, because it's either
     // O-G's 404 page or someone else with a man-in-the-middle (Not necessarily intentional
     // it could be a proxy page for an internet access registration or something)
