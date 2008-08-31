@@ -279,6 +279,7 @@ $data = "<?php// PHPwnage Automatically Generated Configuration Page
 // License, version 3)\n";$data = $data . "\$conf_server = \"$SQL_SERVER\";\$conf_user = \"$SQL_USER\";\$conf_password = \"$SQL_PASSWORD\";\$conf_database = \"$SQL_DATABASE\";\$conf_email = \"$ADMIN_EMAIL\";
 \$_TRACKER = \"\"; // Add your analytics tracking here
 \$_PREFIX = \"$PREFIX\";";$data = $data . <<<END
+
 \$_POSTSPERPAGE = 10;    // Number of posts per page. This should move to a User Option!
 \$_THREADSPERPAGE = 10;  // Same. Threads per page in viewforum (new in 1.8)
 \$_CHECKPANDEMIC = false; // Check Pandemic status?
