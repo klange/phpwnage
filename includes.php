@@ -22,8 +22,8 @@ session_start(); // Always ensure a session.
 require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
-$_PWNVERSION['minor'] = 8;
-$_PWNVERSION['extra'] = "";
+$_PWNVERSION['minor'] = 9;
+$_PWNVERSION['extra'] = "pre";
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
