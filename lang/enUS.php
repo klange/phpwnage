@@ -49,6 +49,10 @@ $_PWNDATA['modules_page_title'] = "Modules";
 $_PWNDATA['news_page_title'] = "News";
 $_PWNDATA['gallery_page_title'] = "Image Gallery";
 
+$_PWNDATA['rank']['user'] = "User";
+$_PWNDATA['rank']['moderator'] = "Moderator";
+$_PWNDATA['rank']['admin'] = "Administrator";
+
 $_PWNDATA['gallery']['upload_failed'] = "Upload failed. File may be too large or of an unknown type.";
 $_PWNDATA['gallery']['image_uploaded'] = "Image uploaded!";
 $_PWNDATA['gallery']['no_image_specified'] = "No image specified";

@@ -246,7 +246,7 @@ END;
 }
 
 function getRankName($level,$site_info,$posts) {
-    global $_PREFIX;
+    global $_PREFIX, $_PWNDATA;
 	// First we'll check if there is a custom rank available.
 	$level = (int)$level;
 	$posts = (int)$posts;
@@ -259,11 +259,11 @@ function getRankName($level,$site_info,$posts) {
         if ((int)$temp['COUNT(*)'] < 1) {
             // Otherwise, just use the standard title for their rank.
             if ($level < $site_info['mod_rank']) {
-	            return "User";
+	            return $_PWNDATA['rank']['user'];
 	        } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
-	            return "Moderator";
+	            return $_PWNDATA['rank']['moderator'];
 	        } else if ($level >= $site_info['admin_rank']) {
-	            return "Admin";
+	            return $_PWNDATA['rank']['admin'];
 	        }
 	    } else {
 	        $results2 = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
