@@ -32,8 +32,14 @@ if ($_POST[action]){
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
-standardHeaders($site_info['name'] . " :: Article #" . $_GET['id'] . " - " . $row['title'],true);
+standardHeaders($site_info['name'] . " :: {$_PWNDATA['article']} #" . $_GET['id'] . " - " . $row['title'],true);
+
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
+
+if (!isset($row['name'])) {
+    messageBack($_PWNDATA['articles']['title'],$_PWNDATA['articles']['not_found'],false);
+}
+
 require 'sidebar.php';
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);

@@ -711,6 +711,9 @@ END;
 if ($_GET['do'] == "viewforum") {
     $result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $_GET['id'] . "'", $db);
     $board = mysql_fetch_array($result);
+    if (!isset($board['id'])) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['board_does_not_exist']);
+    }
     if ($board['vis_level'] > $user['level']) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permission']);
     }
@@ -1073,6 +1076,9 @@ END;
 if ($_GET['do'] == "viewtopic") {
     $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
+    if (!isset($topic['id'])) {
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_topic']);
+    }
     $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($resultb);
     if ($board['vis_level'] > $user['level']) {
@@ -1652,6 +1658,9 @@ END;
 if ($_GET['do'] == "viewprofile") {
     $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $_GET['id'] . "'", $db);
     $vuser = mysql_fetch_array($result);
+    if (!isset($vuser['id'])) {
+        messageBack($_PWNDATA['forum_page_title'],"User does not exist.");
+    }
     $uid = $vuser['id'];
     $umail = $vuser['email'];
     $uname = $vuser['name'];
