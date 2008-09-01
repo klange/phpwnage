@@ -22,7 +22,7 @@ require 'config.php';
 require 'includes.php';
 
 if ($_POST['action']){
-    if (!isset($user['id']) || $user['level'] < $site_info[['mod_rank']) {
+    if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
     }
     $pagename = $_GET['page'];

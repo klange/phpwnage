@@ -39,7 +39,7 @@ standardHeaders($site_info['name'] . " :: {$_PWNDATA['article']} #" . $_GET['id'
 
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
 
-if (!isset($row['name'])) {
+if (!isset($row['id'])) {
     messageBack($_PWNDATA['articles']['title'],$_PWNDATA['articles']['not_found'],false);
 }
 
