@@ -360,9 +360,13 @@ if ($_POST['action'] == "newuser") {
 
 // Delete a post
 if ($_GET['do'] == "delete") {
-	if ($user['level'] < $site_info['mod_rank']) {
-		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_post']);
-	}
+	$_GET['id'] = (int)$_GET['id'];
+	$temp_query = mysql_query("SELECT `id`, `authorid` FROM `posts` WHERE `id`={$_GET['id']}");
+    $temp = mysql_fetch_array($temp_query);
+    if (!isset($user['id']) || ($user['level'] < $site_info['mod_rank'] && $user['id'] != $temp['authorid'])) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
+	$_GET['id'] = (int)$_GET['id'];
 	$topic = findTopic($_GET['id']);
 	mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `{$_PREFIX}posts`.`id` =" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_deleted'],"forum.php?do=viewtopic&id=$topic&p=" . findPage($_GET['id'],$topic));
@@ -370,9 +374,12 @@ if ($_GET['do'] == "delete") {
 
 // Delete a topic
 if ($_GET['do'] == "deltop") {
-	if ($user['level'] < $site_info['mod_rank']) {
-		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_topic']);
-	}
+    $_GET['id'] = (int)$_GET['id'];
+	$temp_query = mysql_query("SELECT `id`, `authorid` FROM `topics` WHERE `id`={$_GET['id']}");
+    $temp = mysql_fetch_array($temp_query);
+    if (!isset($user['id']) || ($user['level'] < $site_info['mod_rank'] && $user['id'] != $temp['authorid'])) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
 	mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `{$_PREFIX}topics`.`id` =" . $_GET['id']);
 	mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `{$_PREFIX}posts`.`topicid` =" . $_GET['id']);
 	messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_posts_deleted'],"forum.php");
