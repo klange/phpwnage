@@ -22,6 +22,9 @@ require 'config.php';
 require 'includes.php';
 
 if ($_POST['action']){
+    if (!isset($user['id']) || $user['level'] < $site_info[['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     $pagename = $_GET['page'];
     mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
     messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");

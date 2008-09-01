@@ -186,6 +186,12 @@ if ($_POST['action'] == "vote_poll") {
 
 // If an old post is being edited
 if ($_POST['action'] == "edit_reply") {
+    $_POST['id'] = (int)$_POST['id'];
+    $temp_query = mysql_query("SELECT `id`, `authorid` FROM `posts` WHERE `id`={$_POST['id']}");
+    $temp = mysql_fetch_array($temp_query);
+    if (!isset($user['id']) || ($user['level'] < $site_info['mod_rank'] && $user['id'] != $temp['authorid'])) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     $content = $_POST['content'];
     mysql_query("UPDATE `{$_PREFIX}posts` SET `content` = '" . mse($content) . "' WHERE `{$_PREFIX}posts`.`id` =" . $_POST['id'] . ";");
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['post_edited'],"forum.php?do=viewtopic&amp;id=" . $_POST['topic'] . "&p=" . findPage($_POST['id']));
@@ -194,6 +200,12 @@ if ($_POST['action'] == "edit_reply") {
 // If a topic title is being changed
 if ($_POST['action'] == "edit_title") {
     $title = $_POST['title'];
+    $_POST['id'] = (int)$_POST['id'];
+    $temp_query = mysql_query("SELECT `id`, `authorid` FROM `topics` WHERE `id`={$_POST['id']}");
+    $temp = mysql_fetch_array($temp_query);
+    if (!isset($user['id']) || ($user['level'] < $site_info['mod_rank'] && $user['id'] != $temp['authorid'])) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     mysql_query("UPDATE `{$_PREFIX}topics` SET `title` = '" . mse($title) . "' WHERE `{$_PREFIX}topics`.`id` =" . $_POST['topicid'] . ";");
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_title_edited'],"forum.php");
 }
@@ -201,12 +213,21 @@ if ($_POST['action'] == "edit_title") {
 // If a topic is being moved
 if ($_POST['action'] == "move_topic") {
     $board = $_POST['board'];
+    $_POST['topid'] = (int)$_POST['topid'];
+    $temp_query = mysql_query("SELECT `id`, `authorid` FROM `topics` WHERE `id`={$_POST['topid']}");
+    $temp = mysql_fetch_array($temp_query);
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     mysql_query("UPDATE `{$_PREFIX}topics` SET `board` = $board WHERE `{$_PREFIX}topics`.`id` =" . $_POST['topid'] . ";");
     messageRedirect($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['topic_moved'],"forum.php?do=viewtopic&amp;id=" . $_POST['topid']);
 }
 
 // Topic is being split
 if ($_POST['action'] == "split_topic") {
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     // Author is whoever split the topic off in the first place, as a way to track it.
     if (strlen($_POST['newtitle']) < 3) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['tooshort']);
@@ -230,6 +251,9 @@ if ($_POST['action'] == "split_topic") {
 }
 
 if ($_POST['action'] == "merge_topics") {
+    if ($user['level'] < $site_info['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     $mergeid = "NONE";
     while (list($key,$value) = each($_POST)) {
         if (strstr($key,"topic_")) {
@@ -336,7 +360,7 @@ if ($_POST['action'] == "newuser") {
 
 // Delete a post
 if ($_GET['do'] == "delete") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_post']);
 	}
 	$topic = findTopic($_GET['id']);
@@ -346,7 +370,7 @@ if ($_GET['do'] == "delete") {
 
 // Delete a topic
 if ($_GET['do'] == "deltop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_del_topic']);
 	}
 	mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `{$_PREFIX}topics`.`id` =" . $_GET['id']);
@@ -356,7 +380,7 @@ if ($_GET['do'] == "deltop") {
 
 // Sticky a topic
 if ($_GET['do'] == "sticktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `stick` = 1 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);
@@ -365,7 +389,7 @@ if ($_GET['do'] == "sticktop") {
 
 // Unsticky a topic
 if ($_GET['do'] == "unsticktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `stick` = 0 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);
@@ -374,7 +398,7 @@ if ($_GET['do'] == "unsticktop") {
 
 // Sink a topic
 if ($_GET['do'] == "sinktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `stick` = -1 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);
@@ -383,7 +407,7 @@ if ($_GET['do'] == "sinktop") {
 
 // Unsink a topic
 if ($_GET['do'] == "unsinktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_sticky_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `stick` = 0 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);
@@ -392,7 +416,7 @@ if ($_GET['do'] == "unsinktop") {
 
 // Lock a topic
 if ($_GET['do'] == "locktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_lock_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `locked` = 1 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);
@@ -401,7 +425,7 @@ if ($_GET['do'] == "locktop") {
 
 // Unlock a topic
 if ($_GET['do'] == "unlocktop") {
-	if ($user['level'] < 2) {
+	if ($user['level'] < $site_info['mod_rank']) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_authorized_unlock_topic']);
 	}
 	mysql_query("UPDATE `{$_PREFIX}topics` SET `locked` = 0 WHERE `{$_PREFIX}topics`.`id`=" . $_GET['id']);

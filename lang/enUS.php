@@ -40,6 +40,7 @@ $_PWNDATA['exec_b'] = " seconds.";
 $_PWNDATA['article'] = "Article";
 $_PWNDATA['failed_login'] = "Login failed. Username or password incorrect.";
 $_PWNDATA['click_to_continue'] = "(Or click here if you are not redirected)";
+$_PWNDATA['post_attack'] = "Error";
 
 // Page titles
 $_PWNDATA['admin_page_title'] = "Administration";
