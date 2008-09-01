@@ -27,13 +27,22 @@ $row = mysql_fetch_array($result);
 
 if ($_POST[action]){
     $id = $_GET['id'];
+    if (!isset($user['id']) || $user['level'] < $site_info[['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
-standardHeaders($site_info['name'] . " :: Article #" . $_GET['id'] . " - " . $row['title'],true);
+standardHeaders($site_info['name'] . " :: {$_PWNDATA['article']} #" . $_GET['id'] . " - " . $row['title'],true);
+
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
+
+if (!isset($row['name'])) {
+    messageBack($_PWNDATA['articles']['title'],$_PWNDATA['articles']['not_found'],false);
+}
+
 require 'sidebar.php';
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);

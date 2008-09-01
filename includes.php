@@ -833,10 +833,11 @@ END;
 END;
     return $output;
 }
-function drawMessage($title, $message) {
+function drawMessage($title, $message, $headers = true) {
 	global $_PWNDATA, $site_info, $theme, $imageroot, $user;
 	setTheme();
 	$SITENAME = $site_info['name'];
+	if ($headers) {
 	print <<<END
 <html>
 <head>
@@ -846,21 +847,24 @@ END;
 	print <<<END
 </head>
 <body>
+END;
+}
+print <<<END
 <table width="100%" class="borderless_table">
 END;
 	drawBlock($title, "", $message);
 	print "</table><body></html>";
-	die();
+    die();
 }
-function messageRedirect($title, $message, $redirect) {
+function messageRedirect($title, $message, $redirect, $headers = true) {
 	global $_PWNDATA, $site_info;
 	$content = $message . "<meta http-equiv=\"Refresh\" content=\"1;url=" . $redirect . "\" /><br />" . $_PWNDATA['redirecting'] . "...";
-	drawMessage($title, $content);
+	drawMessage($title, $content, $headers);
 }
-function messageBack($title, $message) {
+function messageBack($title, $message, $headers = true) {
 	global $_PWNDATA, $site_info;
 	$content = $message . "<br /><a href=\"javascript:history.back()\">" . $_PWNDATA['go_back'] . "</a>";
-	drawMessage($title, $content);
+	drawMessage($title, $content, $headers);
 }
 function messageRedirectLight($message,$redirect) {
     global $_PWNDATA, $site_info;

@@ -67,6 +67,12 @@ function generateThumbnail($file, $type) {
 if (isset($_POST['action'])) {
     if ($_POST['action'] == "upload") {
         if (isset($_FILES['image'])) {
+            $_POST['gallery'] = (int)$_POST['gallery'];
+            $temp_query = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_POST['gallery']}");
+            $temp = mysql_fetch_array($temp_query);
+            if (!isset($temp['id']) || $temp['upload'] > $user['level']) {
+                 messageBack($_PWNDATA['post_attack'],$_PWNDATA['not_permitted']);
+            }
             if (!generateThumbnail($_FILES['image']['tmp_name'],$_FILES['image']['type'])) {
                 messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['upload_failed']);    
             }
@@ -76,10 +82,13 @@ if (isset($_POST['action'])) {
             $fname = $_FILES['image']['tmp_name'] . "_th";
             $file = fopen($fname,"rb");
             $thumb = addslashes(fread($file,filesize($fname)));
+            $name = mse($_FILES['image']['name']);
+            $title = mse($_POST['name']);
+            $desc = mse($_POST['desc']);
             $query = <<<END
 INSERT INTO `{$_PREFIX}images` VALUES (
-NULL, '{$_POST['name']}', '{$_POST['desc']}', {$user['id']},   
-'{$_FILES['image']['name']}', {$_POST['gallery']}, {$_FILES['image']['size']},
+NULL, '$title', '$desc', {$user['id']},   
+'$name', {$_POST['gallery']}, {$_FILES['image']['size']},
 '{$_FILES['image']['type']}', 1, "{$image}", "{$thumb}");
 END;
             mysql_query($query);

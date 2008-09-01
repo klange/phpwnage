@@ -18,12 +18,19 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';require 'includes.php';
-require "modules/" . $_GET['m'] . ".php";
+require 'config.php';require 'includes.php';
+if (strstr($_GET['m'],".") || strstr($_GET['m'],"/")) {
+    messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_invalid']);
+}
+$exists = @include 'modules/' . $_GET['m'] . '.php';
 
 standardHeaders($site_info['name'] . " :: Modules :: " . $mod['title'],true);
 
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> :: {$_PWNDATA['modules_page_title']} :: " . $mod['title'],$mod['right']);
+
+if (!$exists) {
+    messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_does_not_exist'], false);
+}
 
 require 'sidebar.php';
 

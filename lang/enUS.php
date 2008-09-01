@@ -40,6 +40,7 @@ $_PWNDATA['exec_b'] = " seconds.";
 $_PWNDATA['article'] = "Article";
 $_PWNDATA['failed_login'] = "Login failed. Username or password incorrect.";
 $_PWNDATA['click_to_continue'] = "(Or click here if you are not redirected)";
+$_PWNDATA['post_attack'] = "Error";
 
 // Page titles
 $_PWNDATA['admin_page_title'] = "Administration";
@@ -110,6 +111,8 @@ $_PWNDATA['articles']['more_comments'] = "(More Comments)";
 $_PWNDATA['articles']['comment_count'] = "comments";
 $_PWNDATA['articles']['no_comments'] = "No comments";
 $_PWNDATA['articles']['one_comment'] = "One comment";
+$_PWNDATA['articles']['title'] = "Articles";
+$_PWNDATA['articles']['not_found'] = "Article not found.";
 
 // Buddy
 $_PWNDATA['buddy']['name'] = "PwnBuddy";
@@ -511,6 +514,9 @@ $_PWNDATA['forum']['modtools']['merge'] = "Merge";
 $_PWNDATA['forum']['modtools']['nonespecified'] = "No topic specified to merge into.";
 $_PWNDATA['forum']['modtools']['merged'] = "Topics merged";
 
+$_PWNDATA['forum']['board_does_not_exist'] = "Board does not exist.";
+$_PWNDATA['forum']['invalid_topic'] = "Invalid topic specified.";
+
 $_PWNDATA['poster']['bold'] = "Bold";
 $_PWNDATA['poster']['underline'] = "Underline";
 $_PWNDATA['poster']['italic'] = "Italic";
@@ -524,6 +530,10 @@ $_PWNDATA['poster']['link'] = "Link";
 $_PWNDATA['poster']['go_advanced'] = "Go Advanced";
 $_PWNDATA['poster']['smileys'] = "Smileys";
 $_PWNDATA['poster']['preview'] = "Preview";
+
+$_PWNDATA['pages_does_not_exist'] = "Page not found.";
+$_PWNDATA['module_does_not_exist'] = "Module not found.";
+$_PWNDATA['module_invalid'] = "Invalid module name specified.";
 
 /*
 function forceToUpper($array) {

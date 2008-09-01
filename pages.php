@@ -21,7 +21,10 @@
 require 'config.php';
 require 'includes.php';
 
-if ($_POST[action]){
+if ($_POST['action']){
+    if (!isset($user['id']) || $user['level'] < $site_info[['mod_rank']) {
+        messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
+    }
     $pagename = $_GET['page'];
     mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
     messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
@@ -30,7 +33,11 @@ $result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='" . $_GET['pa
 $page = mysql_fetch_array($result);
 
 standardHeaders($site_info['name'] . " :: " . $page['display_name'],true);
-drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > <a href=\"custompages.php\">{$_PWNDATA['admin']['forms']['pages']}</a> > " . $page['display_name'],$site_info['right_data']);
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['admin']['forms']['pages']} > " . $page['display_name'],$site_info['right_data']);
+
+if (!isset($page['display_name'])) {
+    messageBack($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['pages_does_not_exist'],false);
+}
 
 if ($page['showsidebar'] == "true") {
     require 'sidebar.php';
