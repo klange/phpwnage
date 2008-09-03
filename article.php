@@ -89,14 +89,14 @@ END;
     drawBlock($_PWNDATA['articles']['comments'], "", $content);
 }
 if ($user['level'] >= $site_info['mod_rank']) {
+    $title = str_replace("\"","&quot;",$row['title']);
+    $content = str_replace(">","&gt;",str_replace("<","&lt;",$row['content']))
     $content = <<<END
 <form action="article.php?id={$row['id']}" method="post">
 <input type="hidden" name="action" value="true" />
 <table class="forum_base" width="100%">
-<tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">
+<tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">$content</textarea></td></tr><tr><td class="forum_topic_sig"><input name="title" type="text" value="{$title}" style="width: 100%"/></td></tr><tr><td class="forum_topic_sig"><input type="submit" value="{$_PWNDATA['articles']['save']}" /></td></tr></table></form>
 END;
-    $content = $content . str_replace(">","&gt;",str_replace("<","&lt;",$row['content']));
-    $content = $content . "</textarea></td></tr><tr><td class=\"forum_topic_sig\"><input name=\"title\" type=\"text\" value=\"" . $row['title'] . "\" style=\"width: 100%\"/></td></tr><tr><td class=\"forum_topic_sig\"><input type=\"submit\" value=\"{$_PWNDATA['articles']['save']}\" /></td></tr></table></form>";
     drawBlock("{$_PWNDATA['articles']['edita']} " . $row['title'], date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'], $content);
 }
 print <<<END
