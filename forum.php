@@ -849,7 +849,7 @@ END;
         if ($pages > 0) {
             $pagination = printPagerNonTabular("forum.php?do=viewtopic&amp;id=$top_temp&amp;p=",0,$pages + 1);
         }
-        $toptitle = $row['title'];
+        $toptitle = str_replace("\"","&quot;",$row['title']);
         if ($user['level'] >= $site_info['mod_rank']) {
         $edtitle = <<<END
 <div id="titleedit_$diver" style="display: none;">
