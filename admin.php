@@ -40,7 +40,7 @@ if ($_POST['action'] == "add_article") {
     $newcontent = $_POST['content'];
     mysql_query("INSERT INTO `{$_PREFIX}news` ( `id` , `title` , `content` , `time_code`, `user` )
 VALUES (
-NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . $_SESSION['user_name'] . "'
+NULL , '" . mse($_POST['title']) . "', '" . mse($newcontent) . "', '" . time() . "', '" . $_SESSION['user_name'] . "'
 );");
     $article_id = mysql_insert_id();
     mysql_query("UPDATE `{$_PREFIX}info` SET `last_updated` = '" . time() . "' WHERE `{$_PREFIX}info`.`id` =1");
@@ -58,7 +58,7 @@ NULL , '" . $_POST['title'] . "', '" . $newcontent . "', '" . time() . "', '" . 
         mysql_query("ALTER TABLE `{$_PREFIX}posts`  ORDER BY `id`");
         mysql_query("ALTER TABLE `{$_PREFIX}topics`  ORDER BY `id`");
         $newcontenta = $newcontent . "\n\n\n[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].\n([pcount]" . $topic['id'] . "[/pcount])";
-        mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $newcontenta . "' WHERE `{$_PREFIX}news`.`id` =" . $article_id);
+        mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($newcontenta) . "' WHERE `{$_PREFIX}news`.`id` =" . $article_id);
         mysql_query("UPDATE `{$_PREFIX}news` SET `topicid` = " . $topic['id'] . " WHERE `{$_PREFIX}news`.`id` =" . $article_id);
         $message = $message . "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";
     }
@@ -71,7 +71,7 @@ if ($_POST['action'] == "addrank") {
         die("<font face=\"Tahoma\">" . $_PWNDATA['admin']['only_moderators_ranks'] . "</font>");
     }
     $rank = $_POST['level'];
-    $name = $_POST['name'];
+    $name = mse($_POST['name']);
     $posts = $_POST['posts'];
     mysql_query("INSERT INTO `{$_PREFIX}ranks` (`value`, `name`, `posts`) VALUES ($rank, '$name', $posts)");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_added'] . ": '$name'","admin.php?view=promo"); 
@@ -87,32 +87,32 @@ if ($_POST['action'] == "clear_security") {
 if ($_POST['action'] == "custom_page") {
     mysql_query("INSERT INTO `{$_PREFIX}pages` ( `name` , `display_name` , `content` , `showsidebar` , `author`)
 VALUES (
-'" . $_POST['name'] . "', '" . $_POST['display_name'] . "', '" . $_POST['content'] . "', '" . $_POST['showsidebar'] . "', '" . $_POST['author'] . "'
+'" . mse($_POST['name']) . "', '" . mse($_POST['display_name']) . "', '" . mse($_POST['content']) . "', '" . mse($_POST['showsidebar']) . "', '" . mse($_POST['author']) . "'
 );");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_added'],"admin.php?view=pages"); 
 }
 
 // Update site information
 if ($_POST['action'] == "site_info") {
-    mysql_query("UPDATE `{$_PREFIX}info` SET `name` = '" . $_POST['name'] . "' WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `url` = '" . $_POST['url'] . "' WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `copyright` = '" . $_POST['copyright'] . "' WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `pheader` = '" . $_POST['pheader'] . "' WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `right_data` = '" . $_POST['right_data'] . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `name` = '" . mse($_POST['name']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `url` = '" . mse($_POST['url']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `copyright` = '" . mse($_POST['copyright']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `pheader` = '" . mse($_POST['pheader']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `right_data` = '" . mse($_POST['right_data']) . "' WHERE `{$_PREFIX}info`.`id` =1");
     messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['site_info_updated'], "admin.php?view=site_info");
 }
 
 if ($_POST['action'] == "captcha") {
-    mysql_query("UPDATE `{$_PREFIX}info` SET `security_mode` = " . $_POST['sec_mode'] . " WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `recap_pub` = '" . $_POST['recap_pub'] . "' WHERE `{$_PREFIX}info`.`id` =1");
-    mysql_query("UPDATE `{$_PREFIX}info` SET `recap_priv` = '" . $_POST['recap_priv'] . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `security_mode` = " . mse($_POST['sec_mode']) . " WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `recap_pub` = '" . mse($_POST['recap_pub']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    mysql_query("UPDATE `{$_PREFIX}info` SET `recap_priv` = '" . mse($_POST['recap_priv']) . "' WHERE `{$_PREFIX}info`.`id` =1");
     messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['captcha_updated'], "admin.php?view=bans");
 }
 
 // Update existing block
 if ($_POST['action'] == "edit_block") {
-    mysql_query("UPDATE `{$_PREFIX}blocks` SET `title` = '" . $_POST['title'] . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
-    mysql_query("UPDATE `{$_PREFIX}blocks` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
+    mysql_query("UPDATE `{$_PREFIX}blocks` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
+    mysql_query("UPDATE `{$_PREFIX}blocks` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_edited'] . ": '" . $_POST['title'] . "'","admin.php?view=blocks");
 }
 

@@ -30,8 +30,8 @@ if ($_POST[action]){
     if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
     }
-    mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
-    mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
+    mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
+    mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
@@ -89,10 +89,8 @@ END;
     drawBlock($_PWNDATA['articles']['comments'], "", $content);
 }
 if ($user['level'] >= $site_info['mod_rank']) {
-    $content = "<form action=\"article.php?id=" . $row['id'];
-    $content = $content . "&amp;pw=" . $_GET['pw'];
-    $content = $content . <<<END
-" method="post">
+    $content = <<<END
+<form action="article.php?id={$row['id']}" method="post">
 <input type="hidden" name="action" value="true" />
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">
