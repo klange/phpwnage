@@ -291,12 +291,11 @@ function bbJava($stuff) {
     "finally","long","strictfp","volatile","const","float","native","super","while");
     $keywordsa = $keywords;
     foreach ($keywordsa as $word) {
-        $word2 = "<font style=\"color: #0000AA\">" . $word . "</font>";
+        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
         $stuff = sim_rep2($word,$word2,$stuff);
     }
     unset($word);
-    //$stuff = str_replace($keywords, $keywordsa, $stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>Java:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function bbCSharp($stuff) {
@@ -316,18 +315,16 @@ function bbCSharp($stuff) {
     "add", "alias", "get", "global", "partial", "remove", "set", "value", "where", "yield");
     $keywordsa = $keywords;
     foreach ($keywordsa as $word) {
-        $word2 = "<font style=\"color: #0000AA\">" . $word . "</font>";
+        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
         $stuff = sim_rep2($word,$word2,$stuff);
     }
     unset($word);
-    //$stuff = str_replace($keywords, $keywordsa, $stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>C#:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function genericCode($stuff) {
-    $stuff = str_replace("<br />","\n",$stuff);
     $stuff = str_replace("\\\"", "\"",$stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>Code:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function makeURL($link, $title) {
