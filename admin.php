@@ -33,6 +33,23 @@ if (isset($_SESSION['sess_id'])) {
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;admin=yes"); 
 }
 
+function fixBoards() {
+    global $_PREFIX;
+    $j = 1;
+    $result = mysql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
+    while ($cat = mysql_fetch_array($result)) {
+        $catid = $cat['id'];
+        mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$j WHERE `id`=$catid");
+        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
+        $i = 1;
+        while ($board = mysql_fetch_array($resultb)) {
+            mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$i WHERE `id`={$board['id']}");
+            $i++;
+        }
+        $j++;
+    }
+}
+
 // XXX: Begin POST functions
 
 // Add a new article
@@ -130,6 +147,7 @@ if ($_POST['action'] == "add_board") {
     mysql_query("INSERT INTO `{$_PREFIX}boards` 
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "', " . $_POST['order'] . ", " . $_POST['cat'] . ", " . $_POST['perma'] . ", " . $_POST['permb'] . ", " . $_POST['permc'] . ",'" . $_POST['link'] . "');");
+    fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
 }
 
@@ -143,6 +161,7 @@ if ($_POST['action'] == "edit_board") {
 if ($_POST['action'] == "add_category") {
     mysql_query("INSERT INTO `{$_PREFIX}categories` VALUES (
 NULL , " . $_POST['order'] . ", '" . $_POST['title'] . "');");
+    fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
 }
 
@@ -238,6 +257,7 @@ if ($_GET['do'] == "del_brd") {
         mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `topicid`=" . $top['id']);
     }
     mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $_GET['id']);
+    fixBoards();
     $message = $_PWNDATA['admin']['board_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
     messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
 }
@@ -258,6 +278,7 @@ if ($_GET['do'] == "del_cat") {
         mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $brd['id']);
     }
     mysql_query("DELETE FROM `{$_PREFIX}boards` WHERE `catid`=" . $_GET['cat']);
+    fixBoards();
     $message = $_PWNDATA['admin']['category_deleted'] . "<br />$brd_count " . $_PWNDATA['admin']['boards_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
     messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
 }
@@ -278,6 +299,7 @@ if ($_GET['do'] == "mov_brd") {
         mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$down");
         mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$down WHERE `id`=$my_id");
     }
+    fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
 }
 
@@ -288,7 +310,8 @@ if ($_GET['do'] == "recat") {
     $cat = $board['catid'];
     $my_id = $_GET['id'];
     $up = $_GET['cat'];    mysql_query("UPDATE `{$_PREFIX}boards` SET `catid`=$up WHERE `id`=$my_id");
-    mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=0 WHERE `id`=$my_id");
+    mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=100 WHERE `id`=$my_id");
+    fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
 }
 
@@ -307,6 +330,7 @@ if ($_GET['do'] == "mov_cat") {
         mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$cur WHERE `orderid`=$down");
         mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$down WHERE `id`=$my_id");
     }
+    fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_moved'],"admin.php?view=forum");
 }
 
