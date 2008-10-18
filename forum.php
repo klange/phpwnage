@@ -322,7 +322,7 @@ if ($_POST['action'] == "newuser") {
     $results = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `email`='" . $email . "'");
     $check_mail = mysql_fetch_array($results);
     if ($check_mail != null) {
-        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_mail']);
+        messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_email']);
     }
     if ($site_info['security_mode'] < 2) {
         if ($code != $_SESSION['seccode']) {

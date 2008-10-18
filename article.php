@@ -80,7 +80,11 @@ END;
     while ($rowz = mysql_fetch_array($resultz)) {
         $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
-        $auth_name = $post_author['name'];
+        if (!$post_author) {
+            $auth_name = "Guest";
+        } else {
+            $auth_name = $post_author['name'];
+        }
         $dec_post = BBDecode($rowz['content']);
         $content = $content . "<tr><td width=\"20%\" class=\"glow\" valign=\"top\">$auth_name</td><td class=\"forum_topic_content\">$dec_post</td></tr>\n";
     }
@@ -90,7 +94,7 @@ END;
 }
 if ($user['level'] >= $site_info['mod_rank']) {
     $title = str_replace("\"","&quot;",$row['title']);
-    $content = str_replace(">","&gt;",str_replace("<","&lt;",$row['content']))
+    $content = str_replace(">","&gt;",str_replace("<","&lt;",$row['content']));
     $content = <<<END
 <form action="article.php?id={$row['id']}" method="post">
 <input type="hidden" name="action" value="true" />
