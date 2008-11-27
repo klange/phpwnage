@@ -23,7 +23,7 @@ $mod['right'] = "Viewing List";
 $mod['right_inner'] = "Members of " . $site_info['name'];
 function mod_print()
 {
-global $_PWNDATA, $_PWNICONS;
+global $_PWNDATA, $_PWNICONS, $_PREFIX;
 $content = "<table class=\"forum_base\" width=\"100%\">";
 $content = $content . "<tr><td class=\"forum_thread_title\" width=\"20\"><a href=\"modules.php?m=members&o=uid\">#</a></td><td class=\"forum_thread_title\"><a href=\"modules.php?m=members&o=uname\">Username</a></td><td class=\"forum_thread_title\" width=\"100\">PM</td><td class=\"forum_thread_title\" width=\"120\">Messaging</td><td class=\"forum_thread_title\" width=\"30\"><a href=\"modules.php?m=members&o=posts\">Posts</a></td></tr>\n";
 $odd = 0;

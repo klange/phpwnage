@@ -1391,7 +1391,7 @@ END;
         $block_content = $block_content . drawButton("forum.php?do=newreply&amp;id=" . $topic['id'],$_PWNDATA['forum']['add_reply'],$_PWNICONS['buttons']['new_reply']);
     }
     if ($user['level'] >= $site_info['mod_rank']) {
-        $block_content = $block_content . drawButton("javascript:if (confirm('" . $_PWNDATA['forum']['delete_confirm'] . "')) { window.location.href = 'forum.php?do=deltop&amp;id=" . $row['id'] . "'; }", $_PWNDATA['forum']['del_topic'],$_PWNICONS['buttons']['del_topic']);
+        $block_content = $block_content . drawButton("javascript:if (confirm('" . $_PWNDATA['forum']['delete_confirm'] . "')) { window.location.href = 'forum.php?do=deltop&amp;id=" . $topic['id'] . "'; }", $_PWNDATA['forum']['del_topic'],$_PWNICONS['buttons']['del_topic']);
         if ($topic['stick'] == 0) { // Stick
             $block_content = $block_content . drawButton("forum.php?do=sticktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['stick_topic'],$_PWNICONS['buttons']['stick']);
             $block_content = $block_content . drawButton("forum.php?do=sinktop&amp;id=" . $topic['id'],$_PWNDATA['forum']['sink'],$_PWNICONS['buttons']['sink']);
