@@ -309,7 +309,8 @@ if ($_GET['do'] == "recat") {
     $board = mysql_fetch_array($temp);
     $cat = $board['catid'];
     $my_id = $_GET['id'];
-    $up = $_GET['cat'];    mysql_query("UPDATE `{$_PREFIX}boards` SET `catid`=$up WHERE `id`=$my_id");
+    $up = $_GET['cat'];
+    mysql_query("UPDATE `{$_PREFIX}boards` SET `catid`=$up WHERE `id`=$my_id");
     mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=100 WHERE `id`=$my_id");
     fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
@@ -815,7 +816,7 @@ END;
 // Members
 if ($_GET['view'] == "members") {
     $content = "";
-    $members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` ORDER BY `name`");
+    $members_result = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` ORDER BY `name`");
     $odd = 1;
     $content = $content . "<table class=\"forum_base\" width=\"100%\">";
     while ($member = mysql_fetch_array($members_result)) {
@@ -1043,7 +1044,7 @@ END;
     drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
     $content = "";
     $content = $content . "<table class=\"forum_base\" width=\"100%\">";
-    $members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
+    $members_result = mysql_query("SELECT `id`,`name`,`level` FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
     $content = $content . "<tr><td class=\"forum_thread_title\" colspan=\"3\"><b>{$_PWNDATA['admin']['forms']['ranks_users']}</b></td></tr>";
     $odd = 1;
     while ($member = mysql_fetch_array($members_result)) {
@@ -1177,7 +1178,8 @@ if ((!isset($_GET['view']) || $_GET['view'] == "") &&
         $content = $_PWNDATA['admin']['update_failed'];
     }
     drawBlock($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['og_updates'],$content);
-}
+}
+
 
 $content = <<<END
 <table class="borderless_table" width="100%">
@@ -1191,7 +1193,8 @@ $content = <<<END
     <td width="10%" height="1" align="center">
     <a href="admin.php?view=blocks">{$_PWNICONS['admin']['blocks']}</a><br />
     <a href="admin.php?view=blocks">{$_PWNDATA['admin']['groups']['blocks']}</a></td>
-    <td width="10%" height="1" align="center">    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}</a><br />
+    <td width="10%" height="1" align="center">
+    <a href="admin.php?view=members">{$_PWNICONS['admin']['members']}</a><br />
     <a href="admin.php?view=members">{$_PWNDATA['admin']['groups']['members']}</a></td>
     <td width="10%" height="1" align="center">
     <a href="admin.php?view=pages">{$_PWNICONS['admin']['pages']}</a><br />

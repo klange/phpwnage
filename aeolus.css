@@ -456,11 +456,11 @@
 }
 
 .mod_name {
-    color: #0000BB;
+    color: #73D216;
 }
 
 .adm_name {
-    color: #00BB00;
+    color: #F57900;
 }
 
 .glow {
@@ -474,14 +474,14 @@
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_admin.png);
-    background-repeat: repeat-x;
+    background-repeat: no-repeat;
 }
 .glow_mod {
     background-color: #e6eaed;
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_mod.png);
-    background-repeat: repeat-x;
+    background-repeat: no-repeat;
 }
 
 

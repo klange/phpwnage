@@ -24,7 +24,7 @@ require 'includes.php';
 
 
 if ($_POST['action'] == "login") {
-    $userresult = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);
+    $userresult = mysql_query("SELECT `id`,`name`,`password` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);
     $tempuser = mysql_fetch_array($userresult);
     if ((strtoupper($_POST['uname']) == strtoupper($tempuser['name'])) and (md5($_POST['upass']) == $tempuser['password'])) {
         $_SESSION['user_name'] = $tempuser['name'];
@@ -62,7 +62,7 @@ if ($_POST['action'] == "login") {
 // If a new topic is being posted
 if ($_POST['action'] == "new_topic") {
     $content = $_POST['content'];
-    $results =  mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_POST['board']);
+    $results =  mysql_query("SELECT `id` FROM `{$_PREFIX}boards` WHERE `id`=" . $_POST['board']);
     if (!$board = mysql_fetch_array($results)) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['invalid_board']);
     }
@@ -76,7 +76,7 @@ if ($_POST['action'] == "new_topic") {
 	    $has_poll = "1";
 	    // Add the poll.
 	    mysql_query("INSERT INTO `{$_PREFIX}polls` ( `id`, `title`, `op1_name`) VALUES (NULL, '" . mse($_POST['p_name']) . "', '" . mse($_POST['op1']) . "');");
-	    $testresult = mysql_query("SELECT * FROM `{$_PREFIX}polls` ORDER BY `id` DESC LIMIT 1");
+	    $testresult = mysql_query("SELECT `id` FROM `{$_PREFIX}polls` ORDER BY `id` DESC LIMIT 1");
 	    $poll = mysql_fetch_array($testresult);
 	    $poll_id = $poll['id'];
     } else {
@@ -84,11 +84,11 @@ if ($_POST['action'] == "new_topic") {
 	    $poll_id = "0";
     }
     mysql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , " . $_POST['user'] . ", " . $_POST['board'] . ", '" . mse($_POST['subj']) . "', " . $has_poll . ", " . $poll_id . " );");
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
     $topic = mysql_fetch_array($result);
     $ip=$_SERVER['REMOTE_ADDR'];
     mysql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip`) VALUES ( NULL , " . $topic['id'] . " , " . $_POST['user'] . " , '" . mse($content) . "' , " . time() . " , '" . $ip . "');");
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
     $reply = mysql_fetch_array($result);
     mysql_query("UPDATE `{$_PREFIX}topics` SET `lastpost` = " . $reply['id'] . " WHERE `{$_PREFIX}topics`.`id` =" . $topic['id']);
     mysql_query("ALTER TABLE `{$_PREFIX}posts`  ORDER BY `id`");
@@ -103,7 +103,7 @@ if ($_POST['action'] == "new_pm") {
     }
     $pmdate = time();
     $toname = $_POST['toline'];
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `name`='$toname'");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE `name`='$toname'");
     $temp_user = mysql_fetch_array($result);
     $pmto = $temp_user['id'];
     $pmtitle = $_POST['subj'];
@@ -121,7 +121,7 @@ if ($_POST['action'] == "new_reply") {
     $content = $_POST['content'];
     $topic = $_POST['topic'];
     $ip=$_SERVER['REMOTE_ADDR'];
-    $topic_sql = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `id`=$topic");
+    $topic_sql = mysql_query("SELECT `id`,`board`,`locked` FROM `{$_PREFIX}topics` WHERE `id`=$topic");
     if ($this_topic = mysql_fetch_array($topic_sql)) {
         if (!isWriteable($user['level'],$this_topic['board'])) {
             messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['improper_permission']);
@@ -137,7 +137,7 @@ if ($_POST['action'] == "new_reply") {
 
     set_unread($topic);
     mysql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content` , `time` , `ip` ) VALUES ( NULL , '" . $topic . "', '" . $user['id'] . "', '" . mse($content) . "' , '" . time() . "', '" . $ip . "' );");
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
     $reply = mysql_fetch_array($result);
     mysql_query("UPDATE `{$_PREFIX}topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `{$_PREFIX}topics`.`id` =" . $topic);
     mysql_query("ALTER TABLE `{$_PREFIX}posts`  ORDER BY `id`");
@@ -155,7 +155,7 @@ if ($_POST['action'] == "vote_poll") {
 	if (check_voted($pid, $uid)) {
 		messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['poll_already_voted']);
 	}
-	$topic_sql = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `id`=$tid");
+	$topic_sql = mysql_query("SELECT `id`,`locked` FROM `{$_PREFIX}topics` WHERE `id`=$tid");
 	$this_topic = mysql_fetch_array($topic_sql);
 	if ($this_topic['locked'] == 1) {
 		if ($user['level'] < 2) {
@@ -163,7 +163,7 @@ if ($_POST['action'] == "vote_poll") {
 		}
 	}
 	set_voted($pid,$user['id']);
-	$poll_sql = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE `id`=$pid");
+	$poll_sql = mysql_query("SELECT `op1_name`,`op1_votes` FROM `{$_PREFIX}polls` WHERE `id`=$pid");
 	$poll = mysql_fetch_array($poll_sql);
 	$poll_ops = split(",",$poll['op1_name']);
 	$poll_votes = split(",",$poll['op1_votes']);
@@ -233,7 +233,7 @@ if ($_POST['action'] == "split_topic") {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['tooshort']);
     }
     mysql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mse($_POST['newtitle']) . "', 0, 0 );");
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
     $topic = mysql_fetch_array($result);
     $where = "WHERE `id`=";
     while (list($key,$value) = each($_POST)) {
@@ -265,7 +265,7 @@ if ($_POST['action'] == "merge_topics") {
     if ($mergeid == "NONE") {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['modtools']['nonespecified']);
     }
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE `topicid`={$_POST['topic']}");
+    $result = mysql_query("SELECT `id` FROM `{$_PREFIX}posts` WHERE `topicid`={$_POST['topic']}");
     while ($post = mysql_fetch_array($result)) {
         mysql_query("UPDATE `{$_PREFIX}posts` SET `topicid`={$mergeid} WHERE `id`={$post['id']}");
     }
@@ -314,12 +314,12 @@ if ($_POST['action'] == "newuser") {
     $email = mse($_POST['email']);
     $pass = $_POST['pass'];
     $code = $_POST['code'];
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `name`='" . $name . "'");
+    $results = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE `name`='" . $name . "'");
     $check_name = mysql_fetch_array($results);
     if ($check_name != null) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered']);
     }
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `email`='" . $email . "'");
+    $results = mysql_query("SELECT `id` FROM `{$_PREFIX}users` WHERE `email`='" . $email . "'");
     $check_mail = mysql_fetch_array($results);
     if ($check_mail != null) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['already_registered_email']);
@@ -569,7 +569,7 @@ END;
 // Set an entire board as read by this user.
 if ($_GET['do'] == "setread") {
     $id = $_GET['id'];
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board=$id");
+    $temp_res = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE board=$id");
     while ($topic = mysql_fetch_array($temp_res)) { 
         set_read($topic['id'],$user['id']); 
     }
@@ -607,11 +607,11 @@ END;
 END;
                     $block_content = $block_content . $row['id'] . "\">" . $row['title'];
                     $block_content = $block_content . "</a></td><td rowspan=\"2\" width=\"30%\" class=\"forum_board_last\" align=\"center\">";
-                    $resulta = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
+                    $resulta = mysql_query("SELECT `id`,`title` FROM `{$_PREFIX}topics` WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
                     $topic = mysql_fetch_array($resulta);
-                    $resulta = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY id DESC LIMIT 1", $db);
+                    $resulta = mysql_query("SELECT `id`,`time`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY id DESC LIMIT 1", $db);
                     $post = mysql_fetch_array($resulta);
-                    $resulta = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $post['authorid'] . "'" , $db);
+                    $resulta = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $post['authorid'] . "'" , $db);
                     $poster= mysql_fetch_array($resulta);
                     $authid = $poster['id'];
                     $resulta = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}topics` WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
@@ -628,9 +628,9 @@ END;
                     $post_bb = str_replace("&gt;","&amp;gt;",$post_bb);
                     $post_bb = str_replace("<","&lt;",$post_bb);
                     $post_bb = str_replace(">","&gt;",$post_bb);
-                    $spazm = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
+                    $preview_js = "onmousemove=\"blama=true\" onmouseout=\"showPrev('EXIT');\" onmouseover=\"showPrev('$post_bb');\"";   
                     if ($topics_in_board > 0) {
-                        $block_content = $block_content . "<b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $spazm>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</td>";
+                        $block_content = $block_content . "<b>{$_PWNDATA['forum']['last']}: <a href=\"forum.php?do=viewtopic&amp;last=1&amp;id=" . $topic['id'] . "\" $preview_js>" . $topic['title'] . "</a></b><br />{$_PWNDATA['forum']['by']}: <a href=\"forum.php?do=viewprofile&amp;id=$authid\">" . $poster['name'] . "</a> $post_time</td>";
                     } else {
                         $block_content = $block_content . "<b>{$_PWNDATA['forum']['noposts']}</b></td>";
                     }
@@ -740,7 +740,7 @@ END;
 
 // Show the topics in this board.
 if ($_GET['do'] == "viewforum") {
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`vis_level`,`title` FROM `{$_PREFIX}boards` WHERE id='" . $_GET['id'] . "'", $db);
     $board = mysql_fetch_array($result);
     if (!isset($board['id'])) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['board_does_not_exist']);
@@ -782,15 +782,15 @@ END;
     $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board='" . $board['id'] . "' ORDER BY stick DESC, lastpost DESC LIMIT $page, $_THREADSPERPAGE", $db);
     while ($row = mysql_fetch_array($result)) {
         $readmb = check_read($row['id'],$user['id']);
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $row['authorid'] . "'" , $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $row['authorid'] . "'" , $db);
         $rowb = mysql_fetch_array($resultb);
-        $resultc = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id ASC LIMIT 1", $db);
+        $resultc = mysql_query("SELECT `id`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id ASC LIMIT 1", $db);
         $firstpost = mysql_fetch_array($resultc);
-        $resultc = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id DESC LIMIT 1", $db);
+        $resultc = mysql_query("SELECT `id`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id DESC LIMIT 1", $db);
         $rowc = mysql_fetch_array($resultc);
         $result_posts = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "'", $db);
         $posts_counter = mysql_fetch_array($result_posts);
-        $resultd = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $rowc['authorid'] . "'" , $db);
+        $resultd = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $rowc['authorid'] . "'" , $db);
         $rowd = mysql_fetch_array($resultd);
         $post_bb = "[b]Posted by:[/b] " . $rowb['name'] . "\n" . substr($firstpost['content'],0,500);
         $post_time = date("M jS, g:i a", $rowc['time']);
@@ -913,7 +913,7 @@ END;
 		<td class="forum_thread_icon" {$_PWNICONS['forum']['icon_width']} rowspan="2">$read_or_not</td><td class="forum_thread_title"><a href="forum.php?do=readpm&amp;id=
 END;
 //"
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $row['from'] . "'" , $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $row['from'] . "'" , $db);
         $rowb = mysql_fetch_array($resultb);
         $block_content = $block_content . $row['id'] . "\">" . $row['title'];
         $author = $rowb['name'];
@@ -930,14 +930,15 @@ END;
 if ($_GET['do'] == "delpm") {
     $tomustbe = $user['id'];
     if ($_GET['id'] != "ALL") {
-        $pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `id`=" . $_GET['id'] . " AND `to`=$tomustbe", $db);
+        $pmresult = mysql_query("SELECT `id`,`to` FROM `{$_PREFIX}pms` WHERE `id`=" . $_GET['id'] . " AND `to`=$tomustbe", $db);
     } else {
-        $pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `to`=$tomustbe", $db);
+        $pmresult = mysql_query("SELECT `id`,`to` FROM `{$_PREFIX}pms` WHERE `to`=$tomustbe", $db);
     }
     $pm = mysql_fetch_array($pmresult);
     if (!isset($_SESSION['sess_id'])) {
         messageBack($_PWNDATA['pm']['view'],$_PWNDATA['pm']['must_be_logged_in']);
     }
+    // XXX: The following is an impossible condition...
     if (($user['id'] != $pm['to']) and ($user['level'] < 3)) {
         messageBack($_PWNDATA['pm']['view'],$_PWNDATA['pm']['only_admins']);
     }
@@ -954,7 +955,7 @@ if ($_GET['do'] == "delpm") {
 if ($_GET['do'] == "readpm") {
     $pmresult = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE `id`=" . $_GET['id'], $db);
     $pm = mysql_fetch_array($pmresult);
-    $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $pm['from'] . "'" , $db);
+    $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $pm['from'] . "'" , $db);
     $fromuser = mysql_fetch_array($resultb);
     if (($user['id'] != $pm['to']) and ($user['level'] < 3)) {
         messageBack($_PWNDATA['pm']['view'],$_PWNDATA['pm']['only_admins']);
@@ -984,7 +985,7 @@ if ($_GET['do'] == "newpm") {
         messageBack($_PWNDATA['pm']['view'],$_PWNDATA['pm']['not_logged_in']);
     }
     if ($_GET['to'] != "") {
-        $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $_GET['to'] . "'", $db);
+        $result = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $_GET['to'] . "'", $db);
         $touser = mysql_fetch_array($result);
         $tousername = $touser['name'];
     }
@@ -992,7 +993,7 @@ if ($_GET['do'] == "newpm") {
     if ($_GET['q'] != "") {
         $result = mysql_query("SELECT * FROM `{$_PREFIX}pms` WHERE id='" . $_GET['q'] . "'", $db);
         $quotedpm = mysql_fetch_array($result);
-        $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $quotedpm['from'] . "'", $db);
+        $result = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $quotedpm['from'] . "'", $db);
         $quoteduser = mysql_fetch_array($result);
         $quoted = "[quote][b]{$_PWNDATA['pm']['original_message']} " . $quoteduser['name'] . ":[/b]\n" . $quotedpm['content']. "[/quote]\n";
     }
@@ -1025,9 +1026,9 @@ if ($_GET['do'] == "splittopic") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
     }
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`board`,`title` FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
-    $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
+    $resultb = mysql_query("SELECT `id`,`title` FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($resultb);   
     $post_title_add = " :: " . $_PWNDATA['forum']['modtools']['splittopic'];
     $post_sub_add = " > " . $_PWNDATA['forum']['modtools']['splittopic'];
@@ -1041,9 +1042,9 @@ if ($_GET['do'] == "splittopic") {
 <tr><td class="forum_topic_content" width="200" align="center">{$_PWNDATA['forum']['modtools']['new_title']}</td>
 <td colspan="2" class="forum_topic_content"><input type="text" style="width: 100%;" name="newtitle" /></td></tr>
 END;
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "'", $db);
     while ($row = mysql_fetch_array($result)) {
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         $block_content = $block_content . "<tr><td class=\"glow\">";
         $block_content = $block_content . $post_author['name'];
@@ -1066,9 +1067,9 @@ if ($_GET['do'] == "mergetopics") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
     }
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`title`,`board` FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
-    $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
+    $resultb = mysql_query("SELECT `id`,`title` FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($resultb);   
     $post_title_add = " :: " . $_PWNDATA['forum']['modtools']['mergetopic'];
     $post_sub_add = " > " . $_PWNDATA['forum']['modtools']['mergetopic'];
@@ -1081,10 +1082,10 @@ if ($_GET['do'] == "mergetopics") {
 <table class="forum_base" width="100%">
 <tr><td colspan="3" class="forum_topic_content">{$_PWNDATA['forum']['modtools']['merging']}<a href="forum.php?do=viewtopic&amp;id={$topic['id']}">{$topic['title']}</a></td></tr>
 END;
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `board`={$board['id']}", $db);
+    $result = mysql_query("SELECT `id`,`title`,`authorid` FROM `{$_PREFIX}topics` WHERE `board`={$board['id']}", $db);
     while ($row = mysql_fetch_array($result)) {
         if ($row['id'] != $topic['id']) {
-            $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
+            $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
             $post_author = mysql_fetch_array($resultb);
             $block_content = $block_content . "<tr><td class=\"glow\" width=\"150\">";
             $block_content = $block_content . $post_author['name'];
@@ -1226,7 +1227,7 @@ END;
     $block_content = $block_content . $PAGING . "</tr></table></td></tr>";
     $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' LIMIT $page, $_POSTSPERPAGE", $db);
     while ($row = mysql_fetch_array($result)) {
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT `id`,`name`,`level`,`msn`,`yahoo`,`aim`,`live`,`pand`,`icq`,`xfire`,`sig`,`avatar` FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         if (!$post_author) {
             $post_author['name'] = "Guest";
@@ -1244,7 +1245,7 @@ END;
 		<td width="15%" valign="top" $topglow rowspan="2">
 END;
         if ($post_author['avatar'] != "") {
-            $ava = "<img src=\"" . $post_author['avatar'] . "\" alt=\"" . $post_auther['name']  . "'s {$_PWNDATA['profile']['avatar']}\"/><br />";
+            $ava = "<img src=\"" . $post_author['avatar'] . "\" alt=\"" . $post_author['name']  . "'s {$_PWNDATA['profile']['avatar']}\"/><br />";
         } else {
             $ava = "";
         }
@@ -1414,11 +1415,11 @@ END;
 <input type="hidden" name="topid" value="$top_id" />
 <select name="board">
 END;
-        $result = mysql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
+        $result = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}categories` ORDER BY `orderid`");
         while ($cat = mysql_fetch_array($result)) {
 	        $block_content = $block_content . "\n<optgroup label=\"" . $cat['name'] . "\">";
 	        $catid = $cat['id'];
-	        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
+	        $resultb = mysql_query("SELECT `id`,`title`,`vis_level`,`link` FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
 	        while ($board = mysql_fetch_array($resultb)) {
 	            if ($board['link'] == "NONE") {
 		            if ($user['level'] >= $board['vis_level']) {
@@ -1471,7 +1472,7 @@ END;
 
 // Create a new topic.
 if ($_GET['do'] == "newtopic") {
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`top_level`,`title` FROM `{$_PREFIX}boards` WHERE id='" . $_GET['id'] . "'", $db);
     $board = mysql_fetch_array($result);
     if ($board['top_level'] > $user['level']) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_permitted_topic_new']);
@@ -1508,9 +1509,9 @@ END;
 
 // Create a new reply.
 if ($_GET['do'] == "newreply") {
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`title`,`locked` FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
-    $result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`title`,`post_level` FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($result);
     if ($board['post_level'] > $user['level']) {
         messageBack($_PWNDATA['forum_page_title'],$_PWNDATA['forum']['not_permitted_reply']);
@@ -1529,12 +1530,12 @@ if ($_GET['do'] == "newreply") {
     $post_sub_r = post_sub_r($user['id']);
     $block_content = "";
     if ($_GET['quote'] != 0) {
-	    $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE id='" . $_GET['quote'] . "'", $db);
+	    $result = mysql_query("SELECT `id`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE id='" . $_GET['quote'] . "'", $db);
 	    $quoted = mysql_fetch_array($result);
 	    if ($quoted['authorid'] == 0) {
 	        $quotedauthor['name'] = "Guest";
         } else {
-	        $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" . $quoted['authorid'] . "'", $db);
+	        $result = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $quoted['authorid'] . "'", $db);
 	        $quotedauthor = mysql_fetch_array($result);
 	    }
 	    $postquoted = preg_replace("/(\[quote\])(.+?)(\[\/quote\])/si","",$quoted['content']);
@@ -1552,10 +1553,10 @@ if ($_GET['do'] == "newreply") {
 END;
     $block_content = $block_content . "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
     $block_content = $block_content . "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" /></form>";
-    $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
+    $resultz = mysql_query("SELECT `id`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
     $block_content = $block_content . "<tr><td class=\"forum_topic_sig\" align=\"center\"><b>{$_PWNDATA['forum']['recent']}</b></td></tr></table><table class=\"forum_base\" width=\"100%\">\n";
     while ($rowz = mysql_fetch_array($resultz)) {
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         $auth_name = $post_author['name'];
         $dec_post = BBDecode($rowz['content']);
@@ -1791,7 +1792,7 @@ if ($_GET['do'] == "search") {
     $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE $Query", $db);
     $page_array = mysql_fetch_array($temp);
     $total_pages = $page_array['COUNT(*)'];
-    $resultz = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE $Query LIMIT $page,$_POSTSPERPAGE", $db);
+    $resultz = mysql_query("SELECT `id`,`content`,`topicid`,`authorid` FROM `{$_PREFIX}posts` WHERE $Query LIMIT $page,$_POSTSPERPAGE", $db);
     if ($total_pages > 1) {
         $block_content = $block_content . "<table class=\"mod_set\"><tr>" . printPager("forum.php?do=search&amp;sid={$sid}&amp;p=",(int)($page / $_POSTSPERPAGE + 1),(int)(($total_pages - 1) / $_POSTSPERPAGE + 1)) . "</tr></table>";
     }
@@ -1799,11 +1800,11 @@ if ($_GET['do'] == "search") {
     $block_content = $block_content . "<tr><td class=\"forum_thread_title\" colspan=\"2\"><b>{$_PWNDATA['forum']['search_resultsb']}:</b></td></tr>";
     $results_count = 0;
     while ($rowz = mysql_fetch_array($resultz)) {
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" .  $rowz['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
-        $resultc = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id='" .  $rowz['topicid'] . "'", $db);
+        $resultc = mysql_query("SELECT `id`,`title`,`board` FROM `{$_PREFIX}topics` WHERE id='" .  $rowz['topicid'] . "'", $db);
         $post_topic = mysql_fetch_array($resultc);
-        $resultc = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE id='" .  $post_topic['board'] . "'", $db);
+        $resultc = mysql_query("SELECT `id`,`title`,`vis_level` FROM `{$_PREFIX}boards` WHERE id='" .  $post_topic['board'] . "'", $db);
         $post_board = mysql_fetch_array($resultc);
         $auth_name = $post_author['name'];
         $dec_post = BBDecode($rowz['content']);
@@ -1876,7 +1877,7 @@ $sql_temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts`");
 $stat_c = mysql_fetch_array($sql_temp);
 $sql_temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}topics` WHERE `{$_PREFIX}topics`.`stick`=1");
 $stat_d = mysql_fetch_array($sql_temp);
-$sql_temp = mysql_query("SELECT * FROM `{$_PREFIX}users` ORDER BY `id` DESC");
+$sql_temp = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` ORDER BY `id` DESC");
 $stat_e = mysql_fetch_array($sql_temp);
 $num_users = $stat_a['COUNT(*)'];
 $num_topics = $stat_b['COUNT(*)'];
@@ -1890,9 +1891,9 @@ $block_content = $block_content . "$num_sticks{$_PWNDATA['forum']['are_sticky']}
 $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$last_member_id\">$last_member</a>\n<br />";
 
 $block_content = $block_content . "<b>{$_PWNDATA['forum']['members_online']}</b>: ";
-$sql_temp = mysql_query("SELECT * FROM `{$_PREFIX}sessions` ORDER BY `user`");
+$sql_temp = mysql_query("SELECT `id`,`user` FROM `{$_PREFIX}sessions` ORDER BY `user`");
 while ($on_session = mysql_fetch_array($sql_temp)) {
-    $on_temp = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $on_session['user']);
+    $on_temp = mysql_query("SELECT `id`,`name`,`level` FROM `{$_PREFIX}users` WHERE `id`=" . $on_session['user']);
     $on_user = mysql_fetch_array($on_temp);
     $on_id = $on_session['user'];
     $block_content = $block_content . "<a href=\"forum.php?do=viewprofile&amp;id=$on_id\">";

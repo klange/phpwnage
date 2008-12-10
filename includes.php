@@ -23,7 +23,7 @@ require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed 
 
 $_PWNVERSION['major'] = 1;
 $_PWNVERSION['minor'] = 8;
-$_PWNVERSION['extra'] = "1";
+$_PWNVERSION['extra'] = "bf1";
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
@@ -34,7 +34,7 @@ function mse($source) {
 }
 function isReadable($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `vis_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['vis_level']) {
 		return false;
@@ -44,7 +44,7 @@ function isReadable($userLevel, $board) {
 }
 function isWriteableTopic($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `topic_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['topic_level']) {
 		return false;
@@ -54,7 +54,7 @@ function isWriteableTopic($userLevel, $board) {
 }
 function isWriteable($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `post_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['post_level']) {
 		return false;
@@ -64,7 +64,7 @@ function isWriteable($userLevel, $board) {
 }
 function getBoardName($bid) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
+	$result = mysql_query("SELECT `title` FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
 	$brd = mysql_fetch_array($result);
 	return $brd['title'];
 }
@@ -259,19 +259,19 @@ function getRankName($level,$site_info,$posts) {
         if ((int)$temp['COUNT(*)'] < 1) {
             // Otherwise, just use the standard title for their rank.
             if ($level < $site_info['mod_rank']) {
-	            return $_PWNDATA['rank']['user'];
-	        } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
-	            return $_PWNDATA['rank']['moderator'];
-	        } else if ($level >= $site_info['admin_rank']) {
-	            return $_PWNDATA['rank']['admin'];
-	        }
-	    } else {
-	        $results2 = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
+	        return $_PWNDATA['rank']['user'];
+	    } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
+	        return $_PWNDATA['rank']['moderator'];
+	    } else if ($level >= $site_info['admin_rank']) {
+	        return $_PWNDATA['rank']['admin'];
+	    }
+	} else {
+	    $results2 = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
             $rank = mysql_fetch_array($results2);
             return $rank['name'];
         }
     } else {
-        $results = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
+        $results = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
         $rank = mysql_fetch_array($results);
         return $rank['name'];
     }
@@ -464,7 +464,7 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 </script>
 <iframe name="previewbox" width="100%" style="border: 0px;" height="0px" id="previewbox"></iframe>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
+    $smilesSet = mysql_query("SELECT `image`,`code` FROM `{$_PREFIX}smileys`");
     $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
@@ -519,7 +519,7 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 //]]>
 </script>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
+    $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
     $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
@@ -570,7 +570,7 @@ document.form$what.$where.rows = document.form$what.$where.rows + sizeToAdd;
 //]]>
 </script>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
+    $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
     $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
         $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
@@ -877,7 +877,7 @@ function messageBackLight($title, $message) {
 
 function check_read($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
+    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
@@ -915,7 +915,7 @@ function findPage($postnumber, $topic = -1) {
 
 function check_read_forum($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board=$id");
+    $temp_res = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE board=$id");
     $was_read = true;
     while ($topic = mysql_fetch_array($temp_res)) {
         if (!check_read($topic['id'],$userid)) { $was_read = false; }
@@ -925,7 +925,7 @@ function check_read_forum($id,$userid) {
 
 function set_read($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
+    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
@@ -942,9 +942,9 @@ function set_unread($id) {
 
 function check_voted($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
+    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = mysql_fetch_array($temp_res);
+    $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (in_array($userid, $split_list)) {
         $is_read = true;
@@ -956,9 +956,9 @@ function check_voted($id,$userid) {
 
 function set_voted($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
+    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = mysql_fetch_array($temp_res);
+    $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (!in_array($userid, $split_list)) {
         $read_list = $read_list . ",$userid";
@@ -1010,7 +1010,7 @@ END;
 if ($no_login != true) {
     // Handle the current session
     if (!isset($_SESSION['sess_id']) and ($_COOKIE['rem_yes'] == "yes")) {
-	    $userresult = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
+	    $userresult = mysql_query("SELECT `name`,`password`,`id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
 	    $tempuser = mysql_fetch_array($userresult);
 	    if (($_COOKIE['rem_user'] == $tempuser['name']) and ($_COOKIE['rem_pass'] == $tempuser['password'])) {
 		    $_SESSION['user_name'] = $_COOKIE['rem_user'];
