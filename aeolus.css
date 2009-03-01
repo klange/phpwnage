@@ -33,6 +33,10 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 10px;
 }
+.foot_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 10px;
+}
 
  /* text in the body of a panel */
 .pan_body_text {
@@ -101,6 +105,25 @@
 }
 
 .sub_right {
+    background-image: url(aeolus/sub.png);
+    height:20px;
+    width:10px;
+}
+
+ /* sub header */
+.foot_left {
+    background-image: url(aeolus/sub.png);
+    height:20px;
+    width:10px;
+}
+
+.foot_mid {
+    background-image: url(aeolus/sub.png);
+    height:20px;
+    vertical-align: middle;
+}
+
+.foot_right {
     background-image: url(aeolus/sub.png);
     height:20px;
     width:10px;

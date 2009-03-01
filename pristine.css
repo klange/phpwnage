@@ -32,6 +32,12 @@
     color: #FFFFFF;
 }
 
+.foot_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+
 .footer_body_text {
     font-family: Verdana, Tahoma, sans;
     color: #000000;
@@ -112,6 +118,27 @@
 }
 
 .sub_right {
+    background-color: #222222;
+    height: 20px;
+    width: 4px;
+    border-right: 1px solid #222222;
+}
+
+.foot_left {
+    background-color: #222222;
+    height: 20px;
+    width: 4px;
+    border-left: 1px solid #222222;
+}
+
+.foot_mid {
+    background-color: #222222;
+    height: 20px;
+    vertical-align: top;
+    padding: 0px 0px 0px 0px;
+}
+
+.foot_right {
     background-color: #222222;
     height: 20px;
     width: 4px;

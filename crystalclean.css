@@ -31,6 +31,11 @@
     font-size: 12px;
 }
 
+.foot_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+}
+
 .pan_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
@@ -93,6 +98,33 @@
 }
 
 .sub_right {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    height: 18px;
+    width: 4px;
+}
+
+.foot_left {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-left: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    height: 18px;
+    width: 4px;
+}
+
+.foot_mid {
+    background-color: #bad5e7;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #CCCCCC;
+    height: 18px;
+    vertical-align: top;
+    padding: 0px 0px 0px 0px;
+}
+
+.foot_right {
     background-color: #bad5e7;
     border-top: 1px solid #FFFFFF;
     border-bottom: 1px solid #CCCCCC;
