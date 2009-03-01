@@ -4,11 +4,14 @@ require 'includes.php';
 if (!isset($site_info['ims'])) {
  mysql_query("ALTER TABLE `{$_PREFIX}info` ADD COLUMN `ims` TEXT  DEFAULT NULL AFTER `recap_priv`;");
  mysql_query("UPDATE `{$_PREFIX}info` SET `ims`='msn,yahoo,aim,icq,xfire,live' WHERE `id`=1;");
- mysql_query("ALTER TABLE `{$_PREFIX}info` ADD COLUMN `ims_titles` TEXT DEFAULT NULL AFTER `ims`;");
- mysql_query("UPDATE `{$_PREIFX}info` SET `ims_title`='MSN,Yahoo,AIM,ICQ,xFire,Live' WHERE `id`=1;");
- $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
- $site_info = mysql_fetch_array($result);
 }
+if (!isset($site_info['ims_title'])) {
+ mysql_query("ALTER TABLE `{$_PREFIX}info` ADD COLUMN `ims_title` TEXT DEFAULT NULL AFTER `ims`;");
+ mysql_query("UPDATE `{$_PREIFX}info` SET `ims_title`='MSN,Yahoo,AIM,ICQ,xFire,Live' WHERE `id`=1;");
+}
+$result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
+$site_info = mysql_fetch_array($result);
+
 $im_array = explode(",",$site_info['ims']);
 $im_titles = explode(",",$site_info['ims_title']);
 print_r($im_array);
