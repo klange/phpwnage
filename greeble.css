@@ -61,9 +61,10 @@ body {
 }
 
 .pan_title_text {
-    font-family: Verdana, Tahoma, sans;
-    font-size: 20px;
+    font-family: Arial, Verdana, Tahoma, sans;
+    font-size: 24px;
     font-weight: bold;
+    line-height: 35px;
     color: #000000;
 }
 .pan_title_text a{
