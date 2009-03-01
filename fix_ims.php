@@ -20,7 +20,7 @@ $im_types = array_combine($im_array,$im_titles);
 $temp = mysql_query("SELECT * FROM `{$_PREFIX}users`");
 while ($row = mysql_fetch_array($temp)) {
     if (!isset($row['ims'])) {
-     print "HELLO?";
+     print "User table needs fixing...";
      mysql_query("ALTER TABLE `{$_PREFIX}users` ADD COLUMN `ims` TEXT DEFAULT NULL;");
     }
 	$ims = $row['msn'] . "," . $row['yahoo'] . "," . $row['aim'] . "," . $row['icq'] . "," . $row['xfire'] . "," . $row['live'];
