@@ -20,7 +20,7 @@
 
 body {
     background-repeat: repeat-x;
-    background-position: fixed;
+    background-attachment: fixed;
     background-color: #3B89A7;
     background-image: url(greeble/gradient.png) !important;
 }
