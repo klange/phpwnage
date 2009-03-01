@@ -617,7 +617,7 @@ END;
                     $resulta = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}topics` WHERE board='" . $row['id'] . "' ORDER BY lastpost DESC", $db);
                     $counter = mysql_fetch_array($resulta);
                     $topics_in_board = $counter["COUNT(*)"];
-                    $post_time = date("M jS, g:i a", $post['time']);
+                    $post_time = date("M jS Y, g:i a", $post['time']);
 
                     $post_bb = "[b]Posted by:[/b] " . $poster['name'] . "\n" . substr($post['content'],0,500);
                     $post_bb = bbDecode($post_bb);
@@ -786,14 +786,14 @@ END;
         $rowb = mysql_fetch_array($resultb);
         $resultc = mysql_query("SELECT `id`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id ASC LIMIT 1", $db);
         $firstpost = mysql_fetch_array($resultc);
-        $resultc = mysql_query("SELECT `id`,`content`,`authorid` FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id DESC LIMIT 1", $db);
+        $resultc = mysql_query("SELECT `id`,`content`,`authorid`,`time` FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "' ORDER BY id DESC LIMIT 1", $db);
         $rowc = mysql_fetch_array($resultc);
         $result_posts = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE topicid='" . $row['id'] . "'", $db);
         $posts_counter = mysql_fetch_array($result_posts);
         $resultd = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" . $rowc['authorid'] . "'" , $db);
         $rowd = mysql_fetch_array($resultd);
         $post_bb = "[b]Posted by:[/b] " . $rowb['name'] . "\n" . substr($firstpost['content'],0,500);
-        $post_time = date("M jS, g:i a", $rowc['time']);
+        $post_time = date("M jS Y, g:i a", $rowc['time']);
         $post_bb = bbDecode($post_bb);
         $post_bb = str_replace("\\","\\\\",$post_bb);
         $post_bb = str_replace("'","\\'",$post_bb);
@@ -1509,7 +1509,7 @@ END;
 
 // Create a new reply.
 if ($_GET['do'] == "newreply") {
-    $result = mysql_query("SELECT `id`,`title`,`locked` FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
+    $result = mysql_query("SELECT `id`,`title`,`locked`,`board` FROM `{$_PREFIX}topics` WHERE id='" . $_GET['id'] . "'", $db);
     $topic = mysql_fetch_array($result);
     $result = mysql_query("SELECT `id`,`title`,`post_level` FROM `{$_PREFIX}boards` WHERE id='" . $topic['board'] . "'", $db);
     $board = mysql_fetch_array($result);

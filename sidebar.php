@@ -37,32 +37,30 @@ END;
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
 while ($row = mysql_fetch_array($result)) {
-// one particular side bar
-print makeBlockTrue($row['title'],$row['content']);
+    print makeBlockTrue($row['title'],$row['content']);
 }
-// 1.7: Dynamic blocks stored in 'blocks' folder are now added:
 $myDirectory = opendir("blocks"); // Open 'blocks'
 while($entryName = readdir($myDirectory)) {
-	$dirArray[] = $entryName; // Get our list of files
+    $dirArray[] = $entryName; // Get our list of files
 }
 closedir($myDirectory); // Close the directory
 sort($dirArray); // Sort the array (names should be changed for order, adding 01, etc)
 $indexCount	= count($dirArray); // Count...
 for($index=0; $index < $indexCount; $index++) {
-        if (substr("$dirArray[$index]", 0, 1) != "."){ // don't list hidden files
-		if (substr("$dirArray[$index]", strlen($dirArray[$index]) - 4, 4) == ".php") {
-			$block_title = "";
-			$block_content = ""; // just in case.
-			require "blocks/" . $dirArray[$index];
-			print makeBlockTrue($block_title, $block_content);
-		}
-	}
+    if (substr("$dirArray[$index]", 0, 1) != "."){ 
+        if (substr("$dirArray[$index]", strlen($dirArray[$index]) - 4, 4) == ".php") {
+            $block_title = "";
+            $block_content = "";
+            require "blocks/" . $dirArray[$index];
+            print makeBlockTrue($block_title, $block_content);
+        }
+    }
 }
 print <<<END
 	<tr>
-	<td> <font face="tahoma" size="1"><a href="javascript:hideSideBar()">{$_PWNDATA['hide_sidebar']}</a></font></td>
+	<td> <span style="font-size: 10px;"><a href="javascript:hideSideBar()">{$_PWNDATA['hide_sidebar']}</a></span></td>
 	</tr>
+    </table></div>
+</td>
 END;
-print "	</table></div>\n";
-print "    </td>";
 ?>

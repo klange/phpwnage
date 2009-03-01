@@ -24,13 +24,12 @@
 $config_exists = @include 'config.php';
 if (!$config_exists) {
     die("<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php\" />Error: Not installed. Redirecting to installer.");
-    // @Daniel: I don't cheat headers. There are browsers that ignore this.
-    // A meta-refresh is more universal, and as I use it ever where else
-    // it feels appropriate here as well.
 }
 
 
 require 'includes.php'; // Important stuff.
+
+$dump_limit = -1;
 
 standardHeaders($site_info['name'],true);
 
@@ -43,16 +42,27 @@ print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">
 END;
-
+$news_arguments = "";
 if ($_GET['show'] == 'all') { 
-    $result = mysql_query("SELECT `id`,`title`,`time_code`,`user`,`content` FROM `{$_PREFIX}news` ORDER BY id DESC", $db);
+    $news_arguments = "DESC";
+    $page = 1;
+} else if (isset($_GET['page'])) {
+    $page = intval($_GET['page']);
+    $start = ($page - 1) * 10;
+    $news_arguments = "DESC LIMIT {$start},10";
 } else {
-    $result = mysql_query("SELECT `id`,`title`,`time_code`,`user`,`content` FROM `{$_PREFIX}news` ORDER BY id DESC LIMIT 10", $db);
+    $news_arguments = "DESC LIMIT 10";
+    $page = 1;
 }
+$result = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}news` WHERE `id` > $dump_limit");
+$total_posts = mysql_fetch_array($result);
+$total_posts = $total_posts['COUNT(*)'];
+$result = mysql_query("SELECT `id`,`title`,`time_code`,`user`,`content` FROM `{$_PREFIX}news` WHERE `id` > $dump_limit ORDER BY id {$news_arguments}", $db);
 while ($row = mysql_fetch_array($result)) {
 	// News article
-	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("F j, Y (g:ia T)", $row['time_code']) . ", {$_PWNDATA['posted_by']} " . $row['user'] . "; {$_PWNDATA['article']} #" . ($row['id']), BBDecode($row['content'],true));
+	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("M j, Y", $row['time_code']) . " - " . $row['user'] . " #" . ($row['id']), BBDecode($row['content'],true));
 }
+print "<tr><td>" . printPagerNonTabular("index.php?page=",$page,(int)(($total_posts - 1) / 10 + 1)) . "</td></tr>";
 print <<<END
 	</table>
         </td>

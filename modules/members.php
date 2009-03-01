@@ -23,18 +23,18 @@ $mod['right'] = "Viewing List";
 $mod['right_inner'] = "Members of " . $site_info['name'];
 function mod_print()
 {
-global $_PWNDATA, $_PWNICONS, $_CHECKPANDEMIC, $_PREFIX;
+global $_PWNDATA, $_PWNICONS;
 $content = "<table class=\"forum_base\" width=\"100%\">";
 $content = $content . "<tr><td class=\"forum_thread_title\" width=\"20\"><a href=\"modules.php?m=members&o=uid\">#</a></td><td class=\"forum_thread_title\"><a href=\"modules.php?m=members&o=uname\">Username</a></td><td class=\"forum_thread_title\" width=\"100\">PM</td><td class=\"forum_thread_title\" width=\"120\">Messaging</td><td class=\"forum_thread_title\" width=\"30\"><a href=\"modules.php?m=members&o=posts\">Posts</a></td></tr>\n";
 $odd = 0;
 $result_set = array();
 if (!isset($_GET['o']) or $_GET['o'] == "uname") {
-$members_result = mysql_query("SELECT id,name,msn,yahoo,icq,xfire,pand FROM `{$_PREFIX}users` ORDER BY `name`");
+$members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` ORDER BY `name`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
 } else if ($_GET['o'] == "uid") {
-$members_result = mysql_query("SELECT id,name,msn,yahoo,icq,xfire,pand FROM `{$_PREFIX}users` ORDER BY `id`");
+$members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` ORDER BY `id`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
@@ -42,19 +42,19 @@ while ($temp = mysql_fetch_array($members_result)) {
 $members_result_t = mysql_query("SELECT COUNT(`authorid`), `authorid` FROM `{$_PREFIX}posts` GROUP BY `authorid` ORDER BY COUNT(`authorid`) DESC");
 $ignore = "WHERE `id`<>";
 while ($memb = mysql_fetch_array($members_result_t)) {
-    $members_result = mysql_query("SELECT id,name,msn,yahoo,icq,xfire,pand FROM `{$_PREFIX}users` WHERE `id`=" . $memb['authorid']);
+    $members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $memb['authorid']);
     $array = mysql_fetch_array($members_result);
     if (isset($array['id'])) {
         array_push(&$result_set, $array);
     }
     $ignore = $ignore . $memb['authorid'] . " AND `id`<>";
 }
-$members_result = mysql_query("SELECT id,name,msn,yahoo,icq,xfire,pand FROM `{$_PREFIX}users` $ignore 0 ORDER BY `id`");
+$members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` $ignore 0 ORDER BY `id`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
 } else {
-$members_result = mysql_query("SELECT id,name,msn,yahoo,icq,xfire,pand FROM `{$_PREFIX}users` ORDER BY `name`");
+$members_result = mysql_query("SELECT * FROM `{$_PREFIX}users` ORDER BY `name`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
