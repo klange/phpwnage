@@ -22,8 +22,13 @@ session_start(); // Always ensure a session.
 require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
+<<<<<<< TREE
 $_PWNVERSION['minor'] = 9;
 $_PWNVERSION['extra'] = "pre";
+=======
+$_PWNVERSION['minor'] = 8;
+$_PWNVERSION['extra'] = "2";
+>>>>>>> MERGE-SOURCE
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
@@ -34,7 +39,7 @@ function mse($source) {
 }
 function isReadable($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `vis_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['vis_level']) {
 		return false;
@@ -44,9 +49,9 @@ function isReadable($userLevel, $board) {
 }
 function isWriteableTopic($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `top_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
-	if ((int)$userLevel < (int)$brd['topic_level']) {
+	if ((int)$userLevel < (int)$brd['top_level']) {
 		return false;
 	} else {
 		return true;
@@ -54,7 +59,7 @@ function isWriteableTopic($userLevel, $board) {
 }
 function isWriteable($userLevel, $board) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$result = mysql_query("SELECT `post_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
 	$brd = mysql_fetch_array($result);
 	if ((int)$userLevel < (int)$brd['post_level']) {
 		return false;
@@ -64,7 +69,7 @@ function isWriteable($userLevel, $board) {
 }
 function getBoardName($bid) {
     global $_PREFIX;
-	$result = mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
+	$result = mysql_query("SELECT `title` FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
 	$brd = mysql_fetch_array($result);
 	return $brd['title'];
 }
@@ -114,68 +119,61 @@ function setTheme() {
     }
 }
 function drawButton($dowhat, $title, $button = "") {
-    $post_content = <<<END
+    return <<<END
 <td style="border: 0px">
 	<table class="forum_button">
 	<tr>
     <td class="but_left"></td>
-    <td class="but_mid"><font class="forum_button_text">
-END;
-    $post_content = $post_content . "<a href=\"$dowhat\">$button$title</a>";
-    $post_content = $post_content . <<<END
-</font></td>
+    <td class="but_mid"><span class="forum_button_text"><a href="{$dowhat}">{$button}{$title}</a></span></td>
     <td class="but_right"></td>
   </tr>
 </table>
 </td>
 END;
-    return $post_content;
 }
 // Print a paging device (use everywhere!)
 function printPager($url,$page,$total) {
     // Magic number 7: First, last, current, plus two on each side = 7 total
-    /*  1 2 3 4 5 6 7
-    
-    */
+    /*  1 2 3 4 5 6 7 */
     $unlink = "\">";
     $return = "";
     if ($total < 8) {
         for ($i = 1; $i <= $total; $i++) {
             if ($i == $page) {
-                $return = $return . drawPage("","<b>$i</b>");
+                $return .= drawPage("","<b>$i</b>");
             } else {
-                $return = $return . drawPage("{$url}$i",$i);
+                $return .= drawPage("{$url}$i",$i);
             }
         }
     } else {
         if ($page < 5) {
             for ($i = 1; $i <= $page + 2; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPage("","<b>$i</b>");
+                    $return .= drawPage("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPage("{$url}$i",$i);
+                    $return .= drawPage("{$url}$i",$i);
                 }
             }
-            $return = $return . drawPage("#","...") . drawPage("{$url}$total",$total);
+            $return .= drawPage("#","...") . drawPage("{$url}$total",$total);
         } else if ($page > $total - 4) {
-            $return = $return . drawPage("{$url}1",1) . drawPage("#","...");
+            $return .= drawPage("{$url}1",1) . drawPage("#","...");
             for ($i = $page - 2; $i <= $total; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPage("","<b>$i</b>");
+                    $return .= drawPage("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPage("{$url}$i",$i);
+                    $return .= drawPage("{$url}$i",$i);
                 }
             }
         } else {
-            $return = $return . drawPage("{$url}1",1) . drawPage("#","...");
+            $return .= drawPage("{$url}1",1) . drawPage("#","...");
             for ($i = $page - 2; $i <= $page + 2; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPage("","<b>$i</b>");
+                    $return .= drawPage("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPage("{$url}$i",$i);
+                    $return .= drawPage("{$url}$i",$i);
                 }
             }
-            $return = $return . drawPage("#","...") . drawPage("{$url}$total",$total);
+            $return .= drawPage("#","...") . drawPage("{$url}$total",$total);
         }
     }
     return $return;
@@ -186,63 +184,61 @@ function printPagerNonTabular($url,$page,$total) {
     if ($total < 8) {
         for ($i = 1; $i <= $total; $i++) {
             if ($i == $page) {
-                $return = $return . drawPageB("","<b>$i</b>");
+                $return .= drawPageB("","<b>$i</b>");
             } else {
-                $return = $return . drawPageB("{$url}$i",$i);
+                $return .= drawPageB("{$url}$i",$i);
             }
         }
     } else {
         if ($page < 5) {
             for ($i = 1; $i <= $page + 2; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPageB("","<b>$i</b>");
+                    $return .= drawPageB("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPageB("{$url}$i",$i);
+                    $return .= drawPageB("{$url}$i",$i);
                 }
             }
-            $return = $return . drawPageB("#","...") . drawPageB("{$url}$total",$total);
+            $return .= drawPageB("#","...") . drawPageB("{$url}$total",$total);
         } else if ($page > $total - 4) {
-            $return = $return . drawPageB("{$url}1",1) . drawPageB("#","...");
+            $return .= drawPageB("{$url}1",1) . drawPageB("#","...");
             for ($i = $page - 2; $i <= $total; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPageB("","<b>$i</b>");
+                    $return .= drawPageB("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPageB("{$url}$i",$i);
+                    $return .= drawPageB("{$url}$i",$i);
                 }
             }
         } else {
-            $return = $return . drawPageB("{$url}1",1) . drawPageB("#","...");
+            $return .= drawPageB("{$url}1",1) . drawPageB("#","...");
             for ($i = $page - 2; $i <= $page + 2; $i++) {
                 if ($i == $page) {
-                    $return = $return . drawPageB("","<b>$i</b>");
+                    $return .= drawPageB("","<b>$i</b>");
                 } else {
-                    $return = $return . drawPageB("{$url}$i",$i);
+                    $return .= drawPageB("{$url}$i",$i);
                 }
             }
-            $return = $return . drawPageB("#","...") . drawPageB("{$url}$total",$total);
+            $return .= drawPageB("#","...") . drawPageB("{$url}$total",$total);
         }
     }
     return $return;
 }
 
 function drawPage($link,$text) {
-    $post_content = <<<END
+    return  <<<END
 <td>
     <div class="page_spacer">
         <div class="forum_page"><span class="page_text"><a href="$link">$text</a></span></div>
     </div>
 </td>
 END;
-    return $post_content;
 }
 
 function drawPageB($link,$text) {
-    $post_content = <<<END
+    return  <<<END
     <div class="page_spacer" style="display:inline;">
         <div class="forum_page" style="display:inline;"><span class="page_text"><a href="$link">$text</a></span></div>
     </div>
 END;
-    return $post_content;
 }
 
 function getRankName($level,$site_info,$posts) {
@@ -259,19 +255,19 @@ function getRankName($level,$site_info,$posts) {
         if ((int)$temp['COUNT(*)'] < 1) {
             // Otherwise, just use the standard title for their rank.
             if ($level < $site_info['mod_rank']) {
-	            return $_PWNDATA['rank']['user'];
-	        } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
-	            return $_PWNDATA['rank']['moderator'];
-	        } else if ($level >= $site_info['admin_rank']) {
-	            return $_PWNDATA['rank']['admin'];
-	        }
-	    } else {
-	        $results2 = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
+	        return $_PWNDATA['rank']['user'];
+	    } else if ($level >= $site_info['mod_rank'] && $level < $site_info['admin_rank']) {
+	        return $_PWNDATA['rank']['moderator'];
+	    } else if ($level >= $site_info['admin_rank']) {
+	        return $_PWNDATA['rank']['admin'];
+	    }
+	} else {
+	    $results2 = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
             $rank = mysql_fetch_array($results2);
             return $rank['name'];
         }
     } else {
-        $results = mysql_query("SELECT * FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
+        $results = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
         $rank = mysql_fetch_array($results);
         return $rank['name'];
     }
@@ -280,9 +276,9 @@ function bbJava($stuff) {
     // Usage: Takes in Java code and spits out nicely highlighted code in a box
     $stuff = str_replace("<br />","\n",$stuff);
     $stuff = str_replace("\\\"", "\"",$stuff);
-    $stuff = preg_replace("/(\/\/)(.*?)(\n+?)/si","<font style='color: #00AA00'>$1$2</font>$3",$stuff);
-    $stuff = preg_replace("/(\")(.*?)(\")/si","<font style='color: #AA0000'>$1$2$3</font>",$stuff);
-    $stuff = preg_replace("/(\/\*)([\s\S]*?)(\*\/)/si","<font style='color: #00AA00'>$1$2$3</font>",$stuff);
+    $stuff = preg_replace("/(\/\/)(.*?)(\n+?)/si","<span style='color: #00AA00'>$1$2</span>$3",$stuff);
+    $stuff = preg_replace("/(\")(.*?)(\")/si","<span style='color: #AA0000'>$1$2$3</span>",$stuff);
+    $stuff = preg_replace("/(\/\*)([\s\S]*?)(\*\/)/si","<span style='color: #00AA00'>$1$2$3</span>",$stuff);
     $keywords = array("abstract","continue","for","new","switch","assert","default","goto",
     "package","synchronized","boolean","do","if","private","this","break",
     "double","implements","protected","throw","byte","else","import","public",
@@ -291,21 +287,20 @@ function bbJava($stuff) {
     "finally","long","strictfp","volatile","const","float","native","super","while");
     $keywordsa = $keywords;
     foreach ($keywordsa as $word) {
-        $word2 = "<font style=\"color: #0000AA\">" . $word . "</font>";
+        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
         $stuff = sim_rep2($word,$word2,$stuff);
     }
     unset($word);
-    //$stuff = str_replace($keywords, $keywordsa, $stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>Java:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function bbCSharp($stuff) {
     // Usage: Takes in C# code and spits out nicely highlighted code in a box
     $stuff = str_replace("<br />","\n",$stuff);
     $stuff = str_replace("\\\"", "\"",$stuff);
-    $stuff = preg_replace("/(\/\/)(.*?)(\n+?)/si","<font style='color: #00AA00'>$1$2</font>$3",$stuff);
-    $stuff = preg_replace("/(\")(.*?)(\")/si","<font style='color: #AA0000'>$1$2$3</font>",$stuff);
-    $stuff = preg_replace("/(\/\*)([\s\S]*?)(\*\/)/si","<font style='color: #00AA00'>$1$2$3</font>",$stuff);
+    $stuff = preg_replace("/(\/\/)(.*?)(\n+?)/si","<span style='color: #00AA00'>$1$2</span>$3",$stuff);
+    $stuff = preg_replace("/(\")(.*?)(\")/si","<span style='color: #AA0000'>$1$2$3</span>",$stuff);
+    $stuff = preg_replace("/(\/\*)([\s\S]*?)(\*\/)/si","<span style='color: #00AA00'>$1$2$3</span>",$stuff);
     $keywords = array("abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class",
     "const", "continue", "decimal", "default", "delegate ", "do", "double", "else", "enum", "event", "explicit",
     "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if", "implicit", "in", "int",
@@ -316,18 +311,16 @@ function bbCSharp($stuff) {
     "add", "alias", "get", "global", "partial", "remove", "set", "value", "where", "yield");
     $keywordsa = $keywords;
     foreach ($keywordsa as $word) {
-        $word2 = "<font style=\"color: #0000AA\">" . $word . "</font>";
+        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
         $stuff = sim_rep2($word,$word2,$stuff);
     }
     unset($word);
-    //$stuff = str_replace($keywords, $keywordsa, $stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>C#:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function genericCode($stuff) {
-    $stuff = str_replace("<br />","\n",$stuff);
     $stuff = str_replace("\\\"", "\"",$stuff);
-    $stuff = "<font style=\"font-family: monospaced;\"><b>Code:</b></font><div style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow-x: scroll;\"><font style=\"font-family: monospaced;\"><pre>" . $stuff . "</pre></font></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
     return $stuff;
 }
 function makeURL($link, $title) {
@@ -350,6 +343,9 @@ function pCount($topic) {
     } else {
         return $comments . " " . $_PWNDATA['articles']['comment_count'];
     }
+}
+function quote($c) {
+    return preg_replace("/(\[quote\])((?:.(?!\[quote\]))*?)(\[\/quote\])/si","<div class=\"quote\"><span class=\"forum_quote\">$2</span></div>",$c);
 }
 function BBDecode($content,$allowhtml = false) {
     global $_PREFIX;
@@ -385,14 +381,22 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[dict\])(.+?)(\[\/dict\])/si","<dl>$2</dl>",$content);
     $content = str_replace("[word]","<dt>",$content); // Definition word
     $content = str_replace("[def]","<dd>",$content); // Definition
-    $content = preg_replace("/(\[size=)([0-9]+)(\])(.+?)(\[\/size\])/si","<font size=\"$2\">$4</font>",$content);
-    $content = preg_replace("/(\[ptsize=)([0-9]+)(\])(.+?)(\[\/ptsize\])/si","<font style=\"font-size: $2pt\">$4</font>",$content);
-    $content = preg_replace("/(\[pxsize=)([0-9]+)(\])(.+?)(\[\/pxsize\])/si","<font style=\"font-size: $2px\">$4</font>",$content);
+    $content = preg_replace("/(\[size=)([0-9]+)(\])(.+?)(\[\/size\])/si","<span size=\"$2\">$4</span>",$content);
+    $content = preg_replace("/(\[ptsize=)([0-9]+)(\])(.+?)(\[\/ptsize\])/si","<span style=\"font-size: $2pt\">$4</span>",$content);
+    $content = preg_replace("/(\[pxsize=)([0-9]+)(\])(.+?)(\[\/pxsize\])/si","<span style=\"font-size: $2px\">$4</span>",$content);
     $content = preg_replace("/(\[scroll=)(.+?)(\])(.+?)(\[\/scroll\])/si","<marquee direction=\"$2\">$4</marquee>",$content);
     $content = preg_replace("/(\[scroll\])(.+?)(\[\/scroll\])/si","<marquee>$2</marquee>",$content);
-    $content = preg_replace("/(\[quote\])(.+?)(\[\/quote\])/si","<div class=\"quote\"><font class=\"forum_quote\">$2</font></div>",$content);
-    $content = preg_replace("/(\[hide\])(.+?)(\[\/hide\])/si","<div><div><input value=\"Show\" onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show'; }\" type=\"button\"></div><div class=\"alt2\" style=\"border: 1px inset ; margin: 0px; padding: 6px;\"><div style=\"display: none;\">$2</div></div></div>",$content);
-    $content = preg_replace("/(\[color=)(.+?)(\])(.+?)(\[\/color\])/si","<font style=\"color: #$2\">$4</font>",$content);
+    while ($flag_quote ==false) {
+        $c_old = $content;
+        $content = preg_replace("/(\[quote\])((?:.(?!\[quote\]))*?)(\[\/quote\])/si","<div class=\"quote\"><span class=\"forum_quote\">$2</span></div>",$content);
+        $flag_quote = $c_old == $content?true:false;
+    }
+    while ($flag_hide ==false) {
+        $c_old = $content;
+        $content = preg_replace("/(\[hide\])((?:.(?!\[hide\]))*?)(\[\/hide\])/si","<div><div><input value=\"Show\" onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show'; }\" type=\"button\"></div><div class=\"alt2\" style=\"border: 1px inset ; margin: 0px; padding: 6px;\"><div style=\"display: none;\">$2</div></div></div>",$content);
+        $flag_hide = $c_old == $content?true:false;
+    }
+    $content = preg_replace("/(\[color=)(.+?)(\])(.+?)(\[\/color\])/si","<span style=\"color: #$2\">$4</span>",$content);
     $content = preg_replace("/(\[youtube\])(.+?)(\[\/youtube\])/si","<object width=\"425\" height=\"350\"><param name=\"movie\" value=\"http://www.youtube.com/v/$2\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/$2\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed></object>",$content);
     $content = preg_replace("/(\[gallery-thumb\])(.+?)(\[\/gallery-thumb\])/si","<a href=\"gallery.php?do=image&amp;id=$2\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i=$2\" alt=\"gallery image\" /></a>",$content);
     // Smiles are stored in MySQL
@@ -406,8 +410,8 @@ function BBDecode($content,$allowhtml = false) {
     // However, things like "---hole" won't be censored. If you really care, add these words.
     foreach ($censor_list as $cen) {
         $content = sim_rep($cen,"****",$content);
-        $content = sim_rep($cen . "es","****",$content); // Plural forms (I have no experience in regular expressions
-        $content = sim_rep($cen . "s","****",$content); // So we'll do this the old fashioned way...
+        $content = sim_rep($cen . "es","****",$content); // Plural forms
+        $content = sim_rep($cen . "s","****",$content);
     }
     return $content;
 }
@@ -467,23 +471,23 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 </script>
 <iframe name="previewbox" width="100%" style="border: 0px;" height="0px" id="previewbox"></iframe>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
-    $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
+    $smilesSet = mysql_query("SELECT `image`,`code` FROM `{$_PREFIX}smileys`");
+    $return .= "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
+        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
-    $return = $return . drawButton("javascript:setPreview()","{$_PWNDATA['poster']['preview']}") . "\n";
-    $return = $return . drawButton("javascript:addSize(2)","\/") . "\n";
-    $return = $return . drawButton("javascript:addSize(-2)","/\\") . "\n";
-    $return = $return . "</tr></table>";
+    $return .= "</td></tr><tr>";
+    $return .= drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return .= drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return .= drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return .= drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
+    $return .= drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
+    $return .= drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
+    $return .= drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
+    $return .= drawButton("javascript:setPreview()","{$_PWNDATA['poster']['preview']}") . "\n";
+    $return .= drawButton("javascript:addSize(2)","\/") . "\n";
+    $return .= drawButton("javascript:addSize(-2)","/\\") . "\n";
+    $return .= "</tr></table>";
     return $return;
 }
 function getDay($timecode) {
@@ -522,23 +526,23 @@ document.form.$where.rows = document.form.$where.rows + sizeToAdd;
 //]]>
 </script>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
-    $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
+    $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
+    $return .= "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
+        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "</td></tr><tr>";
-    $return = $return . drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
-    $return = $return . drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
-    $return = $return . drawButton("javascript:addSize(2)","\/") . "\n";
-    $return = $return . drawButton("javascript:addSize(-2)","/\\") . "\n";
-    $return = $return . drawButton("forum.php?do=newreply&amp;id=" . $topID,$_PWNDATA['poster']['go_advanced']) . "\n";
-    $return = $return . "</tr></table>";
+    $return .= "</td></tr><tr>";
+    $return .= drawButton("javascript:addCode('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return .= drawButton("javascript:addCode('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return .= drawButton("javascript:addCode('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return .= drawButton("javascript:addCode('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
+    $return .= drawButton("javascript:addCode('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
+    $return .= drawButton("javascript:addCode('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
+    $return .= drawButton("javascript:addCode('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
+    $return .= drawButton("javascript:addSize(2)","\/") . "\n";
+    $return .= drawButton("javascript:addSize(-2)","/\\") . "\n";
+    $return .= drawButton("forum.php?do=newreply&amp;id=" . $topID,$_PWNDATA['poster']['go_advanced']) . "\n";
+    $return .= "</tr></table>";
     return $return;
 }
 function printPosterEditor($where, $pid) {
@@ -573,23 +577,23 @@ document.form$what.$where.rows = document.form$what.$where.rows + sizeToAdd;
 //]]>
 </script>
 END;
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
-    $return = $return . "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
+    $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
+    $return .= "<table class=\"mod_set\"><tr><td colspan=\"10\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return = $return . "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
+        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
     }
-    $return = $return . "</td></tr><tr>";
-        $return = $return . drawButton("javascript:addCode$what('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
-    $return = $return . drawButton("javascript:addCode$what('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
-    $return = $return . drawButton("javascript:addSize$what(2)","\/") . "\n";
-    $return = $return . drawButton("javascript:addSize$what(-2)","/\\") . "\n";
-    $return = $return . drawButton("forum.php?do=editreply&amp;id=" . $pid,$_PWNDATA['poster']['go_advanced']) . "\n";
-    $return = $return . "</tr></table>";
+    $return .= "</td></tr><tr>";
+        $return .= drawButton("javascript:addCode$what('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[u]','[/u]')","<u>{$_PWNDATA['poster']['underline']}</u>",$_PWNICONS['buttons']['editor']['underline']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[i]','[/i]')","<i>{$_PWNDATA['poster']['italic']}</i>",$_PWNICONS['buttons']['editor']['italic']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[so]','[/so]')","<s>{$_PWNDATA['poster']['strike']}</s>",$_PWNICONS['buttons']['editor']['strike']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[color='+prompt('{$_PWNDATA['poster']['hex']}:','RRGGBB')+']','[/color]')","{$_PWNDATA['poster']['color']}",$_PWNICONS['buttons']['editor']['color']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[img]'+prompt('{$_PWNDATA['poster']['img_url']}:','http://')+'[/img]','')","{$_PWNDATA['poster']['image']}",$_PWNICONS['buttons']['editor']['img']) . "\n";
+    $return .= drawButton("javascript:addCode$what('[url='+prompt('{$_PWNDATA['poster']['link_url']}:','http://')+']'+prompt('Link Title:','')+'[/url]','')","{$_PWNDATA['poster']['link']}",$_PWNICONS['buttons']['editor']['link']) . "\n";
+    $return .= drawButton("javascript:addSize$what(2)","\/") . "\n";
+    $return .= drawButton("javascript:addSize$what(-2)","/\\") . "\n";
+    $return .= drawButton("forum.php?do=editreply&amp;id=" . $pid,$_PWNDATA['poster']['go_advanced']) . "\n";
+    $return .= "</tr></table>";
     return $return;
 }
 function themeList($selected) {
@@ -610,14 +614,14 @@ function themeList($selected) {
 			if (strstr($dirArray[$index],".css")) {
 				$themeName = str_replace(".css","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
 				}
 			}
 		}
 	}
-	$themeList = $themeList . "</select>";
+	$themeList .= "</select>";
 	return $themeList;
 }
 function iconsList($selected) {
@@ -638,14 +642,14 @@ function iconsList($selected) {
 			if (strstr($dirArray[$index],".php")) {
 				$themeName = str_replace(".php","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\">" . $themeName . "</option>";
 				}
 			}
 		}
 	}
-	$themeList = $themeList . "</select>";
+	$themeList .= "</select>";
 	return $themeList;
 }
 function langList($selected)
@@ -673,14 +677,14 @@ function langList($selected)
 			if (strstr($dirArray[$index],".php")) {
 				$themeName = str_replace(".php","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $languages[$themeName] . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $languages[$themeName] . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option value=\"" . $themeName . "\">" . $languages[$themeName] . "</option>";
+					$themeList .= "\n<option value=\"" . $themeName . "\">" . $languages[$themeName] . "</option>";
 				}
 			}
 		}
 	}
-	$themeList = $themeList . "</select>";
+	$themeList .= "</select>";
 	return $themeList;
 }
 function colorList($selected) {
@@ -701,14 +705,14 @@ function colorList($selected) {
 			if (strstr($dirArray[$index],".gif")) {
 				$themeName = str_replace(".gif","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList = $themeList . "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList .= "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
-					$themeList = $themeList . "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList .= "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\">" . $themeName . "</option>";
 				}
 			}
 		}
 	}
-	$themeList = $themeList . "</select>";
+	$themeList .= "</select>";
 	return $themeList;
 }
 
@@ -717,33 +721,21 @@ function drawBlock($functitle, $funcright, $funccont) {
 }
 function makeBlock($functitle, $funcright, $funccont) {
     // Page Body
-    $output = <<<END
+    return <<<END
       <tr>
         <td width="100%"><div class="panel">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="pan_ul">&nbsp;</td>
         <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $output = $output . $functitle;
-    $output = $output . <<<END
-	</font></td>
+        <span class="pan_title_text">{$functitle}</span></td>
         <td class="pan_um" align="right">
-        <font class="pan_title_text">
-END;
-    $output = $output . $funcright;
-    $output = $output . <<<END
-	</font></td>
+        <span class="pan_title_text">{$funcright}</span></td>
         <td class="pan_ur">&nbsp;</td>
       </tr>
       <tr>
         <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-END;
-    $output = $output . $funccont;
-    $output = $output . <<<END
-	</td>
+        <td class="pan_body" valign="top" colspan="2">{$funccont}</td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
       <tr>
@@ -755,36 +747,23 @@ END;
         </td>
       </tr>
 END;
-    return $output;
 }
 function makeBlockSA($functitle, $funcright, $funccont) {
     // Page Body
-    $output = <<<END
+    return <<<END
     <div class="panel">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="pan_ul">&nbsp;</td>
         <td class="pan_um">
-        <font class="pan_title_text">
-END;
-    $output = $output . $functitle;
-    $output = $output . <<<END
-	</font></td>
+        <span class="pan_title_text">{$functitle}</span></td>
         <td class="pan_um" align="right">
-        <font class="pan_title_text">
-END;
-    $output = $output . $funcright;
-    $output = $output . <<<END
-	</font></td>
+        <span class="pan_title_text">{$funcright}</span></td>
         <td class="pan_ur">&nbsp;</td>
       </tr>
       <tr>
         <td class="pan_ml">&nbsp;</td>
-        <td class="pan_body" valign="top" colspan="2">
-END;
-    $output = $output . $funccont;
-    $output = $output . <<<END
-	</td>
+        <td class="pan_body" valign="top" colspan="2">{$funccont}</td>
         <td class="pan_mr">&nbsp;</td>
       </tr>
       <tr>
@@ -795,31 +774,22 @@ END;
     </table>
     </div>
 END;
-    return $output;
 }
 function makeBlockTrue($functitle, $funccont) {
     // Page Body
-    $output = <<<END
+    return <<<END
       <tr>
         <td width="100%"><div class="block">
     <table class="borderless_table" width="100%">
       <tr>
         <td class="block_ul">&nbsp;</td>
         <td class="block_um">
-        <font class="block_title_text">
-END;
-    $output = $output . $functitle;
-    $output = $output . <<<END
-	</font></td>
+        <span class="block_title_text">{$functitle}</span></td>
         <td class="block_ur">&nbsp;</td>
       </tr>
       <tr>
         <td class="block_ml">&nbsp;</td>
-        <td class="block_body" valign="top">
-END;
-    $output = $output . $funccont;
-    $output = $output . <<<END
-	</td>
+        <td class="block_body" valign="top">{$funccont}</td>
         <td class="block_mr">&nbsp;</td>
       </tr>
       <tr>
@@ -831,7 +801,6 @@ END;
         </td>
       </tr>
 END;
-    return $output;
 }
 function drawMessage($title, $message, $headers = true) {
 	global $_PWNDATA, $site_info, $theme, $imageroot, $user;
@@ -869,7 +838,7 @@ function messageBack($title, $message, $headers = true) {
 function messageRedirectLight($message,$redirect) {
     global $_PWNDATA, $site_info;
 	$content = $message . "<meta http-equiv=\"Refresh\" content=\"1;url=" . $redirect . "\" /><br />" . $_PWNDATA['redirecting'] . "...";
-	$content = $content . "<br /><a href=\"$redirect\">{$_PWNDATA['click_to_continue']}</a>";
+	$content .= "<br /><a href=\"$redirect\">{$_PWNDATA['click_to_continue']}</a>";
 	die("<div style=\"font-family: sans; font-size: 12px\">" . $content . "</div>");
 }
 function messageBackLight($title, $message) {
@@ -880,7 +849,7 @@ function messageBackLight($title, $message) {
 
 function check_read($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
+    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
@@ -918,7 +887,7 @@ function findPage($postnumber, $topic = -1) {
 
 function check_read_forum($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE board=$id");
+    $temp_res = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE board=$id");
     $was_read = true;
     while ($topic = mysql_fetch_array($temp_res)) {
         if (!check_read($topic['id'],$userid)) { $was_read = false; }
@@ -928,12 +897,12 @@ function check_read_forum($id,$userid) {
 
 function set_read($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE id=$id");
+    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
     $topic = mysql_fetch_array($temp_res);
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
     if (!in_array($userid, $split_list)) {
-        $read_list = $read_list . ",$userid";
+        $read_list .= ",$userid";
         mysql_query("UPDATE `{$_PREFIX}topics` SET `readby` = '" . mse($read_list) . "' WHERE `{$_PREFIX}topics`.`id` =" . $id);
     }
 }
@@ -945,9 +914,9 @@ function set_unread($id) {
 
 function check_voted($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
+    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = mysql_fetch_array($temp_res);
+    $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (in_array($userid, $split_list)) {
         $is_read = true;
@@ -959,12 +928,12 @@ function check_voted($id,$userid) {
 
 function set_voted($id,$userid) {
     global $_PREFIX;
-    $temp_res = mysql_query("SELECT * FROM `{$_PREFIX}polls` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
-    $read_list = $topic['voters'];
+    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = mysql_fetch_array($temp_res);
+    $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (!in_array($userid, $split_list)) {
-        $read_list = $read_list . ",$userid";
+        $read_list .= ",$userid";
         mysql_query("UPDATE `{$_PREFIX}polls` SET `voters` = '" . mse($read_list) . "' WHERE `{$_PREFIX}polls`.`id` =" . $id);
     }
 }
@@ -975,18 +944,9 @@ function drawSubbar($left, $right) {
 <table class="borderless_table" width="100%">
   <tr>
     <td class="sub_left"></td>
-    <td class="sub_mid"><font class="sub_body_text">
-END;
-    print $left;
-    print <<<END
-    </font></td>
+    <td class="sub_mid"><span class="sub_body_text">{$left}</span></td>
     <td class="sub_mid" align="right">
-
-    <font class="sub_body_text">
-END;
-    print $right;
-    print <<<END
-    </font></td>
+    <span class="sub_body_text">{$right}</span></td>
     <td class="sub_right"></td>
   </tr>
 </table>
@@ -998,10 +958,9 @@ function standardHeaders($title, $draw_header, $additionalHead = "") {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en">
 <head>
-<title>
+<title>{$title}</title>
+
 END;
-    print $title;
-    print "</title>\n";
     require 'css.php';      // Setup the theme
     print $additionalHead;
     if ($draw_header == true) {
@@ -1013,7 +972,7 @@ END;
 if ($no_login != true) {
     // Handle the current session
     if (!isset($_SESSION['sess_id']) and ($_COOKIE['rem_yes'] == "yes")) {
-	    $userresult = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
+	    $userresult = mysql_query("SELECT `name`,`password`,`id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
 	    $tempuser = mysql_fetch_array($userresult);
 	    if (($_COOKIE['rem_user'] == $tempuser['name']) and ($_COOKIE['rem_pass'] == $tempuser['password'])) {
 		    $_SESSION['user_name'] = $_COOKIE['rem_user'];

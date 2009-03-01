@@ -1,5 +1,5 @@
 /*
-	This file is part of PHPwnage (Crystal Clean Theme, Crystal with no images)
+	This file is part of PHPwnage (Crystal Theme)
 
 	Copyright 2008 Kevin Lange <klange@oasis-games.com>
 
@@ -18,6 +18,13 @@
 
 */
 
+body {
+    background-repeat: repeat-x;
+    background-position: fixed;
+    background-color: #3B89A7;
+    background-image: url(greeble/gradient.png) !important;
+}
+
 .borderless_table {
     border-width: 0px;
     border-spacing: 0px;
@@ -28,12 +35,24 @@
 
 .sub_body_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 12px;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+.sub_body_text a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.sub_body_text a:hover {
+    text-decoration: none;
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
 }
 
 .foot_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
+    color: #FFFFFF;
 }
 
 .pan_body_text {
@@ -42,15 +61,19 @@
 }
 
 .pan_title_text {
-    font-family: Verdana, Tahoma, sans;
-    font-size: 12px;
+    font-family: Arial, Verdana, Tahoma, sans;
+    font-size: 24px;
     font-weight: bold;
-    color: #204a87;
+    line-height: 35px;
+    color: #000000;
 }
-
-.block_body_text {
-    font-family: Verdana, Tahoma, sans;
-    font-size: 12px;
+.pan_title_text a{
+    color: #000000;
+    text-decoration: none;
+}
+.pan_title_text a:hover{
+    color: #3B89A7;
+    text-decoration: none;
 }
 
 .footer_body_text {
@@ -58,11 +81,16 @@
     color: #000000;
 }
 
-.block_title_text {
+.block_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
+}
+
+.block_title_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 16px;
     font-weight: bold;
-    color: #204a87;
+    color: #FFFFFF;
 }
 
 .head_left {
@@ -80,278 +108,223 @@
 }
 
 .sub_left {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-left: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    background-image: url(greeble/header_back_left_alt.png);
+    height:35px;
+    width:23px;
 }
 
 .sub_mid {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    vertical-align: top;
-    padding: 0px 0px 0px 0px;
+    background-image: url(greeble/header_back_alt.png);
+    height: 35px;
+    vertical-align: middle;
+    padding: 0px 2px 0px 0px;
 }
 
 .sub_right {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    background-color: #000000;
+    height:35px;
+    width:2px;
 }
 
 .foot_left {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-left: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    height:20px;
+    width:0px;
 }
 
 .foot_mid {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    vertical-align: top;
+    background-color: #3B89A7;
+    border: 2px solid #000000;
+    height: 20px;
+    vertical-align: middle;
     padding: 0px 0px 0px 0px;
 }
 
 .foot_right {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    height:20px;
+    width:0px;
 }
 
 .but_left {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-left: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    height: 24px;
+    width: 1px;
 }
 
 .but_mid {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    height: 18px;
-    vertical-align: top;
-    padding: 0px 0px 0px 0px;
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    height:24px;
+    vertical-align: middle;
+    padding: 0px 5px 0px 5px;
+    border: 1px solid #000000 !important;
+    border-collapse: none;
+}
+.but_mid:hover {
+    background-image: url(greeble/header_back_alt.png);
+    background-position: center;
+    color: #FFFFFF;
 }
 
 .but_right {
-    background-color: #bad5e7;
-    border-top: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;
-    height: 18px;
-    width: 4px;
+    background-color: #000000;
+    height:24px;
+    width:0px;
 }
 
 .pan_ul {
-    border-top: 1px solid #FFFFFF;
-    border-left: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    height: 18px;
-    width: 4px;
+    background-image: url(greeble/header_back_left.png);
+    background-repeat: no-repeat;
+    height: 35px;
+    width: 23px;
 }
 
 .pan_um {
-    border-top: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    height: 18px;
+    background-image: url(greeble/header_back.png);
+    background-repeat: repeat-x;
+    height: 35px;
 }
 
 .pan_ur {
-    border-top: 1px solid #FFFFFF;
-    border-right: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 18px;
-    width: 4px;
+    background-color: #000000;
+    background-repeat: no-repeat;
+    height:35px;
+    width:2px;
+    font-size: 1px;
 }
 
 .pan_ml {
-    border-left: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    width: 4px;
+    background-color: #FFFFFF;
+    width:23px;
 }
 
 .pan_body {
-    padding: 3px 3px 3px 3px;
+    background-color: #FFFFFF;
+    padding: 3px 0px 0px 0px;
     font-family: Verdana, Tahoma, sans;
-    background-color: #d4dbe0;
-    border-top: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #FFFFFF;
-    border-bottom: 1px solid #FFFFFF;
-    font-size: 12px;
+    font-size: 14px;
 }
 .pan_mr {
-    border-right: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    width: 4px;
+    background-color: #FFFFFF;
+    width:2px;
+    font-size: 1px;
 }
 
 .pan_bl {
-    border-left: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 4px;
-    width: 4px;
+    background-color: #FFFFFF;
+    width:23px;
 }
 
 .pan_bm {
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
+    background-color: #FFFFFF;
     height: 4px;
 }
 
 .pan_br {
-    border-right: 1px solid #CCCCCC;
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 4px;
-    width: 4px;
+    background-color: #FFFFFF;
+    width:1px;
+    font-size: 1px;
 }
 
 /* Block */
 .block_ul {
-    border-top: 1px solid #FFFFFF;
-    border-left: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    height: 18px;
-    width: 4px;
-}
+    background-image: url(greeble/header_back_left_alt.png);
+    height:35px;
+    width:23px;
+} /* Upper Left */
 
 .block_um {
-    border-top: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    height: 18px;
-}
+    background-image: url(greeble/header_back_alt.png);
+    height:35px;
+} /* Top middle */
 
 .block_ur {
-    border-top: 1px solid #FFFFFF;
-    border-right: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 18px;
-    width: 4px;
-}
+    background-color: #000000;
+    height:35px;
+    width:2px;
+    font-size: 1px;
+} /* Upper right */
 
 .block_ml {
-    border-left: 1px solid #FFFFFF;
-    background-color: #bad5e7;
-    width: 4px;
-}
+    background-color: #FFFFFF;
+    width:23px;
+} /* Left  */
 
 .block_body {
+    background-color: #FFFFFF;
     padding: 3px 3px 3px 3px;
     font-family: Verdana, Tahoma, sans;
-    background-color: #d4dbe0;
-    border-top: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #FFFFFF;
-    border-bottom: 1px solid #FFFFFF;
-    font-size: 12px;
-}
+    font-size: 14px;
+} /* body */
+
 .block_mr {
-    border-right: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    width: 4px;
-}
+    background-color: #FFFFFF;
+    font-size: 1px;
+} /* right  */
 
 .block_bl {
-    border-left: 1px solid #FFFFFF;
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 4px;
-    width: 4px;
-}
+    background-color: #FFFFFF;
+    width:23px;
+} /* bottom left */
 
 .block_bm {
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 4px;
-}
+    background-color: #FFFFFF;
+} /* bottom middle  */
 
 .block_br {
-    border-right: 1px solid #CCCCCC;
-    border-bottom: 1px solid #CCCCCC;
-    background-color: #bad5e7;
-    height: 4px;
-    width: 4px;
-}
+    background-color: #FFFFFF;
+    font-size: 1px;
+} /* bottom right */
 
 /*
 	Forum
 */
 /* Base Forum Table */
 .forum_base {
-    border: 1px #707070 solid;
     border-collapse: collapse;
 }
 
 .forum_board_readicon {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
 }
 
 .forum_board_linkicon {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
 }
 
 .forum_board_title {
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
+    font-weight: bold;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_linktitle {
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
+    font-weight: bold;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_linkdesc {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_desc {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_last {
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
 }
 
 .forum_board_topics {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     font-size: 12px;
 }
 
 .forum_board_posts {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     font-size: 12px;
 }
 
@@ -361,81 +334,78 @@
 }
 
 .forum_thread_title {
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
+    font-weight: bold;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_thread_icon {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
 }
 
 .forum_thread_last {
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
 }
 
 .forum_thread_author {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll_title {
-    background-color: #b6d0e0;
+    background-color: #FFFFFF;
     font-weight: bold;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
     padding: 4px;
 }
 
 .forum_topic_poll_option {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll_votebar {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
 }
 
 .forum_poll_table {
-    border: 1px #707070 solid;
     border-collapse: collapse;
 }
 
 /* The set of buttons to edit a post, quote it, view the ip, etc. */
 .mod_set {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #707070;
     border-collapse: collapse;
+    margin: 4px;
 }
 
 .mod_set td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	padding: 0px 0px 2px 0px;
 	border-style: none none none none;
-	background-color: #b6d0e0;
+	background-color: #FFFFFF;
+	margin: 4px;
 }
 
 /* Said button  */
 .forum_button {
     border-width: 0px;
     border-spacing: 0px;
-    padding: 0px;
+    padding: 2px;
     border-style: none;
     border-collapse: collapse;
+    margin-bottom: 4px;
 }
 
 /* cell thing, keeps everything in line */
 .forum_button td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	padding: 0px 0px 4px 0px;
 	border-style: none none none none;
+	border-collapse: collapse;
 }
 
 .quote {
@@ -448,8 +418,9 @@
 
 .forum_button_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 10px;
+    font-size: 12px;
     color: #000000;
+    padding: 0px 5px 0px 5px;
 } /* button text */
 
 .forum_button_text :link {
@@ -463,7 +434,7 @@
 }
 
 .forum_button_text :hover {
-    color: #CCCCCC;
+    color: #FFFFFF;
     text-decoration: none;
 }
 
@@ -477,6 +448,10 @@
     font-size: 12px;
     font-weight: bold;
 } /* user name in post */
+.forum_user a {
+    font-size: 18px;
+    color: #000000;
+}
 
 .forum_body {
     font-family: Verdana, Tahoma, sans;
@@ -502,35 +477,35 @@
 }
 
 .glow {
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     text-align: center;
+    border-top: 1px solid #707070;
+    border-left: 1px solid #707070;
 }
 
 .glow_admin {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
     background-image: url(crystal/adm_back.png);
     background-repeat: no-repeat;
-    border: 1px #707070 solid;
     text-align: center;
+    border-top: 1px solid #707070;
+    border-left: 1px solid #707070;
 }
 
 .glow_mod {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
+    text-align: center;
     background-image: url(crystal/mod_back.png);
     background-repeat: no-repeat;
-    border: 1px #707070 solid;
-    text-align: center;
+    border-top: 1px solid #707070;
+    border-left: 1px solid #707070;
 }
 
 .forum_topic_content {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #e4edf4;
-    background-image: url(crystal/forum_topic_content.png);
-    background-repeat: repeat-x;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     height: auto;
     padding: 4px;
 }
@@ -539,8 +514,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #e4edf4;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     padding: 4px;
     height: 1px;
 }
@@ -549,8 +523,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #b6d0e0;
-    border: 1px #707070 solid;
+    background-color: #AAEEAA;
     padding: 4px;
     height: 1px;
 }
@@ -559,27 +532,20 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 24px;
     color: #000000;
-    background-color: #e4edf4;
-    background-image: url(crystal/forum_topic_content.png);
-    background-repeat: repeat-x;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     height: auto;
     padding: 4px;
 }
 
 .forum_button_bar {
     padding: 0px;
-    background-color: #e4edf4;
-    background-image: url(crystal/forum_button_bar.png);
-    background-position: bottom;
-    background-repeat: repeat-x;
-    border: 1px #707070 solid;
+    background-color: #FFFFFF;
     margin: 0px;
     height: 1px;
 }
 
 .forum_topic_buttonbar {
-    background-color: #e4edf4;
+    background-color: #FFFFFF;
 }
 
 .forum_quickreply {
@@ -591,9 +557,7 @@
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #e4edf4;
-    background-image: url(crystal/forum_topic_content.png);
-    background-repeat: repeat-x;
+    background-color: #FFFFFF;
     border: 1px #707070 solid;
     padding: 4px;
 }
@@ -603,7 +567,9 @@
     font-size: 12px;
     font-weight: bold;
     color: #000000;
-    background-color: #b6d0e0;
+    background-color: #FFFFFF;
+    background-image: url(greeble/header_back_alt.png);
+    background-position: center;
     border: 1px #707070 solid;
     padding: 2px;
 }
@@ -614,8 +580,9 @@
 .tab_head_off a {
     text-decoration : none;
     border : 1px solid #000;
-    background-image: url(crystal/block_body.png);
-    color: #204a87;
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
     float : left;
     margin-right : 4px;
     line-height: 13px;
@@ -625,15 +592,18 @@
 }
 
 .tab_head_off a:hover {
-    background-color: #b6d0e0;
+    background-color: #3B89A7;
+    background-image: none;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 .tab_head_on a {
     text-decoration : none;
     border : 1px solid #000;
-    background-color: #b6d0e0;
-    color: #204a87;
-    border-bottom: 1px solid #b6d0e0;
+    background-color: #3B89A7;
+    color: #FFFFFF;
+    border-bottom: 1px solid #3B89A7;
     margin-right : 4px;
     float : left;
     font-size: 10px;
@@ -658,12 +628,19 @@
 
 .tab_contents {
     clear : both;
-    background-color: #b6d0e0;
+    background-color: #3B89A7;
     border: 1px #000 solid;
     border-top: 0;
+    color: #FFFFFF;
     font-family: sans-serif, Tahoma;
     font-size: 12px;
     padding-left: 2px;
+}
+.tab_contents a {
+    color: #FFFFFF;
+}
+.tab_contents a:hover {
+    color: #FFFFFF;
 }
 
 .menu {
@@ -680,17 +657,15 @@
 }
 
 .sidebar {
-    padding-right: 8px;
+    
 }
 
 .panel {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 2px;
 }
 
 .block {
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding: 2px;
 }
 
 .odd_cell {
@@ -701,8 +676,9 @@
 .forum_page {
     height: 14px;
     border: 1px solid #707070;
-    background-color: #b6d0e0;
+    background-color: #FFFFFF;
     padding: 2px;
+    -moz-border-radius: 4px;
 }
 
 .page_spacer {
@@ -731,11 +707,21 @@
 }
 
 .calendar_day {
-    background-color: #b6d0e0;
+    background-image: url(greeble/header_back_alt.png);
+    background-position: center;
+    color: #FFFFFF;
     border: 0px #000000 none;
     padding: 1px 1px 1px 1px;
     font-size: 20px;
     font-style: italic;
+}
+
+.main_body {
+    background-color: #FFFFFF;
+    border: 4px solid #000000;
+    padding: 4px;
+    margin-bottom: 4px;
+    -moz-border-radius: 24px 0px 24px 0px;
 }
 
 hr {
@@ -763,22 +749,36 @@ td {
 }
 
 textarea {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color: #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
-    font-family: Tahoma, sans;
+    font-family: Verdana, Tahoma, sans;
     font-size: 10pt;
 }
 
 input {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color:  #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
 }
 
+input[type=button] {
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+input[type=submit] {
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
 select {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color:  #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
 }
 
@@ -786,15 +786,15 @@ body font {
     color: #000000;
 }
 :link {
-    color: #204a87;
+    color: #995500;
     text-decoration: none;
 }
 :visited {
-    color: #204a87;
+    color: #995500;
     text-decoration: none;
 }
 a:hover {
-    color: #75507b;
+    color: #995500;
     text-decoration: underline;
 }
 

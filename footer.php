@@ -19,16 +19,17 @@
 
 */
 print <<<END
+</div>
 <table class="borderless_table" width="100%">
   <tr>
-    <td class="sub_left"></td>
+    <td class="foot_left"></td>
 
-    <td class="sub_mid" align="center"><font class="sub_body_text">
+    <td class="foot_mid" align="center"><font class="foot_body_text">
 END;
 print $site_info['copyright'] . " <a href=\"rss.php\">{$_PWNICONS['tags']['rss']}</a><a href=\"mobile.php\">{$_PWNICONS['tags']['mobile']}</a><a href=\"https://launchpad.net/phpwnage\">{$_PWNICONS['tags']['phpwnage']}</a><a href=\"http://php.net\">{$_PWNICONS['tags']['php']}</a>";
 print <<<END
     </font></td>
-    <td class="sub_right"></td>
+    <td class="foot_right"></td>
   </tr>
   
 </table>

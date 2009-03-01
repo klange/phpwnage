@@ -68,7 +68,11 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == "upload") {
         if (isset($_FILES['image'])) {
             $_POST['gallery'] = (int)$_POST['gallery'];
+<<<<<<< TREE
             $temp_query = mysql_query("SELECT * FROM `galleries` WHERE `id`={$_POST['gallery']}");
+=======
+            $temp_query = mysql_query("SELECT `id`,`upload` FROM `galleries` WHERE `id`={$_POST['gallery']}");
+>>>>>>> MERGE-SOURCE
             $temp = mysql_fetch_array($temp_query);
             if (!isset($temp['id']) || $temp['upload'] > $user['level']) {
                  messageBack($_PWNDATA['post_attack'],$_PWNDATA['not_permitted']);
@@ -314,7 +318,8 @@ END;
 
     standardHeaders($site_info['name'] . " :: " . $_PWNDATA['gallery_page_title'] . $page_loctitle,true);
     drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > $page_location",$_PWNDATA['gallery_page_title']);
-    require 'sidebar.php';    print <<<END
+    require 'sidebar.php';
+    print <<<END
         <td valign="top">
             <table class="borderless_table" width="100%">
                 {$page_contents}

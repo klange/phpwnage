@@ -48,5 +48,6 @@ $FAVMETA
     <td class="head_right">&nbsp;</td>
   </tr>
 </table>
+<div class="main_body">
 END;
 ?>

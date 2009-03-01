@@ -31,6 +31,11 @@
     font-size: 12px;
 }
 
+.foot_body_text {
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
+}
+
 .pan_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
@@ -88,6 +93,25 @@
 }
 
 .sub_right {
+    background-image: url(crystal/sub_right.png);
+    height:27px;
+    width:17px;
+}
+
+.foot_left {
+    background-image: url(crystal/sub_left.png);
+    height:27px;
+    width:11px;
+}
+
+.foot_mid {
+    background-image: url(crystal/sub_mid.png);
+    height:27px;
+    vertical-align: top;
+    padding: 4px 0px 0px 0px;
+}
+
+.foot_right {
     background-image: url(crystal/sub_right.png);
     height:27px;
     width:17px;

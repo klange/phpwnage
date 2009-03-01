@@ -104,7 +104,7 @@ END;
     print "<br />";
     $result = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid='" . $topic['id'] . "' ORDER BY `id` DESC LIMIT 5", $db);
     while ($row = mysql_fetch_array($result)) {
-        $resultb = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
+        $resultb = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` WHERE id='" .  $row['authorid'] . "'", $db);
         $post_author = mysql_fetch_array($resultb);
         print "<b>" . $post_author['name'] . ":</b><br />";
         print "<i>" . date("F j, Y (g:ia T)", $row['time']) ."</i><br />";
