@@ -19,6 +19,7 @@
 
 */
 print <<<END
+</div>
 <table class="borderless_table" width="100%">
   <tr>
     <td class="sub_left"></td>
