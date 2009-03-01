@@ -23,7 +23,7 @@ while ($row = mysql_fetch_array($temp)) {
      print "HELLO?";
      mysql_query("ALTER TABLE `{$_PREFIX}users` ADD COLUMN `ims` TEXT DEFAULT NULL;");
     }
-	$ims = $row['msn'] . "," . $row['yahoo'] . "," . $row['aim'] . "," . $row['icq'] . "," . $row['xfire'] . "," . $row['live'] . "," . $row['pand'];
+	$ims = $row['msn'] . "," . $row['yahoo'] . "," . $row['aim'] . "," . $row['icq'] . "," . $row['xfire'] . "," . $row['live'];
 	print $row['name'] . ": " . $ims . "<br>\n";
 	mysql_query("UPDATE `users` SET `ims`='{$ims}' WHERE `id`={$row['id']}");
 	print_r(explode(",",$row['ims']));
