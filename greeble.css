@@ -120,22 +120,29 @@ body {
 }
 
 .but_left {
-    background-image: url(crystal/sub_left.png);
-    height:27px;
-    width:11px;
+    height: 24px;
+    width: 1px;
 }
 
 .but_mid {
-    background-image: url(crystal/sub_mid.png);
-    height:27px;
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    height:24px;
     vertical-align: middle;
-    padding: 0px 0px 0px 0px;
+    padding: 0px 5px 0px 5px;
+    border: 1px solid #000000 !important;
+    border-collapse: none;
+}
+.but_mid:hover {
+    background-image: url(greeble/header_back_alt.png);
+    background-position: center;
+    color: #FFFFFF;
 }
 
 .but_right {
-    background-image: url(crystal/sub_right.png);
-    height:27px;
-    width:17px;
+    background-color: #000000;
+    height:24px;
+    width:0px;
 }
 
 .pan_ul {
@@ -347,29 +354,33 @@ body {
 /* The set of buttons to edit a post, quote it, view the ip, etc. */
 .mod_set {
     border-collapse: collapse;
+    margin: 4px;
 }
 
 .mod_set td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	padding: 0px 0px 2px 0px;
 	border-style: none none none none;
 	background-color: #FFFFFF;
+	margin: 4px;
 }
 
 /* Said button  */
 .forum_button {
     border-width: 0px;
     border-spacing: 0px;
-    padding: 0px;
+    padding: 2px;
     border-style: none;
     border-collapse: collapse;
+    margin-bottom: 4px;
 }
 
 /* cell thing, keeps everything in line */
 .forum_button td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 0px 0px;
+	padding: 0px 0px 4px 0px;
 	border-style: none none none none;
+	border-collapse: collapse;
 }
 
 .quote {
@@ -382,8 +393,9 @@ body {
 
 .forum_button_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 10px;
+    font-size: 12px;
     color: #000000;
+    padding: 0px 5px 0px 5px;
 } /* button text */
 
 .forum_button_text :link {
@@ -397,7 +409,7 @@ body {
 }
 
 .forum_button_text :hover {
-    color: #CCCCCC;
+    color: #FFFFFF;
     text-decoration: none;
 }
 
@@ -543,8 +555,9 @@ body {
 .tab_head_off a {
     text-decoration : none;
     border : 1px solid #000;
-    background-image: url(crystal/block_body.png);
-    color: #204a87;
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
     float : left;
     margin-right : 4px;
     line-height: 13px;
@@ -554,15 +567,18 @@ body {
 }
 
 .tab_head_off a:hover {
-    background-color: #b6d0e0;
+    background-color: #3B89A7;
+    background-image: none;
+    color: #FFFFFF;
+    text-decoration: none;
 }
 
 .tab_head_on a {
     text-decoration : none;
     border : 1px solid #000;
-    background-color: #b6d0e0;
-    color: #204a87;
-    border-bottom: 1px solid #b6d0e0;
+    background-color: #3B89A7;
+    color: #FFFFFF;
+    border-bottom: 1px solid #3B89A7;
     margin-right : 4px;
     float : left;
     font-size: 10px;
@@ -587,12 +603,19 @@ body {
 
 .tab_contents {
     clear : both;
-    background-color: #b6d0e0;
+    background-color: #3B89A7;
     border: 1px #000 solid;
     border-top: 0;
+    color: #FFFFFF;
     font-family: sans-serif, Tahoma;
     font-size: 12px;
     padding-left: 2px;
+}
+.tab_contents a {
+    color: #FFFFFF;
+}
+.tab_contents a:hover {
+    color: #FFFFFF;
 }
 
 .menu {
@@ -659,7 +682,9 @@ body {
 }
 
 .calendar_day {
-    background-color: #b6d0e0;
+    background-image: url(greeble/header_back_alt.png);
+    background-position: center;
+    color: #FFFFFF;
     border: 0px #000000 none;
     padding: 1px 1px 1px 1px;
     font-size: 20px;
@@ -699,22 +724,36 @@ td {
 }
 
 textarea {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color: #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
     font-family: Verdana, Tahoma, sans;
     font-size: 10pt;
 }
 
 input {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color:  #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
 }
 
+input[type=button] {
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+input[type=submit] {
+    background-image: url(greeble/header_back.png);
+    background-position: center;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
 select {
-    background-color: #EEEEEC;
-    color: #204a87;
+    background-color:  #FFFFFF;
+    color: #000000;
     border: 1px solid #707070;
 }
 
