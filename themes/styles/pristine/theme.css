@@ -484,7 +484,7 @@
 }
 
 .quote {
-    background-image: url(crystal/quote.png);
+    background-image: url(quote.png);
     background-repeat: no-repeat;
     border: 1px dashed black;
     padding: 5px;

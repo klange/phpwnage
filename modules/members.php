@@ -60,6 +60,7 @@ while ($temp = mysql_fetch_array($members_result)) {
 }
 }
 $im_names = explode(",",$site_info['ims']);
+//while ($member = mysql_fetch_array($members_result))
 while (list($key,$member) = each(&$result_set))
 {
 $odd = 1 - $odd;

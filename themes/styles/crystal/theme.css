@@ -18,13 +18,6 @@
 
 */
 
-body {
-    background-repeat: repeat-x;
-    background-attachment: fixed;
-    background-color: #3B89A7;
-    background-image: url(greeble/gradient.png) !important;
-}
-
 .borderless_table {
     border-width: 0px;
     border-spacing: 0px;
@@ -35,24 +28,12 @@ body {
 
 .sub_body_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 18px;
-    color: #FFFFFF;
-}
-.sub_body_text a {
-    color: #FFFFFF;
-    text-decoration: none;
-}
-.sub_body_text a:hover {
-    text-decoration: none;
-    background-image: url(greeble/header_back.png);
-    background-position: center;
-    color: #000000;
+    font-size: 12px;
 }
 
 .foot_body_text {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
-    color: #FFFFFF;
 }
 
 .pan_body_text {
@@ -61,19 +42,10 @@ body {
 }
 
 .pan_title_text {
-    font-family: Arial, Verdana, Tahoma, sans;
-    font-size: 24px;
+    font-family: Verdana, Tahoma, sans;
+    font-size: 12px;
     font-weight: bold;
-    line-height: 35px;
-    color: #000000;
-}
-.pan_title_text a{
-    color: #000000;
-    text-decoration: none;
-}
-.pan_title_text a:hover{
-    color: #3B89A7;
-    text-decoration: none;
+    color: #204a87;
 }
 
 .footer_body_text {
@@ -88,9 +60,9 @@ body {
 
 .block_title_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
-    color: #FFFFFF;
+    color: #204a87;
 }
 
 .head_left {
@@ -108,170 +80,162 @@ body {
 }
 
 .sub_left {
-    background-image: url(greeble/header_back_left_alt.png);
-    height:35px;
-    width:23px;
+    background-image: url(sub_left.png);
+    height:27px;
+    width:11px;
 }
 
 .sub_mid {
-    background-image: url(greeble/header_back_alt.png);
-    height: 35px;
-    vertical-align: middle;
-    padding: 0px 2px 0px 0px;
+    background-image: url(sub_mid.png);
+    height:27px;
+    vertical-align: top;
+    padding: 4px 0px 0px 0px;
 }
 
 .sub_right {
-    background-color: #000000;
-    height:35px;
-    width:2px;
+    background-image: url(sub_right.png);
+    height:27px;
+    width:17px;
 }
 
 .foot_left {
-    height:20px;
-    width:0px;
+    background-image: url(sub_left.png);
+    height:27px;
+    width:11px;
 }
 
 .foot_mid {
-    background-color: #3B89A7;
-    border: 2px solid #000000;
-    height: 20px;
+    background-image: url(sub_mid.png);
+    height:27px;
+    vertical-align: top;
+    padding: 4px 0px 0px 0px;
+}
+
+.foot_right {
+    background-image: url(sub_right.png);
+    height:27px;
+    width:17px;
+}
+
+.but_left {
+    background-image: url(sub_left.png);
+    height:27px;
+    width:11px;
+}
+
+.but_mid {
+    background-image: url(sub_mid.png);
+    height:27px;
     vertical-align: middle;
     padding: 0px 0px 0px 0px;
 }
 
-.foot_right {
-    height:20px;
-    width:0px;
-}
-
-.but_left {
-    height: 24px;
-    width: 1px;
-}
-
-.but_mid {
-    background-image: url(greeble/header_back.png);
-    background-position: center;
-    height:24px;
-    vertical-align: middle;
-    padding: 0px 5px 0px 5px;
-    border: 1px solid #000000 !important;
-    border-collapse: none;
-}
-.but_mid:hover {
-    background-image: url(greeble/header_back_alt.png);
-    background-position: center;
-    color: #FFFFFF;
-}
-
 .but_right {
-    background-color: #000000;
-    height:24px;
-    width:0px;
+    background-image: url(sub_right.png);
+    height:27px;
+    width:17px;
 }
 
 .pan_ul {
-    background-image: url(greeble/header_back_left.png);
-    background-repeat: no-repeat;
-    height: 35px;
-    width: 23px;
+    background-image: url(block_up_left.png);
+    height: 29px;
+    width: 10px;
 }
 
 .pan_um {
-    background-image: url(greeble/header_back.png);
-    background-repeat: repeat-x;
-    height: 35px;
+    background-image: url(block_up_mid.png);
+    height: 29px;
 }
 
 .pan_ur {
-    background-color: #000000;
-    background-repeat: no-repeat;
-    height:35px;
-    width:2px;
-    font-size: 1px;
+    background-image: url(block_up_right.png);
+    height:29px;
+    width:12px;
 }
 
 .pan_ml {
-    background-color: #FFFFFF;
-    width:23px;
+    background-image: url(block_left.png);
+    width:10px;
 }
 
 .pan_body {
-    background-color: #FFFFFF;
-    padding: 3px 0px 0px 0px;
+    background-image: url(block_body.png);
+    padding: 3px 3px 3px 3px;
     font-family: Verdana, Tahoma, sans;
-    font-size: 14px;
+    font-size: 12px;
 }
 .pan_mr {
-    background-color: #FFFFFF;
-    width:2px;
-    font-size: 1px;
+    background-image: url(block_right.png);
+    width:12px;
 }
 
 .pan_bl {
-    background-color: #FFFFFF;
-    width:23px;
+    background-image: url(block_down_left.png);
+    height:14px;
+    width:10px;
 }
 
 .pan_bm {
-    background-color: #FFFFFF;
-    height: 4px;
+    background-image: url(block_down_mid.png);
+    height:14px;
 }
 
 .pan_br {
-    background-color: #FFFFFF;
-    width:1px;
-    font-size: 1px;
+    background-image: url(block_down_right.png);
+    height:14px;
+    width:12px;
 }
 
 /* Block */
 .block_ul {
-    background-image: url(greeble/header_back_left_alt.png);
-    height:35px;
-    width:23px;
+    background-image: url(block_up_left.png);
+    height:29px;
+    width:10px;
 } /* Upper Left */
 
 .block_um {
-    background-image: url(greeble/header_back_alt.png);
-    height:35px;
+    background-image: url(block_up_mid.png);
+    height:29px;
 } /* Top middle */
 
 .block_ur {
-    background-color: #000000;
-    height:35px;
-    width:2px;
-    font-size: 1px;
+    background-image: url(block_up_right.png);
+    height:29px;
+    width:12px;
 } /* Upper right */
 
 .block_ml {
-    background-color: #FFFFFF;
-    width:23px;
+    background-image: url(block_left.png);
+    width:10px;
 } /* Left  */
 
 .block_body {
-    background-color: #FFFFFF;
+    background-image: url(block_body.png);
     padding: 3px 3px 3px 3px;
     font-family: Verdana, Tahoma, sans;
-    font-size: 14px;
+    font-size: 12px;
 } /* body */
 
 .block_mr {
-    background-color: #FFFFFF;
-    font-size: 1px;
+    background-image: url(block_right.png);
+    width:12px;
 } /* right  */
 
 .block_bl {
-    background-color: #FFFFFF;
-    width:23px;
+    background-image: url(block_down_left.png);
+    height:14px;
+    width:10px;
 } /* bottom left */
 
 .block_bm {
-    background-color: #FFFFFF;
+    background-image: url(block_down_mid.png);
+    height:14px;
 } /* bottom middle  */
 
 .block_br {
-    background-color: #FFFFFF;
-    font-size: 1px;
+    background-image: url(block_down_right.png);
+    height:14px;
+    width:12px;
 } /* bottom right */
 
 /*
@@ -279,52 +243,60 @@ body {
 */
 /* Base Forum Table */
 .forum_base {
+    border: 1px #707070 solid;
     border-collapse: collapse;
 }
 
 .forum_board_readicon {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
 }
 
 .forum_board_linkicon {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
 }
 
 .forum_board_title {
-    background-color: #FFFFFF;
-    font-weight: bold;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_linktitle {
-    background-color: #FFFFFF;
-    font-weight: bold;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_linkdesc {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_desc {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     font-size: 12px;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_board_last {
-    background-color: #FFFFFF;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
 }
 
 .forum_board_topics {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     font-size: 12px;
 }
 
 .forum_board_posts {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     font-size: 12px;
 }
 
@@ -334,82 +306,85 @@ body {
 }
 
 .forum_thread_title {
-    background-color: #FFFFFF;
-    font-weight: bold;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_thread_icon {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
 }
 
 .forum_thread_last {
-    background-color: #FFFFFF;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
 }
 
 .forum_thread_author {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll_title {
-    background-color: #FFFFFF;
+    background-color: #b6d0e0;
     font-weight: bold;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
     padding: 4px;
 }
 
 .forum_topic_poll_option {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
     padding: 1px 1px 1px 1px;
 }
 
 .forum_topic_poll_votebar {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
 }
 
 .forum_poll_table {
+    border: 1px #707070 solid;
     border-collapse: collapse;
 }
 
 /* The set of buttons to edit a post, quote it, view the ip, etc. */
 .mod_set {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #707070;
     border-collapse: collapse;
-    margin: 4px;
 }
 
 .mod_set td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 2px 0px;
+	padding: 0px 0px 0px 0px;
 	border-style: none none none none;
-	background-color: #FFFFFF;
-	margin: 4px;
+	background-color: #b6d0e0;
 }
 
 /* Said button  */
 .forum_button {
     border-width: 0px;
     border-spacing: 0px;
-    padding: 2px;
+    padding: 0px;
     border-style: none;
     border-collapse: collapse;
-    margin-bottom: 4px;
 }
 
 /* cell thing, keeps everything in line */
 .forum_button td {
 	border-width: 0px 0px 0px 0px;
-	padding: 0px 0px 4px 0px;
+	padding: 0px 0px 0px 0px;
 	border-style: none none none none;
-	border-collapse: collapse;
 }
 
 .quote {
-    background-image: url(crystal/quote.png);
+    background-image: url(quote.png);
     background-repeat: no-repeat;
     border: 1px dashed black;
     padding: 5px;
@@ -418,9 +393,8 @@ body {
 
 .forum_button_text {
     font-family: Verdana, Tahoma, sans;
-    font-size: 12px;
+    font-size: 10px;
     color: #000000;
-    padding: 0px 5px 0px 5px;
 } /* button text */
 
 .forum_button_text :link {
@@ -434,7 +408,7 @@ body {
 }
 
 .forum_button_text :hover {
-    color: #FFFFFF;
+    color: #CCCCCC;
     text-decoration: none;
 }
 
@@ -448,10 +422,6 @@ body {
     font-size: 12px;
     font-weight: bold;
 } /* user name in post */
-.forum_user a {
-    font-size: 18px;
-    color: #000000;
-}
 
 .forum_body {
     font-family: Verdana, Tahoma, sans;
@@ -477,35 +447,35 @@ body {
 }
 
 .glow {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     text-align: center;
-    border-top: 1px solid #707070;
-    border-left: 1px solid #707070;
 }
 
 .glow_admin {
-    background-color: #FFFFFF;
-    background-image: url(crystal/adm_back.png);
+    background-color: #e4edf4;
+    background-image: url(adm_back.png);
     background-repeat: no-repeat;
+    border: 1px #707070 solid;
     text-align: center;
-    border-top: 1px solid #707070;
-    border-left: 1px solid #707070;
 }
 
 .glow_mod {
-    background-color: #FFFFFF;
-    text-align: center;
-    background-image: url(crystal/mod_back.png);
+    background-color: #e4edf4;
+    background-image: url(mod_back.png);
     background-repeat: no-repeat;
-    border-top: 1px solid #707070;
-    border-left: 1px solid #707070;
+    border: 1px #707070 solid;
+    text-align: center;
 }
 
 .forum_topic_content {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    background-image: url(forum_topic_content.png);
+    background-repeat: repeat-x;
+    border: 1px #707070 solid;
     height: auto;
     padding: 4px;
 }
@@ -514,7 +484,8 @@ body {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    border: 1px #707070 solid;
     padding: 4px;
     height: 1px;
 }
@@ -523,7 +494,8 @@ body {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #AAEEAA;
+    background-color: #b6d0e0;
+    border: 1px #707070 solid;
     padding: 4px;
     height: 1px;
 }
@@ -532,20 +504,27 @@ body {
     font-family: Verdana, Tahoma, sans;
     font-size: 24px;
     color: #000000;
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    background-image: url(forum_topic_content.png);
+    background-repeat: repeat-x;
+    border: 1px #707070 solid;
     height: auto;
     padding: 4px;
 }
 
 .forum_button_bar {
     padding: 0px;
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    background-image: url(forum_button_bar.png);
+    background-position: bottom;
+    background-repeat: repeat-x;
+    border: 1px #707070 solid;
     margin: 0px;
     height: 1px;
 }
 
 .forum_topic_buttonbar {
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
 }
 
 .forum_quickreply {
@@ -557,7 +536,9 @@ body {
     font-family: Verdana, Tahoma, sans;
     font-size: 12px;
     color: #000000;
-    background-color: #FFFFFF;
+    background-color: #e4edf4;
+    background-image: url(forum_topic_content.png);
+    background-repeat: repeat-x;
     border: 1px #707070 solid;
     padding: 4px;
 }
@@ -567,9 +548,7 @@ body {
     font-size: 12px;
     font-weight: bold;
     color: #000000;
-    background-color: #FFFFFF;
-    background-image: url(greeble/header_back_alt.png);
-    background-position: center;
+    background-color: #b6d0e0;
     border: 1px #707070 solid;
     padding: 2px;
 }
@@ -580,9 +559,8 @@ body {
 .tab_head_off a {
     text-decoration : none;
     border : 1px solid #000;
-    background-image: url(greeble/header_back.png);
-    background-position: center;
-    color: #000000;
+    background-image: url(block_body.png);
+    color: #204a87;
     float : left;
     margin-right : 4px;
     line-height: 13px;
@@ -592,18 +570,15 @@ body {
 }
 
 .tab_head_off a:hover {
-    background-color: #3B89A7;
-    background-image: none;
-    color: #FFFFFF;
-    text-decoration: none;
+    background-color: #b6d0e0;
 }
 
 .tab_head_on a {
     text-decoration : none;
     border : 1px solid #000;
-    background-color: #3B89A7;
-    color: #FFFFFF;
-    border-bottom: 1px solid #3B89A7;
+    background-color: #b6d0e0;
+    color: #204a87;
+    border-bottom: 1px solid #b6d0e0;
     margin-right : 4px;
     float : left;
     font-size: 10px;
@@ -628,19 +603,12 @@ body {
 
 .tab_contents {
     clear : both;
-    background-color: #3B89A7;
+    background-color: #b6d0e0;
     border: 1px #000 solid;
     border-top: 0;
-    color: #FFFFFF;
     font-family: sans-serif, Tahoma;
     font-size: 12px;
     padding-left: 2px;
-}
-.tab_contents a {
-    color: #FFFFFF;
-}
-.tab_contents a:hover {
-    color: #FFFFFF;
 }
 
 .menu {
@@ -661,11 +629,11 @@ body {
 }
 
 .panel {
-    padding: 2px;
+    
 }
 
 .block {
-    padding: 2px;
+    
 }
 
 .odd_cell {
@@ -676,9 +644,8 @@ body {
 .forum_page {
     height: 14px;
     border: 1px solid #707070;
-    background-color: #FFFFFF;
+    background-color: #b6d0e0;
     padding: 2px;
-    -moz-border-radius: 4px;
 }
 
 .page_spacer {
@@ -707,21 +674,11 @@ body {
 }
 
 .calendar_day {
-    background-image: url(greeble/header_back_alt.png);
-    background-position: center;
-    color: #FFFFFF;
+    background-color: #b6d0e0;
     border: 0px #000000 none;
     padding: 1px 1px 1px 1px;
     font-size: 20px;
     font-style: italic;
-}
-
-.main_body {
-    background-color: #FFFFFF;
-    border: 4px solid #000000;
-    padding: 4px;
-    margin-bottom: 4px;
-    -moz-border-radius: 24px 0px 24px 0px;
 }
 
 hr {
@@ -749,36 +706,22 @@ td {
 }
 
 textarea {
-    background-color: #FFFFFF;
-    color: #000000;
+    background-color: #EEEEEC;
+    color: #204a87;
     border: 1px solid #707070;
     font-family: Verdana, Tahoma, sans;
     font-size: 10pt;
 }
 
 input {
-    background-color:  #FFFFFF;
-    color: #000000;
+    background-color: #EEEEEC;
+    color: #204a87;
     border: 1px solid #707070;
 }
 
-input[type=button] {
-    background-image: url(greeble/header_back.png);
-    background-position: center;
-    color: #000000;
-    border: 1px solid #000000;
-}
-
-input[type=submit] {
-    background-image: url(greeble/header_back.png);
-    background-position: center;
-    color: #000000;
-    border: 1px solid #000000;
-}
-
 select {
-    background-color:  #FFFFFF;
-    color: #000000;
+    background-color: #EEEEEC;
+    color: #204a87;
     border: 1px solid #707070;
 }
 
@@ -786,15 +729,15 @@ body font {
     color: #000000;
 }
 :link {
-    color: #995500;
+    color: #204a87;
     text-decoration: none;
 }
 :visited {
-    color: #995500;
+    color: #204a87;
     text-decoration: none;
 }
 a:hover {
-    color: #995500;
+    color: #75507b;
     text-decoration: underline;
 }
 

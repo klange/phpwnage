@@ -22,13 +22,8 @@ session_start(); // Always ensure a session.
 require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
-<<<<<<< TREE
 $_PWNVERSION['minor'] = 9;
-$_PWNVERSION['extra'] = "pre";
-=======
-$_PWNVERSION['minor'] = 8;
-$_PWNVERSION['extra'] = "2";
->>>>>>> MERGE-SOURCE
+$_PWNVERSION['extra'] = "a1";
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
@@ -107,9 +102,9 @@ function setTheme() {
 	} else {
 		$icons = $themes[1];
 	}
-	$theme_exists = @include "icon_themes/$icons.php";
+	$theme_exists = @include "themes/icons/$icons/icons.php";
     if (!$theme_exists) {
-	    include "icon_themes/{$_DEFAULT_ICONS}.php";
+	    include "themes/icons/{$_DEFAULT_ICONS}/icons.php";
 	}
 	if (!isset($themes[2]) || $themes[2] == "") {
 	    $language = $_DEFAULT_LANG;
@@ -599,7 +594,7 @@ END;
 function themeList($selected) {
     global $theme;
 	$themeList = "<select name=\"theme\">";
-	$myDirectory = opendir("."); // Open root
+	$myDirectory = opendir("themes/styles/"); // Open root
 	while($entryName = readdir($myDirectory)) {
 		$dirArray[] = $entryName; // Get our list of files
 	}
@@ -611,8 +606,8 @@ function themeList($selected) {
     }
 	for($index=0; $index < $indexCount; $index++) {
 		if (substr("$dirArray[$index]", 0, 1) != "."){
-			if (strstr($dirArray[$index],".css")) {
-				$themeName = str_replace(".css","",$dirArray[$index]);
+			if (!strstr($dirArray[$index],".")) {
+				$themeName = $dirArray[$index];
 				if ($themeName == $selected) {
 					$themeList .= "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
@@ -627,7 +622,7 @@ function themeList($selected) {
 function iconsList($selected) {
     global $icons;
 	$themeList = "<select name=\"icons\">";
-	$myDirectory = opendir("icon_themes"); // Open root
+	$myDirectory = opendir("themes/icons/"); // Open root
 	while($entryName = readdir($myDirectory)) {
 		$dirArray[] = $entryName; // Get our list of files
 	}
@@ -639,8 +634,8 @@ function iconsList($selected) {
     }
 	for($index=0; $index < $indexCount; $index++) {
 		if (substr("$dirArray[$index]", 0, 1) != "."){
-			if (strstr($dirArray[$index],".php")) {
-				$themeName = str_replace(".php","",$dirArray[$index]);
+			if (!strstr($dirArray[$index],".")) {
+				$themeName = $dirArray[$index];
 				if ($themeName == $selected) {
 					$themeList .= "\n<option value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
@@ -690,7 +685,7 @@ function langList($selected)
 function colorList($selected) {
     global $imageroot;
 	$themeList = "<select name=\"color\" style=\"height: 3ex\">";
-	$myDirectory = opendir("colors"); // Open colors folder
+	$myDirectory = opendir("themes/backgrounds/"); // Open colors folder
 	while($entryName = readdir($myDirectory)) {
 		$dirArray[] = $entryName; // Get our list of files
 	}
@@ -705,9 +700,9 @@ function colorList($selected) {
 			if (strstr($dirArray[$index],".gif")) {
 				$themeName = str_replace(".gif","",$dirArray[$index]);
 				if ($themeName == $selected) {
-					$themeList .= "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
+					$themeList .= "\n<option style=\"height: 30; background: url('themes/backgrounds/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\" selected=\"selected\">" . $themeName . "</option>";
 				} else {
-					$themeList .= "\n<option style=\"height: 30; background: url('colors/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\">" . $themeName . "</option>";
+					$themeList .= "\n<option style=\"height: 30; background: url('themes/backgrounds/" . $dirArray[$index] . "'); background-repeat: no-repeat;\" value=\"" . $themeName . "\">" . $themeName . "</option>";
 				}
 			}
 		}

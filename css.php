@@ -19,7 +19,7 @@
 
 */
 print "<style type=\"text/css\">\n";
-print "body {background-image: url(colors/" . $imageroot . ".gif);} \n";
+print "body {background-image: url(themes/backgrounds/" . $imageroot . ".gif);} \n";
 print "</style>\n";
-print "<link rel=\"stylesheet\" type=\"text/css\" href=\"$theme.css\" />";
+print "<link rel=\"stylesheet\" type=\"text/css\" href=\"themes/styles/$theme/theme.css\" />";
 ?>

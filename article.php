@@ -30,13 +30,8 @@ if ($_POST[action]){
     if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
     }
-<<<<<<< TREE
-    mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
-    mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . $_POST['title'] . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
-=======
     mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
->>>>>>> MERGE-SOURCE
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 
