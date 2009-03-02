@@ -497,14 +497,14 @@
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_admin.png);
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
 }
 .glow_mod {
     background-color: #e6eaed;
     border: 1px #707070 solid;
     text-align: center;
     background-image: url(aeolus/glow_mod.png);
-    background-repeat: no-repeat;
+    background-repeat: repeat-x;
 }
 
 
