@@ -1160,6 +1160,7 @@ END;
 if ((!isset($_GET['view']) || $_GET['view'] == "") && 
    (!isset($_GET['do']) || $_GET['do'] == ""))  {
     $pwnversion = $_PWNVERSION['major'] . "_" . $_PWNVERSION['minor'] . $_PWNVERSION['extra'];
+    $e_level = error_reporting(1);
     $update_data = file_get_contents("http://updates.phpwnage.com/updates_{$pwnversion}");
     // Make sure this is valid. If it has <body, it's not, because it's either
     // O-G's 404 page or someone else with a man-in-the-middle (Not necessarily intentional
@@ -1170,6 +1171,7 @@ if ((!isset($_GET['view']) || $_GET['view'] == "") &&
         // In which case, we just give the dump message.
         $content = $_PWNDATA['admin']['update_failed'];
     }
+    error_reporting($e_level);
     drawBlock($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['og_updates'],$content);
 }
 
