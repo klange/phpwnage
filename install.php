@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Fresh Installation Script)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -63,7 +63,7 @@ input {
 <table class="borderless_table" width="100%">
 END;
 
-$_PWNVERSION = "1.8";
+$_PWNVERSION = "1.9";
 
 // Our replacement to file_put_contents so that PHPwnage works with PHP 4.
 function file_put_contents_debug($file_name, $content) {
@@ -579,6 +579,7 @@ CREATE TABLE  `{$_PREFIX}users` (
   `sbonforum` int(11) NOT NULL default '1',
   `color` varchar(50) collate latin1_general_ci NOT NULL default '',
   `theme` varchar(50) collate latin1_general_ci NOT NULL default '',
+  `rich_edit` int(11) NOT NULL default '1',
   PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;

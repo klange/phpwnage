@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Main Index, News Listing)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Generald Public License as published by
@@ -23,7 +23,7 @@
 // Check for and merge the configuration file
 $config_exists = @include 'config.php';
 if (!$config_exists) {
-    die("<meta http-equiv=\"Refresh\" content=\"1;url=fresh_install.php\" />Error: Not installed. Redirecting to installer.");
+    die("<meta http-equiv=\"Refresh\" content=\"1;url=install.php\" />Error: Not installed. Redirecting to installer.");
 }
 
 
