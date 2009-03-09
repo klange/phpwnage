@@ -58,7 +58,7 @@ input {
 </style>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 </head>
-<body background="colors/crystal.gif">
+<body background="themes/backgrounds/crystal.gif">
 <div align="center"><img src="logo.png" alt="PHPwnage" /></div>
 <table class="borderless_table" width="100%">
 END;
