@@ -69,7 +69,7 @@ END;
         $content = $content . <<<END
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_content">
-<textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea></td></tr>
+<textarea name="content" style="width: 95%;" rows="5" cols="80" class="content_editor"></textarea></td></tr>
 <tr><td class="forum_topic_sig"><input type="submit" name="sub" value="{$_PWNDATA['forum']['submit_post']}" /></td></tr>
 </table>
 </form>
