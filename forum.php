@@ -301,6 +301,12 @@ if ($_POST['action'] == "edit_profile") {
         $sbon = 0;
     }
     mysql_query("UPDATE `{$_PREFIX}users` SET `sbonforum` = " . $sbon . " WHERE `{$_PREFIX}users`.`id` =" . $userid);
+    if ($_POST['richedit'] == "on") {
+        $reon = 1;
+    } else {
+        $reon = 0;
+    }
+    mysql_query("UPDATE `{$_PREFIX}users` SET `rich_edit` = " . $reon . " WHERE `{$_PREFIX}users`.`id` =" . $userid);
     if ($_POST['apass'] != "") {
 	    if ($_POST['apass'] == $_POST['cpass']) {
 	        mysql_query("UPDATE `{$_PREFIX}users` SET `password` = '" . md5($_POST['apass']) . "' WHERE `{$_PREFIX}users`.`id` =" . $userid);
@@ -1012,7 +1018,7 @@ if ($_GET['do'] == "newpm") {
 <tr><td class="forum_topic_sig">{$_PWNDATA['pm']['subject']}</td>
 <td class="forum_topic_sig"><input type="text" name="subj" style="width:100%" value="$subjto" /></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['pm']['body']}</td></tr>
-<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%;" cols="20">$quoted</textarea></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%;" cols="20" class="content_editor">$quoted</textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['pm']['send']}" name="sub" /></td></tr>
 </table>
 END;
@@ -1311,7 +1317,7 @@ END;
     <form action="forum.php" method="post" name="form_{$row['id']}">
         <input type="hidden" name="action" value="edit_reply" />
         <table class="forum_base" width="100%">
-            <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">{$post_bb}</textarea></td></tr>
+            <tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" class="content_editor" id="content_{$row['id']}">{$post_bb}</textarea></td></tr>
             <tr><td class="forum_topic_sig"><input type="submit" value="{$_PWNDATA['forum']['save_changes']}" name="sub" /></td></tr>
         </table>
         <input type="hidden" name="id" value="{$row['id']}" />
@@ -1411,7 +1417,7 @@ END;
         $block_content .= "<input type=\"hidden\" name=\"topic\" value=\"" . $topic['id'] . "\" />";
         $block_content .= "<input type=\"hidden\" name=\"user\" value=\"" . $user['id'] . "\" />";
         $block_content .= <<<END
-<textarea name="content" style="width: 95%;" rows="5" cols="80"></textarea><br />
+<textarea name="content" style="width: 95%;" rows="5" cols="80" class="content_editor"></textarea><br />
 <input type="submit" name="sub" value="{$_PWNDATA['forum']['submit_post']}" />
 </form>
 </div>
@@ -1442,7 +1448,7 @@ if ($_GET['do'] == "newtopic") {
 <tr><td class="forum_topic_content" width="300">{$_PWNDATA['forum']['subject']}</td>
 <td class="forum_topic_content"><input type="text" name="subj" style="width:100%" /></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['forum']['body']}</td></tr>
-<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80"></textarea></td></tr>
+<tr><td class="forum_topic_sig" colspan="2"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" class="content_editor"></textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" /></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
@@ -1500,7 +1506,7 @@ if ($_GET['do'] == "newreply") {
 <input type="hidden" name="action" value="new_reply" />
 <table class="forum_base" width="100%">
 <tr><td class="forum_topic_content">
-<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">$cont</textarea></td></tr>
+<textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" class="content_editor">$cont</textarea></td></tr>
 <tr><td class="forum_topic_sig">
 <input type="submit" value="{$_PWNDATA['forum']['submit_post']}" name="sub" />
 </td></tr>
@@ -1546,7 +1552,7 @@ if ($_GET['do'] == "editreply") {
 <form action="forum.php" method="post" name="form">
 <input type="hidden" name="action" value="edit_reply" />
 <table class="forum_base" width="100%">
-<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80">
+<tr><td class="forum_topic_content"><textarea rows="11" name="content" style="width:100%; font-family:Tahoma; font-size:10pt" cols="80" class="content_editor">
 END;
     $post_bb = str_replace("\"","&quot;",$reply['content']);
     $post_bb = str_replace("<","&lt;",$post_bb);
@@ -1589,6 +1595,11 @@ if ($_GET['do'] == "editprofile") {
     } else {
         $sbon = "";
     }
+    if ($user['rich_edit'] == 1) {
+        $reon = "checked";
+    } else {
+        $reon = "";
+    }
     $theme_list = themeList($u_theme);
     $color_list = colorList($u_color);
     $icons_list = iconsList($u_icons);
@@ -1621,11 +1632,12 @@ END;
 END;
     $block_content .= printPoster('sig') . <<<END
   </td></tr>
-  <tr><td class="forum_topic_sig" colspan="2"><textarea rows="5" name="sig" style="width:100%" cols="80">$sig</textarea></td></tr>
+  <tr><td class="forum_topic_sig" colspan="2"><textarea rows="5" name="sig" style="width:100%" cols="80" class="content_editor">$sig</textarea></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['avatar']}</td>
   <td class="forum_topic_sig"><input type="text" name="avatar" value="$ava" style="width: 100%" /></td></tr>
   <tr><td class="forum_thread_title" colspan="2"><b>{$_PWNDATA['profile']['settings']}</b></td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['sidebar']}</td><td class="forum_topic_sig"><input name="sbonforum" type="checkbox" $sbon /> {$_PWNDATA['profile']['sidebar']}</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['rich_edit']}</td><td class="forum_topic_sig"><input name="richedit" type="checkbox" $reon /> {$_PWNDATA['profile']['rich_edit']}</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['theme']}</td><td class="forum_topic_sig">$theme_list</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['color']}</td><td class="forum_topic_sig">$color_list</td></tr>
   <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['icons']}</td><td class="forum_topic_sig">$icons_list</td></tr>
