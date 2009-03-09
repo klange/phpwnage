@@ -328,7 +328,7 @@ print "\n<meta http-equiv=\"Refresh\" content=\"1;url=install.php?do=page3\">";
 
 if ($_GET['do'] == 'page3')
 {
-$this_dir = str_replace("//","/", getURL() . "/"); // Current running directory
+$this_dir = str_replace("http:/","http://",str_replace("//","/", getURL() . "/")); // Current running directory
 $print_what = <<<END
 <form action="install.php?do=submit" method="post"><input type="hidden" name="do" value="install" />
 <table width="100%" class="installer_table">
