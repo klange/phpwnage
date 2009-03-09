@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Module Loader)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';require 'includes.php';
+require 'config.php';
+require 'includes.php';
 if (strstr($_GET['m'],".") || strstr($_GET['m'],"/")) {
     messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_invalid']);
 }
@@ -38,8 +39,10 @@ print <<<END
 
 <td valign="top">
 <table class="borderless_table" width="100%">
-END;
-drawBlocK($mod['title'],$mod['right_inner'],mod_print());
+END;
+
+drawBlocK($mod['title'],$mod['right_inner'],mod_print());
+
 print <<<END
 	</table>
         </td>

@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Custom Page Module)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -49,7 +49,9 @@ print <<<END
 <td height="269" valign="top">
 <table class="borderless_table" width="100%">
 END;
-drawBlock($page['display_name'],$page['author'],$page['content']);
+drawBlock($page['display_name'],$page['author'],$page['content']);
+
+
 if ($user['level'] >= $site_info['mod_rank']) {
     $content_temp = str_replace(">","&gt;",str_replace("<","&lt;",$page['content']));
     $content = <<<END

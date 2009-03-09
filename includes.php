@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Global Includes, general functions)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
