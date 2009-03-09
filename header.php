@@ -2,7 +2,7 @@
 /*
 	This file is part of PHPwnage (Main Header)
 
-	Copyright 2008 Kevin Lange <klange@oasis-games.com>
+	Copyright 2009 Kevin Lange <klange@oasis-games.com>
 
 	PHPwnage is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -37,7 +37,44 @@ print <<<END
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1252" />
 <meta name="keywords" content="PHPwnage, PHP, php, CMS, forum, Forum, news, calendar, Oasis-Games" /> 
 $FAVMETA
-<link rel="alternate" type="application/rss+xml" title="$SITETITLE" href="/rss.php" /></head>
+<link rel="alternate" type="application/rss+xml" title="$SITETITLE" href="/rss.php" />
+END;
+if ($user['level'] < 1 or $user['rich_edit']) {
+print <<<END
+<script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+tinyMCE.init({
+	theme : "advanced",
+	mode : "textareas",
+	plugins : "bbcode",
+	editor_selector : "content_editor",
+	theme_advanced_toolbar_location : "external",
+	theme_advanced_buttons1 : "",
+	theme_advanced_buttons2 : "",
+	theme_advanced_buttons3 : "",
+	theme_advanced_resize_horizontal : false,
+	theme_advanced_resizing : true,
+	theme_advanced_resizing_use_cookie : false,
+	theme_advanced_path : false,
+	theme_advanced_statusbar_location : "bottom",
+	entity_encoding : "raw",
+	add_unload_trigger : false,
+	remove_linebreaks : false,
+	inline_styles : false,
+	relative_urls : false,
+	convert_fonts_to_spans : false
+});
+//]]>
+</script>
+<style type="text/css">
+.mceExternalToolbar {
+    display: none !important;
+}
+</style>
+END;
+}
+print <<<END</head>
 
 <body>
 
