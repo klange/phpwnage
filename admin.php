@@ -444,7 +444,7 @@ END;
     $content .= <<<END
 </select></td></tr>
 <tr><td colspan="2" class="forum_thread_title">{$_PWNDATA['admin']['forms']['article_content']}</td></tr>
-<tr><td colspan="2" class="forum_topic_sig"><textarea rows="6" name="content" style="width:100%;" cols="80" ></textarea></td></tr>
+<tr><td colspan="2" class="forum_topic_sig"><textarea rows="6" name="content" style="width:100%;" cols="80" class="content_editor"></textarea></td></tr>
 <tr><td colspan="2" class="forum_topic_sig"><input type="submit" value="{$_PWNDATA['admin']['forms']['article_add']}" /></td></tr></table></form>
 END;
     drawBlock("{$_PWNDATA['admin']['forms']['article_add']}","{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']),$content);
