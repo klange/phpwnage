@@ -289,7 +289,6 @@ $data = $data . <<<END
 
 \$_POSTSPERPAGE = 10;    // Number of posts per page. This should move to a User Option!
 \$_THREADSPERPAGE = 10;  // Same. Threads per page in viewforum (new in 1.8)
-\$_CHECKPANDEMIC = false; // Check Pandemic status?
 \$_CONFIG_MAIL = false;   // Should we send an email? This is buggy.
 \$_IMAGESPERPAGE = 10;  // Images per page on the gallery
 \$_DEFAULT_THEME = "crystal"; // Default theme
