@@ -206,7 +206,7 @@ if ($mode == "add") {
 END;
     $content = $content . printPoster("content");
     $content = $content . <<<END
-<textarea rows="11" name="content" id="content" style="width:100%;" cols="20"></textarea></td></tr>
+<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor"></textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" /></td></tr>
 </table>
@@ -238,7 +238,7 @@ if ($mode == "edit") {
 END;
     $content = $content . printPoster("content");
     $content = $content . <<<END
-<textarea rows="11" name="content" id="content" style="width:100%;" cols="20">$content</textarea></td></tr>
+<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor">$content</textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" /></td></tr>
 </table>
@@ -258,5 +258,6 @@ print <<<END
         </td>
   </tr>
 </table>
-END;require "footer.php";
+END;
+require "footer.php";
 ?>

@@ -156,7 +156,7 @@ if ($_GET['do'] != "img") {
             <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
             <table class="forum_base" width="100%">
                 <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td></tr>
-                <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80"></textarea></td></tr>
+                <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor"></textarea></td></tr>
                 <tr><td class="forum_topic_sig">{$_PWNDATA['gallery']['image_file']}</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
                 <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['upload_button']}" /></td></tr>
             </table>
@@ -300,7 +300,7 @@ END;
     <input type="hidden" name="id" value="{$image['id']}" />
     <table class="forum_base" width="100%">
         <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" value="{$image['name']}"/></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80">{$image['desc']}</textarea></td></tr>
+        <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor">{$image['desc']}</textarea></td></tr>
         <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['save_image']}" /></td></tr>
     </table>
 </form>
