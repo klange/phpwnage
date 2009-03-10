@@ -651,7 +651,7 @@ $adminpass = md5($_POST['site_admin_pass']);
 mysql_query("INSERT INTO `{$_PREFIX}users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding generic news item...</div>\n";
 $time = time();
-mysql_query("INSERT INTO `{$_PREFIX}news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://oasis-games.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
+mysql_query("INSERT INTO `{$_PREFIX}news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://phpwnage.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding navigation block...</div>\n";
 mysql_query("INSERT INTO `{$_PREFIX}blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Installation complete! Moving to last page...</div>\n";
