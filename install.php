@@ -204,8 +204,8 @@ under a specific license which can be found in the file 'recaptchalib.php'.<br /
 This library is provided <i>as-is</i> directly from the ReCAPTCHA web site.<br />
 <br />
 <b>TineMCE</b><br />
-The TinyMCE Javascript WYSIWYG editor is released uner the terms of the Lesser<br />
-GNU General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
+The TinyMCE Javascript WYSIWYG editor is released uner the terms of the GNU<br />
+Lesser General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
 <br />
 By pressing "Continue", you agree to and accept these licenses.
 <p align="center"><input type="submit" value="Continue" /></p>
@@ -369,6 +369,16 @@ $print_what = <<<END
     <td width="50%" valign="middle" align="right"><b>Administrator Password</b><br />
     <font size="2">The password you would like to use to log in to your account. cAsE sEnSiTiVe</font></td>
     <td width="50%" valign="middle" align="right"><input type="password" name="site_admin_pass" style="width: 100%" value="" /></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="middle" align="right"><b>ReCAPTCHA Public Key</b><br />
+    <font size="2">ReCAPTCHA public encryption key. <i>(Optional)</i></font></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="re_pub" style="width: 100%" value="" /></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="middle" align="right"><b>ReCAPTCHA Private Key</b><br />
+    <font size="2">ReCAPTCHA private encryption key. <i>(Optional)</i></font></td>
+    <td width="50%" valign="middle" align="right"><input type="text" name="re_priv" style="width: 100%" value="" /></td>
   </tr>
   <tr>
     <td width="100%" valign="top" colspan="2" align="center">
@@ -649,7 +659,8 @@ END;
 mysql_query($query);
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Table set up complete.</div>\n";
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Loading site infomration...</div>\n";
-$info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '" . $_POST['site_name'] . "', '" . $_POST['site_copyright'] . "', '" . $_POST['site_description'] . "', '" . time() . "', '" . $_POST['site_url'] . "', 'logo.png', 3, 2, 0, NULL, NULL, 'msn,yahoo,aim,icq,xfire,live','MSN,Yahoo,AIM,ICQ,xFire,Live');";
+$captcha_mode = (strlen($_POST['re_pub']) > 0) ? 2 : 0;
+$info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '{$_POST['site_name']}', '{$_POST['site_copyright']}', '{$_POST['site_description']}', '" . time() . "', '{$_POST['site_url']}', 'logo.png', 3, 2, $captcha_mode, '{$_POST['re_pub']}', '{$_POST['re_priv']}', 'msn,yahoo,aim,icq,xfire,live','MSN,Yahoo,AIM,ICQ,xFire,Live');";
 $result = mysql_query($info);
 print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding root user...</div>\n";
 $adminname = $_POST['site_admin_name'];
