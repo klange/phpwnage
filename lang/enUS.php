@@ -501,7 +501,7 @@ $_PWNDATA['forum']['posted_in'] = "Posted in";
 $_PWNDATA['forum']['delete_confirm'] = "Are you sure?";
 $_PWNDATA['forum']['delete_confirm_accept'] = "Delete";
 $_PWNDATA['forum']['board_weblink'] = "Web Link";
-$_PWNDATA['forum']['secimg'] = "You must have images enabled to register.";
+$_PWNDATA['forum']['secimg'] = "[If you see this, there was an error creating the CAPTCHA image or your browser does not support images.]";
 $_PWNDATA['forum']['recaptchafail'] = "ReCAPTCHA response was incorrect. Try again.";
 
 $_PWNDATA['forum']['modtools']['splittopic'] = "Split Topic";
