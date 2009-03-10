@@ -657,21 +657,26 @@ CREATE TABLE `{$_PREFIX}images` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Table set up complete.</div>\n";
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Loading site infomration...</div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Table set up complete.</div></div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Loading site infomration...</div></div>\n";
 $captcha_mode = (strlen($_POST['re_pub']) > 0) ? 2 : 0;
 $info = "INSERT INTO `{$_PREFIX}info` VALUES (1, '{$_POST['site_name']}', '{$_POST['site_copyright']}', '{$_POST['site_description']}', '" . time() . "', '{$_POST['site_url']}', 'logo.png', 3, 2, $captcha_mode, '{$_POST['re_pub']}', '{$_POST['re_priv']}', 'msn,yahoo,aim,icq,xfire,live','MSN,Yahoo,AIM,ICQ,xFire,Live');";
 $result = mysql_query($info);
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding root user...</div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding root user...</div></div>\n";
 $adminname = $_POST['site_admin_name'];
 $adminpass = md5($_POST['site_admin_pass']);
 mysql_query("INSERT INTO `{$_PREFIX}users` (`name`, `password`, `level`, `email`)  VALUES ('$adminname', '$adminpass', 3, '$conf_email');");
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding generic news item...</div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding generic news item...</div></div>\n";
 $time = time();
 mysql_query("INSERT INTO `{$_PREFIX}news` VALUES (null, 'Welcome to PHPwnage!', 'Welcome to your new PHPwnage site! Thank you for choosing PHPwnage for your CMS needs. If you have any problems or questions, stop on over at [url=http://phpwnage.com/]our home page[/url]. We are ready to assist anyone who needs help with PHPwnage.', '$time', 'PHPwnage', 0);");
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding navigation block...</div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Adding navigation block...</div></div>\n";
 mysql_query("INSERT INTO `{$_PREFIX}blocks` VALUES (null, 'Navigation', '<a href=\"index.php\">Home</a><br />\n<a href=\"admin.php\">Admin</a><br />\n<a href=\"mobile.php\">Mobile</a><br />\n<a href=\"rss.php\">RSS</a><br />\n<a href=\"forum.php\">Forum</a><br />\n<a href=\"calendar.php\">Calendar</a><br />\n<a href=\"modules.php?m=members\">Member List</a><br />\n<a href=\"gallery.php\">Image Gallery</a>');");
-print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Installation complete! Moving to last page...</div>\n";
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Creating generic sample forums...</div></div>\n";
+mysql_query("INSERT INTO `{$_PREFIX}categories` VALUES (NULL , 0, 'Forum');");
+mysql_query("INSERT INTO `{$_PREFIX}boards` VALUES (NULL , 'Board', 'Generic Forum Board', 0, 1, 0, 1, 1, 'NONE');");
+mysql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title`, `has_poll`, `poll_id` ) VALUES (NULL , 1, 1, 'Welcome to PHPwnage!', 0, 0 );");
+mysql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip`) VALUES ( NULL , 1, 1, 'Welcome to your new [b]PHPwnage Forum[/b]!' , " . time() . " , '127.0.0.1');");
+print "<div align=\"center\" style=\"width: 100%\"><div align=\"center\" style=\"width: 80%;\">Installation complete! Moving to last page...</div></div>\n";
 print "\n<meta http-equiv=\"Refresh\" content=\"1;url=install.php?do=page4\">";
 }
 
