@@ -569,6 +569,7 @@ CREATE TABLE  `{$_PREFIX}topics` (
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;
 mysql_query($query);
+$time = time();
 $query = <<<END
 CREATE TABLE  `{$_PREFIX}users` (
   `id` int(11) NOT NULL auto_increment,
@@ -583,6 +584,7 @@ CREATE TABLE  `{$_PREFIX}users` (
   `color` varchar(50) collate latin1_general_ci NOT NULL default '',
   `theme` varchar(50) collate latin1_general_ci NOT NULL default '',
   `rich_edit` int(11) NOT NULL default '1',
+  `time` varchar(100) collate latin1_general_ci NOT NULL default '{$time}',
   PRIMARY KEY `id` (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 END;

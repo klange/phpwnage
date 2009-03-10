@@ -100,6 +100,7 @@ $_PWNDATA['profile']['color'] = "Background";
 $_PWNDATA['profile']['icons'] = "Icon Theme";
 $_PWNDATA['profile']['language'] = "Language";
 $_PWNDATA['profile']['rich_edit'] = "Rich Editor";
+$_PWNDATA['profile']['registered_on'] = "Joined on";
 
 // Article editing
 $_PWNDATA['articles']['edit'] = "Article Edited Successfully";

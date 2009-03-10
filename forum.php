@@ -359,7 +359,8 @@ if ($_POST['action'] == "newuser") {
             $message .= $_PWNDATA['forum']['send_email_failed'] . "<br />";
         }
     }
-    mysql_query("INSERT INTO `{$_PREFIX}users` ( `id` , `name` , `email` , `password` , `sig` , `avatar` ) VALUES ( NULL , '" . $name . "', '" . $email . "', '" . md5($pass) . "', '', '' );");
+    $time = time();
+    mysql_query("INSERT INTO `{$_PREFIX}users` ( `id` , `name` , `email` , `password` , `sig` , `avatar` , `time` ) VALUES ( NULL , '{$name}', '{$email}', '" . md5($pass) . "', '', '', '{$time}' );");
     $_POST['action'] = "";
     $message .= $_PWNDATA['forum']['create_account_success'];
     messageRedirect($_PWNDATA['forum_page_title'],$message,"forum.php?do=login");
@@ -1675,13 +1676,15 @@ if ($_GET['do'] == "viewprofile") {
     $im_values = explode(",",$vuser['ims']);
     $im_table = array_combine($im_names,$im_titles);
     $i = 0;
-    $row_span = 4 + count($im_names);
+    $row_span = 5 + count($im_names);
+    $reg_date = date("M j, Y",$vuser['time']);
     $block_content .= <<<END
     <table class="forum_base" width="100%">
     <tr><td class="forum_profile_user" align="center">$ava</td><td class="forum_profile_user">$uname</td></tr>
     <tr><td class="forum_topic_sig" width="300">$modstatus</td>
     <td class="forum_topic_sig" rowspan="11" valign="top">{$_PWNICONS['profile']['quote_left']}$sig{$_PWNICONS['profile']['quote_right']}</td></tr>
   <tr><td class="forum_topic_sig">$posts {$_PWNDATA['forum']['posts']}</td></tr>
+  <tr><td class="forum_topic_sig">{$_PWNDATA['profile']['registered_on']} {$reg_date}</td></tr>
   <tr><td class="forum_thread_title"><b>{$_PWNDATA['profile']['messaging']}:</b></td></tr>
 END;
     foreach ($im_table as $im_name => $im_title) {
