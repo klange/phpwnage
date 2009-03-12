@@ -19,8 +19,7 @@
 
 */
 
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);

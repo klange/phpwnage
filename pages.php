@@ -18,8 +18,7 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 
 if ($_POST['action']){
     if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {

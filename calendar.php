@@ -18,8 +18,8 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';
-require 'includes.php';
+
+require_once('includes.php');
 
 standardHeaders($site_info['name'] . " :: " . $_PWNDATA['cal']['name'],true);
 

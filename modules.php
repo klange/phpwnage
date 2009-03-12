@@ -18,8 +18,7 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 if (strstr($_GET['m'],".") || strstr($_GET['m'],"/")) {
     messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_invalid']);
 }

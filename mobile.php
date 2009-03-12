@@ -18,8 +18,7 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 
 if (isset($user['name'])) {
     $loginout = "<a href=\"mobile.php?do=logoff\">{$_PWNDATA['forum']['logout']}</a>";

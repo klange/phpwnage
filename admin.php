@@ -19,8 +19,7 @@
 
 */
 
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 // Jump to the login page instead of yelling and screaming.
 if (isset($_SESSION['sess_id'])) {
     if ($user['level'] < $site_info['mod_rank']) {

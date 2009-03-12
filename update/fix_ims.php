@@ -1,6 +1,5 @@
 <?php
-require 'config.php';
-require 'includes.php';
+require_once('../includes.php');
 if (!isset($site_info['ims'])) {
  mysql_query("ALTER TABLE `{$_PREFIX}info` ADD COLUMN `ims` TEXT  DEFAULT NULL AFTER `recap_priv`;");
  mysql_query("UPDATE `{$_PREFIX}info` SET `ims`='msn,yahoo,aim,icq,xfire,live' WHERE `id`=1;");

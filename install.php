@@ -299,29 +299,6 @@ $data = $data . <<<END
 \$_DEFAULT_ICONS = "tango"; // Icons
 \$_DEFAULT_COLOR = "crystal"; // Background
 \$_DEFAULT_LANG = "enUS"; // Language;
-
-// DO NOT EDIT ANYTHING BELOW THIS LINE
-// ------------------------------------------------------------------------------------------------------------
-
-\$mtime = microtime();
-\$mtime = explode(" ",\$mtime);
-\$mtime = \$mtime[1] + \$mtime[0];
-\$starttime = \$mtime;
-
-\$db_fail = false;
-\$db = mysql_connect(\$conf_server,\$conf_user,\$conf_password) or 
-die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">We've experienced an internal error. Please contact " . \$conf_email . ".<br />\n(Failed to connect to SQL server.)</span>"); 
-mysql_select_db(\$conf_database, \$db) or \$db_fail = true; 
-
-putenv("TZ=America/New_York");
-
-\$banlist = mysql_query("SELECT * FROM `{\$_PREFIX}banlist`");
-while (\$ban = mysql_fetch_array(\$banlist)) {
-if (\$_SERVER['REMOTE_ADDR'] == \$ban['ip']) {
-die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
-}
-}
-
 ?>
 END;
 // <?
@@ -399,7 +376,7 @@ die();
 
 if ($_POST['do'] == 'install')
 {
-require 'config.php';
+require_once("includes.php");
 if ($db_fail) {
 // It appears that the database doesn't exist. We will try to make it.
 mysql_query("CREATE DATABASE `$conf_database` ;") or databaseFault();

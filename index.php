@@ -19,14 +19,6 @@
 
 */
 
-
-// Check for and merge the configuration file
-$config_exists = @include 'config.php';
-if (!$config_exists) {
-    die("<meta http-equiv=\"Refresh\" content=\"1;url=install.php\" />Error: Not installed. Redirecting to installer.");
-}
-
-
 require 'includes.php'; // Important stuff.
 
 $dump_limit = -1;

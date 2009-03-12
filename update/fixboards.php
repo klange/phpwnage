@@ -3,8 +3,7 @@
     This will later be put into the admin panel as part
     of the 1.8.1 update.
 */
-require 'config.php';
-require 'includes.php';
+require_once('../includes.php');
 
 standardHeaders("Board Order Fixer",false);
 

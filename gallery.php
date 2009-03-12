@@ -19,8 +19,7 @@
 
 */
 
-require 'config.php';
-require 'includes.php';
+require_once('includes.php');
 
 function generateThumbnail($file, $type) {
     $_SIZE = 120;

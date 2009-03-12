@@ -19,11 +19,39 @@
 
 */
 session_start(); // Always ensure a session.
-require "lang/{$_DEFAULT_LANG}.php"; // Default language before we've processed users.
+$config_exists = @include 'config.php';
+if (!$config_exists) {
+    die("<meta http-equiv=\"Refresh\" content=\"1;url=install.php\" />Error: Not installed. Redirecting to installer.");
+}
+require_once("lang/{$_DEFAULT_LANG}.php"); // Default language before we've processed users.
 
 $_PWNVERSION['major'] = 1;
 $_PWNVERSION['minor'] = 9;
-$_PWNVERSION['extra'] = "9";
+$_PWNVERSION['extra'] = "";
+
+// DO NOT EDIT ANYTHING BELOW THIS LINE
+// ------------------------------------------------------------------------------------------------------------
+
+$mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+$starttime = $mtime;
+
+$db_fail = false;
+$db = mysql_connect($conf_server,$conf_user,$conf_password) or 
+die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">We've experienced an internal error. Please contact " . $conf_email . ".<br />
+(Failed to connect to SQL server.)</span>"); 
+mysql_select_db($conf_database, $db) or $db_fail = true; 
+
+putenv("TZ=America/New_York");
+
+$banlist = mysql_query("SELECT * FROM `{$_PREFIX}banlist`");
+while ($ban = mysql_fetch_array($banlist)) {
+if ($_SERVER['REMOTE_ADDR'] == $ban['ip']) {
+die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
+}
+}
+
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
 $site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?

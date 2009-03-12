@@ -18,9 +18,8 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
-require 'config.php';
 $no_login = true;
-require 'includes.php';
+require_once('includes.php');
 header("Content-type: application/rss+xml");
 
 print "<?xml version=\"1.0\" encoding=\"iso-8859-1\" ?>\n";
