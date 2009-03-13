@@ -25,8 +25,8 @@ if (!$config_exists) {
 }
 require_once("lang/{$_DEFAULT_LANG}.php"); // Default language before we've processed users.
 
-$_PWNVERSION['major'] = 1;
-$_PWNVERSION['minor'] = 9;
+$_PWNVERSION['major'] = 2;
+$_PWNVERSION['minor'] = 0;
 $_PWNVERSION['extra'] = "";
 
 // DO NOT EDIT ANYTHING BELOW THIS LINE
