@@ -324,13 +324,10 @@ function bbJava($stuff) {
     "throws","case","enum","instanceof","return","transient","catch","extends",
     "int","short","try","char","final","interface","static","void","class",
     "finally","long","strictfp","volatile","const","float","native","super","while");
-    $keywordsa = $keywords;
-    foreach ($keywordsa as $word) {
-        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
-        $stuff = sim_rep2($word,$word2,$stuff);
+    foreach ($keywords as $word) {
+        $stuff = sim_rep2($word,"<span style=\"color: #0000AA\">$word</span>",$stuff);
     }
-    unset($word);
-    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">$stuff</pre></div>";
     return $stuff;
 }
 function bbCSharp($stuff) {
@@ -348,13 +345,10 @@ function bbCSharp($stuff) {
     "short", "sizeof", "stackalloc", "static", "string", "struct", "switch", "this", "throw", "true", "try",
     "typeof", "uint", "ulong", "unchecked", "unsafe", "ushort", "using", "virtual", "void", "volatile", "while",
     "add", "alias", "get", "global", "partial", "remove", "set", "value", "where", "yield");
-    $keywordsa = $keywords;
     foreach ($keywordsa as $word) {
-        $word2 = "<span style=\"color: #0000AA\">" . $word . "</span>";
-        $stuff = sim_rep2($word,$word2,$stuff);
+        $stuff = sim_rep2($word,"<span style=\"color: #0000AA\">$word</span>",$stuff);
     }
-    unset($word);
-    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">" . $stuff . "</pre></div>";
+    $stuff = "<div><div style=\"font-family: monospace;\"><b>Code:</b></div><pre style=\"background-color: #FFFFFF; border: 1px #000000 solid; overflow: auto; width: 640px; margin: 0px;\">$stuff</pre></div>";
     return $stuff;
 }
 function genericCode($stuff) {
