@@ -366,7 +366,7 @@ function makeIMG($link) {
 }
 function pCount($topic) {
     global $_PWNDATA, $_PREFIX;
-    $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" . $topic);
+    $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" . intval($topic));
     $res = mysql_fetch_array($results);
     $comments = $res['COUNT(*)'] - 1;
     if ($comments == 0) {
