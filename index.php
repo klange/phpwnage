@@ -18,22 +18,10 @@
 	along with PHPwnage. If not, see <http://www.gnu.org/licenses/>.
 
 */
+require_once('includes.php');
+require_once('sidebar.php');
+$news = array();
 
-require 'includes.php'; // Important stuff.
-
-$dump_limit = -1;
-
-standardHeaders($site_info['name'],true);
-
-drawSubbar("{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']) . " <a href=\"?show=all\">[{$_PWNDATA['show_all']}]</a>",$site_info['right_data']);
-
-require 'sidebar.php';
-
-print <<<END
-
-<td valign="top">
-<table class="borderless_table" width="100%">
-END;
 $news_arguments = "";
 if ($_GET['show'] == 'all') { 
     $news_arguments = "DESC";
@@ -46,20 +34,17 @@ if ($_GET['show'] == 'all') {
     $news_arguments = "DESC LIMIT 10";
     $page = 1;
 }
-$result = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}news` WHERE `id` > $dump_limit");
-$total_posts = mysql_fetch_array($result);
-$total_posts = $total_posts['COUNT(*)'];
-$result = mysql_query("SELECT `id`,`title`,`time_code`,`user`,`content` FROM `{$_PREFIX}news` WHERE `id` > $dump_limit ORDER BY id {$news_arguments}", $db);
+$result = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}news`");
+$tmp = mysql_fetch_array($result);
+$total = $tmp['COUNT(*)'];
+$result = mysql_query("SELECT `id`,`title`,`time_code`,`user`,`content` FROM `{$_PREFIX}news` ORDER BY id $news_arguments", $db);
 while ($row = mysql_fetch_array($result)) {
-	// News article
-	drawBlock("<a href=\"article.php?id=" . $row['id'] . "\">" . $row['title'] . "</a>", date("M j, Y", $row['time_code']) . " - " . $row['user'] . " #" . ($row['id']), BBDecode($row['content'],true));
+    $news[] = $row;
 }
-print "<tr><td>" . printPagerNonTabular("index.php?page=",$page,(int)(($total_posts - 1) / 10 + 1)) . "</td></tr>";
-print <<<END
-	</table>
-        </td>
-  </tr>
-</table>
-END;
-require 'footer.php';
-?>
+
+$smarty->assign('news',$news);
+$smarty->assign('title',$site_info['name']);
+$smarty->assign('page_num',$page);
+$smarty->assign('page_total',(int)(($total - 1) / 10 + 1));
+
+$smarty->display('index.tpl');

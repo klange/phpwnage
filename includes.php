@@ -47,9 +47,9 @@ putenv("TZ=America/New_York");
 
 $banlist = mysql_query("SELECT * FROM `{$_PREFIX}banlist`");
 while ($ban = mysql_fetch_array($banlist)) {
-if ($_SERVER['REMOTE_ADDR'] == $ban['ip']) {
-die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
-}
+    if ($_SERVER['REMOTE_ADDR'] == $ban['ip']) {
+        die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
+    }
 }
 
 
@@ -110,7 +110,8 @@ function getPostsInBoard($bid) {
 // Not just themes. All things user-selectable are here.
 function setTheme() {
 	global $user, $imageroot, $theme, $icons, $language, $_PWNICONS, $_PWNDATA,
-	       $_DEFAULT_THEME, $_DEFAULT_ICONS, $_DEFAULT_COLOR, $_DEFAULT_LANG;
+	       $_DEFAULT_THEME, $_DEFAULT_ICONS, $_DEFAULT_COLOR, $_DEFAULT_LANG,
+	       $smarty;
 	if (!isset($user['color']) || $user['color'] == "")
 	{
 		$imageroot = $_DEFAULT_COLOR; // Default background.
@@ -140,6 +141,19 @@ function setTheme() {
         require_once "lang/{$themes[2]}.php";
         $language = $themes[2];
     }
+    require_once('smarty/libs/Smarty.class.php');
+    $smarty = new Smarty();
+    $smarty->template_dir = 'themes/templates/classic/';
+    $smarty->compile_dir  = 'smarty/compile/';
+    $smarty->config_dir   = 'smarty/config/';
+    $smarty->cache_dir    = 'smarty/cache/';
+    $smarty->plugins_dir  = array('smarty/plugins/');
+    $smarty->plugins_dir[]= 'themes/templates/classic/functions/';
+    $smarty->assign('theme',$theme);
+    $smarty->assign('imageroot',$imageroot);
+    $smarty->assign('_PWNICONS',$_PWNICONS);
+    $smarty->assign('_PWNDATA',$_PWNDATA);
+
 }
 function drawButton($dowhat, $title, $button = "") {
     return <<<END
@@ -154,10 +168,11 @@ function drawButton($dowhat, $title, $button = "") {
 </td>
 END;
 }
+/*
 // Print a paging device (use everywhere!)
 function printPager($url,$page,$total) {
     // Magic number 7: First, last, current, plus two on each side = 7 total
-    /*  1 2 3 4 5 6 7 */
+    //  1 2 3 4 5 6 7 
     $unlink = "\">";
     $return = "";
     if ($total < 8) {
@@ -263,6 +278,7 @@ function drawPageB($link,$text) {
     </div>
 END;
 }
+*/
 
 function getRankName($level,$site_info,$posts) {
     global $_PREFIX, $_PWNDATA;
@@ -977,5 +993,9 @@ mysql_query("DELETE FROM `{$_PREFIX}sessions` WHERE (`last` < (" . time() . " - 
 if (!isset($user['level'])) { $user['level'] = 0; } // And lastly, set our user to 0 if they aren't logged in.
 
 setTheme();
+
+$smarty->assign('site',$site_info);
+$smarty->assign('user',$user);
+
 
 ?>

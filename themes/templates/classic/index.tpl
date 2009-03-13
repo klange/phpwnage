@@ -1,7 +1,8 @@
 {php}
-    global $smarty, $site_info;
+    global $smarty, $site_info, $_PWNDATA;
     $smarty->display('header.tpl');
-    $smarty->assign('subbar_left',$site_info['name']);
+    $smarty->assign('subbar_left',"{$_PWNDATA['last_updated']} " . date("F j, Y (g:ia T)", $site_info['last_updated']) . " <a href=\"?show=all\">[{$_PWNDATA['show_all']}]</a>");
+    $smarty->assign('subbar_right',$site_info['right_data']);
     $smarty->display('subbar.tpl');
     $smarty->display('sidebar.tpl');
 {/php}
@@ -33,6 +34,7 @@
         </td>
       </tr>
 {/foreach}
+<tr><td>{pager url="index.php?page=" page=$page_num total=$page_total}</td></tr>
 </table>
 </td></tr></table>
 {php}global $smarty; $smarty->display('footer.tpl');{/php}
