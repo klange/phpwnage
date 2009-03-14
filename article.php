@@ -20,6 +20,7 @@
 */
 
 require_once('includes.php');
+require_once('sidebar.php');
 
 $result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);
@@ -33,19 +34,17 @@ if ($_POST[action]){
     mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
-
-standardHeaders($site_info['name'] . " :: {$_PWNDATA['article']} #" . $_GET['id'] . " - " . $row['title'],true);
-
-drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
-
 if (!isset($row['id'])) {
     messageBack($_PWNDATA['articles']['title'],$_PWNDATA['articles']['not_found'],false);
 }
 
-require 'sidebar.php';
+$smarty->assign('article',$row);
+$smarty->display('article.tpl');
+standardHeaders($site_info['name'] . " :: {$_PWNDATA['article']} #" . $_GET['id'] . " - " . $row['title'],true);
 
-$result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
-$row = mysql_fetch_array($result);
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $row['title'],$site_info['right_data']);
+
+
 print <<<END
 <td valign="top">
 <table class="borderless_table" width="100%">

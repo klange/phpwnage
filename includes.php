@@ -155,6 +155,8 @@ function setTheme() {
     $smarty->assign('_PWNDATA',$_PWNDATA);
 
 }
+setTheme();
+
 function drawButton($dowhat, $title, $button = "") {
     return <<<END
 <td style="border: 0px">
@@ -775,26 +777,10 @@ function makeBlockTrue($functitle, $funccont) {
 END;
 }
 function drawMessage($title, $message, $headers = true) {
-	global $_PWNDATA, $site_info, $theme, $imageroot, $user;
-	setTheme();
-	$SITENAME = $site_info['name'];
-	if ($headers) {
-	print <<<END
-<html>
-<head>
-<title>$SITENAME</title>
-END;
-	require 'css.php';
-	print <<<END
-</head>
-<body>
-END;
-}
-print <<<END
-<table width="100%" class="borderless_table">
-END;
-	drawBlock($title, "", $message);
-	print "</table><body></html>";
+	global $smarty;
+	$smarty->assign('title',$title);
+	$smarty->assign('message',$message);
+    $smarty->display('message.tpl');
     die();
 }
 function messageRedirect($title, $message, $redirect, $headers = true) {
