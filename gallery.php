@@ -20,6 +20,7 @@
 */
 
 require_once('includes.php');
+require_once('sidebar.php');
 
 function generateThumbnail($file, $type) {
     $_SIZE = 120;
@@ -121,26 +122,21 @@ END;
 }
 
 if ($_GET['do'] != "img") {
-
     if (!isset($_GET['do']) || ($_GET['do'] == "")) {
-        $content = "<table class=\"forum_base\" width=\"100%\">";
+        $galleries = array();
+        $img_counts = array();
         $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries`");
         while ($gal = mysql_fetch_array($request)) {
             if ($gal['view'] <= $user['level']) {
-                if ($gal['thumb'] != 0) {
-                    $gal_thumb = "<img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$gal['thumb']}\" alt=\"\" />";
-                } else {
-                    $gal_thumb = "<img src=\"tango/admin/images.png\" alt=\"\" />";
-                }
                 $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
                 $count = mysql_fetch_array($results);
-                $content = $content . "<tr><td width=\"1\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal_thumb}</a></td><td class=\"forum_topic_content\"><a href=\"gallery.php?do=view&amp;id={$gal['id']}\">{$gal['name']}</a><br /><i>{$gal['desc']}</i></td><td width=\"50\" class=\"forum_topic_content\" align=\"center\" valign=\"middle\">{$count['COUNT(*)']}</td></tr>\n";
+                $galleries[$gal['id']] = $gal;
+                $img_counts[$gal['id']] = $count['COUNT(*)'];
             }
         }
-        $content = $content . "</table>";
-        $page_contents = makeBlock($_PWNDATA['gallery_page_title'], $_PWNDATA['gallery']['gallery_index'], $content);
-        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a>";
-        $page_loctitle = " :: {$_PWNDATA['gallery']['gallery_index']}";
+        $smarty->assign('galleries',$galleries);
+        $smarty->assign('img_counts',$img_counts);
+        $smarty->display('gallery/index.tpl');
     } elseif ($_GET['do'] == "upload_form") {
         $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
         $gal = mysql_fetch_array($request);
@@ -165,15 +161,14 @@ END;
         $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['upload_panel']}";
         $page_loctitle = " :: {$_PWNDATA['gallery']['upload_panel']}";
     } elseif ($_GET['do'] == "view") {
-        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['id']}");
+        $id = intval($_GET['id']);
+        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$id}");
         $gal = mysql_fetch_array($request);
         if ($gal['view'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_view']);
         }
-        $content = "<table class=\"mod_set\"><tr>";
-        if ($user['level'] >= $gal['upload']) {
-            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button'],$_PWNICONS['buttons']['img_upload']);
-        }
+        $images = array();
+        $users  = array();
         if (!isset($_GET['p'])) {
             $start = 0;
             $page = 1;
@@ -185,6 +180,32 @@ END;
         $temp = mysql_fetch_array($request);
         $totalImages = $temp['COUNT(*)'];
         $totalPages = (int)(($totalImages - 1) / $_IMAGESPERPAGE + 1);
+        
+        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC LIMIT {$start}, {$_IMAGESPERPAGE}");
+        while ($image = mysql_fetch_array($request)) {
+            $images[] = $image;
+            if (!array_key_exists($image['uid'],$users)) {
+                $results_b = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}", $db);
+                $tmp = mysql_fetch_array($results_b);
+                $users[$tmp['id']] = $tmp;
+            }
+        }
+        
+        $smarty->assign('gallery',$gal);
+        $smarty->assign('images',$images);
+        $smarty->assign('users',$users);
+        $smarty->assign('page',$page);
+        $smarty->assign('totalImages',$totalImages);
+        $smarty->assign('totalPages',$totalPages);
+        $smarty->display('gallery/viewgallery.tpl');     
+        
+
+        $content = "<table class=\"mod_set\"><tr>";
+        if ($user['level'] >= $gal['upload']) {
+            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button'],$_PWNICONS['buttons']['img_upload']);
+        }
+
+        
         if ($page > 1) {
             $content = $content . drawButton("gallery.php?do=view&amp;id={$gal['id']}&amp;p=" . ($page - 1), $_PWNDATA['forum']['previous_page'],$_PWNICONS['buttons']['previous']);
         }

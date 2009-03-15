@@ -51,9 +51,9 @@ if ($row['topicid'] != 0) {
     $results = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid={$row['topicid']} ORDER BY `id` DESC LIMIT 10", $db);
     while ($post = mysql_fetch_array($results)) {
         $posts[] = $post;
-        $results_b = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id={$post['authorid']}", $db);
-        $tmp = mysql_fetch_array($results_b);
-        if (!array_key_exists($tmp['id'],$users)) {
+        if (!array_key_exists($post['authorid'],$users)) {
+            $results_b = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id={$post['authorid']}", $db);
+            $tmp = mysql_fetch_array($results_b);
             $users[$tmp['id']] = $tmp;
         }
     }
