@@ -1,5 +1,5 @@
 {include file='header.tpl' full=true title="`$site.name` :: Modules :: `$mod.title`"}
-{include file='subbar.tpl' subbar_right=$mod.right subbar_left="<a href=\"index.php\">`$site.name`</a> :: `$_PWNDATA.modules_page_title` :: `$mod.title`"}
+{include file='subbar.tpl' subbar_right=$mod.right subbar_left="<a href=\"index.php\">`$site.name`</a> &gt; `$_PWNDATA.modules_page_title` &gt; `$mod.title`"}
 {include file='sidebar.tpl'}
 <td valign="top">
 <table class="borderless_table" width="100%">

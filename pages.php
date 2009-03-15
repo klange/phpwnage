@@ -19,6 +19,7 @@
 
 */
 require_once('includes.php');
+require_once('sidebar.php');
 
 if ($_POST['action']){
     if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {
@@ -28,46 +29,11 @@ if ($_POST['action']){
     mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
     messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
 }
-$result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='" . $_GET['page'] . "'", $db);
+$page_name = mse($_GET['page']);
+$result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='{$page_name}'", $db);
 $page = mysql_fetch_array($result);
-
-standardHeaders($site_info['name'] . " :: " . $page['display_name'],true);
-drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['admin']['forms']['pages']} > " . $page['display_name'],$site_info['right_data']);
-
 if (!isset($page['display_name'])) {
     messageBack($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['pages_does_not_exist'],false);
 }
-
-if ($page['showsidebar'] == "true") {
-    require 'sidebar.php';
-} else {
-    print "<table class=\"borderless_table\" width=\"100%\"><tr>";
-}
-
-print <<<END
-<td height="269" valign="top">
-<table class="borderless_table" width="100%">
-END;
-drawBlock($page['display_name'],$page['author'],$page['content']);
-
-
-if ($user['level'] >= $site_info['mod_rank']) {
-    $content_temp = str_replace(">","&gt;",str_replace("<","&lt;",$page['content']));
-    $content = <<<END
-<form action="pages.php?page={$page['name']}" method="post">
-<input type="hidden" name="action" value="true" />
-<textarea rows="8" name="content" style="width:100%;" cols="80">$content_temp</textarea>
-<br /><input type="submit" value="{$_PWNDATA['articles']['save_page']}" /></form>
-END;
-    drawBlock("{$_PWNDATA['articles']['edita']} " . $page['title'], $page['author'], $content);
-}
-
-
-print <<<END
-	</table>
-        </td>
-  </tr>
-</table>
-END;
-require 'footer.php';
-?>
+$smarty->assign('page',$page);
+$smarty->display('pages.tpl');
