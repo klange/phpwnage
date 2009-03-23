@@ -137,29 +137,6 @@ if ($_GET['do'] != "img") {
         $smarty->assign('galleries',$galleries);
         $smarty->assign('img_counts',$img_counts);
         $smarty->display('gallery/index.tpl');
-    } elseif ($_GET['do'] == "upload_form") {
-        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
-        $gal = mysql_fetch_array($request);
-        if ($gal['upload'] > $user['level']) {
-            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
-        }
-        $poster = printPoster('desc');
-        $content = <<<END
-        <form enctype="multipart/form-data" action="gallery.php" name="form" method="post">
-            <input type="hidden" name="action" value="upload" />
-            <input type="hidden" name="gallery" value="{$_GET['gal']}" />
-            <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
-            <table class="forum_base" width="100%">
-                <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td></tr>
-                <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor"></textarea></td></tr>
-                <tr><td class="forum_topic_sig">{$_PWNDATA['gallery']['image_file']}</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
-                <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['upload_button']}" /></td></tr>
-            </table>
-        </form>
-END;
-        $page_contents = makeBlock($_PWNDATA['gallery_page_title'], $_PWNDATA['gallery']['upload_panel'], $content);
-        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['upload_panel']}";
-        $page_loctitle = " :: {$_PWNDATA['gallery']['upload_panel']}";
     } elseif ($_GET['do'] == "view") {
         $id = intval($_GET['id']);
         $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$id}");
@@ -231,6 +208,29 @@ END;
         $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['viewing_gallery'], $content);
         $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > " . $gal['name'];
         $page_loctitle = " :: " . $gal['name'];
+    } elseif ($_GET['do'] == "upload_form") {
+        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
+        $gal = mysql_fetch_array($request);
+        if ($gal['upload'] > $user['level']) {
+            messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
+        }
+        $poster = printPoster('desc');
+        $content = <<<END
+        <form enctype="multipart/form-data" action="gallery.php" name="form" method="post">
+            <input type="hidden" name="action" value="upload" />
+            <input type="hidden" name="gallery" value="{$_GET['gal']}" />
+            <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
+            <table class="forum_base" width="100%">
+                <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td></tr>
+                <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor"></textarea></td></tr>
+                <tr><td class="forum_topic_sig">{$_PWNDATA['gallery']['image_file']}</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
+                <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['upload_button']}" /></td></tr>
+            </table>
+        </form>
+END;
+        $page_contents = makeBlock($_PWNDATA['gallery_page_title'], $_PWNDATA['gallery']['upload_panel'], $content);
+        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['upload_panel']}";
+        $page_loctitle = " :: {$_PWNDATA['gallery']['upload_panel']}";
     } elseif ($_GET['do'] == "image") {
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
