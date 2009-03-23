@@ -132,7 +132,7 @@ if ($mode == "viewmonth") {
                 $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
                 $day_content = "";
                 while ($query_row = mysql_fetch_array($day_results)) {
-                    $day_content = $day_content . "- " . $query_row['title'] . "<br />\n";
+                    $day_content .= "- " . $query_row['title'] . "<br />\n";
                 }
                 if ($user['level'] >= $site_info['mod_rank']) {
                     $top_cell = "<a href=\"calendar.php?view=add&amp;day=$today\">{$_PWNICONS['calendar']['add']}</a> <a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
@@ -144,11 +144,11 @@ if ($mode == "viewmonth") {
                     $month_started = 2;
                 }
             }
-            $content = $content . printDay($dayloop, $day_content, $top_cell);
+            $content .= printDay($dayloop, $day_content, $top_cell);
         }
-        $content = $content . "</tr>";
+        $content .= "</tr>";
     }
-    $content = $content . "</table>";
+    $content .= "</table>";
 }
 
 if ($mode == "date") {
@@ -158,8 +158,8 @@ if ($mode == "date") {
     $year = intval($date_info[2]);
     $month_name = date("F", $current_time);
     $panel_title = $panel_title . " &gt; " . date("l, F jS, Y", $current_time);
-    $content = $content . "<a href=\"calendar.php?view=viewmonth&amp;mon=$month&amp;y=$year\">$month_name</a><br />";
-    $content = $content . "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
+    $content .= "<a href=\"calendar.php?view=viewmonth&amp;mon=$month&amp;y=$year\">$month_name</a><br />";
+    $content .= "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
     $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $_GET['day'] . "'");
     $day_stuff = $_GET['day'];
     $day_content = "<table class=\"forum_base\" width=\"100%\">";
@@ -170,18 +170,18 @@ if ($mode == "date") {
         $post_author = mysql_fetch_array($resultb);
         $uid = $query_row['user'];
         $uname = $post_author['name'];
-        $day_content = $day_content . "<tr><td colspan=\"2\" class=\"forum_thread_title\">";
-        $day_content = $day_content . "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a></td></tr><tr><td class=\"forum_topic_content\">" . bbDecode($query_row['content']) . "</td><td class=\"forum_topic_content\" width=\"200\">";
+        $day_content .= "<tr><td colspan=\"2\" class=\"forum_thread_title\">";
+        $day_content .= "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a></td></tr><tr><td class=\"forum_topic_content\">" . bbDecode($query_row['content']) . "</td><td class=\"forum_topic_content\" width=\"200\">";
         if ($user['level'] >= $site_info['mod_rank']) {
             $day_content = $day_content . " [<a href=\"calendar.php?view=edit&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['edit']}</a>] [<a href=\"calendar.php?view=del_event&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]";
         }
-        $day_content = $day_content . "</td></tr>\n\n";
+        $day_content .= "</td></tr>\n\n";
     }
     if ($num_results == 0) {
         $day_content = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_topic_content\">{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a></td></tr>";
     }
-    $content = $content . $day_content . "</table>";
-    $content = $content . "<br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
+    $content .= $day_content . "</table>";
+    $content .= "<br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
 }
 
 if ($mode == "add") {
@@ -193,7 +193,7 @@ if ($mode == "add") {
     $date_info = split(",", $_GET['day']);
     $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval($date_info[2]));
     $panel_title = $panel_title . " &gt; " . date("l, F jS, Y", $current_time);
-    $content = $content . <<<END
+    $content .= <<<END
 <form method="post" action="calendar.php" name="form">
 <input type="hidden" name="action" value="add_event" />
 <input type="hidden" name="day" value="$day" />
@@ -204,8 +204,8 @@ if ($mode == "add") {
 <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 END;
-    $content = $content . printPoster("content");
-    $content = $content . <<<END
+    $content .= printPoster("content");
+    $content .= <<<END
 <textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor"></textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" /></td></tr>
@@ -223,9 +223,9 @@ if ($mode == "edit") {
     $results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
     $event = mysql_fetch_array($results);
     $title = $event['title'];
-    $content = $event['content'];
+    $event_content = $event['content'];
     $date = $event['day'];
-    $content = $content . <<<END
+    $content .= <<<END
 <form method="post" action="calendar.php" name="form">
 <input type="hidden" name="action" value="edit_event" />
 <input type="hidden" name="event" value="$eid" />
@@ -236,9 +236,9 @@ if ($mode == "edit") {
 <tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 END;
-    $content = $content . printPoster("content");
-    $content = $content . <<<END
-<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor">$content</textarea></td></tr>
+    $content .= printPoster("content");
+    $content .= <<<END
+<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor">$event_content</textarea></td></tr>
 <tr><td class="forum_topic_sig" colspan="2">
 <input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" /></td></tr>
 </table>

@@ -174,46 +174,18 @@ if ($_GET['do'] != "img") {
         $smarty->assign('page',$page);
         $smarty->assign('totalImages',$totalImages);
         $smarty->assign('totalPages',$totalPages);
-        $smarty->display('gallery/viewgallery.tpl');     
-        
-
-        $content = "<table class=\"mod_set\"><tr>";
-        if ($user['level'] >= $gal['upload']) {
-            $content = $content . drawButton("gallery.php?do=upload_form&amp;gal={$gal['id']}",$_PWNDATA['gallery']['upload_button'],$_PWNICONS['buttons']['img_upload']);
-        }
-
-        
-        if ($page > 1) {
-            $content = $content . drawButton("gallery.php?do=view&amp;id={$gal['id']}&amp;p=" . ($page - 1), $_PWNDATA['forum']['previous_page'],$_PWNICONS['buttons']['previous']);
-        }
-        if ($totalPages > 1) {
-            $content = $content . printPager("gallery.php?do=view&amp;id={$gal['id']}&amp;p=",$page,$totalPages);
-        }
-        if ($page < $totalPages) {
-            $content = $content . drawButton("gallery.php?do=view&amp;id={$gal['id']}&amp;p=" . ($page + 1), $_PWNDATA['forum']['next_page'],$_PWNICONS['buttons']['next']);
-        }
-        $content = $content . "</tr></table>";
-        $content = $content . "<table class=\"forum_base\" width=\"100%\">";
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC LIMIT {$start}, {$_IMAGESPERPAGE}");
-        while ($image = mysql_fetch_array($request)) {
-            $content = $content . "<tr><td class=\"forum_topic_content\" width=\"1\" rowspan=\"2\" align=\"center\" valign=\"middle\"><a href=\"gallery.php?do=image&amp;id={$image['id']}\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$image['id']}\" alt=\"\" /></a></td>";
-            $content = $content . "<td class=\"forum_topic_content\"><b><a href=\"gallery.php?do=image&amp;id={$image['id']}\">{$image['name']}</a></b></td>";
-            $results = mysql_query("SELECT `name` FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}");
-            $uploader = mysql_fetch_array($results);
-            $content = $content . "<td class=\"forum_topic_content\" width=\"200\">{$_PWNDATA['gallery']['uploaded_by']}<a href=\"forum.php?do=viewprofile&amp;id={$image['uid']}\">{$uploader['name']}</a></td>";
-            $description = bbDecode($image['desc']);
-            $content = $content . "</tr><tr><td class=\"forum_topic_sig\" colspan=\"2\">{$description}</td></tr>";
-        }
-        $content = $content . "</table>";
-        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['viewing_gallery'], $content);
-        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > " . $gal['name'];
-        $page_loctitle = " :: " . $gal['name'];
+        $smarty->display('gallery/viewgallery.tpl');
     } elseif ($_GET['do'] == "upload_form") {
         $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
         $gal = mysql_fetch_array($request);
+        
         if ($gal['upload'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
         }
+        
+        $smarty->assign('gallery',$gal);
+        $smarty->display('gallery/uploadform.tpl');
+        
         $poster = printPoster('desc');
         $content = <<<END
         <form enctype="multipart/form-data" action="gallery.php" name="form" method="post">
