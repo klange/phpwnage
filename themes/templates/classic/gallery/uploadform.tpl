@@ -15,9 +15,21 @@
       <tr>
         <td class="pan_ml">&nbsp;</td>
         <td class="pan_body" valign="top">
-        <table class="forum_base" width="100%">
-
-        </table>
+        <form enctype="multipart/form-data" action="gallery.php" name="form" method="post">
+            <input type="hidden" name="action" value="upload" />
+            <input type="hidden" name="gallery" value="{$gallery.id}" />
+            <input type="hidden" name="MAX_FILE_SIZE" value="20000000" />
+            <table class="forum_base" width="100%">
+                <tr>
+                    <td class="forum_topic_content" width="200">{$_PWNDATA.gallery.image_name}</td>
+                    <td class="forum_topic_content"><input type="text" name="name" style="width: 100%" /></td>
+                </tr>
+                <tr><td class="forum_topic_sig" colspan="2">{editor name='desc' preview=true path='' advanced=false target=""}
+                    <textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor"></textarea></td></tr>
+                <tr><td class="forum_topic_sig">{$_PWNDATA.gallery.image_file}</td><td class="forum_topic_sig"><input type="file" name="image" /></td></tr>
+                <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA.gallery.upload_button}" /></td></tr>
+            </table>
+        </form>
         </td>
         <td class="pan_mr">&nbsp;</td>
       </tr>

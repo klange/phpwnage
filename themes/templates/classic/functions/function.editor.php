@@ -55,7 +55,7 @@ function toggleMCE$path() {
         mce_editing$path = false;
     }
 }
-function addSize$what(sizeToAdd) {
+function addSize$path(sizeToAdd) {
 document.form$path.$name.rows = document.form$path.$name.rows + sizeToAdd;
 }
 //]]>
@@ -67,7 +67,7 @@ END;
     $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
     $return .= "<table class=\"mod_set\"><tr><td colspan=\"11\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
     while ($smile = mysql_fetch_array($smilesSet)) {
-        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
+        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$path('" . $smile['code'] . "','')\" />";
     }
     $return .= "</td></tr><tr>";
     $return .= drawButton("javascript:addCode$path('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
