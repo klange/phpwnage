@@ -87,7 +87,7 @@ function getURL() {
     return "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']);
 }
 
-function DrawBlock($name,$right,$content)
+function InstallerBlock($name,$right,$content)
 {
 $output = <<<END
       <tr>
@@ -173,7 +173,7 @@ $print_what = <<<END
   </table>
   </form>
 END;
-DrawBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
+InstallerBlock("Welcome to the PHPwnage Installer!","V. $_PWNVERSION",$print_what);
 }
 
 if ($_GET['do'] == "page1"){
@@ -212,7 +212,7 @@ By pressing "Continue", you agree to and accept these licenses.
 </div></td></tr>
 </table>
 END;
-DrawBlock("License and Terms of Use","V. $_PWNVERSION",$print_what);
+InstallerBlock("License and Terms of Use","V. $_PWNVERSION",$print_what);
 
 }
 
@@ -262,7 +262,7 @@ $print_what = <<<END
 </form>
 
 END;
-DrawBlock("Setting up the Configuration File","V. $_PWNVERSION",$print_what);
+InstallerBlock("Setting up the Configuration File","V. $_PWNVERSION",$print_what);
 }
 
 
@@ -365,7 +365,7 @@ $print_what = <<<END
 </form>
 
 END;
-DrawBlock("Setting up the Site Information","V. $_PWNVERSION",$print_what);
+InstallerBlock("Setting up the Site Information","V. $_PWNVERSION",$print_what);
 }
 
 function databaseFault() {
@@ -684,8 +684,7 @@ $print_what = <<<END
   </tr>
   </table>
 END;
-DrawBlock("Thank you for choosing PHPwnage!","V. $_PWNVERSION",$print_what);
+InstallerBlock("Thank you for choosing PHPwnage!","V. $_PWNVERSION",$print_what);
 }
 
 print "</table></body></html>";
-?>
