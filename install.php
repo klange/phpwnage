@@ -63,7 +63,7 @@ input {
 <table class="borderless_table" width="100%">
 END;
 
-$_PWNVERSION = "1.9";
+$_PWNVERSION = "2.0 ALPHA";
 
 // Our replacement to file_put_contents so that PHPwnage works with PHP 4.
 function file_put_contents_debug($file_name, $content) {
