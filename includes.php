@@ -383,7 +383,7 @@ function quote($c) {
     return preg_replace("/(\[quote\])((?:.(?!\[quote\]))*?)(\[\/quote\])/si","<div class=\"quote\"><span class=\"forum_quote\">$2</span></div>",$c);
 }
 function BBDecode($content,$allowhtml = false) {
-    global $_PREFIX;
+    global $_PREFIX, $site_info;
     if (!$allowhtml) {
         $content = str_replace("<","&lt;",$content); // Kill HTML in posts
         $content = str_replace(">","&gt;",$content);

@@ -192,61 +192,24 @@ if ($_GET['do'] != "img") {
         $uploader = mysql_fetch_array($results);
         $results = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
         $gal = mysql_fetch_array($results);
-        $extra = "";
+        
         if ($gal['view'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['cannot_view_image']);
         }
-        $desc = bbDecode($image['desc']);
-        $content = "<table class=\"mod_set\"><tr>";
-        if ($user['level'] >= $site_info['mod_rank'] || $user['id'] == $image['uid']) {
-            $content = $content . drawButton("gallery.php?do=delete_image&amp;id={$image['id']}",$_PWNDATA['gallery']['delete'],$_PWNICONS['buttons']['del_img']);
-            $content = $content . drawButton("gallery.php?do=edit_image&amp;id={$image['id']}",$_PWNDATA['gallery']['edit'],$_PWNICONS['buttons']['edit_img']);
-        }
+        
         if ($user['level'] >= $site_info['mod_rank']) {
-            $content = $content . drawButton("javascript:flipVisibility('movebox');",$_PWNDATA['gallery']['move_image'],$_PWNICONS['buttons']['move']);
-            $extra = <<<END
-    <script type="text/javascript">
-    //<![CDATA[
-function flipVisibility(what) {
-    if (document.getElementById(what).style.display != "none") {
-        document.getElementById(what).style.display = "none"
-    } else {
-        document.getElementById(what).style.display = "inline"
-    }
-}
-    //]]>
-    </script>
-END;
-            $content = $content . <<<END
-<td style="border: 0px"><div id="movebox" style="display:none;">
-<form action="gallery.php" method="post" style="display:inline;">
-<input type="hidden" name="action" value="move_image" />
-<input type="hidden" name="id" value="{$image['id']}" />
-<select name="gallery">
-END;
-            $request = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}galleries`");
-            while ($gallery = mysql_fetch_array($request)) {
-                $content = $content . "<option label=\"{$gallery['name']}\" value=\"{$gallery['id']}\">{$gallery['name']}</option>\n";
+            $galleries = array();
+            $results = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}galleries`");
+            while ($tmp = mysql_fetch_array($results)) {
+                $galleries[] = $tmp;
             }
-            $content = $content . <<<END
-</select>
-<input type="submit" value="{$_PWNDATA['gallery']['move_image']}" />
-</form></div></td>
-END;
+            $smarty->assign('galleries',$galleries);
         }
         
-        $content = $content . "</tr></table>";
-        $content = $content . <<<END
-<table class="forum_base" width="100%">        
-<tr><td class="forum_topic_content" align="center"><b>{$image['name']}</b></td></tr>
-<tr><td class="forum_topic_sig" align="center">{$_PWNDATA['gallery']['uploaded_by']}<a href="forum.php?do=viewprofile&amp;id={$uploader['id']}">{$uploader['name']}</a></td></tr>
-<tr><td class="forum_topic_sig" align="center"><img src="gallery.php?do=img&amp;i={$_GET['id']}" alt="{$image['name']}" /></td></tr>
-<tr><td class="forum_topic_sig" align="center">{$desc}</td></tr>
-</table>
-END;
-        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$image['name'], $extra . $content);
-        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > <a href=\"gallery.php?do=view&amp;id={$gal['id']}\">" . $gal['name'] . "</a> > " . $image['name'];
-        $page_loctitle = " :: " . $gal['name'] . " :: " . $image['name'];
+        $smarty->assign('image',$image);
+        $smarty->assign('gallery',$gal);
+        $smarty->assign('uploader',$uploader);
+        $smarty->display('gallery/image.tpl');
     } elseif ($_GET['do'] == "delete_image") {
         $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
         $image = mysql_fetch_array($request);
@@ -267,38 +230,12 @@ END;
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_edit']);
         }
-        $poster = printPoster('desc');
-        $content = <<<END
-<form action="gallery.php" name="form" method="post">
-    <input type="hidden" name="action" value="edit_image" />
-    <input type="hidden" name="id" value="{$image['id']}" />
-    <table class="forum_base" width="100%">
-        <tr><td class="forum_topic_content" width="200">{$_PWNDATA['gallery']['image_name']}</td><td class="forum_topic_content"><input type="text" name="name" style="width: 100%" value="{$image['name']}"/></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2">{$poster}<textarea name="desc" style="width: 100%" rows="5" cols="80" class="content_editor">{$image['desc']}</textarea></td></tr>
-        <tr><td class="forum_topic_sig" colspan="2"><input type="submit" value="{$_PWNDATA['gallery']['save_image']}" /></td></tr>
-    </table>
-</form>
-END;
-        $page_contents = makeBlock($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['editing'] . $image['name'], $content);
-        $page_location = "<a href=\"gallery.php\">{$_PWNDATA['gallery_page_title']}</a> > {$_PWNDATA['gallery']['editing']}'" . $image['name'] . "'";
-        $page_loctitle = " :: {$_PWNDATA['gallery']['editing']}'" . $image['name'] . "'";
+        $request = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
+        $gal = mysql_fetch_array($request);
+        $smarty->assign('image',$image);
+        $smarty->assign('gallery',$gal);
+        $smarty->display('gallery/edit.tpl');
     }
-
-
-
-    standardHeaders($site_info['name'] . " :: " . $_PWNDATA['gallery_page_title'] . $page_loctitle,true);
-    drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > $page_location",$_PWNDATA['gallery_page_title']);
-    require 'sidebar.php';
-    print <<<END
-        <td valign="top">
-            <table class="borderless_table" width="100%">
-                {$page_contents}
-	        </table>
-        </td>
-  </tr>
-</table>
-END;
-    require 'footer.php';
 } else {
     // We're procesing image requests here.
     if (!isset($_GET['type']) || $_GET['type'] == "img") {
