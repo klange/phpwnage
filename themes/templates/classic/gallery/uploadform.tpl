@@ -1,4 +1,4 @@
-{include file='header.tpl' full=true title="`$site.name` :: `$_PWNDATA.gallery_page_title` :: `$gallery.name` :: `$_PWNDATA.gallery.upload_panel"}
+{include file='header.tpl' full=true title="`$site.name` :: `$_PWNDATA.gallery_page_title` :: `$gallery.name` :: `$_PWNDATA.gallery.upload_panel`"}
 {include file='subbar.tpl' subbar_right=$site.right_data subbar_left="<a href=\"index.php\">`$site.name`</a> &gt; <a href=\"gallery.php\">`$_PWNDATA.gallery_page_title`</a> &gt; `$gallery.name` &gt; `$_PWNDATA.gallery.upload_panel`"}
 {include file='sidebar.tpl'}
 <td valign="top">
