@@ -69,7 +69,7 @@ if (isset($_POST['action'])) {
         if (isset($_FILES['image'])) {
             $_POST['gallery'] = (int)$_POST['gallery'];
             $temp_query = $_SQL->query("SELECT `id`,`upload` FROM `{$_PREFIX}galleries` WHERE `id`={$_POST['gallery']}");
-            $temp = $results->fetch_array($temp_query);
+            $temp = $temp_query->fetch_array();
             if (!isset($temp['id']) || $temp['upload'] > $user['level']) {
                  messageBack($_PWNDATA['post_attack'],$_PWNDATA['not_permitted']);
             }
@@ -93,7 +93,7 @@ NULL, '$title', '$desc', {$user['id']},
 END;
             $_SQL->query($query);
             $result = $_SQL->query("SELECT `id` FROM `{$_PREFIX}images` ORDER BY `id` DESC LIMIT 1");
-            $newimage = $results->fetch_array($result);
+            $newimage = $result->fetch_array();
             unlink($_FILES['image']['tmp_name']);
             unlink($_FILES['image']['tmp_name'] . "_th");
             messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_uploaded'],"gallery.php?do=image&amp;id={$newimage['id']}");
@@ -102,7 +102,7 @@ END;
         }
     } elseif ($_POST['action'] == "edit_image") {
         $request = $_SQL->query("SELECT `id`,`uid` FROM `{$_PREFIX}images` WHERE `id`={$_POST['id']}");
-        $image = $results->fetch_array($request);
+        $image = $request->fetch_array();
         if (!$image) {
             messageBack($_PWNDATA['gallery_page_title'],"Invalid image specified.");
         }
@@ -166,7 +166,7 @@ if ($_GET['do'] != "img") {
         while ($image = $request->fetch_array()) {
             $images[] = $image;
             if (!array_key_exists($image['uid'],$users)) {
-                $results_b = $_SQL->query("SELECT * FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}", $db);
+                $results_b = $_SQL->query("SELECT * FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}");
                 $tmp = $results_b->fetch_array();
                 $users[$tmp['id']] = $tmp;
             }
