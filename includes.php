@@ -72,7 +72,8 @@ function pwnErrorStackAppend($errno, $errstr, $errfile, $errline) {
     return true;
 }
 set_error_handler("pwnErrorStackAppend");
-pwnErrorStackAppend(1337,"PHPwnage 2.0 - <b>Debug Output</b>",'',0);
+
+pwnErrorStackAppend(1337,"PHPwnage 2.0 - <b>Debug Mode Enabled</b>",'',0);
 
 
 $mtime = microtime();

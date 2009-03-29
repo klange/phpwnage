@@ -22,7 +22,7 @@
 {$_PWNDATA.exec_a}{$exectime}{$_PWNDATA.exec_b}<br />
 {$_PWNICONS.notice}
 {loaderrors}
-{if count($errors) > 0}
+{if $show_errors}
 {foreach item=error from=$errors}
 {if $error.type == 1}
 <div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #FF4B4B; background-color: #FFE1E1; text-align: left;">

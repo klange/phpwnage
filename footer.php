@@ -46,7 +46,7 @@ $totaltime = ($endtime - $starttime);
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
 print "<br />{$_PWNICONS['notice']}";
 print $_TRACKER;
-// XXX: The following is hacked in from a compiled footer.tpl because I'm lazy.
+if ($_DEBUG_MODE) {
 $bt = debug_backtrace();
 $bt = $bt['0'];
 pwnErrorStackAppend(1,"File not converted to Templates!",$bt['file'],$bt['line']);
@@ -71,6 +71,7 @@ Line <b><?php echo $error['line']; ?>
 </i><?php } ?>
 </div>
 <?
+}
 }
 print <<<END
 </div>
