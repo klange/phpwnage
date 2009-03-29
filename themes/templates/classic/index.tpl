@@ -30,7 +30,7 @@
         </td>
       </tr>
 {/foreach}
-<tr><td>{pager url="index.php?page=" page=$page_num total=$page_total}</td></tr>
+<tr><td><table><tr>{pager url="index.php?page=" page=$page_num total=$page_total}</tr></table></td></tr>
 </table>
 </td></tr></table>
 {include file='footer.tpl'}
