@@ -45,6 +45,9 @@ function pwnErrorStackAppend($errno, $errstr, $errfile, $errline) {
     $tmp['str'] = $errstr;
     $tmp['file'] = $errfile;
     $tmp['line'] = $errline;
+    $d = str_replace($_SERVER['PHP_SELF'],"",$_SERVER['SCRIPT_FILENAME']);
+    $d = str_replace($d,"",$tmp['file']);
+    $tmp['file'] = "<a href=\"http://bazaar.launchpad.net/~oasisgames/phpwnage/main/annotate/head%3A{$d}#L{$tmp['line']}\">{$tmp['file']}</a>";
     $mtime = microtime();
     $mtime = explode(" ",$mtime);
     $mtime = $mtime[1] + $mtime[0];
