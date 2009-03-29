@@ -21,6 +21,13 @@
 
 require_once('includes.php');
 
+if (!isset($_POST['action'])) {
+    $_POST['action'] = "";
+}
+if (!isset($_GET['do'])) {
+    $_GET['do'] = "";
+}
+
 
 if ($_POST['action'] == "login") {
     $userresult = override_sql_query("SELECT `id`,`name`,`password` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_POST['uname'] . "')", $db);

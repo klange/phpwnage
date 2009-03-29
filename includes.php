@@ -982,7 +982,7 @@ END;
 
 if (!isset($no_login) || $no_login != true) {
     // Handle the current session
-    if (!isset($_SESSION['sess_id']) and ($_COOKIE['rem_yes'] == "yes")) {
+    if (!isset($_SESSION['sess_id']) and (isset($_COOKIE['rem_yes']) && $_COOKIE['rem_yes'] == "yes")) {
 	    $userresult = $_SQL->query("SELECT `name`,`password`,`id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')");
 	    $tempuser = $userresult->fetch_array();
 	    if (($_COOKIE['rem_user'] == $tempuser['name']) and ($_COOKIE['rem_pass'] == $tempuser['password'])) {
