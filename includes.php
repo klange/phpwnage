@@ -62,7 +62,8 @@ function pwnErrorStackAppend($errno, $errstr, $errfile, $errline) {
         E_USER_WARNING       => 'User Warning',
         E_USER_NOTICE        => 'User Notice',
         E_STRICT             => 'Runtime Notice',
-        E_RECOVERABLE_ERROR  => 'Catchable Fatal Error'
+        E_RECOVERABLE_ERROR  => 'Catchable Fatal Error',
+        1337                 => 'Information'
         );
     $tmp['name'] = $errortype[$errno];
     $tmp['time'] = str_replace("0.","",number_format($exectime,6));

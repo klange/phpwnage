@@ -50,12 +50,7 @@ print $_TRACKER;
 $bt = debug_backtrace();
 $bt = $bt['0'];
 pwnErrorStackAppend(1,"File not converted to Templates!",$bt['file'],$bt['line']);
-$tmp['name'] = "Information";
-$tmp['str'] = "Total of " . count($_ERRORS) . " errors and warnings.<br /><b>MySQL Status:</b><br />" . $_SQL->stat();
-$tmp['line'] = 0;
-$tmp['file'] = "";
-$tmp['type'] = 1024;
-$_ERRORS[] = $tmp;
+pwnErrorStackAppend(1337,"Total of " . count($_ERRORS) . " errors and warnings.<br /><b>MySQL Status:</b><br />" . $_SQL->stat(),'',0);
 foreach ($_ERRORS as $error) { ?>
 <?php if ($error['type'] == 1) {?>
 <div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #FF4B4B; background-color: #FFE1E1; text-align: left;">
