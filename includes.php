@@ -29,8 +29,49 @@ $_PWNVERSION['major'] = 2;
 $_PWNVERSION['minor'] = 0;
 $_PWNVERSION['extra'] = "";
 
-// DO NOT EDIT ANYTHING BELOW THIS LINE
-// ------------------------------------------------------------------------------------------------------------
+function override_sql_query($query) {
+    $bt = debug_backtrace();
+    $bt = $bt['0'];
+    pwnErrorStackAppend(2,"Unconverted mysql_query() call",$bt['file'],$bt['line']);
+    
+    return mysql_query($query);
+}
+
+error_reporting(E_ALL);
+$_ERRORS = array();
+function pwnErrorStackAppend($errno, $errstr, $errfile, $errline) {
+    global $_ERRORS, $starttime;
+    $tmp['type'] = $errno;
+    $tmp['str'] = $errstr;
+    $tmp['file'] = $errfile;
+    $tmp['line'] = $errline;
+    $mtime = microtime();
+    $mtime = explode(" ",$mtime);
+    $mtime = $mtime[1] + $mtime[0];
+    $exectime = $mtime - $starttime;
+    $errortype = array (
+        E_ERROR              => 'Error',
+        E_WARNING            => 'Warning',
+        E_PARSE              => 'Parsing Error',
+        E_NOTICE             => 'Notice',
+        E_CORE_ERROR         => 'Core Error',
+        E_CORE_WARNING       => 'Core Warning',
+        E_COMPILE_ERROR      => 'Compile Error',
+        E_COMPILE_WARNING    => 'Compile Warning',
+        E_USER_ERROR         => 'User Error',
+        E_USER_WARNING       => 'User Warning',
+        E_USER_NOTICE        => 'User Notice',
+        E_STRICT             => 'Runtime Notice',
+        E_RECOVERABLE_ERROR  => 'Catchable Fatal Error'
+        );
+    $tmp['name'] = $errortype[$errno];
+    $tmp['time'] = str_replace("0.","",number_format($exectime,6));
+    $_ERRORS[]  = $tmp;
+
+    return true;
+}
+set_error_handler("pwnErrorStackAppend");
+
 
 $mtime = microtime();
 $mtime = explode(" ",$mtime);
@@ -38,32 +79,32 @@ $mtime = $mtime[1] + $mtime[0];
 $starttime = $mtime;
 
 $db_fail = false;
-$db = mysql_connect($conf_server,$conf_user,$conf_password) or 
-die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">We've experienced an internal error. Please contact " . $conf_email . ".<br />
-(Failed to connect to SQL server.)</span>"); 
-mysql_select_db($conf_database, $db) or $db_fail = true; 
+$_SQL = new mysqli($conf_server,$conf_user,$conf_password) or die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">We've experienced an internal error. Please contact " . $conf_email . ".<br />(Failed to connect to SQL server.)</span>"); 
+$_SQL->select_db($conf_database) or $db_fail = true; 
+$db = mysql_connect($conf_server,$conf_user,$conf_password);
+mysql_select_db($conf_database,$db);
 
 putenv("TZ=America/New_York");
 
-$banlist = mysql_query("SELECT * FROM `{$_PREFIX}banlist`");
-while ($ban = mysql_fetch_array($banlist)) {
+$banlist = $_SQL->query("SELECT * FROM `{$_PREFIX}banlist`");
+while ($ban = $banlist->fetch_array()) {
     if ($_SERVER['REMOTE_ADDR'] == $ban['ip']) {
         die ("<span style=\"font-family: Verdana, Tahoma, sans; color: #EE1111;\">You have been permanently banned from this site.</span>");
     }
 }
 
 
-$result = mysql_query("SELECT * FROM `{$_PREFIX}info`", $db);
-$site_info = mysql_fetch_array($result); // Get the site info, called by all pages, so why not?
+$result = $_SQL->query("SELECT * FROM `{$_PREFIX}info`");
+$site_info = $result->fetch_array(); // Get the site info, called by all pages, so why not?
 function mse($source) {
 	// Do we return the Real Escape String or the source?
 	//return mysql_real_escape_string($source);
 	return $source;
 }
 function isReadable($userLevel, $board) {
-    global $_PREFIX;
-	$result = mysql_query("SELECT `vis_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
-	$brd = mysql_fetch_array($result);
+    global $_PREFIX, $_SQL;
+	$result = $_SQL->query("SELECT `vis_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$brd = $result->fetch_array();
 	if ((int)$userLevel < (int)$brd['vis_level']) {
 		return false;
 	} else {
@@ -71,9 +112,9 @@ function isReadable($userLevel, $board) {
 	}
 }
 function isWriteableTopic($userLevel, $board) {
-    global $_PREFIX;
-	$result = mysql_query("SELECT `top_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
-	$brd = mysql_fetch_array($result);
+    global $_PREFIX, $_SQL;
+	$result = $_SQL->query("SELECT `top_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$brd = $result->fetch_array();
 	if ((int)$userLevel < (int)$brd['top_level']) {
 		return false;
 	} else {
@@ -81,9 +122,9 @@ function isWriteableTopic($userLevel, $board) {
 	}
 }
 function isWriteable($userLevel, $board) {
-    global $_PREFIX;
-	$result = mysql_query("SELECT `post_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
-	$brd = mysql_fetch_array($result);
+    global $_PREFIX, $_SQL;
+	$result = $_SQL->query("SELECT `post_level` FROM `{$_PREFIX}boards` WHERE `id`=" .  $board);
+	$brd = $result->fetch_array();
 	if ((int)$userLevel < (int)$brd['post_level']) {
 		return false;
 	} else {
@@ -91,18 +132,18 @@ function isWriteable($userLevel, $board) {
 	}
 }
 function getBoardName($bid) {
-    global $_PREFIX;
-	$result = mysql_query("SELECT `title` FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
-	$brd = mysql_fetch_array($result);
+    global $_PREFIX, $_SQL;
+	$result = $_SQL->query("SELECT `title` FROM `{$_PREFIX}boards` WHERE `id`=" .  $bid);
+	$brd = $result->fetch_array();
 	return $brd['title'];
 }
 function getPostsInBoard($bid) {
-    global $_PREFIX;
-	$result = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE `board`=" .  $bid);
+    global $_PREFIX, $_SQL;
+	$result = $_SQL->query("SELECT `id` FROM `{$_PREFIX}topics` WHERE `board`=" .  $bid);
 	$total = 0;
-	while ($top = mysql_fetch_array($result)) {
-		$result2 = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" .  $top['id']);
-		$pc = mysql_fetch_array($result2);
+	while ($top = $result->fetch_array()) {
+		$result2 = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" .  $top['id']);
+		$pc = $result2->fetch_array();
 		$total = $total + $pc['COUNT(*)'];
 	}
 	return $total;
@@ -118,7 +159,11 @@ function setTheme() {
 	} else {
 		$imageroot = $user['color'];
 	}
-	$themes = explode(",",$user['theme']);
+	if (isset($user['theme'])) {
+	    $themes = explode(",",$user['theme']);
+	} else {
+	    $themes = array();
+    }
 	if (!isset($themes[0]) || $themes[0] == "")
 	{
 		$theme = $_DEFAULT_THEME;
@@ -283,16 +328,16 @@ END;
 */
 
 function getRankName($level,$site_info,$posts) {
-    global $_PREFIX, $_PWNDATA;
+    global $_PREFIX, $_PWNDATA, $_SQL;
 	// First we'll check if there is a custom rank available.
 	$level = (int)$level;
 	$posts = (int)$posts;
-    $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1");
-    $temp = mysql_fetch_array($temp);
+    $temp = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1");
+    $temp = $temp->fetch_array();
     if ((int)$temp['COUNT(*)'] < 1) {
         // Then, if our user has a post count within a specific range, use it.
-        $temp = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=$posts");
-        $temp = mysql_fetch_array($temp);
+        $temp = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=$posts");
+        $temp = $temp->fetch_array();
         if ((int)$temp['COUNT(*)'] < 1) {
             // Otherwise, just use the standard title for their rank.
             if ($level < $site_info['mod_rank']) {
@@ -303,13 +348,13 @@ function getRankName($level,$site_info,$posts) {
 	        return $_PWNDATA['rank']['admin'];
 	    }
 	} else {
-	    $results2 = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
-            $rank = mysql_fetch_array($results2);
+	    $results2 = $_SQL->query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=-1 AND `posts`<=" . $posts . " ORDER BY `posts` DESC");
+            $rank = $results2->fetch_array();
             return $rank['name'];
         }
     } else {
-        $results = mysql_query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
-        $rank = mysql_fetch_array($results);
+        $results = $_SQL->query("SELECT `name` FROM `{$_PREFIX}ranks` WHERE `value`=$level AND `posts`=-1 ORDER BY `value` DESC");
+        $rank = $results->fetch_array();
         return $rank['name'];
     }
 }
@@ -367,9 +412,9 @@ function makeIMG($link) {
     return "<img alt=\"forum image\" border=\"0\" src=\"$link\" />";
 }
 function pCount($topic) {
-    global $_PWNDATA, $_PREFIX;
-    $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" . intval($topic));
-    $res = mysql_fetch_array($results);
+    global $_PWNDATA, $_PREFIX, $_SQL;
+    $results = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `topicid`=" . intval($topic));
+    $res = $results->fetch_array();
     $comments = $res['COUNT(*)'] - 1;
     if ($comments == 0) {
         return $_PWNDATA['articles']['no_comments'];
@@ -383,7 +428,7 @@ function quote($c) {
     return preg_replace("/(\[quote\])((?:.(?!\[quote\]))*?)(\[\/quote\])/si","<div class=\"quote\"><span class=\"forum_quote\">$2</span></div>",$c);
 }
 function BBDecode($content,$allowhtml = false) {
-    global $_PREFIX, $site_info;
+    global $_PREFIX, $site_info, $_SQL;
     if (!$allowhtml) {
         $content = str_replace("<","&lt;",$content); // Kill HTML in posts
         $content = str_replace(">","&gt;",$content);
@@ -421,6 +466,8 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[pxsize=)([0-9]+)(\])(.+?)(\[\/pxsize\])/si","<span style=\"font-size: $2px\">$4</span>",$content);
     $content = preg_replace("/(\[scroll=)(.+?)(\])(.+?)(\[\/scroll\])/si","<marquee direction=\"$2\">$4</marquee>",$content);
     $content = preg_replace("/(\[scroll\])(.+?)(\[\/scroll\])/si","<marquee>$2</marquee>",$content);
+    $flag_quote = false;
+    $flag_hide = false;
     while ($flag_quote ==false) {
         $c_old = $content;
         $content = preg_replace("/(\[quote\])((?:.(?!\[quote\]))*?)(\[\/quote\])/si","<div class=\"quote\"><span class=\"forum_quote\">$2</span></div>",$content);
@@ -435,9 +482,9 @@ function BBDecode($content,$allowhtml = false) {
     $content = preg_replace("/(\[youtube\])(.+?)(\[\/youtube\])/si","<object width=\"425\" height=\"350\"><param name=\"movie\" value=\"http://www.youtube.com/v/$2\"></param><param name=\"wmode\" value=\"transparent\"></param><embed src=\"http://www.youtube.com/v/$2\" type=\"application/x-shockwave-flash\" wmode=\"transparent\" width=\"425\" height=\"350\"></embed></object>",$content);
     $content = preg_replace("/(\[gallery-thumb\])(.+?)(\[\/gallery-thumb\])/si","<a href=\"gallery.php?do=image&amp;id=$2\"><img src=\"gallery.php?do=img&amp;type=thumb&amp;i=$2\" alt=\"gallery image\" /></a>",$content);
     // Smiles are stored in MySQL
-    $smilesSet = mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
-    while ($smile = mysql_fetch_array($smilesSet)) {
-        $content = str_replace($smile['code'],"<img alt=\"{$smile['name']}\" src=\"smiles/" . $smile['image'] . "\" />",$content);
+    $smilesSet = $_SQL->query("SELECT * FROM `{$_PREFIX}smileys`");
+    while ($smile = $smilesSet->fetch_array()) {
+        $content = str_replace($smile['code'],"<img alt=\"{$smile['code']}\" src=\"smiles/" . $smile['image'] . "\" />",$content);
     }
     // Censorship
     $censor_list = array("ass", "bitch", "bastard", "cunt", "cock", "shit", "damn", "fuck", "fucker", "fucking");
@@ -457,18 +504,18 @@ function sim_rep2($search, $replace, $subject) {
     return preg_replace('/[a-zA-Z]+/e', '\'\0\' == \'' . $search . '\' ? \'' . $replace . '\' : \'\0\';', $subject);
 }
 function postCount($userID) {
-    global $_PREFIX;
+    global $_PREFIX, $_SQL;
 	// Get a user's post count by ID.
-	$results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `authorid`=" . $userID);
+	$results = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}posts` WHERE `authorid`=" . $userID);
 	if (!$results) {
 	    return 0;
     } else {
-	    $counter = mysql_fetch_array($results);
+	    $counter = $results->fetch_array();
 	    return $counter['COUNT(*)'];
 	}
 }
 function makeEditor($name,$path,$preview,$advanced,$target) {
-    global $_PWNDATA, $_PWNICONS, $_PREFIX, $user;
+    global $_PWNDATA, $_PWNICONS, $_PREFIX, $_SQL, $user;
     $userich = ($user['level'] < 1 or $user['rich_edit']) ? "true" : "false";
     $return = <<<END
 <script type="text/javascript">
@@ -519,7 +566,7 @@ function toggleMCE$path() {
         mce_editing$path = false;
     }
 }
-function addSize$what(sizeToAdd) {
+function addSize$path(sizeToAdd) {
 document.form$path.$name.rows = document.form$path.$name.rows + sizeToAdd;
 }
 //]]>
@@ -528,10 +575,10 @@ END;
     if ($preview) {
         $return .= "<iframe name=\"previewbox$path\" width=\"100%\" style=\"border: 0px;\" height=\"0px\" id=\"previewbox\"></iframe>";
     }
-    $smilesSet = mysql_query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
+    $smilesSet = $_SQL->query("SELECT `code`,`image` FROM `{$_PREFIX}smileys`");
     $return .= "<table class=\"mod_set\"><tr><td colspan=\"11\"><b>{$_PWNDATA['poster']['smileys']}:</b> ";
-    while ($smile = mysql_fetch_array($smilesSet)) {
-        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$what('" . $smile['code'] . "','')\" />";
+    while ($smile = $smilesSet->fetch_array()) {
+        $return .= "<img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" onclick=\"addCode$path('" . $smile['code'] . "','')\" />";
     }
     $return .= "</td></tr><tr>";
     $return .= drawButton("javascript:addCode$path('[b]','[/b]')","<b>{$_PWNDATA['poster']['bold']}</b>",$_PWNICONS['buttons']['editor']['bold']) . "\n";
@@ -806,9 +853,9 @@ function messageBackLight($title, $message) {
 }
 
 function check_read($id,$userid) {
-    global $_PREFIX;
-    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
+    global $_PREFIX, $_SQL;
+    $temp_res = $_SQL->query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
+    $topic = $temp_res->fetch_array();
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
     if (in_array($userid, $split_list)) {
@@ -820,21 +867,21 @@ function check_read($id,$userid) {
 }
 
 function findTopic($postnumber) {
-    global $_PREFIX;
-    $temp = mysql_query("SELECT `topicid` FROM `{$_PREFIX}posts` WHERE `id`=" . $postnumber);
-    $post = mysql_fetch_array($temp);
+    global $_PREFIX, $_SQL;
+    $temp = $_SQL->query("SELECT `topicid` FROM `{$_PREFIX}posts` WHERE `id`=" . $postnumber);
+    $post = $temp->fetch_array();
     $topic = $post['topicid'];
     return $topic;
 }
 
 function findPage($postnumber, $topic = -1) {
-    global $_POSTSPERPAGE, $_PREFIX;
+    global $_POSTSPERPAGE, $_PREFIX, $_SQL;
     if ($topic == -1) {
         $topic = findTopic($postnumber);
     }
-    $temp_res = mysql_query("SELECT `id` FROM `{$_PREFIX}posts` WHERE `topicid`=" . $topic);
+    $temp_res = $_SQL->query("SELECT `id` FROM `{$_PREFIX}posts` WHERE `topicid`=" . $topic);
     $i = 0;
-    while ($post = mysql_fetch_array($temp_res)) {
+    while ($post = $temp_res->fetch_array()) {
         $i++;
         if ($post['id'] >= $postnumber)
             break;
@@ -844,36 +891,36 @@ function findPage($postnumber, $topic = -1) {
 }
 
 function check_read_forum($id,$userid) {
-    global $_PREFIX;
-    $temp_res = mysql_query("SELECT `id` FROM `{$_PREFIX}topics` WHERE board=$id");
+    global $_PREFIX, $_SQL;
+    $temp_res = $_SQL->query("SELECT `id` FROM `{$_PREFIX}topics` WHERE board=$id");
     $was_read = true;
-    while ($topic = mysql_fetch_array($temp_res)) {
+    while ($topic = $temp_res->fetch_array()) {
         if (!check_read($topic['id'],$userid)) { $was_read = false; }
     }
     return $was_read;
 }
 
 function set_read($id,$userid) {
-    global $_PREFIX;
-    $temp_res = mysql_query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
-    $topic = mysql_fetch_array($temp_res);
+    global $_PREFIX, $_SQL;
+    $temp_res = $_SQL->query("SELECT `readby` FROM `{$_PREFIX}topics` WHERE id=$id");
+    $topic = $temp_res->fetch_array();
     $read_list = $topic['readby'];
     $split_list = explode(",",$read_list);
     if (!in_array($userid, $split_list)) {
         $read_list .= ",$userid";
-        mysql_query("UPDATE `{$_PREFIX}topics` SET `readby` = '" . mse($read_list) . "' WHERE `{$_PREFIX}topics`.`id` =" . $id);
+        $_SQL->query("UPDATE `{$_PREFIX}topics` SET `readby` = '" . mse($read_list) . "' WHERE `{$_PREFIX}topics`.`id` =" . $id);
     }
 }
 
 function set_unread($id) {
-    global $_PREFIX;
-    mysql_query("UPDATE `{$_PREFIX}topics` SET `readby` = '' WHERE `{$_PREFIX}topics`.`id` =" . $id);
+    global $_PREFIX, $_SQL;
+    $_SQL->query("UPDATE `{$_PREFIX}topics` SET `readby` = '' WHERE `{$_PREFIX}topics`.`id` =" . $id);
 }
 
 function check_voted($id,$userid) {
-    global $_PREFIX;
-    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
-    $poll = mysql_fetch_array($temp_res);
+    global $_PREFIX, $_SQL;
+    $temp_res = $_SQL->query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = $temp_res->fetch_array();
     $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (in_array($userid, $split_list)) {
@@ -885,14 +932,14 @@ function check_voted($id,$userid) {
 }
 
 function set_voted($id,$userid) {
-    global $_PREFIX;
-    $temp_res = mysql_query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
-    $poll = mysql_fetch_array($temp_res);
+    global $_PREFIX, $_SQL;
+    $temp_res = $_SQL->query("SELECT `voters` FROM `{$_PREFIX}polls` WHERE id=$id");
+    $poll = $temp_res->fetch_array();
     $read_list = $poll['voters'];
     $split_list = explode(",",$read_list);
     if (!in_array($userid, $split_list)) {
         $read_list .= ",$userid";
-        mysql_query("UPDATE `{$_PREFIX}polls` SET `voters` = '" . mse($read_list) . "' WHERE `{$_PREFIX}polls`.`id` =" . $id);
+        $_SQL->query("UPDATE `{$_PREFIX}polls` SET `voters` = '" . mse($read_list) . "' WHERE `{$_PREFIX}polls`.`id` =" . $id);
     }
 }
 
@@ -927,18 +974,18 @@ END;
 }
 
 
-if ($no_login != true) {
+if (!isset($no_login) || $no_login != true) {
     // Handle the current session
     if (!isset($_SESSION['sess_id']) and ($_COOKIE['rem_yes'] == "yes")) {
-	    $userresult = mysql_query("SELECT `name`,`password`,`id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
-	    $tempuser = mysql_fetch_array($userresult);
+	    $userresult = $_SQL->query("SELECT `name`,`password`,`id` FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_COOKIE['rem_user'] . "')", $db);
+	    $tempuser = $userresult->fetch_array();
 	    if (($_COOKIE['rem_user'] == $tempuser['name']) and ($_COOKIE['rem_pass'] == $tempuser['password'])) {
 		    $_SESSION['user_name'] = $_COOKIE['rem_user'];
 		    $_SESSION['user_pass'] = $_COOKIE['rem_pass'];
 		    $_SESSION['sess_id'] = time();
 		    $_SESSION['last_on'] = time();
-		    mysql_query("DELETE FROM `{$_PREFIX}sessions` WHERE `user`=" . $tempuser['id'] . "");
-		    mysql_query("INSERT INTO `{$_PREFIX}sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $tempuser['id'] . ", " . $_SESSION['last_on'] . ");");
+		    $_SQL->query("DELETE FROM `{$_PREFIX}sessions` WHERE `user`=" . $tempuser['id'] . "");
+		    $_SQL->query("INSERT INTO `{$_PREFIX}sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $tempuser['id'] . ", " . $_SESSION['last_on'] . ");");
 	    } else {
 		    setcookie("rem_user", "_", time()+60*60*24*365*10); // This cookie will last for another 10 years (just in case)
 		    setcookie("rem_pass", "_", time()+60*60*24*365*10); 
@@ -946,21 +993,21 @@ if ($no_login != true) {
 	    }
     }
     if (isset($_SESSION['sess_id'])) {
-        $result = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_SESSION['user_name'] . "')", $db);
-        $user = mysql_fetch_array($result);
-        $temp_count = mysql_query("SELECT COUNT(`id`) FROM `{$_PREFIX}sessions` WHERE `id`=" . $_SESSION['sess_id'], $db);
-        $counter_session = mysql_fetch_array($temp_count);
+        $result = $_SQL->query("SELECT * FROM `{$_PREFIX}users` WHERE UCASE(name)=UCASE('" . $_SESSION['user_name'] . "')");
+        $user = $result->fetch_array();
+        $temp_count = $_SQL->query("SELECT COUNT(`id`) FROM `{$_PREFIX}sessions` WHERE `id`=" . $_SESSION['sess_id']);
+        $counter_session = $temp_count->fetch_array();
         if ($counter_session['COUNT(`id`)'] == 0) {
 	        $_SESSION['sess_id'] = time();
 	        $_SESSION['last_on'] = time();
-	        mysql_query("DELETE FROM `{$_PREFIX}sessions` WHERE `user`=" . $user['id'] . "");
-	        mysql_query("INSERT INTO `{$_PREFIX}sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $user['id'] . ", " . $_SESSION['last_on'] . ");");
+	        $_SQL->query("DELETE FROM `{$_PREFIX}sessions` WHERE `user`=" . $user['id'] . "");
+	        $_SQL->query("INSERT INTO `{$_PREFIX}sessions` VALUES (" . $_SESSION['sess_id'] . ", " . $user['id'] . ", " . $_SESSION['last_on'] . ");");
         }
         $_SESSION['last_on'] = time();
-        mysql_query("UPDATE `{$_PREFIX}sessions` SET `last`=" . time() . " WHERE `id`=" . $_SESSION['sess_id']);
+        $_SQL->query("UPDATE `{$_PREFIX}sessions` SET `last`=" . time() . " WHERE `id`=" . $_SESSION['sess_id']);
     }
-    if ($_GET['do'] == 'logoff') {
-        mysql_query("DELETE FROM `{$_PREFIX}sessions` WHERE `id`=" . $_SESSION['sess_id'] . "");
+    if (isset($_GET['do']) && $_GET['do'] == 'logoff') {
+        $_SQL->query("DELETE FROM `{$_PREFIX}sessions` WHERE `id`=" . $_SESSION['sess_id'] . "");
         unset($_SESSION['sess_id']);
         session_destroy();
         setcookie("rem_user", "_", time()+60*60*24*365*10);
@@ -969,7 +1016,7 @@ if ($no_login != true) {
         messageRedirect($_PWNDATA['signedout'],$_PWNDATA['signedout'],"index.php");
     }
 }
-mysql_query("DELETE FROM `{$_PREFIX}sessions` WHERE (`last` < (" . time() . " - 600))");
+$_SQL->query("DELETE FROM `{$_PREFIX}sessions` WHERE (`last` < (" . time() . " - 600))");
 if (!isset($user['level'])) { $user['level'] = 0; } // And lastly, set our user to 0 if they aren't logged in.
 
 setTheme();

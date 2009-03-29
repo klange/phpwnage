@@ -68,8 +68,8 @@ if (isset($_POST['action'])) {
     if ($_POST['action'] == "upload") {
         if (isset($_FILES['image'])) {
             $_POST['gallery'] = (int)$_POST['gallery'];
-            $temp_query = mysql_query("SELECT `id`,`upload` FROM `{$_PREFIX}galleries` WHERE `id`={$_POST['gallery']}");
-            $temp = mysql_fetch_array($temp_query);
+            $temp_query = $_SQL->query("SELECT `id`,`upload` FROM `{$_PREFIX}galleries` WHERE `id`={$_POST['gallery']}");
+            $temp = $results->fetch_array($temp_query);
             if (!isset($temp['id']) || $temp['upload'] > $user['level']) {
                  messageBack($_PWNDATA['post_attack'],$_PWNDATA['not_permitted']);
             }
@@ -91,9 +91,9 @@ NULL, '$title', '$desc', {$user['id']},
 '$name', {$_POST['gallery']}, {$_FILES['image']['size']},
 '{$_FILES['image']['type']}', 1, "{$image}", "{$thumb}");
 END;
-            mysql_query($query);
-            $result = mysql_query("SELECT `id` FROM `{$_PREFIX}images` ORDER BY `id` DESC LIMIT 1");
-            $newimage = mysql_fetch_array($result);
+            $_SQL->query($query);
+            $result = $_SQL->query("SELECT `id` FROM `{$_PREFIX}images` ORDER BY `id` DESC LIMIT 1");
+            $newimage = $results->fetch_array($result);
             unlink($_FILES['image']['tmp_name']);
             unlink($_FILES['image']['tmp_name'] . "_th");
             messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_uploaded'],"gallery.php?do=image&amp;id={$newimage['id']}");
@@ -101,35 +101,39 @@ END;
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
     } elseif ($_POST['action'] == "edit_image") {
-        $request = mysql_query("SELECT `id`,`uid` FROM `{$_PREFIX}images` WHERE `id`={$_POST['id']}");
-        $image = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT `id`,`uid` FROM `{$_PREFIX}images` WHERE `id`={$_POST['id']}");
+        $image = $results->fetch_array($request);
         if (!$image) {
             messageBack($_PWNDATA['gallery_page_title'],"Invalid image specified.");
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_edit']);
         }
-        mysql_query("UPDATE `{$_PREFIX}images` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
-        mysql_query("UPDATE `{$_PREFIX}images` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
+        $_SQL->query("UPDATE `{$_PREFIX}images` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
+        $_SQL->query("UPDATE `{$_PREFIX}images` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
         messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_edited'],"gallery.php?do=image&amp;id={$image['id']}");
     } elseif ($_POST['action'] == "move_image") {
         if ($user['level'] < $site_info['mod_rank']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['only_mods_move']);
         }
-        mysql_query("UPDATE `{$_PREFIX}images` SET `gid`={$_POST['gallery']} WHERE `id`={$_POST['id']}");
+        $_SQL->query("UPDATE `{$_PREFIX}images` SET `gid`={$_POST['gallery']} WHERE `id`={$_POST['id']}");
         messageRedirect($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['image_moved'],"gallery.php?do=image&amp;id={$_POST['id']}");
     }
+}
+
+if (!isset($_GET['do'])) {
+    $_GET['do'] = "";
 }
 
 if ($_GET['do'] != "img") {
     if (!isset($_GET['do']) || ($_GET['do'] == "")) {
         $galleries = array();
         $img_counts = array();
-        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries`");
-        while ($gal = mysql_fetch_array($request)) {
+        $request = $_SQL->query("SELECT * FROM `{$_PREFIX}galleries`");
+        while ($gal = $request->fetch_array()) {
             if ($gal['view'] <= $user['level']) {
-                $results = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
-                $count = mysql_fetch_array($results);
+                $results = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
+                $count = $results->fetch_array();
                 $galleries[$gal['id']] = $gal;
                 $img_counts[$gal['id']] = $count['COUNT(*)'];
             }
@@ -139,8 +143,8 @@ if ($_GET['do'] != "img") {
         $smarty->display('gallery/index.tpl');
     } elseif ($_GET['do'] == "view") {
         $id = intval($_GET['id']);
-        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$id}");
-        $gal = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$id}");
+        $gal = $request->fetch_array();
         if ($gal['view'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_view']);
         }
@@ -153,17 +157,17 @@ if ($_GET['do'] != "img") {
             $start = ($_GET['p'] - 1) * $_IMAGESPERPAGE;
             $page = $_GET['p'];
         }
-        $request = mysql_query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
-        $temp = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT COUNT(*) FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']}");
+        $temp = $request->fetch_array();
         $totalImages = $temp['COUNT(*)'];
         $totalPages = (int)(($totalImages - 1) / $_IMAGESPERPAGE + 1);
         
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC LIMIT {$start}, {$_IMAGESPERPAGE}");
-        while ($image = mysql_fetch_array($request)) {
+        $request = $_SQL->query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ` FROM `{$_PREFIX}images` WHERE `gid`={$gal['id']} ORDER BY `id` DESC LIMIT {$start}, {$_IMAGESPERPAGE}");
+        while ($image = $request->fetch_array()) {
             $images[] = $image;
             if (!array_key_exists($image['uid'],$users)) {
-                $results_b = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}", $db);
-                $tmp = mysql_fetch_array($results_b);
+                $results_b = $_SQL->query("SELECT * FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}", $db);
+                $tmp = $results_b->fetch_array();
                 $users[$tmp['id']] = $tmp;
             }
         }
@@ -176,8 +180,8 @@ if ($_GET['do'] != "img") {
         $smarty->assign('totalPages',$totalPages);
         $smarty->display('gallery/viewgallery.tpl');
     } elseif ($_GET['do'] == "upload_form") {
-        $request = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
-        $gal = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['gal']}");
+        $gal = $request->fetch_array();
         
         if ($gal['upload'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['can_not_upload']);
@@ -186,12 +190,12 @@ if ($_GET['do'] != "img") {
         $smarty->assign('gallery',$gal);
         $smarty->display('gallery/uploadform.tpl');
     } elseif ($_GET['do'] == "image") {
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
-        $image = mysql_fetch_array($request);
-        $results = mysql_query("SELECT `id`, `name` FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}");
-        $uploader = mysql_fetch_array($results);
-        $results = mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
-        $gal = mysql_fetch_array($results);
+        $request = $_SQL->query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
+        $image = $request->fetch_array();
+        $results = $_SQL->query("SELECT `id`, `name` FROM `{$_PREFIX}users` WHERE `id`={$image['uid']}");
+        $uploader = $results->fetch_array();
+        $results = $_SQL->query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
+        $gal = $results->fetch_array();
         
         if ($gal['view'] > $user['level']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['cannot_view_image']);
@@ -199,8 +203,8 @@ if ($_GET['do'] != "img") {
         
         if ($user['level'] >= $site_info['mod_rank']) {
             $galleries = array();
-            $results = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}galleries`");
-            while ($tmp = mysql_fetch_array($results)) {
+            $results = $_SQL->query("SELECT `id`,`name` FROM `{$_PREFIX}galleries`");
+            while ($tmp = $results->fetch_array()) {
                 $galleries[] = $tmp;
             }
             $smarty->assign('galleries',$galleries);
@@ -211,27 +215,27 @@ if ($_GET['do'] != "img") {
         $smarty->assign('uploader',$uploader);
         $smarty->display('gallery/image.tpl');
     } elseif ($_GET['do'] == "delete_image") {
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
-        $image = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
+        $image = $request->fetch_array();
         if (!$image) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_delete']);
         }
-        mysql_query("DELETE FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
+        $_SQL->query("DELETE FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
         messageRedirect($_PWNDATA['gallery_page_title'],"Image deleted","gallery.php?do=view&amp;id={$image['gid']}");
     } elseif ($_GET['do'] == "edit_image") {
-        $request = mysql_query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
-        $image = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT `id`,`name`,`desc`,`uid`,`fname`,`publ`,`gid` FROM `{$_PREFIX}images` WHERE `id`={$_GET['id']}");
+        $image = $request->fetch_array();
         if (!$image) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['no_image_specified']);
         }
         if ($user['level'] < $site_info['mod_rank'] && $user['id'] != $image['uid']) {
             messageBack($_PWNDATA['gallery_page_title'],$_PWNDATA['gallery']['not_yours_edit']);
         }
-        $request = mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
-        $gal = mysql_fetch_array($request);
+        $request = $_SQL->query("SELECT `id`,`name` FROM `{$_PREFIX}galleries` WHERE `id`={$image['gid']}");
+        $gal = $request->fetch_array();
         $smarty->assign('image',$image);
         $smarty->assign('gallery',$gal);
         $smarty->display('gallery/edit.tpl');
@@ -239,13 +243,13 @@ if ($_GET['do'] != "img") {
 } else {
     // We're procesing image requests here.
     if (!isset($_GET['type']) || $_GET['type'] == "img") {
-        $results = mysql_query("SELECT `type`, `data` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
-        $image = mysql_fetch_array($results);
+        $results = $_SQL->query("SELECT `type`, `data` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
+        $image = $results->fetch_array();
         header("Content-type: " . $image['type']);
         die($image['data']);
     } elseif ($_GET['type'] == "thumb") {
-        $results = mysql_query("SELECT `thumb` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
-        $image = mysql_fetch_array($results);
+        $results = $_SQL->query("SELECT `thumb` FROM `{$_PREFIX}images` WHERE `id`={$_GET['i']}");
+        $image = $results->fetch_array();
         header("Content-type: image/png");
         die($image['thumb']);
     }

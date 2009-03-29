@@ -22,7 +22,7 @@
 require_once('includes.php');
 require_once('sidebar.php');
 
-$result = mysql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
+$result = override_sql_query("SELECT * FROM `{$_PREFIX}news` WHERE id='" . $_GET['id'] . "'", $db);
 $row = mysql_fetch_array($result);
 
 if ($_POST[action]){
@@ -30,8 +30,8 @@ if ($_POST[action]){
     if (!isset($user['id']) || $user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
     }
-    mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
-    mysql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
+    override_sql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
+    override_sql_query("UPDATE `{$_PREFIX}news` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}news`.`id`='" . $id . "'", $db);
     messageRedirect($_PWNDATA['article'],$_PWNDATA['articles']['edit'],"article.php?id=" . $_GET['id']);
 }
 if (!isset($row['id'])) {
@@ -42,17 +42,17 @@ $smarty->assign('article',$row);
 
 if ($row['topicid'] != 0) {
     $smarty->assign('has_comments',true);
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `id`=" . $row['topicid']);
+    $results = override_sql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `id`=" . $row['topicid']);
     $topic = mysql_fetch_array($results);
     $smarty->assign('topic',$topic);
     $smarty->assign('showposter',isWriteable($user['level'], $topic['board']));
     $posts = array();
     $users = array();
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid={$row['topicid']} ORDER BY `id` DESC LIMIT 10", $db);
+    $results = override_sql_query("SELECT * FROM `{$_PREFIX}posts` WHERE topicid={$row['topicid']} ORDER BY `id` DESC LIMIT 10", $db);
     while ($post = mysql_fetch_array($results)) {
         $posts[] = $post;
         if (!array_key_exists($post['authorid'],$users)) {
-            $results_b = mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE id={$post['authorid']}", $db);
+            $results_b = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE id={$post['authorid']}", $db);
             $tmp = mysql_fetch_array($results_b);
             $users[$tmp['id']] = $tmp;
         }

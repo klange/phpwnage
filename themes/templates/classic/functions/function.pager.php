@@ -1,6 +1,6 @@
 <?php
 function smarty_function_pager($params, &$smarty ) {
-    if ($params.table) {
+    if (isset($params['table'])  && $params['table']) {
         echo printPagerNonTabular($params['url'],$params['page'],$params['total']);
     } else {
         echo printPager($params['url'],$params['page'],$params['total']);

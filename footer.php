@@ -46,6 +46,37 @@ $totaltime = ($endtime - $starttime);
 print "{$_PWNDATA['exec_a']}$totaltime{$_PWNDATA['exec_b']}";
 print "<br />{$_PWNICONS['notice']}";
 print $_TRACKER;
+// XXX: The following is hacked in from a compiled footer.tpl because I'm lazy.
+$bt = debug_backtrace();
+$bt = $bt['0'];
+pwnErrorStackAppend(1,"File not converted to Templates!",$bt['file'],$bt['line']);
+$tmp['name'] = "Information";
+$tmp['str'] = "Total of " . count($_ERRORS) . " errors and warnings.<br /><b>MySQL Status:</b><br />" . $_SQL->stat();
+$tmp['line'] = 0;
+$tmp['file'] = "";
+$tmp['type'] = 1024;
+$_ERRORS[] = $tmp;
+foreach ($_ERRORS as $error) { ?>
+<?php if ($error['type'] == 1) {?>
+<div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #FF4B4B; background-color: #FFE1E1; text-align: left;">
+<?php } elseif ($error['type'] == 2 || $error['type'] == 512) { ?>
+<div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #FFBB65; background-color: #FFEFDA; text-align: left;">
+<?php } elseif ($error['type'] == 8) { ?>
+<div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #71FF69; background-color: #D7FFD5; text-align: left;">
+<?php } else {?>
+<div style="padding: 2px; margin: 4px; width: 800px; border: 1px solid #7DCBFF; background-color: #D9F0FF; text-align: left;">
+<?php } ?>
+<?php if ($error['line'] > 0)  { ?><span style="font-family: monospace;">[<?php echo $error['time']; ?>
+]</span> <?php } ?><b><?php echo $error['name']; ?>
+:</b> <?php echo $error['str']; ?>
+
+<?php if ($error['line'] > 0) {?><br /><span style="font-family: monospace;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+Line <b><?php echo $error['line']; ?>
+</b> in <i><?php echo $error['file']; ?>
+</i><?php } ?>
+</div>
+<?
+}
 print <<<END
 </div>
 </body>

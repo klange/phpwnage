@@ -20,8 +20,8 @@
 */
 require_once('includes.php');
 $sidebar = array();
-$result = mysql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
-while ($row = mysql_fetch_array($result)) {
+$result = $_SQL->query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`");
+while ($row = $result->fetch_array()) {
     $sidebar[] = $row;
 }
 $myDirectory = opendir("blocks"); // Open 'blocks'

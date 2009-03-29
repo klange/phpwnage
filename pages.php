@@ -26,11 +26,11 @@ if ($_POST['action']){
         messageBack($_PWNDATA['post_attack'], $_PWNDATA['not_permitted']);
     }
     $pagename = $_GET['page'];
-    mysql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
+    override_sql_query("UPDATE `{$_PREFIX}pages` SET `content` = '" . $_POST['content'] . "' WHERE `{$_PREFIX}pages`.`name`='" . $pagename . "'", $db);
     messageRedirect($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['articles']['edit_page'],"");
 }
 $page_name = mse($_GET['page']);
-$result = mysql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='{$page_name}'", $db);
+$result = override_sql_query("SELECT * FROM `{$_PREFIX}pages` WHERE name='{$page_name}'", $db);
 $page = mysql_fetch_array($result);
 if (!isset($page['display_name'])) {
     messageBack($_PWNDATA['admin']['forms']['pages'],$_PWNDATA['pages_does_not_exist'],false);

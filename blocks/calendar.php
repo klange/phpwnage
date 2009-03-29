@@ -33,37 +33,37 @@ $dayafter2 = getDay(mktime(0,0,0,intval($month),intval($day)+3,intval($year)));
 $d2name = date("l", mktime(0,0,0,intval($month),intval($day)+3,intval($year)));
 $dayafter3 = getDay(mktime(0,0,0,intval($month),intval($day)+4,intval($year)));
 $d3name = date("l", mktime(0,0,0,intval($month),intval($day)+4,intval($year)));
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
+$day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
 $events = "";
-while ($query_row = mysql_fetch_array($day_results))
+while ($query_row = $day_results->fetch_array())
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 $block_content = $block_content . "<a href=\"calendar.php?view=date&amp;day=$today\">Today</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $tomorrow . "'");
+$day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $tomorrow . "'");
 $events = "";
-while ($query_row = mysql_fetch_array($day_results))
+while ($query_row = $day_results->fetch_array())
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 $block_content = $block_content . "<a href=\"calendar.php?view=date&amp;day=$tomorrow\">Tomorrow</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter . "'");
+$day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter . "'");
 $events = "";
-while ($query_row = mysql_fetch_array($day_results))
+while ($query_row = $day_results->fetch_array())
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 $block_content = $block_content . "<a href=\"calendar.php?view=date&amp;day=$dayafter\">" . $dname . "</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter2 . "'");
+$day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter2 . "'");
 $events = "";
-while ($query_row = mysql_fetch_array($day_results))
+while ($query_row = $day_results->fetch_array())
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }
 $block_content = $block_content . "<a href=\"calendar.php?view=date&amp;day=$dayafter\">" . $d2name . "</a>:<br />$events";
-$day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter3 . "'");
+$day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $dayafter3 . "'");
 $events = "";
-while ($query_row = mysql_fetch_array($day_results))
+while ($query_row = $day_results->fetch_array())
 {
 	$events = $events . "- " . $query_row['title'] . "<br />\n";
 }

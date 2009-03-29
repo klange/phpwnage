@@ -29,32 +29,32 @@ $content = $content . "<tr><td class=\"forum_thread_title\" width=\"20\"><a href
 $odd = 0;
 $result_set = array();
 if (!isset($_GET['o']) or $_GET['o'] == "uname") {
-$members_result = mysql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `name`");
+$members_result = override_sql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `name`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
 } else if ($_GET['o'] == "uid") {
-$members_result = mysql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `id`");
+$members_result = override_sql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `id`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
 } else if ($_GET['o'] == "posts") {
-$members_result_t = mysql_query("SELECT COUNT(`authorid`), `authorid` FROM `{$_PREFIX}posts` GROUP BY `authorid` ORDER BY COUNT(`authorid`) DESC");
+$members_result_t = override_sql_query("SELECT COUNT(`authorid`), `authorid` FROM `{$_PREFIX}posts` GROUP BY `authorid` ORDER BY COUNT(`authorid`) DESC");
 $ignore = "WHERE `id`<>";
 while ($memb = mysql_fetch_array($members_result_t)) {
-    $members_result = mysql_query("SELECT id,name,ims FROM `{$_PREFIX}users` WHERE `id`=" . $memb['authorid']);
+    $members_result = override_sql_query("SELECT id,name,ims FROM `{$_PREFIX}users` WHERE `id`=" . $memb['authorid']);
     $array = mysql_fetch_array($members_result);
     if (isset($array['id'])) {
         array_push(&$result_set, $array);
     }
     $ignore = $ignore . $memb['authorid'] . " AND `id`<>";
 }
-$members_result = mysql_query("SELECT id,name,ims FROM `{$_PREFIX}users` $ignore 0 ORDER BY `id`");
+$members_result = override_sql_query("SELECT id,name,ims FROM `{$_PREFIX}users` $ignore 0 ORDER BY `id`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }
 } else {
-$members_result = mysql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `name`");
+$members_result = override_sql_query("SELECT id,name,ims FROM `{$_PREFIX}users` ORDER BY `name`");
 while ($temp = mysql_fetch_array($members_result)) {
     array_push(&$result_set, $temp);
 }

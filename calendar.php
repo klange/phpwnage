@@ -31,7 +31,7 @@ if ($_POST['action'] == "add_event") {
     $topic = $_POST['subj'];
     $content = $_POST['content'];
     $uid = $_POST['user'];
-    mysql_query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
+    override_sql_query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&amp;day=$date");
 }
 
@@ -43,8 +43,8 @@ if ($_POST['action'] == "edit_event") {
     $eid = $_POST['event'];
     $title = $_POST['subj'];
     $content = $_POST['content'];
-    mysql_query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
-    mysql_query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
+    override_sql_query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
+    override_sql_query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&amp;day=$date");
 }
 
@@ -52,7 +52,7 @@ if ($_GET['view'] == "del_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    mysql_query("DELETE FROM `{$_PREFIX}calendar` WHERE `id`=" . $_GET['e']);
+    override_sql_query("DELETE FROM `{$_PREFIX}calendar` WHERE `id`=" . $_GET['e']);
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&amp;day=$date");
 }
 
@@ -129,7 +129,7 @@ if ($mode == "viewmonth") {
             } else if ($month_started == 1) {
                 $dayloop = $days_in_month - $days_left + 1; // The current day of the month.
                 $today = getDay(mktime(0,0,0,intval($month),$dayloop,intval($year)));
-                $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
+                $day_results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
                 $day_content = "";
                 while ($query_row = mysql_fetch_array($day_results)) {
                     $day_content .= "- " . $query_row['title'] . "<br />\n";
@@ -160,13 +160,13 @@ if ($mode == "date") {
     $panel_title = $panel_title . " &gt; " . date("l, F jS, Y", $current_time);
     $content .= "<a href=\"calendar.php?view=viewmonth&amp;mon=$month&amp;y=$year\">$month_name</a><br />";
     $content .= "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
-    $day_results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $_GET['day'] . "'");
+    $day_results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $_GET['day'] . "'");
     $day_stuff = $_GET['day'];
     $day_content = "<table class=\"forum_base\" width=\"100%\">";
     $num_results = 0;
     while ($query_row = mysql_fetch_array($day_results)) {
         $num_results++;
-        $resultb = mysql_query("SELECT * FROM users WHERE id=" .  $query_row['user']);
+        $resultb = override_sql_query("SELECT * FROM users WHERE id=" .  $query_row['user']);
         $post_author = mysql_fetch_array($resultb);
         $uid = $query_row['user'];
         $uname = $post_author['name'];
@@ -220,7 +220,7 @@ if ($mode == "edit") {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
     $userid = $user['id'];
-    $results = mysql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
+    $results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
     $event = mysql_fetch_array($results);
     $title = $event['title'];
     $event_content = $event['content'];
