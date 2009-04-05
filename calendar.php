@@ -26,10 +26,10 @@ if ((isset($_POST['action'])) && $_POST['action'] == "add_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    $date = $_POST['day'];
-    $topic = $_POST['subj'];
-    $content = $_POST['content'];
-    $uid = $_POST['user'];
+    $date = mse($_POST['day']);
+    $topic = mse($_POST['subj']);
+    $content = mse($_POST['content']);
+    $uid = $user['id'];
     $_SQL->query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&amp;day=$date");
 }
@@ -38,10 +38,10 @@ if ((isset($_POST['action'])) && $_POST['action'] == "edit_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    $date = $_POST['date'];
-    $eid = $_POST['event'];
-    $title = $_POST['subj'];
-    $content = $_POST['content'];
+    $date = mse($_POST['date']);
+    $eid = intval($_POST['event']);
+    $title = mse($_POST['subj']);
+    $content = mse($_POST['content']);
     $_SQL->query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
     $_SQL->query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&amp;day=$date");
@@ -55,10 +55,7 @@ if ((isset($_GET['view'])) && $_GET['view'] == "del_event") {
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&amp;day=$date");
 }
 
-/*
- *  Calendar - View Month
- *  Display a month on the calendar. Default to the current month.
- */
+// Handle unset $_GET's nicely.
 
 $mode  = (isset($_GET['view'])) ? $_GET['view'] : "";
 $month = (isset($_GET['mon']))  ? $_GET['mon']  : "";
@@ -116,7 +113,7 @@ if ($mode == "viewmonth") {
             } else if ($month_started == 1) {
                 $tmp['number'] = $days_in_month - $days_left + 1; // The current day of the month.
                 $today = getDay(mktime(0,0,0,intval($month),$tmp['number'],intval($year)));
-                $day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
+                $day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='{$today}'");
                 $tmp['content'] = "";
                 while ($query_row = $day_results->fetch_array()) {
                     $tmp['content'] .= "- " . $query_row['title'] . "<br />\n";
@@ -139,59 +136,33 @@ if ($mode == "viewmonth") {
     $smarty->display('calendar/viewmonth.tpl');
 }
 
-
-pwnErrorStackAppend(1337, "Original output follows.", "", 0);
-standardHeaders($site_info['name'] . " :: " . $_PWNDATA['cal']['name'],true);
-
-drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['cal']['name']}","<a href=\"calendar.php\">{$_PWNDATA['cal']['name']}</a>");
-
-require 'sidebar.php';
-$pane_title = "";
-$content = "";
-
-$mode = (isset($_GET['view'])) ? $_GET['view'] : "";
-$month = (isset($_GET['mon'])) ? $_GET['mon'] : "";
-$year = (isset($_GET['y'])) ? $_GET['y'] : "";
-
-
-if ($mode == "") {
-    $view_date = time();
-    $month = date("m",$view_date);
-    $year = date("y",$view_date);
-    $mode = "viewmonth";
-}
-
 if ($mode == "date") {
     $date_info = split(",", $_GET['day']);
     $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval($date_info[2]));
     $month = intval($date_info[1]);
     $year = intval($date_info[2]);
     $month_name = date("F", $current_time);
-    $panel_title = $panel_title . " &gt; " . date("l, F jS, Y", $current_time);
-    $content .= "<a href=\"calendar.php?view=viewmonth&amp;mon=$month&amp;y=$year\">$month_name</a><br />";
-    $content .= "<font size=\"4\">" . date("l, F jS, Y", $current_time) . "</font><br /><br />\n"; 
-    $day_results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $_GET['day'] . "'");
-    $day_stuff = $_GET['day'];
-    $day_content = "<table class=\"forum_base\" width=\"100%\">";
-    $num_results = 0;
-    while ($query_row = mysql_fetch_array($day_results)) {
-        $num_results++;
-        $resultb = override_sql_query("SELECT * FROM users WHERE id=" .  $query_row['user']);
-        $post_author = mysql_fetch_array($resultb);
-        $uid = $query_row['user'];
-        $uname = $post_author['name'];
-        $day_content .= "<tr><td colspan=\"2\" class=\"forum_thread_title\">";
-        $day_content .= "<b>" .  $query_row['title'] . "</b> posted by <a href=\"forum.php?do=viewprofile&amp;id=$uid\">$uname</a></td></tr><tr><td class=\"forum_topic_content\">" . bbDecode($query_row['content']) . "</td><td class=\"forum_topic_content\" width=\"200\">";
-        if ($user['level'] >= $site_info['mod_rank']) {
-            $day_content = $day_content . " [<a href=\"calendar.php?view=edit&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['edit']}</a>] [<a href=\"calendar.php?view=del_event&amp;e=" . $query_row['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]";
+    $date_format = date("l, F jS, Y", $current_time);
+    $day_code = mse($_GET['day']);
+    $smarty->assign('year',$year);
+    $smarty->assign('month',$month);
+    $smarty->assign('month_name',$month_name);
+    $smarty->assign('date_formatted',$date_format);
+    $smarty->assign('day_code',$day_code);
+    $events = array();
+    $users = array();
+
+    $day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='{$day_code}'");
+    while ($event = $day_results->fetch_array()) {
+        $events[] = $event;
+        if (!array_key_exists($event['user'],$users)) {
+            $userrow = $_SQL->query("SELECT * FROM users WHERE id={$event['user']}");
+            $users[$event['user']] = $userrow->fetch_array();
         }
-        $day_content .= "</td></tr>\n\n";
     }
-    if ($num_results == 0) {
-        $day_content = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_topic_content\">{$_PWNDATA['cal']['no_events']}<a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['add_one']}</a></td></tr>";
-    }
-    $content .= $day_content . "</table>";
-    $content .= "<br /><a href=\"calendar.php?view=add&amp;day=$day_stuff\">{$_PWNDATA['cal']['event_add']}</a>";
+    $smarty->assign('users',$users);
+    $smarty->assign('events',$events);
+    $smarty->display('calendar/viewday.tpl');
 }
 
 if ($mode == "add") {
@@ -199,75 +170,22 @@ if ($mode == "add") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    $userid = $user['id'];
     $date_info = split(",", $_GET['day']);
     $current_time = mktime(0,0,0,intval($date_info[1]),intval($date_info[0]),intval($date_info[2]));
-    $panel_title = $panel_title . " &gt; " . date("l, F jS, Y", $current_time);
-    $content .= <<<END
-<form method="post" action="calendar.php" name="form">
-<input type="hidden" name="action" value="add_event" />
-<input type="hidden" name="day" value="$day" />
-<input type="hidden" name="user" value="$userid" />
-<table class="forum_base" width="100%">
-<tr><td class="forum_topic_content">{$_PWNDATA['cal']['event_name']}</td>
-<td class="forum_topic_content"><input type="text" name="subj" size="51" style="width:100%" /></td></tr>
-<tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
-<tr><td class="forum_topic_sig" colspan="2">
-END;
-    $content .= printPoster("content");
-    $content .= <<<END
-<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor"></textarea></td></tr>
-<tr><td class="forum_topic_sig" colspan="2">
-<input type="submit" value="{$_PWNDATA['cal']['event_add']}" name="sub" /></td></tr>
-</table>
-</form>
-END;
+    $date_formatted = date("l, F jS, Y", $current_time);
+    $smarty->assign('date_formatted',$date_formatted);
+    $smarty->assign('date_info',$date_info);
+    $smarty->assign('day',$day);
+    $smarty->display('calendar/addevent.tpl');
 }
 
 if ($mode == "edit") {
-    $eid = $_GET['e'];
+    $eid = intval($_GET['e']);
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    $userid = $user['id'];
-    $results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
-    $event = mysql_fetch_array($results);
-    $title = $event['title'];
-    $event_content = $event['content'];
-    $date = $event['day'];
-    $content .= <<<END
-<form method="post" action="calendar.php" name="form">
-<input type="hidden" name="action" value="edit_event" />
-<input type="hidden" name="event" value="$eid" />
-<input type="hidden" name="date" value="$date" />
-<table class="forum_base" width="100%">
-<tr><td class="forum_topic_content">{$_PWNDATA['cal']['event_name']}</td>
-<td class="forum_topic_content"><input type="text" name="subj" value="$title" size="51" style="width:100%" /></td></tr>
-<tr><td class="forum_topic_sig" colspan="2">{$_PWNDATA['cal']['event_desc']}</td></tr>
-<tr><td class="forum_topic_sig" colspan="2">
-END;
-    $content .= printPoster("content");
-    $content .= <<<END
-<textarea rows="11" name="content" id="content" style="width:100%;" cols="20" class="content_editor">$event_content</textarea></td></tr>
-<tr><td class="forum_topic_sig" colspan="2">
-<input type="submit" value="{$_PWNDATA['cal']['event_save']}" name="sub" /></td></tr>
-</table>
-</form>
-END;
+    $results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `id`=$eid");
+    $event = $results->fetch_array();
+    $smarty->assign('event',$event);
+    $smarty->display('calendar/editevent.tpl');
 }
-
-print <<<END
-<td valign="top">
-<table class="borderless_table" width="100%">
-END;
-
-drawBlock($_PWNDATA['cal']['name'] . $panel_title,"",$content);
-
-print <<<END
-	</table>
-        </td>
-  </tr>
-</table>
-END;
-require "footer.php";
-?>
