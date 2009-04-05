@@ -20,10 +20,9 @@
 */
 
 require_once('includes.php');
+require_once('sidebar.php');
 
-standardHeaders($site_info['name'] . " :: " . $_PWNDATA['cal']['name'],true);
-
-if ($_POST['action'] == "add_event") {
+if ((isset($_POST['action'])) && $_POST['action'] == "add_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
@@ -31,11 +30,11 @@ if ($_POST['action'] == "add_event") {
     $topic = $_POST['subj'];
     $content = $_POST['content'];
     $uid = $_POST['user'];
-    override_sql_query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
+    $_SQL->query("INSERT INTO `{$_PREFIX}calendar` VALUES(NULL, '$date', '$topic', '$content', $uid)");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['new_event'],"calendar.php?view=date&amp;day=$date");
 }
 
-if ($_POST['action'] == "edit_event") {
+if ((isset($_POST['action'])) && $_POST['action'] == "edit_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
@@ -43,47 +42,30 @@ if ($_POST['action'] == "edit_event") {
     $eid = $_POST['event'];
     $title = $_POST['subj'];
     $content = $_POST['content'];
-    override_sql_query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
-    override_sql_query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
+    $_SQL->query("UPDATE `{$_PREFIX}calendar` SET `title`='$title' WHERE `id`=$eid");
+    $_SQL->query("UPDATE `{$_PREFIX}calendar` SET `content`='$content' WHERE `id`=$eid");
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['edit_event'],"calendar.php?view=date&amp;day=$date");
 }
 
-if ($_GET['view'] == "del_event") {
+if ((isset($_GET['view'])) && $_GET['view'] == "del_event") {
     if ($user['level'] < $site_info['mod_rank']) {
         messageBack($_PWNDATA['cal']['name'],$_PWNDATA['cal']['only_mods']);
     }
-    override_sql_query("DELETE FROM `{$_PREFIX}calendar` WHERE `id`=" . $_GET['e']);
+    $_SQL->query("DELETE FROM `{$_PREFIX}calendar` WHERE `id`=" . $_GET['e']);
     messageRedirect($_PWNDATA['cal']['name'],$_PWNDATA['cal']['delete_event'],"calendar.php?view=date&amp;day=$date");
 }
 
-function printDay($day, $content, $upper) {
-    return <<<END
-<td class="forum_topic_content">
-    <table class="borderless_table" width="100%">
-      <tr>
-        <td width="75%" height="24" style="border-style: none; border-width: 0px;" align="center">$upper</td>
-        <td width="25%" height="24" class="calendar_day" align="center">$day</td>
-      </tr>
-      <tr>
-        <td width="100%" colspan="2" height="60" style="border-style: none; border-width: medium; padding: 1px 1px 1px 1px" valign="top">$content</td>
-      </tr>
-    </table>
-</td>
-END;
-}
+/*
+ *  Calendar - View Month
+ *  Display a month on the calendar. Default to the current month.
+ */
 
-drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['cal']['name']}","<a href=\"calendar.php\">{$_PWNDATA['cal']['name']}</a>");
-
-require 'sidebar.php';
-$pane_title = "";
-$content = "";
-
-$mode = $_GET['view'];
-$month = $_GET['mon'];
-$year = $_GET['y'];
-
+$mode  = (isset($_GET['view'])) ? $_GET['view'] : "";
+$month = (isset($_GET['mon']))  ? $_GET['mon']  : "";
+$year  = (isset($_GET['y']))    ? $_GET['y']    : "";
 
 if ($mode == "") {
+    // Default to current month.
     $view_date = time();
     $month = date("m",$view_date);
     $year = date("y",$view_date);
@@ -91,6 +73,8 @@ if ($mode == "") {
 }
 
 if ($mode == "viewmonth") {
+    $weeks = array();
+    // Calculate parameters required for calendar...
     $time_view = mktime(0,0,0,intval($month),1,intval($year));
     $days_in_month = date("t",$time_view);
     $first_day = date("w",$time_view);
@@ -105,50 +89,76 @@ if ($mode == "viewmonth") {
     if ($year > 99) {
         $year = $year - 100;
     }
-    $content = $content . "<p align=\"center\"><font size=\"4\">" . date("F, Y",$time_view) . "</font><br /><font size=\"2\"><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a> | <a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></font></p>\n";
-    $content = $content . "<table border=\"1\" style=\"border-collapse: collapse; border-width: 1; table-layout: fixed; border-color: #000000;\" width=\"100%\">\n";
-    $content = $content . "<tr><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['sunday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['monday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['tuesday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['wednesday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['thursday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['friday']}</td><td class=\"forum_thread_title\" align=\"center\">{$_PWNDATA['cal']['saturday']}</td></tr>";
+    $smarty->assign("year",$year);
+    $smarty->assign("month_year", date("F, Y",$time_view));
+    $smarty->assign("month_int", intval($month));
+    $smarty->assign("month_previous", date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))));
+    $smarty->assign("month_next", date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))));
     $month_started = 0;
     $days_left = $days_in_month;
     for ( $week = 1; $week  <= 6; $week  += 1) {
-        $content = $content . "<tr>";
+        $week_tmp = array();
         for ( $day = 1; $day <= 7; $day += 1) {
             if ($week == 1) {
                 if ($first_day == $day - 1) {
                     $month_started = 1;
                 }
             }
+            $tmp = array();
             if ($month_started == 0) {
-                $day_content = "<div style=\"width: 100%; text-align: center;\"><br /><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a></div>";
-                $dayloop = "X";
-                $top_cell = "";
+                $tmp['content'] = "<div style=\"width: 100%; text-align: center;\"><br /><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) - 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) - 1,1,intval($year))) . "</a></div>";
+                $tmp['number'] = "X";
+                $tmp['cell'] = "";
             } else if ($month_started == 2) {
-                $day_content = "<div style=\"width: 100%; text-align: center;\"><br /><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></div>";
-                $dayloop = "X";
-                $top_cell = "";
+                $tmp['content'] = "<div style=\"width: 100%; text-align: center;\"><br /><a href=\"calendar.php?view=viewmonth&amp;mon=" . (intval($month) + 1) . "&amp;y=$year\">" . date("F",mktime(0,0,0,intval($month) + 1,1,intval($year))) . "</a></div>";
+                $tmp['number'] = "X";
+                $tmp['cell'] = "";
             } else if ($month_started == 1) {
-                $dayloop = $days_in_month - $days_left + 1; // The current day of the month.
-                $today = getDay(mktime(0,0,0,intval($month),$dayloop,intval($year)));
-                $day_results = override_sql_query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
-                $day_content = "";
-                while ($query_row = mysql_fetch_array($day_results)) {
-                    $day_content .= "- " . $query_row['title'] . "<br />\n";
+                $tmp['number'] = $days_in_month - $days_left + 1; // The current day of the month.
+                $today = getDay(mktime(0,0,0,intval($month),$tmp['number'],intval($year)));
+                $day_results = $_SQL->query("SELECT * FROM `{$_PREFIX}calendar` WHERE `day`='" . $today . "'");
+                $tmp['content'] = "";
+                while ($query_row = $day_results->fetch_array()) {
+                    $tmp['content'] .= "- " . $query_row['title'] . "<br />\n";
                 }
                 if ($user['level'] >= $site_info['mod_rank']) {
-                    $top_cell = "<a href=\"calendar.php?view=add&amp;day=$today\">{$_PWNICONS['calendar']['add']}</a> <a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
+                    $tmp['cell'] = "<a href=\"calendar.php?view=add&amp;day=$today\">{$_PWNICONS['calendar']['add']}</a> <a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
                 } else {
-                    $top_cell = "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
+                    $tmp['cell'] = "<a href=\"calendar.php?view=date&amp;day=$today\">{$_PWNICONS['calendar']['view']}</a>";
                 }
                 $days_left = $days_left - 1;
                 if ($days_left <= 0) {
                     $month_started = 2;
                 }
             }
-            $content .= printDay($dayloop, $day_content, $top_cell);
+            $week_tmp[] = $tmp;
         }
-        $content .= "</tr>";
+        $weeks[] = $week_tmp;
     }
-    $content .= "</table>";
+    $smarty->assign('weeks',$weeks);
+    $smarty->display('calendar/viewmonth.tpl');
+}
+
+
+pwnErrorStackAppend(1337, "Original output follows.", "", 0);
+standardHeaders($site_info['name'] . " :: " . $_PWNDATA['cal']['name'],true);
+
+drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > {$_PWNDATA['cal']['name']}","<a href=\"calendar.php\">{$_PWNDATA['cal']['name']}</a>");
+
+require 'sidebar.php';
+$pane_title = "";
+$content = "";
+
+$mode = (isset($_GET['view'])) ? $_GET['view'] : "";
+$month = (isset($_GET['mon'])) ? $_GET['mon'] : "";
+$year = (isset($_GET['y'])) ? $_GET['y'] : "";
+
+
+if ($mode == "") {
+    $view_date = time();
+    $month = date("m",$view_date);
+    $year = date("y",$view_date);
+    $mode = "viewmonth";
 }
 
 if ($mode == "date") {

@@ -96,7 +96,7 @@
             <td class="pan_ml">&nbsp;</td>
             <td class="pan_body" valign="top">
             <form action="article.php?id={$article.id}" method="post">
-            <input type="hidden" name="action" value="true" />
+            <input type="hidden" name="action" value="edit" />
             <table class="forum_base" width="100%">
             <tr><td class="forum_topic_sig"><textarea rows="8" name="content" style="width:100%;" cols="80">{$article.content|escape}</textarea></td></tr><tr>
             <td class="forum_topic_sig"><input name="title" type="text" value="{$article.title|escape}" style="width: 100%"/></td></tr>
