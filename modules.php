@@ -23,9 +23,6 @@ require_once('sidebar.php');
 if (strstr($_GET['m'],".") || strstr($_GET['m'],"/")) {
     messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_invalid']);
 }
-if (strstr(".",$_GET['m'])) {
-    messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_does_not_exist'], false);
-}
 $exists = @include 'modules/' . $_GET['m'] . '.php';
 if (!$exists) {
     messageBack($_PWNDATA['modules_page_title'], $_PWNDATA['module_does_not_exist'], false);
