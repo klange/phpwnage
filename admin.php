@@ -23,12 +23,12 @@ require_once('includes.php');
 // Jump to the login page instead of yelling and screaming.
 if (isset($_SESSION['sess_id'])) {
     if ($user['level'] < $site_info['mod_rank']) {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $name = $_SESSION['user_name'];
+        override_sql_query("INSERT INTO `{$_PREFIX}security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_SESSION['user_pass']) . "', 'Admin, $name', '" . $ip . "' );");
         messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['not_permitted'],"index.php");
     }
 } else {
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $name = $_SESSION['user_name'];
-    override_sql_query("INSERT INTO `{$_PREFIX}security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_SESSION['user_pass']) . "', 'Admin, $name', '" . $ip . "' );");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;admin=yes"); 
 }
 
