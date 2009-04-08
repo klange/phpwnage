@@ -774,7 +774,7 @@ END;
     drawBlock($_PWNDATA['admin']['forms']['blocks_ext'], "", $content);
 
     $content = "<table class=\"borderless_table\" width=\"100%\">";
-    $result = override_sql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`");
     while ($row = mysql_fetch_array($result)) {
         $block_id = $row['id'];
         $bl_content = str_replace("<","&lt;",$row['content']);
@@ -952,7 +952,7 @@ END;
 
     $content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
-    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security` LIMIT 10", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security` LIMIT 10");
     while ($row = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
         if ($odd == 1) {
@@ -964,7 +964,7 @@ END;
     }
     $content .= "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
-    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security`", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security`");
     while ($row = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
         if ($odd == 1) {
