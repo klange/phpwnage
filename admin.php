@@ -28,21 +28,21 @@ if (isset($_SESSION['sess_id'])) {
 } else {
     $ip = $_SERVER['REMOTE_ADDR'];
     $name = $_SESSION['user_name'];
-    override_mysql_query("INSERT INTO `{$_PREFIX}security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_SESSION['user_pass']) . "', 'Admin, $name', '" . $ip . "' );");
+    override_sql_query("INSERT INTO `{$_PREFIX}security` ( `time` , `passused`, `where`, `ip` ) VALUES ( '" . time() . "', '" . md5($_SESSION['user_pass']) . "', 'Admin, $name', '" . $ip . "' );");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['please_wait_redirecting'],"forum.php?do=login&amp;admin=yes"); 
 }
 
 function fixBoards() {
     global $_PREFIX;
     $j = 1;
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
     while ($cat = mysql_fetch_array($result)) {
         $catid = $cat['id'];
-        override_mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$j WHERE `id`=$catid");
-        $resultb = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
+        override_sql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$j WHERE `id`=$catid");
+        $resultb = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
         $i = 1;
         while ($board = mysql_fetch_array($resultb)) {
-            override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$i WHERE `id`={$board['id']}");
+            override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$i WHERE `id`={$board['id']}");
             $i++;
         }
         $j++;
@@ -54,28 +54,28 @@ function fixBoards() {
 // Add a new article
 if ($_POST['action'] == "add_article") {
     $newcontent = $_POST['content'];
-    override_mysql_query("INSERT INTO `{$_PREFIX}news` ( `id` , `title` , `content` , `time_code`, `user` )
+    override_sql_query("INSERT INTO `{$_PREFIX}news` ( `id` , `title` , `content` , `time_code`, `user` )
 VALUES (
 NULL , '" . mse($_POST['title']) . "', '" . mse($newcontent) . "', '" . time() . "', '" . $_SESSION['user_name'] . "'
 );");
     $article_id = mysql_insert_id();
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `last_updated` = '" . time() . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `last_updated` = '" . time() . "' WHERE `{$_PREFIX}info`.`id` =1");
     $message = $_PWNDATA['admin']['article_add_suc'];
     if ($_POST['add_to_forum'] == true) {
         $content = "[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['read_article_here'] . "[/url]";
-        override_mysql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mse($_POST['title']) . "');");
-        $result = override_mysql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
+        override_sql_query("INSERT INTO `{$_PREFIX}topics` ( `id` , `authorid` , `board` , `title` ) VALUES (NULL , " . $user['id'] . ", " . $_POST['board'] . ", '" . mse($_POST['title']) . "');");
+        $result = override_sql_query("SELECT * FROM `{$_PREFIX}topics` ORDER BY `id` DESC LIMIT 1");
         $topic = mysql_fetch_array($result);
         $ip=$_SERVER['REMOTE_ADDR'];
-        override_mysql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip` ) VALUES ( NULL , " . $topic['id'] . " , " . $user['id'] . " , '" . mse($content) . "' , " . time() . " , '" . $ip . "' );");
-        $result = override_mysql_query("SELECT * FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
+        override_sql_query("INSERT INTO `{$_PREFIX}posts` ( `id` , `topicid` , `authorid` , `content`, `time`, `ip` ) VALUES ( NULL , " . $topic['id'] . " , " . $user['id'] . " , '" . mse($content) . "' , " . time() . " , '" . $ip . "' );");
+        $result = override_sql_query("SELECT * FROM `{$_PREFIX}posts` ORDER BY `id` DESC LIMIT 1");
         $reply = mysql_fetch_array($result);
-        override_mysql_query("UPDATE `{$_PREFIX}topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `{$_PREFIX}topics`.`id` =" . $topic['id']);
-        override_mysql_query("ALTER TABLE `{$_PREFIX}posts`  ORDER BY `id`");
-        override_mysql_query("ALTER TABLE `{$_PREFIX}topics`  ORDER BY `id`");
+        override_sql_query("UPDATE `{$_PREFIX}topics` SET `lastpost` = '" . $reply['id'] . "' WHERE `{$_PREFIX}topics`.`id` =" . $topic['id']);
+        override_sql_query("ALTER TABLE `{$_PREFIX}posts`  ORDER BY `id`");
+        override_sql_query("ALTER TABLE `{$_PREFIX}topics`  ORDER BY `id`");
         $newcontenta = $newcontent . "\n\n\n[url=[site_url]article.php?id=" . $article_id . "]" . $_PWNDATA['discuss_article_here'] . "[/url].\n([pcount]" . $topic['id'] . "[/pcount])";
-        override_mysql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($newcontenta) . "' WHERE `{$_PREFIX}news`.`id` =" . $article_id);
-        override_mysql_query("UPDATE `{$_PREFIX}news` SET `topicid` = " . $topic['id'] . " WHERE `{$_PREFIX}news`.`id` =" . $article_id);
+        override_sql_query("UPDATE `{$_PREFIX}news` SET `content` = '" . mse($newcontenta) . "' WHERE `{$_PREFIX}news`.`id` =" . $article_id);
+        override_sql_query("UPDATE `{$_PREFIX}news` SET `topicid` = " . $topic['id'] . " WHERE `{$_PREFIX}news`.`id` =" . $article_id);
         $message .= "<br />" . $_PWNDATA['admin']['news_post_added'] . "\n";
     }
     messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=news"); 
@@ -89,19 +89,19 @@ if ($_POST['action'] == "addrank") {
     $rank = $_POST['level'];
     $name = mse($_POST['name']);
     $posts = $_POST['posts'];
-    override_mysql_query("INSERT INTO `{$_PREFIX}ranks` (`value`, `name`, `posts`) VALUES ($rank, '$name', $posts)");
+    override_sql_query("INSERT INTO `{$_PREFIX}ranks` (`value`, `name`, `posts`) VALUES ($rank, '$name', $posts)");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_added'] . ": '$name'","admin.php?view=promo"); 
 }
 
 // Clear the security log
 if ($_POST['action'] == "clear_security") {
-    override_mysql_query("TRUNCATE TABLE `{$_PREFIX}security`");
+    override_sql_query("TRUNCATE TABLE `{$_PREFIX}security`");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['security_log_cleared'],"admin.php?view=bans"); 
 }
 
 // Custom pages
 if ($_POST['action'] == "custom_page") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}pages` ( `name` , `display_name` , `content` , `showsidebar` , `author`)
+    override_sql_query("INSERT INTO `{$_PREFIX}pages` ( `name` , `display_name` , `content` , `showsidebar` , `author`)
 VALUES (
 '" . mse($_POST['name']) . "', '" . mse($_POST['display_name']) . "', '" . mse($_POST['content']) . "', '" . mse($_POST['showsidebar']) . "', '" . mse($_POST['author']) . "'
 );");
@@ -110,31 +110,31 @@ VALUES (
 
 // Update site information
 if ($_POST['action'] == "site_info") {
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `name` = '" . mse($_POST['name']) . "' WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `url` = '" . mse($_POST['url']) . "' WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `copyright` = '" . mse($_POST['copyright']) . "' WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `pheader` = '" . mse($_POST['pheader']) . "' WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `right_data` = '" . mse($_POST['right_data']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `name` = '" . mse($_POST['name']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `url` = '" . mse($_POST['url']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `copyright` = '" . mse($_POST['copyright']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `pheader` = '" . mse($_POST['pheader']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `right_data` = '" . mse($_POST['right_data']) . "' WHERE `{$_PREFIX}info`.`id` =1");
     messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['site_info_updated'], "admin.php?view=site_info");
 }
 
 if ($_POST['action'] == "captcha") {
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `security_mode` = " . mse($_POST['sec_mode']) . " WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `recap_pub` = '" . mse($_POST['recap_pub']) . "' WHERE `{$_PREFIX}info`.`id` =1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `recap_priv` = '" . mse($_POST['recap_priv']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `security_mode` = " . mse($_POST['sec_mode']) . " WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `recap_pub` = '" . mse($_POST['recap_pub']) . "' WHERE `{$_PREFIX}info`.`id` =1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `recap_priv` = '" . mse($_POST['recap_priv']) . "' WHERE `{$_PREFIX}info`.`id` =1");
     messageRedirect($_PWNDATA['admin_page_title'], $_PWNDATA['admin']['captcha_updated'], "admin.php?view=bans");
 }
 
 // Update existing block
 if ($_POST['action'] == "edit_block") {
-    override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
-    override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
+    override_sql_query("UPDATE `{$_PREFIX}blocks` SET `title` = '" . mse($_POST['title']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
+    override_sql_query("UPDATE `{$_PREFIX}blocks` SET `content` = '" . mse($_POST['content']) . "' WHERE `{$_PREFIX}blocks`.`id` =" . $_POST['blockid'] . ";");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_edited'] . ": '" . $_POST['title'] . "'","admin.php?view=blocks");
 }
 
 // Add new block
 if ($_POST['action'] == "add_block") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}blocks` ( `id` , `title` , `content` )
+    override_sql_query("INSERT INTO `{$_PREFIX}blocks` ( `id` , `title` , `content` )
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "'
 );");
@@ -143,7 +143,7 @@ NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "'
 
 // Add new board
 if ($_POST['action'] == "add_board") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}boards` 
+    override_sql_query("INSERT INTO `{$_PREFIX}boards` 
 VALUES (
 NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "', " . $_POST['order'] . ", " . $_POST['cat'] . ", " . $_POST['perma'] . ", " . $_POST['permb'] . ", " . $_POST['permc'] . ",'" . $_POST['link'] . "');");
     fixBoards();
@@ -152,13 +152,13 @@ NULL , '" . $_POST['title'] . "', '" . $_POST['content'] . "', " . $_POST['order
 
 // Edit existing board
 if ($_POST['action'] == "edit_board") {
-    override_mysql_query("UPDATE `{$_PREFIX}boards` SET `title`= '" . $_POST['title'] . "', `desc`='" . $_POST['content'] . "', `vis_level`=" . $_POST['perma'] . ", `top_level`=" . $_POST['permb'] . ", `post_level`=" . $_POST['permc'] . ", `link`='" . $_POST['link'] . "' WHERE `id` =" . $_POST['id'] . ";");
+    override_sql_query("UPDATE `{$_PREFIX}boards` SET `title`= '" . $_POST['title'] . "', `desc`='" . $_POST['content'] . "', `vis_level`=" . $_POST['perma'] . ", `top_level`=" . $_POST['permb'] . ", `post_level`=" . $_POST['permc'] . ", `link`='" . $_POST['link'] . "' WHERE `id` =" . $_POST['id'] . ";");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
 }
 
 // Add category
 if ($_POST['action'] == "add_category") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}categories` VALUES (
+    override_sql_query("INSERT INTO `{$_PREFIX}categories` VALUES (
 NULL , " . $_POST['order'] . ", '" . $_POST['title'] . "');");
     fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_added'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
@@ -166,13 +166,13 @@ NULL , " . $_POST['order'] . ", '" . $_POST['title'] . "');");
 
 // Edit existing category
 if ($_POST['action'] == "edit_category") {
-    override_mysql_query("UPDATE `{$_PREFIX}categories` SET `name`= '" . $_POST['title'] . "' WHERE `id` =" . $_POST['id'] . ";");
+    override_sql_query("UPDATE `{$_PREFIX}categories` SET `name`= '" . $_POST['title'] . "' WHERE `id` =" . $_POST['id'] . ";");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_edited'] . ": '" . $_POST['title'] . "'", "admin.php?view=forum");
 }
 
 // Add an IP ban
 if ($_POST['action'] == "add_ban") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}banlist` VALUES ('" . $_POST['ip'] . "');");
+    override_sql_query("INSERT INTO `{$_PREFIX}banlist` VALUES ('" . $_POST['ip'] . "');");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ip_banned'] . ": '" . $_POST['ip'],"admin.php?view=bans");
 }
 
@@ -181,10 +181,10 @@ if ($_POST['action'] == "setranks") {
     if ($user['id'] != 1) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_root_ranks']);
     }
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `mod_rank`=" . $_POST['mod'] . " WHERE `id`=1");
-    override_mysql_query("UPDATE `{$_PREFIX}info` SET `admin_rank`=" . $_POST['adm'] . " WHERE `id`=1");
-    override_mysql_query("UPDATE `{$_PREFIX}users` SET `level`=" . $_POST['mod'] . " WHERE `level`>=" . $_POST['mod_old'] . " AND `level`<" . $_POST['adm_old']);
-    override_mysql_query("UPDATE `{$_PREFIX}users` SET `level`=" . $_POST['adm'] . " WHERE `level`>=" . $_POST['adm_old']);
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `mod_rank`=" . $_POST['mod'] . " WHERE `id`=1");
+    override_sql_query("UPDATE `{$_PREFIX}info` SET `admin_rank`=" . $_POST['adm'] . " WHERE `id`=1");
+    override_sql_query("UPDATE `{$_PREFIX}users` SET `level`=" . $_POST['mod'] . " WHERE `level`>=" . $_POST['mod_old'] . " AND `level`<" . $_POST['adm_old']);
+    override_sql_query("UPDATE `{$_PREFIX}users` SET `level`=" . $_POST['adm'] . " WHERE `level`>=" . $_POST['adm_old']);
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ranks_update'],"admin.php?view=promo");
 }
 
@@ -193,8 +193,8 @@ if ($_POST['action'] == "editsmiley") {
     $id = $_POST['id'];
     $name = $_POST['smileys'];
     $code = $_POST['code'];
-    override_mysql_query("UPDATE `{$_PREFIX}smileys` SET `code`='$code' WHERE `id`=$id");
-    override_mysql_query("UPDATE `{$_PREFIX}smileys` SET `image`='$name' WHERE `id`=$id");
+    override_sql_query("UPDATE `{$_PREFIX}smileys` SET `code`='$code' WHERE `id`=$id");
+    override_sql_query("UPDATE `{$_PREFIX}smileys` SET `image`='$name' WHERE `id`=$id");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_edited'],"admin.php?view=forum");
 }
 
@@ -202,60 +202,60 @@ if ($_POST['action'] == "editsmiley") {
 if ($_POST['action'] == "addsmiley") {
     $name = $_POST['smileys'];
     $code = $_POST['code'];
-    override_mysql_query("INSERT INTO `{$_PREFIX}smileys` (`code`, `image`) VALUES ('$code','$name')");
+    override_sql_query("INSERT INTO `{$_PREFIX}smileys` (`code`, `image`) VALUES ('$code','$name')");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_added'],"admin.php?view=forum");
 }
 
 // Add gallery
 if ($_POST['action'] == "add_gallery") {
-    override_mysql_query("INSERT INTO `{$_PREFIX}galleries` VALUES (NULL, '{$_POST['name']}', '{$_POST['desc']}', {$_POST['view']}, {$_POST['upload']}, {$_POST['thumb']})");
+    override_sql_query("INSERT INTO `{$_PREFIX}galleries` VALUES (NULL, '{$_POST['name']}', '{$_POST['desc']}', {$_POST['view']}, {$_POST['upload']}, {$_POST['thumb']})");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['added'],"admin.php?view=images");
 }
 
 // Edit gallery
 if ($_POST['action'] == "edit_gallery") {
-    override_mysql_query("UPDATE `{$_PREFIX}galleries` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
-    override_mysql_query("UPDATE `{$_PREFIX}galleries` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
-    override_mysql_query("UPDATE `{$_PREFIX}galleries` SET `view`={$_POST['view']} WHERE `id`={$_POST['id']}");
-    override_mysql_query("UPDATE `{$_PREFIX}galleries` SET `upload`={$_POST['upload']} WHERE `id`={$_POST['id']}");
-    override_mysql_query("UPDATE `{$_PREFIX}galleries` SET `thumb`={$_POST['thumb']} WHERE `id`={$_POST['id']}");
+    override_sql_query("UPDATE `{$_PREFIX}galleries` SET `name`='{$_POST['name']}' WHERE `id`={$_POST['id']}");
+    override_sql_query("UPDATE `{$_PREFIX}galleries` SET `desc`='{$_POST['desc']}' WHERE `id`={$_POST['id']}");
+    override_sql_query("UPDATE `{$_PREFIX}galleries` SET `view`={$_POST['view']} WHERE `id`={$_POST['id']}");
+    override_sql_query("UPDATE `{$_PREFIX}galleries` SET `upload`={$_POST['upload']} WHERE `id`={$_POST['id']}");
+    override_sql_query("UPDATE `{$_PREFIX}galleries` SET `thumb`={$_POST['thumb']} WHERE `id`={$_POST['id']}");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['edited'],"admin.php?view=images");
 }
 
 // Delete existing smiley
 if ($_GET['do'] == "delsmile") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}smileys` WHERE `id`=" . $_GET['id']);
+    override_sql_query("DELETE FROM `{$_PREFIX}smileys` WHERE `id`=" . $_GET['id']);
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['smiley_deleted'],"admin.php?view=forum");
 }
 
 // Delete news item
 if ($_GET['do'] == "del_news") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}news` WHERE `id`=" . $_GET['id']);
+    override_sql_query("DELETE FROM `{$_PREFIX}news` WHERE `id`=" . $_GET['id']);
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['article_deleted'],"admin.php?view=news");
 }
 
 // Delete custom page
 if ($_GET['do'] == "del_page") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}pages` WHERE `name`='" . $_GET['page'] . "'");
+    override_sql_query("DELETE FROM `{$_PREFIX}pages` WHERE `name`='" . $_GET['page'] . "'");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['page_deleted'],"admin.php?view=pages");
 }
 
 // Delete IP ban
 if ($_GET['do'] == "del_ban") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}banlist` WHERE `ip`='" . $_GET['ban'] . "'");
+    override_sql_query("DELETE FROM `{$_PREFIX}banlist` WHERE `ip`='" . $_GET['ban'] . "'");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['ban_lifted'] . ": " . $_GET['ban'],"admin.php?view=bans");
 }
 
 // Delete board
 if ($_GET['do'] == "del_brd") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
+    override_sql_query("DELETE FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
     $top_count = 0;
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `board`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `board`=" . $_GET['id']);
     while ($top = mysql_fetch_array($temp)) {
         $top_count++;
-        override_mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `topicid`=" . $top['id']);
+        override_sql_query("DELETE FROM `{$_PREFIX}posts` WHERE `topicid`=" . $top['id']);
     }
-    override_mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $_GET['id']);
+    override_sql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $_GET['id']);
     fixBoards();
     $message = $_PWNDATA['admin']['board_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
     messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
@@ -263,20 +263,20 @@ if ($_GET['do'] == "del_brd") {
 
 // Delete category
 if ($_GET['do'] == "del_cat") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['cat']);
+    override_sql_query("DELETE FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['cat']);
     $brd_count = 0;
     $top_count = 0;
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=" . $_GET['cat']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=" . $_GET['cat']);
     while ($brd = mysql_fetch_array($temp)) {
         $brd_count++;
-        $tempb = override_mysql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `board`=" . $brd['id']);
+        $tempb = override_sql_query("SELECT * FROM `{$_PREFIX}topics` WHERE `board`=" . $brd['id']);
         while ($top = mysql_fetch_array($tempb)) {
             $top_count++;
-            override_mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `topicid`=" . $top['id']);
+            override_sql_query("DELETE FROM `{$_PREFIX}posts` WHERE `topicid`=" . $top['id']);
         }
-        override_mysql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $brd['id']);
+        override_sql_query("DELETE FROM `{$_PREFIX}topics` WHERE `board`=" . $brd['id']);
     }
-    override_mysql_query("DELETE FROM `{$_PREFIX}boards` WHERE `catid`=" . $_GET['cat']);
+    override_sql_query("DELETE FROM `{$_PREFIX}boards` WHERE `catid`=" . $_GET['cat']);
     fixBoards();
     $message = $_PWNDATA['admin']['category_deleted'] . "<br />$brd_count " . $_PWNDATA['admin']['boards_deleted'] . "<br />$top_count " . $_PWNDATA['admin']['topics_deleted'];
     messageRedirect($_PWNDATA['admin_page_title'],$message,"admin.php?view=forum");
@@ -284,19 +284,19 @@ if ($_GET['do'] == "del_cat") {
 
 // Move board
 if ($_GET['do'] == "mov_brd") {
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
     $board = mysql_fetch_array($temp);
     $cat = $board['catid'];
     $my_id = $_GET['id'];
     $cur = $_GET['cur'];
     if ($_GET['g'] == "up") {
         $up = $cur - 1;
-        override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$up");
-        override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$up WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$up");
+        override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$up WHERE `id`=$my_id");
     } elseif ($_GET['g'] == "down") {
         $down = $cur + 1;
-        override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$down");
-        override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$down WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$cur WHERE `catid`=$cat AND `orderid`=$down");
+        override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=$down WHERE `id`=$my_id");
     }
     fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
@@ -304,31 +304,31 @@ if ($_GET['do'] == "mov_brd") {
 
 // Move a forum to a different category. Specify: id = board; catid = category to move to - IE: admin.php?do=recat&id=1&catid=4 (will move board #1 to category #4 and give it an orderid of 0 (top)
 if ($_GET['do'] == "recat") {
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
     $board = mysql_fetch_array($temp);
     $cat = $board['catid'];
     $my_id = $_GET['id'];
     $up = $_GET['cat'];
-    override_mysql_query("UPDATE `{$_PREFIX}boards` SET `catid`=$up WHERE `id`=$my_id");
-    override_mysql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=100 WHERE `id`=$my_id");
+    override_sql_query("UPDATE `{$_PREFIX}boards` SET `catid`=$up WHERE `id`=$my_id");
+    override_sql_query("UPDATE `{$_PREFIX}boards` SET `orderid`=100 WHERE `id`=$my_id");
     fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['board_moved'],"admin.php?view=forum");
 }
 
 // Move category
 if ($_GET['do'] == "mov_cat") {
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['id']);
     $board = mysql_fetch_array($temp);
     $my_id = $_GET['id'];
     $cur = $_GET['cur'];
     if ($_GET['g'] == "up") {
         $up = $cur - 1;
-        override_mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$cur WHERE `orderid`=$up");
-        override_mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$up WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$cur WHERE `orderid`=$up");
+        override_sql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$up WHERE `id`=$my_id");
     } elseif ($_GET['g'] == "down") {
         $down = $cur + 1;
-        override_mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$cur WHERE `orderid`=$down");
-        override_mysql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$down WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$cur WHERE `orderid`=$down");
+        override_sql_query("UPDATE `{$_PREFIX}categories` SET `orderid`=$down WHERE `id`=$my_id");
     }
     fixBoards();
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['category_moved'],"admin.php?view=forum");
@@ -336,14 +336,14 @@ if ($_GET['do'] == "mov_cat") {
 
 // Delete existing block
 if ($_GET['do'] == "del_block") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}blocks` WHERE `id`='" . $_GET['id'] . "'");
+    override_sql_query("DELETE FROM `{$_PREFIX}blocks` WHERE `id`='" . $_GET['id'] . "'");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_deleted'],"admin.php?view=blocks");
 }
 
 // Delete user
 if ($_GET['do'] == "del_user") {
-    override_mysql_query("DELETE FROM `{$_PREFIX}users` WHERE `id`='" . $_GET['id'] . "'");
-    override_mysql_query("DELETE FROM `{$_PREFIX}posts` WHERE `authorid`='" . $_GET['id'] . "'");
+    override_sql_query("DELETE FROM `{$_PREFIX}users` WHERE `id`='" . $_GET['id'] . "'");
+    override_sql_query("DELETE FROM `{$_PREFIX}posts` WHERE `authorid`='" . $_GET['id'] . "'");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_posts_deleted'],"admin.php?view=members");
 }
 
@@ -352,19 +352,19 @@ if ($_GET['do'] == "mov_block") {
     $my_id = $_GET['id'];
     if ($_GET['g'] == "up") {
         $up = $my_id - 1;
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=1234 WHERE `id`=$my_id");
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$my_id WHERE `id`=$up");
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$up WHERE `id`=1234");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=1234 WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$my_id WHERE `id`=$up");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$up WHERE `id`=1234");
     } elseif ($_GET['g'] == "down") {
         $down = $my_id + 1;
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=1234 WHERE `id`=$my_id");
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$my_id WHERE `id`=$down");
-        override_mysql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$down WHERE `id`=1234");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=1234 WHERE `id`=$my_id");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$my_id WHERE `id`=$down");
+        override_sql_query("UPDATE `{$_PREFIX}blocks` SET `id`=$down WHERE `id`=1234");
     }
-    $temp_query = override_mysql_query("SELECT COUNT(`id`) FROM `{$_PREFIX}blocks`");
+    $temp_query = override_sql_query("SELECT COUNT(`id`) FROM `{$_PREFIX}blocks`");
     $temp_ret = mysql_fetch_array($temp_query);
     $highest = $temp_ret['COUNT(`id`)'] + 1;
-    override_mysql_query("ALTER TABLE `{$_PREFIX}blocks` auto_increment = $highest");
+    override_sql_query("ALTER TABLE `{$_PREFIX}blocks` auto_increment = $highest");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['block_moved'],"admin.php?view=blocks");
 }
 
@@ -373,7 +373,7 @@ if ($_GET['do'] == "delrank") {
     if ($user['level'] < $site_info['admin_rank']) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_delranks']);
     }
-    override_mysql_query("DELETE FROM `{$_PREFIX}ranks` WHERE `id`=" . $_GET['rank']);
+    override_sql_query("DELETE FROM `{$_PREFIX}ranks` WHERE `id`=" . $_GET['rank']);
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['rank_deleted'],"admin.php?view=promo");
 }
 
@@ -382,7 +382,7 @@ if ($_GET['do'] == "promote") {
     if ($user['level'] < $site_info['admin_rank']) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_promote']);
     }
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
     $auser = mysql_fetch_array($temp);
     if ($user['id'] == $auser['id'] && $user['id'] != 1) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['promote_self']);
@@ -392,7 +392,7 @@ if ($_GET['do'] == "promote") {
     }
     $level = $auser['level'] + 1;
     $my_id = $_GET['id'];
-    override_mysql_query("UPDATE `{$_PREFIX}users` SET `level`=$level WHERE `id`=$my_id");
+    override_sql_query("UPDATE `{$_PREFIX}users` SET `level`=$level WHERE `id`=$my_id");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_promoted'],"admin.php?view=promo");
 }
 
@@ -401,14 +401,14 @@ if ($_GET['do'] == "demote") {
     if ($user['level'] < $site_info['admin_rank']) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['only_moderators_demote']);
     }
-    $temp = override_mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
+    $temp = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
     $auser = mysql_fetch_array($temp);
     if ($auser['level'] > $user['level'] && $user['id'] != 1) {
         messageBack($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['demote_above']);
     }
     $level = $auser['level'] - 1;
     $my_id = $_GET['id'];
-    override_mysql_query("UPDATE `{$_PREFIX}users` SET `level`=$level WHERE `id`=$my_id");
+    override_sql_query("UPDATE `{$_PREFIX}users` SET `level`=$level WHERE `id`=$my_id");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_demoted'],"admin.php?view=promo");
 }
 
@@ -428,11 +428,11 @@ if ($_GET['view'] == "news") {
 <tr><td class="forum_topic_sig"><input type="checkbox" name="add_to_forum" />{$_PWNDATA['admin']['forms']['article_forum_post']}</td><td class="forum_topic_sig">
 <select name="board">
 END;
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
     while ($cat = mysql_fetch_array($result)) {
         $content .= "\n<optgroup label=\"" . $cat['name'] . "\">";
         $catid = $cat['id'];
-        $resultb = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
+        $resultb = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
         while ($board = mysql_fetch_array($resultb)) {
             if ($board['link'] == "NONE") {
                 $content .= "\n<option label=\"" . $board['title'] . "\" value=\"" . $board['id'] . "\">" . $board['title'] . "</option>";
@@ -450,10 +450,10 @@ END;
     $content = "<table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
     if (!isset($_GET['nolimit'])) {
-        $result = override_mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY `id` DESC LIMIT 10");
+        $result = override_sql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY `id` DESC LIMIT 10");
         $content .= "<tr><td class=\"forum_topic_content\" colspan=\"3\">{$_PWNDATA['admin']['forms']['news_limit']} <a href=\"admin.php?view=news&amp;nolimit=1\">{$_PWNDATA['admin']['forms']['news_limit_all']}</a></td></tr>";
     } else {
-        $result = override_mysql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY `id` DESC");
+        $result = override_sql_query("SELECT * FROM `{$_PREFIX}news` ORDER BY `id` DESC");
     }
     while ($article = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
@@ -489,7 +489,7 @@ END;
 
     $content = "<table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}pages` ORDER BY `display_name` DESC");
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}pages` ORDER BY `display_name` DESC");
     while ($page = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
         if ($odd == 1) {
@@ -508,7 +508,7 @@ END;
 
 // Forum
 if ($_GET['view'] == "forum") {
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}categories` ORDER BY `orderid`");
     $content =  <<<END
 <script type="text/javascript">
 //<![CDATA[
@@ -543,7 +543,7 @@ END;
         $content .= $cat['name'] . "</b> <a href=\"admin.php?do=edit_cat&amp;id=$catid\">[{$_PWNDATA['admin']['forms']['edit']}]</a></td>\n";
         $content .= "<td $back><b><a href=\"admin.php?do=del_cat&amp;cat=" . $cat['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>, <a href=\"admin.php?do=mov_cat&amp;g=up&amp;id=" . $cat['id'] . "&amp;cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_up']}</a>, <a href=\"admin.php?do=mov_cat&amp;g=down&amp;id=" . $cat['id'] . "&amp;cur=" . $cat['orderid'] . "\">{$_PWNDATA['admin']['forms']['forum_move_down']}</a></b></td>\n";
         $content .= "</tr>";
-    	$resultb = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
+    	$resultb = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `catid`=$catid ORDER BY `orderid`");
 	    while ($board = mysql_fetch_array($resultb)) {
             $odd = 1 - $odd;
             if ($odd == 1) {
@@ -571,7 +571,7 @@ END;
     drawBlock("{$_PWNDATA['admin']['forms']['forums']} - {$_PWNDATA['admin']['forms']['forum_order']}","",$content);
 
     $content = "<b>{$_PWNDATA['admin']['forms']['forum_smileys']}: ({$_PWNDATA['admin']['forms']['forum_click_edit']})</b><br />";
-    $smilesSet = override_mysql_query("SELECT * FROM `{$_PREFIX}smileys`");
+    $smilesSet = override_sql_query("SELECT * FROM `{$_PREFIX}smileys`");
     while ($smile = mysql_fetch_array($smilesSet)) {
         $content .= "<a href=\"admin.php?do=editsmiley&amp;id=" . $smile['id'] . "\"><img src=\"smiles/" . $smile['image'] . "\" alt=\"" . $smile['code'] . "\" /></a>";
     }
@@ -608,7 +608,7 @@ END;
 
 // Edit Smiley
 if ($_GET['do'] == "editsmiley") {
-    $smilesSet = override_mysql_query("SELECT * FROM `{$_PREFIX}smileys` WHERE `id`=" . $_GET['id']);
+    $smilesSet = override_sql_query("SELECT * FROM `{$_PREFIX}smileys` WHERE `id`=" . $_GET['id']);
     $smile = mysql_fetch_array($smilesSet);
     $content = "<b>{$_PWNDATA['admin']['forms']['forum_smileys_editing']} </b><img src=\"smiles/" . $smile['image'] . "\"><br />\n";
     $name = $smile['image'];
@@ -669,7 +669,7 @@ END;
 // Edit category
 if ($_GET['do'] == "edit_cat") {
     $content = "";
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['id']);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}categories` WHERE `id`=" . $_GET['id']);
     $cat= mysql_fetch_array($result);
     $cat_name = $cat['name'];
     $cat_id = $cat['id'];
@@ -709,7 +709,7 @@ END;
 // Edit board
 if ($_GET['do'] == "edit_brd") {
     $content = "";
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}boards` WHERE `id`=" . $_GET['id']);
     $board = mysql_fetch_array($result);
     $brd_name = $board['title'];
     $brd_desc = $board['desc'];
@@ -774,7 +774,7 @@ END;
     drawBlock($_PWNDATA['admin']['forms']['blocks_ext'], "", $content);
 
     $content = "<table class=\"borderless_table\" width=\"100%\">";
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}blocks` ORDER BY `id`", $db);
     while ($row = mysql_fetch_array($result)) {
         $block_id = $row['id'];
         $bl_content = str_replace("<","&lt;",$row['content']);
@@ -810,7 +810,7 @@ END;
 // Members
 if ($_GET['view'] == "members") {
     $content = "";
-    $members_result = override_mysql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` ORDER BY `name`");
+    $members_result = override_sql_query("SELECT `id`,`name` FROM `{$_PREFIX}users` ORDER BY `name`");
     $odd = 1;
     $content .= "<table class=\"forum_base\" width=\"100%\">";
     while ($member = mysql_fetch_array($members_result)) {
@@ -832,7 +832,7 @@ if ($_GET['view'] == "members") {
 
 // Edit a user's profile
 if ($_GET['do'] == "edit_prof") {
-    $members_result = override_mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
+    $members_result = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE `id`=" . $_GET['id']);
     $vuser = mysql_fetch_array($members_result);
     if ($vuser['level'] > $user['level']) {
         $content = $_PWNDATA['admin']['forms']['sorry_rank'];
@@ -931,9 +931,9 @@ END;
     $content = "<table class=\"forum_base\" width=\"100%\">";
     if ($_GET['all'] != 1) {
         $content .= "<tr><td class=\"forum_topic_content\" colspan=\"2\">({$_PWNDATA['admin']['forms']['ban_limit']}, <a href=\"admin.php?view=bans&amp;all=1\">{$_PWNDATA['admin']['forms']['ban_click']}</a> {$_PWNDATA['admin']['forms']['ban_showall']})</td></tr>";
-        $members_result = override_mysql_query("SELECT * FROM `{$_PREFIX}banlist` LIMIT 20");
+        $members_result = override_sql_query("SELECT * FROM `{$_PREFIX}banlist` LIMIT 20");
     } else {
-        $members_result = override_mysql_query("SELECT * FROM `{$_PREFIX}banlist`");
+        $members_result = override_sql_query("SELECT * FROM `{$_PREFIX}banlist`");
     }
     $odd = 1;
     while ($ban = mysql_fetch_array($members_result)) {
@@ -952,7 +952,7 @@ END;
 
     $content = "<div style=\"display: inline;\" id=\"cut_log\"><table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}security` LIMIT 10", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security` LIMIT 10", $db);
     while ($row = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
         if ($odd == 1) {
@@ -964,7 +964,7 @@ END;
     }
     $content .= "</table></div>\n<div style=\"display: none;\" id=\"extra_log\"><table class=\"forum_base\" width=\"100%\">";
     $odd = 1;
-    $result = override_mysql_query("SELECT * FROM `{$_PREFIX}security`", $db);
+    $result = override_sql_query("SELECT * FROM `{$_PREFIX}security`", $db);
     while ($row = mysql_fetch_array($result)) {
         $odd = 1 - $odd;
         if ($odd == 1) {
@@ -1003,7 +1003,7 @@ if ($_GET['view'] == "promo") {
     $content = "<table class=\"forum_base\" width=\"100%\"><tr><td class=\"forum_thread_title\" colspan=\"4\"><b>{$_PWNDATA['admin']['forms']['ranks_custom']}:</b></td></tr>";
     $content .= "<tr><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_name']}</td><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_level']}</td><td class=\"forum_topic_content\">{$_PWNDATA['admin']['forms']['ranks_posts']}</td><td class=\"forum_topic_content\">&nbsp;</td></tr>";
     // List ranks
-    $results = override_mysql_query("SELECT * FROM `{$_PREFIX}ranks` ORDER BY `value`, `posts`");
+    $results = override_sql_query("SELECT * FROM `{$_PREFIX}ranks` ORDER BY `value`, `posts`");
     while ($rank = mysql_fetch_array($results)) {
         $content .= "<tr><td class=\"forum_topic_sig\">" . $rank['name'] . "</td><td class=\"forum_topic_sig\">" . $rank['value'] . "</td><td class=\"forum_topic_sig\">" . $rank['posts'] . "</td><td class=\"forum_topic_sig\">[<a href=\"admin.php?do=delrank&amp;rank=" . $rank['id'] . "\">{$_PWNDATA['admin']['forms']['delete']}</a>]</td></tr>";
     }
@@ -1036,7 +1036,7 @@ END;
     drawBlock($_PWNDATA['admin']['forms']['ranks'],"",$content);
     $content = "";
     $content .= "<table class=\"forum_base\" width=\"100%\">";
-    $members_result = override_mysql_query("SELECT `id`,`name`,`level` FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
+    $members_result = override_sql_query("SELECT `id`,`name`,`level` FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
     $content .= "<tr><td class=\"forum_thread_title\" colspan=\"3\"><b>{$_PWNDATA['admin']['forms']['ranks_users']}</b></td></tr>";
     $odd = 1;
     while ($member = mysql_fetch_array($members_result)) {
@@ -1057,7 +1057,7 @@ END;
         $content .= "</tr>";
     }
     $odd = 1;
-    $members_result = override_mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
+    $members_result = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE `level`<" . $site_info['admin_rank'] . " AND `level`>=" . $site_info['mod_rank'] . " ORDER BY `level`, `name`");
     $content .= "<tr><td class=\"forum_thread_title\" colspan=\"3\"><font class='mod_name'><b>{$_PWNDATA['admin']['forms']['ranks_mod_a']}</b></font></td></tr>";
     while ($member = mysql_fetch_array($members_result)) {
         $odd = 1 - $odd;
@@ -1072,7 +1072,7 @@ END;
         $content .= "</tr>";
     }
     $odd = 1;
-    $members_result = override_mysql_query("SELECT * FROM `{$_PREFIX}users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `level`, `name`");
+    $members_result = override_sql_query("SELECT * FROM `{$_PREFIX}users` WHERE `level`>=" . $site_info['admin_rank'] . " ORDER BY `level`, `name`");
     $content .= "<tr><td class=\"forum_thread_title\" colspan=\"3\"><font class='adm_name'><b>{$_PWNDATA['admin']['forms']['ranks_adm_a']}</b></font></td></tr>";
     while ($member = mysql_fetch_array($members_result)) {
         $odd = 1 - $odd;
@@ -1094,7 +1094,7 @@ END;
 if ($_GET['view'] == "images") {
     if (!isset($_GET['do']) || $_GET['do'] == "") {
         $content = "<table class=\"forum_base\" width=\"100%\">";
-        $results = override_mysql_query("SELECT * FROM `{$_PREFIX}galleries`");
+        $results = override_sql_query("SELECT * FROM `{$_PREFIX}galleries`");
         while ($gal = mysql_fetch_array($results)) {
             if ($gal['thumb'] != 0) {
                 $gal_thumb = "<img src=\"gallery.php?do=img&amp;type=thumb&amp;i={$gal['thumb']}\" alt=\"\" />";
@@ -1125,7 +1125,7 @@ if ($_GET['view'] == "images") {
 END;
         drawBlock($_PWNDATA['admin']['gallery']['create'],"",$content);
     } elseif ($_GET['do'] == "edit") {
-        $results = override_mysql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['id']}");
+        $results = override_sql_query("SELECT * FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['id']}");
         $gal = mysql_fetch_array($results);
         $content = <<<END
 <form action="admin.php" name="form" method="post">
@@ -1148,8 +1148,8 @@ END;
 END;
         drawBlock($_PWNDATA['admin']['groups']['images'],"",$content);
     } elseif ($_GET['do'] == "delete_gallery") {
-        override_mysql_query("DELETE FROM `{$_PREFIX}images` WHERE `gid`={$_GET['id']}");
-        override_mysql_query("DELETE FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['id']}");
+        override_sql_query("DELETE FROM `{$_PREFIX}images` WHERE `gid`={$_GET['id']}");
+        override_sql_query("DELETE FROM `{$_PREFIX}galleries` WHERE `id`={$_GET['id']}");
         messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['gallery']['deleted'],"admin.php?view=images");
     }
 }
