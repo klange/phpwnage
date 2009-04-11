@@ -204,7 +204,11 @@ under a specific license which can be found in the file 'recaptchalib.php'.<br /
 This library is provided <i>as-is</i> directly from the ReCAPTCHA web site.<br />
 <br />
 <b>TineMCE</b><br />
-The TinyMCE Javascript WYSIWYG editor is released uner the terms of the GNU<br />
+The TinyMCE Javascript WYSIWYG editor is released under the terms of the GNU<br />
+Lesser General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
+<br />
+<b>Smarty</b><br />
+The Smarty Template Engine is relased under the terms of the GNU<br />
 Lesser General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
 <br />
 By pressing "Continue", you agree to and accept these licenses.
