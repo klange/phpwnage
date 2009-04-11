@@ -299,7 +299,6 @@ $data = $data . <<<END
 \$_DEFAULT_ICONS = "tango"; // Icons
 \$_DEFAULT_COLOR = "crystal"; // Background
 \$_DEFAULT_LANG = "enUS"; // Language;
-?>
 END;
 // <?
 file_put_contents_debug("config.php",$data);
