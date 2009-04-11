@@ -1030,5 +1030,3 @@ setTheme();
 $smarty->assign('site',$site_info);
 $smarty->assign('user',$user);
 
-
-?>

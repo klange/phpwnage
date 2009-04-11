@@ -376,7 +376,9 @@ die();
 
 if ($_POST['do'] == 'install')
 {
-require_once("includes.php");
+require_once("config.php");
+$db = mysql_connect($conf_server,$conf_user,$conf_password);
+mysql_select_db($conf_database,$db) or $db_fail = true;
 if ($db_fail) {
 // It appears that the database doesn't exist. We will try to make it.
 mysql_query("CREATE DATABASE `$conf_database` ;") or databaseFault();
