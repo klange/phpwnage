@@ -51,6 +51,16 @@ function fixBoards() {
 
 // XXX: Begin POST functions
 
+if (!isset($_POST['action'])) {
+    $_POST['action'] = "";
+}
+if (!isset($_GET['do'])) {
+    $_GET['do'] = "";
+}
+if (!isset($_GET['view'])) {
+    $_GET['view'] = "";
+}
+
 // Add a new article
 if ($_POST['action'] == "add_article") {
     $newcontent = $_POST['content'];
@@ -411,6 +421,23 @@ if ($_GET['do'] == "demote") {
     override_sql_query("UPDATE `{$_PREFIX}users` SET `level`=$level WHERE `id`=$my_id");
     messageRedirect($_PWNDATA['admin_page_title'],$_PWNDATA['admin']['user_demoted'],"admin.php?view=promo");
 }
+
+if (($_GET['view'] == "") && ($_GET['do'] == "")) {
+    $pwnversion = $_PWNVERSION['major'] . "_" . $_PWNVERSION['minor'] . $_PWNVERSION['extra'];
+    $e_level = error_reporting(1);
+    $update_data = file_get_contents("http://updates.phpwnage.com/updates_{$pwnversion}");
+    if ($update_data && !stristr($update_data,"<body")) {
+        $content = $update_data;
+    } else {
+        $content = $_PWNDATA['admin']['update_failed'];
+    }
+    error_reporting($e_level);
+    $smarty->assign('content',$content);
+    $smarty->display('admin/default.tpl');
+}
+
+// XXX: Begin old output.
+
 
 standardHeaders($site_info['name'] . " :: " . $_PWNDATA['admin_page_title'],true);
 drawSubbar("<a href=\"index.php\">" . $site_info['name'] . "</a> > " . $_PWNDATA['admin_page_title'],$site_info['right_data']);
