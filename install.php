@@ -204,7 +204,11 @@ under a specific license which can be found in the file 'recaptchalib.php'.<br /
 This library is provided <i>as-is</i> directly from the ReCAPTCHA web site.<br />
 <br />
 <b>TineMCE</b><br />
-The TinyMCE Javascript WYSIWYG editor is released uner the terms of the GNU<br />
+The TinyMCE Javascript WYSIWYG editor is released under the terms of the GNU<br />
+Lesser General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
+<br />
+<b>Smarty</b><br />
+The Smarty Template Engine is relased under the terms of the GNU<br />
 Lesser General Public License. You can find a copy of this license <a href="tiny_mce/license.txt">here</a>.<br />
 <br />
 By pressing "Continue", you agree to and accept these licenses.
@@ -299,7 +303,6 @@ $data = $data . <<<END
 \$_DEFAULT_ICONS = "tango"; // Icons
 \$_DEFAULT_COLOR = "crystal"; // Background
 \$_DEFAULT_LANG = "enUS"; // Language;
-?>
 END;
 // <?
 file_put_contents_debug("config.php",$data);
@@ -376,7 +379,9 @@ die();
 
 if ($_POST['do'] == 'install')
 {
-require_once("includes.php");
+require_once("config.php");
+$db = mysql_connect($conf_server,$conf_user,$conf_password);
+mysql_select_db($conf_database,$db) or $db_fail = true;
 if ($db_fail) {
 // It appears that the database doesn't exist. We will try to make it.
 mysql_query("CREATE DATABASE `$conf_database` ;") or databaseFault();
